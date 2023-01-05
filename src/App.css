@@ -1,1 +1,75 @@
+:root {
+  --white: #fff;
+  --primary-dark: #f06880;
+  --primary-dark-over: #ee5471;
+  --gray: #f2f4f5;
+}
 
+/* reset */
+a {
+  text-decoration: none;
+  font-weight: 400;
+}
+
+a:hover {
+  color: var(--main-red);
+}
+
+a:focus {
+  color: var(--main-red);
+}
+* {
+  font-family: "Lato", sans-serif;
+  color: #333333;
+}
+/*  */
+.fw-300 {
+  font-weight: 300;
+}
+.fw-400 {
+  font-weight: 400;
+}
+.fw-700 {
+  font-weight: 700;
+}
+.fw-900 {
+  font-weight: 800;
+}
+/* BUTTONS */
+.btn-primary-dark {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  font-weight: 700;
+}
+.btn-primary-dark:focus {
+  background-color: var(--primary-dark-over);
+  border: 1px solid var(--primary-dark-over);
+}
+
+.btn {
+  border: 1px solid var(--primary-dark);
+  border-radius: 30px;
+}
+.btn:first-child:active {
+  color: var(--white);
+  background-color: var(--primary-dark-over);
+  border: 1px solid var(--primary-dark-over);
+}
+.btn:first-child:hover {
+  color: var(--white);
+  background-color: var(--primary-dark-over);
+  border: 1px solid var(--primary-dark-over);
+}
+
+.btn-outline-dark {
+  background-color: var(--gray);
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+.btn-outline-dark:focus {
+  background-color: var(--primary-dark-over);
+  color: var(--white);
+  border: 1px solid var(--primary-dark-over);
+  box-shadow: none;
+}
+/* END BUTTONS */
