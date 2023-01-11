@@ -12,7 +12,7 @@
   --fw-700: 700;
 }
 .outline{
-  outline: 1px solid var(--primary-dark);
+  outline: 1px solid #e0e0e0;
   padding: 1rem 1rem;
 }
 /* reset */
@@ -46,6 +46,11 @@ a:focus {
 .fw-900 {
   font-weight: 800;
 }
+
+.text-primary-dark{
+  color: var(--primary-dark);
+}
+
 /* BUTTONS */
 .btn-primary-dark {
   background-color: var(--primary-dark);

@@ -7,35 +7,23 @@
     text-align: center;
     border-radius: 30px;
     width: 100%;
+    max-width: 200px;
+    max-height: 34px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
     border: solid 1px var(--primary-dark);
-
-   
 }
 .secondary__button:hover{
     color: var(--primary-dark);
-    -webkit-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-
 }
 
 .secondary__button:active{
     color: var(--primary-dark);
-    -webkit-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
 }
 .secondary__button:focus{
     outline: none;
     color: var(--primary-dark);
-    -webkit-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
-
-
 }
