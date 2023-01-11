@@ -16,16 +16,23 @@
 .primary__button:hover{
     background-color: var(--primary-dark-over);
     color: var(--gray);
-
+    -webkit-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
 }
 .primary__button:active{
     background-color: var(--primary-dark-over);
     color: var(--gray);
-
+    -webkit-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
 }
 .primary__button:focus{
-    outline-color: var(--shadow-color);
+    outline: none;
     color: var(--gray);
+    -webkit-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px -18px rgba(0,0,0,0.75);
 
 
 }
