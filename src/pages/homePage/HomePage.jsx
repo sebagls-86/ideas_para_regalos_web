@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import PropTypes from "prop-types";
 
-function HomePage() {
+function HomePage(props) {
   return (
-    <div>HomePage</div>
-  )
+    <div>
+			Home Page
+		</div>
+  );
 }
 
-export default HomePage
+HomePage.propTypes = {};
+
+export default HomePage;

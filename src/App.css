@@ -3,12 +3,23 @@
   --primary-dark: #f06880;
   --primary-dark-over: #ee5471;
   --gray: #f2f4f5;
-}
+  --shadow-color: #ee5470a1;
 
+  --padding-12: 0.75rem;
+
+  --fz-15: 0.9375rem;
+
+  --fw-700: 700;
+}
+.outline{
+  outline: 1px solid #e0e0e0;
+  padding: 1rem 1rem;
+}
 /* reset */
 a {
   text-decoration: none;
   font-weight: 400;
+  color: #333333;
 }
 
 a:hover {
@@ -35,6 +46,11 @@ a:focus {
 .fw-900 {
   font-weight: 800;
 }
+
+.text-primary-dark{
+  color: var(--primary-dark);
+}
+
 /* BUTTONS */
 .btn-primary-dark {
   background-color: var(--primary-dark);
