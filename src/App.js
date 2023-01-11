@@ -1,24 +1,19 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import React from 'react';
+import "./App.css"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import HomePage from './pages/homePage/HomePage';
+import ComponentesPage from './pages/componentesPage/ComponentesPage';
+import NotFoundPage from './pages/notFoundPage/NotFound';
 function App() {
   return (
-    <Container fluid >
-    <h1>Test colores</h1>
-      <Row>
-        <Col className="p-5 m-5 text-light text-center">
-        <a href="#" className="btn btn-primary-dark px-5">Boton 1</a>
-        </Col>
-        <Col className=" p-5 m-5 text-light text-center">
-        <a href="#" className="btn btn-primary-dark px-5">Boton 2 con </a>
-        </Col>
-        <Col className=" p-5 m-5 text-light text-center">
-        <a href="#" className="btn btn-outline-dark px-5">Boton 2 con </a>
-        </Col>
-      </Row>
-    </Container>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/componentes" element={<ComponentesPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
