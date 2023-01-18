@@ -28,3 +28,32 @@
     outline: none;
     color: var(--gray);
 }
+.secondary__button{
+    background-color: var(--gray);
+    padding: var(--padding-12) 0;
+    font-size: var(--fz-15);
+    font-weight: var(--fw-700);
+    color: var(--primary-dark);
+    text-align: center;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 200px;
+    max-height: 34px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    border: solid 1px var(--primary-dark);
+}
+.secondary__button:hover{
+    color: var(--primary-dark);
+}
+
+.secondary__button:active{
+    color: var(--primary-dark);
+}
+.secondary__button:focus{
+    outline: none;
+    color: var(--primary-dark);
+}
