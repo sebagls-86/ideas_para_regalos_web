@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./css/links.module.css";
-import { Col } from "react-bootstrap";
 
 function Links(props) {
   const { title, url, type } = props;

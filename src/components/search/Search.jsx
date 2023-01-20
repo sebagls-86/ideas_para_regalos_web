@@ -1,0 +1,20 @@
+import React from "react";
+import styles from "./css/search.module.css";
+import { Col } from "react-bootstrap";
+
+import { FiSearch } from "react-icons/fi";
+
+function Search() {
+  return (
+    <Col sm={12} className={styles.search__container}>
+      <form className="col-12 d-flex gap-2">
+        <button className={styles.button}>
+          <FiSearch className={styles.icon}/>
+        </button>
+        <input className={styles.input} type="text" placeholder="Buscar" />
+      </form>
+    </Col>
+  );
+}
+
+export default Search;

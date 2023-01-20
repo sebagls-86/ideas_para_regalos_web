@@ -6,20 +6,27 @@
   --shadow-color: #ee5470a1;
 
   --padding-12: 0.75rem;
-
+  
   --fz-15: 0.9375rem;
 
   --fw-700: 700;
 }
-.outline{
-  outline: 1px solid #e0e0e0;
-  padding: 1rem 1rem;
-}
+
 /* reset */
 a {
   text-decoration: none;
   font-weight: 400;
   color: #333333;
+}
+h1,h2,h3,h4,h5,h6,p{
+  margin-bottom: 0;
+}
+ul, ol{
+  padding-left: 0;
+  padding-bottom: 0;
+}
+ul li{
+  list-style: none;
 }
 
 a:hover {
@@ -33,59 +40,145 @@ a:focus {
   font-family: "Lato", sans-serif;
   color: #333333;
 }
-/*  */
-.fw-300 {
-  font-weight: 300;
-}
-.fw-400 {
-  font-weight: 400;
-}
-.fw-700 {
-  font-weight: 700;
-}
-.fw-900 {
-  font-weight: 800;
+ 
+.fz-15{
+  font-size: 15px;
 }
 
-.text-primary-dark{
-  color: var(--primary-dark);
+.fw-600{
+  font-weight: 600;
+
+}
+.fw-700{
+  font-weight: 700;
+
 }
 
 /* BUTTONS */
-.btn-primary-dark {
+.primary__button{
   background-color: var(--primary-dark);
   color: var(--white);
-  font-weight: 700;
-}
-.btn-primary-dark:focus {
-  background-color: var(--primary-dark-over);
-  border: 1px solid var(--primary-dark-over);
-}
-
-.btn {
-  border: 1px solid var(--primary-dark);
+  padding: var(--padding-12) 0;
+  font-size: var(--fz-15);
+  font-weight: var(--fw-700);
+  text-align: center;
   border-radius: 30px;
+  width: 100%;
+  max-width: 200px;
+  max-height: 34px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
 }
-.btn:first-child:active {
-  color: var(--white);
+.primary__button:hover{
   background-color: var(--primary-dark-over);
-  border: 1px solid var(--primary-dark-over);
+  color: var(--gray);
+ 
 }
-.btn:first-child:hover {
-  color: var(--white);
+.primary__button:active{
   background-color: var(--primary-dark-over);
-  border: 1px solid var(--primary-dark-over);
+  color: var(--gray);
 }
-
-.btn-outline-dark {
+.primary__button:focus{
+  outline: none;
+  color: var(--gray);
+}
+.secondary__button{
   background-color: var(--gray);
+  padding: var(--padding-12) 0;
+  font-size: var(--fz-15);
+  font-weight: var(--fw-700);
   color: var(--primary-dark);
-  font-weight: 700;
+  text-align: center;
+  border-radius: 30px;
+  width: 100%;
+  max-width: 200px;
+  max-height: 34px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
+  border: solid 1px var(--primary-dark);
 }
-.btn-outline-dark:focus {
-  background-color: var(--primary-dark-over);
-  color: var(--white);
-  border: 1px solid var(--primary-dark-over);
-  box-shadow: none;
+.secondary__button:hover{
+  color: var(--primary-dark);
+}
+.secondary__button:active{
+  color: var(--primary-dark);
+}
+.secondary__button:focus{
+  outline: none;
+  color: var(--primary-dark);
 }
 /* END BUTTONS */
+
+.contenedor {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 3rem;
+  grid-template-areas:
+    "content"
+    "menu";
+
+  gap: 10px;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 0 1rem;
+  
+  
+}
+
+.left__aside {
+  grid-area: menu;
+}
+.content {
+  border-right: 1px solid rgba(0, 0, 0, 0.322);
+  border-left: 1px solid rgba(0, 0, 0, 0.322);
+  grid-area: content;
+  padding: 0 2rem;
+}
+.right__aside {
+  /* border-left: 1px solid rgba(0, 0, 0, 0.322); */
+  grid-area: right__aside;
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .contenedor {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3rem;
+    grid-template-areas:
+      "content"
+      "menu";
+  }
+  .left__aside {
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .contenedor {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-template-areas: "menu content content content";
+    max-width: 1168px;
+  }
+  .right__aside {
+    display: none;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .contenedor {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: "menu content content content right__aside";
+    max-width: 1512px;
+  }
+  .right__aside {
+    display: block;
+  }
+}
+

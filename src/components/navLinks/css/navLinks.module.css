@@ -1,0 +1,10 @@
+.link{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.title{
+    font-size: var(--fz-15);
+    font-weight: 700;
+    
+}
