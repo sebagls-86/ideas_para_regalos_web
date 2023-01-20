@@ -3,14 +3,15 @@ import logoimg from "../../assets/logoIdeasParaRegalos.png"
 import NavLinks from "../../components/navLinks/NavLinks";
 import { AiOutlineCompass, AiOutlineBell, AiOutlineHome, AiOutlineUser, AiOutlineCalendar } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import styles from "./css/nav.module.css"
 
 function Nav() {
   return (
-    <div className="pt-3">
-      <Link to="/">
+    <nav className={styles.nav__container}>
+      <Link to="/" className={styles.nav__logo}>
         <img src={logoimg} alt="Logo ideas para regalos" />
       </Link>
-      <ul className="mt-3">
+      <ul className={styles.nav__ul}>
         <NavLinks
           title="Inicio"
           url="/"
@@ -37,7 +38,7 @@ function Nav() {
           icon={<AiOutlineCalendar className="mr-3 fw-700 fs-3" />}
         />
       </ul>
-    </div>
+    </nav>
   );
 }
 

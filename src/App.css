@@ -11,7 +11,9 @@
 
   --fw-700: 700;
 }
-
+.hover--primary-dark:hover{
+  color: var(--primary-dark-over);
+}
 /* reset */
 a {
   text-decoration: none;
@@ -135,8 +137,6 @@ a:focus {
   grid-area: menu;
 }
 .content {
-  border-right: 1px solid rgba(0, 0, 0, 0.322);
-  border-left: 1px solid rgba(0, 0, 0, 0.322);
   grid-area: content;
   padding: 0 2rem;
 }
@@ -166,6 +166,11 @@ a:focus {
     grid-template-rows: 1fr;
     grid-template-areas: "menu content content content";
     max-width: 1168px;
+    
+  }
+  .content{
+    border-right: 1px solid rgba(0, 0, 0, 0.322);
+  border-left: 1px solid rgba(0, 0, 0, 0.322);
   }
   .right__aside {
     display: none;
