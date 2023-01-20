@@ -1,0 +1,38 @@
+.post__container{
+    display: flex;
+}
+.post__content{
+    width: 100%;
+    margin-left: 1rem;
+}
+.user__container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.content__user{
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    width: 300px;
+    gap: 0px 9px;
+}
+.user__username{
+    font-size: var(--fz-20);
+    font-weight: 800;
+}
+.user__tagname{
+    font-size: var(--fz-15);
+    font-weight: 600;
+
+}
+.user__timepost{
+    font-size: var(--fz-9);
+    font-weight: 600;
+}
+
+.more__actions{
+    font-weight: 800;
+    font-size: var(--fz-20);
+
+}

@@ -4,6 +4,10 @@ import { Col } from 'react-bootstrap';
 
 import Search from "../../components/search/Search"
 import Nav from "../../modules/nav/Nav";
+import Post from "../../modules/post/Post"
+
+
+
 
 function HomePage(props) {
   return (
@@ -13,8 +17,11 @@ function HomePage(props) {
           <Nav/>
         </div>
         <div className="content">
-          <Col className="mt-3 d-flex justify-content-center">
+          <Col className="mt-3 px-3 d-flex justify-content-center">
             <Search/>
+          </Col>
+          <Col className="mt-3 p-3 bordes-y">
+            <Post/>
           </Col>
         </div>
         <aside className="right__aside">

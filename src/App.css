@@ -7,7 +7,9 @@
 
   --padding-12: 0.75rem;
   
+  --fz-9: 0.5625rem;
   --fz-15: 0.9375rem;
+  --fz-20: 1.25rem;
 
   --fw-700: 700;
 }
@@ -43,8 +45,14 @@ a:focus {
   color: #333333;
 }
  
+.fz-9{
+  font-size: var(--fz-9);
+}
 .fz-15{
-  font-size: 15px;
+  font-size: var(--fz-15);
+}
+.fz-20{
+  font-size: var(--fz-20);
 }
 
 .fw-600{
@@ -56,6 +64,10 @@ a:focus {
 
 }
 
+.bordes-y{
+ border-top: 1px solid rgba(0, 0, 0, 0.322);
+ border-bottom: 1px solid rgba(0, 0, 0, 0.322);
+}
 /* BUTTONS */
 .primary__button{
   background-color: var(--primary-dark);
@@ -81,11 +93,12 @@ a:focus {
 }
 .primary__button:active{
   background-color: var(--primary-dark-over);
-  color: var(--gray);
+  color: var(--primary-dark-over  );
+
 }
 .primary__button:focus{
   outline: none;
-  color: var(--gray);
+  color: var(--primary-dark-over  );
 }
 .secondary__button{
   background-color: var(--gray);
@@ -107,7 +120,10 @@ a:focus {
 }
 .secondary__button:hover{
   color: var(--primary-dark);
+  border: solid 1px var(--primary-dark);
+
 }
+
 .secondary__button:active{
   color: var(--primary-dark);
 }
@@ -138,7 +154,7 @@ a:focus {
 }
 .content {
   grid-area: content;
-  padding: 0 2rem;
+  padding: 0 0rem;
 }
 .right__aside {
   /* border-left: 1px solid rgba(0, 0, 0, 0.322); */
