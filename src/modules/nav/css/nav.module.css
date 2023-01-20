@@ -2,8 +2,8 @@
     background-color: var(--gray);
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 .nav__ul{
     display: flex;
