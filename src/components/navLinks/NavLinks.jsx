@@ -8,7 +8,8 @@ function NavLinks({ title, icon, url }) {
     <li className="pt-0 pt-md-3">
       <Link to={url}>
         <div className={styles.link}>
-          {icon} <p className={styles.title}>{title}</p>
+          {icon} 
+          <p className={styles.title}>{title}</p>
         </div>
       </Link>
     </li>

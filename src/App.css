@@ -144,7 +144,7 @@ a:focus {
   gap: 10px;
   height: 100vh;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 0;
   
   
 }
@@ -182,6 +182,7 @@ a:focus {
     grid-template-rows: 1fr;
     grid-template-areas: "menu content content content";
     max-width: 1168px;
+    padding: 0 1rem;
     
   }
   .content{
@@ -197,6 +198,7 @@ a:focus {
     grid-template-columns: repeat(5, 1fr);
     grid-template-areas: "menu content content content right__aside";
     max-width: 1512px;
+
   }
   .right__aside {
     display: block;
