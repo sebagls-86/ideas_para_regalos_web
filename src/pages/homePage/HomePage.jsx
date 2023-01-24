@@ -22,6 +22,8 @@ function HomePage(props) {
           </Col>
           <Col className="mt-3 p-3 bordes-y">
             <Post/>
+            <Post/>
+            <Post/>
           </Col>
         </div>
         <aside className="right__aside">

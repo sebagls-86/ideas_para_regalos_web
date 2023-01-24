@@ -8,9 +8,12 @@
   --padding-12: 0.75rem;
   
   --fz-9: 0.5625rem;
+  --fz-11: 0.6875rem;
   --fz-15: 0.9375rem;
+  --fz-17: 1.0625rem;
   --fz-20: 1.25rem;
-
+  --fz-25: 1.56rem;
+  --fz-30: 1.875rem;
   --fw-700: 700;
 }
 .hover--primary-dark:hover{
@@ -187,7 +190,7 @@ a:focus {
   }
   .content{
     border-right: 1px solid rgba(0, 0, 0, 0.322);
-  border-left: 1px solid rgba(0, 0, 0, 0.322);
+    border-left: 1px solid rgba(0, 0, 0, 0.322);
   }
   .right__aside {
     display: none;

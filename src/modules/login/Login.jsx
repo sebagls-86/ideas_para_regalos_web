@@ -1,5 +1,4 @@
 import React from "react";
-import Links from "../../components/link/Links";
 
 function Login() {
   return (

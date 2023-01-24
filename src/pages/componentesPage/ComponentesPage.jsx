@@ -1,6 +1,5 @@
 import React from "react";
 import Links from "../../components/link/Links";
-import PropTypes from "prop-types";
 import styles from "./css/componentesPage.module.css"
 import { Col, Container, Row } from "react-bootstrap";
 
@@ -23,7 +22,5 @@ function ComponentesPage(props) {
     </div>
   );
 }
-
-ComponentesPage.propTypes = {};
 
 export default ComponentesPage;
