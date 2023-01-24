@@ -139,16 +139,15 @@ a:focus {
 .contenedor {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 3rem;
+  grid-template-rows: 1fr auto;
   grid-template-areas:
     "content"
     "menu";
 
   gap: 10px;
-  height: 100vh;
   margin: 0 auto;
   padding: 0 0;
-  
+  width: 100vw;
   
 }
 
@@ -174,8 +173,7 @@ a:focus {
       "content"
       "menu";
   }
-  .left__aside {
-  }
+  
 }
 
 @media only screen and (min-width: 768px) {

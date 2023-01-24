@@ -20,11 +20,11 @@ function HomePage(props) {
           <Col className="mt-3 px-3 d-flex justify-content-center">
             <Search/>
           </Col>
-          <Col className="mt-3 p-3 bordes-y">
+          <div className="mt-3 p-3 bordes-y">
             <Post/>
             <Post/>
             <Post/>
-          </Col>
+          </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">

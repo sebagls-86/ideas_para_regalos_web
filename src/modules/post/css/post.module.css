@@ -11,11 +11,11 @@
     border-radius: 50%;
 }
 .post__content{
-    width: 100%;
+    /* width: 100%; */
     margin-left: 1rem;
 }
 .user__container{
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: space-between;
 }

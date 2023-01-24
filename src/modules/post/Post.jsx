@@ -40,10 +40,14 @@ function Post() {
           <img
             src={"https://random.imagecdn.app/500/500"}
             alt="Producto referencia"
+            width={'300px'}
+            height={'300px'}
           />
           <img
             src={"https://random.imagecdn.app/500/500"}
             alt="Producto referencia"
+            width={'360px'}
+            height={'360px'}
           />
         </div>
         <div className={styles.post__actions}>
