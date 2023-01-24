@@ -35,6 +35,10 @@
     font-weight: 600;
 
 }
+.user__tagname:hover{
+    color: var(--primary-dark);
+
+}
 .user__timepost{
     font-size: var(--fz-9);
     font-weight: 600;
