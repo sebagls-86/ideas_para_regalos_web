@@ -16,7 +16,6 @@ function Post({
   post_likes,
   post_comments,
 }) {
-  console.log(post_likes);
   return (
     <div className={styles.post__container} key={id}>
       <div className={styles.container__image}>
