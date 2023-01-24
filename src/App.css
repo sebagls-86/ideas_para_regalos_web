@@ -1,14 +1,19 @@
 :root {
   --white: #fff;
-  --primary-dark: #f06880;
-  --primary-dark-over: #ee5471;
+  --primary-dark: #A139F3;
+  --primary-dark-over: #9337d9;
   --gray: #f2f4f5;
-  --shadow-color: #ee5470a1;
+  --shadow-color: #8722d5;
 
   --padding-12: 0.75rem;
   
+  --fz-9: 0.5625rem;
+  --fz-11: 0.6875rem;
   --fz-15: 0.9375rem;
-
+  --fz-17: 1.0625rem;
+  --fz-20: 1.25rem;
+  --fz-25: 1.56rem;
+  --fz-30: 1.875rem;
   --fw-700: 700;
 }
 .hover--primary-dark:hover{
@@ -43,8 +48,14 @@ a:focus {
   color: #333333;
 }
  
+.fz-9{
+  font-size: var(--fz-9);
+}
 .fz-15{
-  font-size: 15px;
+  font-size: var(--fz-15);
+}
+.fz-20{
+  font-size: var(--fz-20);
 }
 
 .fw-600{
@@ -56,6 +67,10 @@ a:focus {
 
 }
 
+.bordes-y{
+ border-top: 1px solid rgba(0, 0, 0, 0.322);
+ border-bottom: 1px solid rgba(0, 0, 0, 0.322);
+}
 /* BUTTONS */
 .primary__button{
   background-color: var(--primary-dark);
@@ -81,11 +96,12 @@ a:focus {
 }
 .primary__button:active{
   background-color: var(--primary-dark-over);
-  color: var(--gray);
+  color: var(--primary-dark-over  );
+
 }
 .primary__button:focus{
   outline: none;
-  color: var(--gray);
+  color: var(--primary-dark-over  );
 }
 .secondary__button{
   background-color: var(--gray);
@@ -107,7 +123,10 @@ a:focus {
 }
 .secondary__button:hover{
   color: var(--primary-dark);
+  border: solid 1px var(--primary-dark);
+
 }
+
 .secondary__button:active{
   color: var(--primary-dark);
 }
@@ -120,16 +139,15 @@ a:focus {
 .contenedor {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 3rem;
+  grid-template-rows: 1fr auto;
   grid-template-areas:
     "content"
     "menu";
 
   gap: 10px;
-  height: 100vh;
   margin: 0 auto;
-  padding: 0 1rem;
-  
+  padding: 0 0;
+  width: 100vw;
   
 }
 
@@ -138,7 +156,7 @@ a:focus {
 }
 .content {
   grid-area: content;
-  padding: 0 2rem;
+  padding: 0 0rem;
 }
 .right__aside {
   /* border-left: 1px solid rgba(0, 0, 0, 0.322); */
@@ -155,8 +173,7 @@ a:focus {
       "content"
       "menu";
   }
-  .left__aside {
-  }
+  
 }
 
 @media only screen and (min-width: 768px) {
@@ -166,11 +183,12 @@ a:focus {
     grid-template-rows: 1fr;
     grid-template-areas: "menu content content content";
     max-width: 1168px;
+    padding: 0 1rem;
     
   }
   .content{
     border-right: 1px solid rgba(0, 0, 0, 0.322);
-  border-left: 1px solid rgba(0, 0, 0, 0.322);
+    border-left: 1px solid rgba(0, 0, 0, 0.322);
   }
   .right__aside {
     display: none;
@@ -181,6 +199,7 @@ a:focus {
     grid-template-columns: repeat(5, 1fr);
     grid-template-areas: "menu content content content right__aside";
     max-width: 1512px;
+
   }
   .right__aside {
     display: block;

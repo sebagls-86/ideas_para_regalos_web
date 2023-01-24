@@ -28,14 +28,14 @@ function Nav() {
           icon={<AiOutlineBell className="mr-3 fw-700 fs-3" />}
         />
         <NavLinks
-          title="Perfil"
-          url="/perfil"
-          icon={<AiOutlineUser className="mr-3 fw-700 fs-3" />}
-        />
-        <NavLinks
           title="Eventos"
           url="/eventos"
           icon={<AiOutlineCalendar className="mr-3 fw-700 fs-3" />}
+        />
+         <NavLinks
+          title="Perfil"
+          url="/perfil"
+          icon={<AiOutlineUser className="mr-3 fw-700 fs-3" />}
         />
       </ul>
     </nav>
