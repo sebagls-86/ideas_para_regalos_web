@@ -96,15 +96,22 @@ a:focus {
 }
 .primary__button:active{
   background-color: var(--primary-dark-over);
-  color: var(--primary-dark-over  );
+  color: var(--gray );
+  
+
+}
+.primary__button:is(:active:hover){
+  color: #fff;
+  background-color: var(--primary-dark-over);
+
 
 }
 .primary__button:focus{
-  outline: none;
+  outline: 1px solid var(--primary-dark);
   color: var(--primary-dark-over  );
 }
 .secondary__button{
-  background-color: var(--gray);
+  background-color: #fff;
   padding: var(--padding-12) 0;
   font-size: var(--fz-15);
   font-weight: var(--fw-700);

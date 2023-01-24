@@ -1,29 +1,100 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "../../modules/login/Login";
-import { Col } from 'react-bootstrap';
+import { Col } from "react-bootstrap";
 
-import Search from "../../components/search/Search"
+import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
-import Post from "../../modules/post/Post"
-
-
-
+import Post from "../../modules/post/Post";
 
 function HomePage(props) {
+  const Publicaciones = [
+    {
+      id: 1,
+      name: "Marcos",
+      userName: "@Marcos",
+      userImage: "https://randomuser.me/api/portraits/men/33.jpg",
+      post_title: "Regalo para mi novia en su cumpleaños",
+      post_tags: ["Ropa", "Calzado", "Viajes"],
+      post_description:
+        "Deje de perder tiempo compilando reseñas y use nuestra lista para una compra informada. Encuentre los productos adecuados dentro de su presupuesto y necesidades. Hallar productos top. Productos top. ",
+      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_likes: 1,
+      post_comments: 99,
+
+
+    },
+    {
+      id: 2,
+      name: "Ani",
+      userName: "@AniBK",
+      userImage: "https://randomuser.me/api/portraits/women/10.jpg",
+      post_title: "Regalo para mi novio",
+      post_tags: ["Lectura", "Instrumentos", "Fotografía"],
+      post_description:
+        "Ideas regalos originales Regalos originales, Regalos originales para hombres, Regalos originales para mujeres, Regalos originales para parejas, Regalos ..5",
+      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_likes: 16,
+      post_comments: 12,
+
+
+    },
+    {
+      id: 3,
+      name: "Horacio",
+      userName: "@Horacito",
+      userImage: "https://randomuser.me/api/portraits/men/22.jpg",
+      post_title: "No se que regalar cumple de 15",
+      post_tags: ["senderismo", "Deportes", "Baile"],
+      post_description:
+        "Que este San Valentín Vibre alto, Chau desayunos , flores y cenas, Sorprendx placer. Regala una nueva experiencia, que esta no se limita a disfrutarse por una única vez. Atención personalizada. Seguridad y discreción. Envíos Sin Cargo.",
+      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_likes: 22,
+      post_comments: 55,
+    },
+    {
+      id: 4,
+      name: "seba",
+      userName: "@seba",
+      userImage: "https://randomuser.me/api/portraits/men/99.jpg",
+      post_title: "Ayuda!",
+      post_tags: ["arte pop", "calzado", "Fotografía"],
+      post_description:
+        "Fanbag Fin de año. Regala una experiencia para navidad. Cenas, Aventuras, Día de Spa, Teatro y más. Regalá Físico o Digital y Envía al Instante. Más de 3.000 Experiencias.5",
+      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_likes: 125,
+      post_comments: 15,
+
+    },
+  ];
+
   return (
     <>
       <div className="contenedor">
         <div className="left__aside">
-          <Nav/>
+          <Nav />
         </div>
         <div className="content">
           <Col className="mt-3 px-3 d-flex justify-content-center">
-            <Search/>
+            <Search />
           </Col>
           <div className="mt-3 p-3 bordes-y">
-            <Post/>
-            <Post/>
-            <Post/>
+            {Publicaciones.map((post, index) => {
+              return (
+                <Post
+                  key={index}
+                  id={post.id}
+                  name={post.name}
+                  userName={post.userName}
+                  userImage={post.userImage}
+                  post_title={post.post_title}
+                  post_tags={post.post_tags}
+                  post_description={post.post_description}
+                  post_images={post.post_images}
+                  post_likes={post.post_likes}
+                  post_comments={post.post_comments}
+                />
+              );
+            })}
           </div>
         </div>
         <aside className="right__aside">
@@ -35,6 +106,5 @@ function HomePage(props) {
     </>
   );
 }
-
 
 export default HomePage;

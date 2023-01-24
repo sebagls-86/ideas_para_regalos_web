@@ -35,6 +35,10 @@
     font-weight: 600;
 
 }
+.user__tagname:hover{
+    color: var(--primary-dark);
+
+}
 .user__timepost{
     font-size: var(--fz-9);
     font-weight: 600;
@@ -61,11 +65,14 @@
 .post__images{
     margin-top: var(--fz-15);
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    width: 200px;
     gap: var(--fz-11);
 }
 .post__images img{
-    max-width: 360px;
+    max-width: 100%;
+    height: auto;
     border-radius: var(--fz-15);
 }
 .post__text{
@@ -80,4 +87,42 @@
 .actions__content{
     display: flex;
     gap: var(--fz-11);
+}
+
+@media only screen and (min-width: 768px) {
+    .post__images{
+        width: 200px;
+        flex-direction: row;
+
+    }
+    .post__images img{
+        width: 100%;
+        
+
+    }
+    
+}
+@media only screen and (min-width: 1024px) {
+    .post__images{
+        width: 250px;
+
+    }
+    .post__images img{
+        width: 100%;
+        
+
+    }
+
+}
+@media only screen and (min-width: 1512px) {
+    .post__images{
+        width: 300px;
+
+    }
+    .post__images img{
+        width: 100%;
+        
+
+    }
+
 }
