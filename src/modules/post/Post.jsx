@@ -11,6 +11,7 @@ function Post() {
           src={"https://randomuser.me/api/portraits/women/1.jpg"}
           alt="imagen perfil usuario"
           width={"54px"}
+          heingt={"54px"}
         />
       </div>
       <div className={styles.post__content}>
@@ -30,25 +31,28 @@ function Post() {
           <span className={styles.post_tags}>minimalista</span>{" "}
           <span className={styles.post_tags}>café</span>
         </div>
-        <div className={styles.post__images}>
+        <div >
           <p className={styles.post__text}>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo nisi
             ullam inventore veritatis facere. Nemo, odit! Eligendi ullam
             praesentium, atque, optio totam libero assumenda qui explicabo nemo
             eum est perspiciatis?
           </p>
+          <div className={styles.post__images}>
+
           <img
             src={"https://random.imagecdn.app/500/500"}
             alt="Producto referencia"
-            width={'300px'}
-            height={'300px'}
+            width={'500px'}
+            height={'500px'}
           />
           <img
             src={"https://random.imagecdn.app/500/500"}
             alt="Producto referencia"
-            width={'360px'}
-            height={'360px'}
+            width={'500px'}
+            height={'500px'}
           />
+          </div>
         </div>
         <div className={styles.post__actions}>
           <div className={styles.actions__content}>
