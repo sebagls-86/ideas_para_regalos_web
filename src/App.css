@@ -9,11 +9,14 @@
   
   --fz-9: 0.5625rem;
   --fz-11: 0.6875rem;
+  --fz-12: 0.75rem;
   --fz-15: 0.9375rem;
   --fz-17: 1.0625rem;
+  --fz-19: 1.18rem;
   --fz-20: 1.25rem;
   --fz-25: 1.56rem;
   --fz-30: 1.875rem;
+  --fz-66: 4.12rem;
   --fw-700: 700;
 }
 .hover--primary-dark:hover{
