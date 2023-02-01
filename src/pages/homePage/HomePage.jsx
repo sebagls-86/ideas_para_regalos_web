@@ -5,6 +5,7 @@ import { Col } from "react-bootstrap";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
+import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
 
 function HomePage(props) {
   const Publicaciones = [
@@ -69,6 +70,7 @@ function HomePage(props) {
 
   return (
     <>
+    <NavLoggedOut/>
       <div className="contenedor">
         <div className="left__aside">
           <Nav />
