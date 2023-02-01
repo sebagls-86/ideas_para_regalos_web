@@ -1,7 +1,7 @@
 :root {
   --white: #fff;
-  --primary-dark: #A139F3;
-  --primary-dark-over: #9337d9;
+  --primary-dark: #008037;
+  --primary-dark-over: #FCF3A6;
   --gray: #f2f4f5;
   --shadow-color: #8722d5;
 
@@ -74,8 +74,8 @@ a:focus {
 /* BUTTONS */
 .primary__button{
   background-color: var(--primary-dark);
-  color: var(--white);
-  padding: var(--padding-12) 0;
+  border: 1px solid #FCF3A6;
+  color: var(--primary-dark-over);
   font-size: var(--fz-15);
   font-weight: var(--fw-700);
   text-align: center;
@@ -87,31 +87,30 @@ a:focus {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  text-transform: capitalize;
 }
 .primary__button:hover{
   background-color: var(--primary-dark-over);
-  color: var(--gray);
+  color: var(--primary-dark);
  
 }
 .primary__button:active{
   background-color: var(--primary-dark-over);
-  color: var(--gray );
+  color: var(--primary-dark );
   
 
 }
 .primary__button:is(:active:hover){
-  color: #fff;
+  color: #008037;
   background-color: var(--primary-dark-over);
-
+  border-color: var(--primary-dark-over);
 
 }
 .primary__button:focus{
-  outline: 1px solid var(--primary-dark);
+  outline: 3px solid var(--primary-dark);
   color: var(--primary-dark-over  );
 }
 .secondary__button{
-  background-color: #fff;
+  background-color: #FCF3A6;
   padding: var(--padding-12) 0;
   font-size: var(--fz-15);
   font-weight: var(--fw-700);
@@ -119,7 +118,7 @@ a:focus {
   text-align: center;
   border-radius: 30px;
   width: 100%;
-  max-width: 200px;
+  max-width: 211px;
   max-height: 34px;
   display: flex;
   flex-direction: row;
@@ -127,10 +126,12 @@ a:focus {
   align-items: center;
   text-transform: capitalize;
   border: solid 1px var(--primary-dark);
+  padding: var(--padding-12);
+  
 }
 .secondary__button:hover{
-  color: var(--primary-dark);
-  border: solid 1px var(--primary-dark);
+  color: var(--primary-dark-over);
+  border: solid 1px var(--primary-dark-over);
 
 }
 
