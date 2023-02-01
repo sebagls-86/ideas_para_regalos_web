@@ -1,5 +1,5 @@
 .primary__button{
-    background-color: var(--primary-dark);
+    background-color: var(--primary-dark-over);
     color: var(--white);
     padding: var(--padding-12) 0;
     font-size: var(--fz-15);
