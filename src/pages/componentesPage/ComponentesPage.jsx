@@ -24,7 +24,7 @@ function ComponentesPage() {
         <Row>
           <Col>
             <button onClick={() => setOpenModal(true)}>Modal</button>
-            {openModal && <Modal closeModal = {setOpenModal} />}
+            {openModal && <Modal closeModal = {setOpenModal} title="Iniciar sesión" />}
             
           </Col>
         </Row>
