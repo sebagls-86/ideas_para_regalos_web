@@ -3,6 +3,7 @@ import styles from "./css/componentesPage.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import Button from "../../components/button/Button";
+import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
 function ComponentesPage() {
 
   const [openModal, setOpenModal] = useState(false);
@@ -50,6 +51,12 @@ function ComponentesPage() {
           </Col>
         </Row>
       </Container>
+
+
+      <Row className="mt-3">
+      <h2 className={styles.subtitulo}>Nav no logueado:</h2>
+          <NavLoggedOut/>
+        </Row>
     </div>
   );
 }

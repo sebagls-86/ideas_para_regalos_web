@@ -1,35 +1,33 @@
-import React from 'react'
-import styles from './css/navLoggedOut.module.css'
+import React from "react";
+import styles from "./navLoggedOut.module.css";
 import { Link } from "react-router-dom";
-import Login from '../login/Login';
-import logoimg from "../../assets/logoIdeasParaRegalos.png"
+import logoimg from "../../assets/logo_mascota_ipr.svg";
+import logotext from "../../assets/logo_letras_ipr.svg";
 
 function NavLoggedOut() {
   return (
-    <nav className={styles.nav__container}>
-    
-      <ul className={styles.nav__ul}>
-        <div className={styles.container__logo}><Link to="/" className={styles.nav__logo}>
-        <img src={logoimg} alt="Logo ideas para regalos" />
-      </Link></div>
-      
-      <div className={styles.container__links}>
-        <Link to= "/">
-          Inicio
-          </Link>
-          <Link to= "/">
-          Explorar
-          </Link>
-          <Link to= "/">
-          Eventos
-          </Link>
-          <button className="btn secondary__button">Registrarse</button>
-        <button className="btn primary__button">Iniciar Sesión</button>
+    <nav className={styles.nav}>
+      <div className={styles.nav__container}>
+        <div className={styles.logo__container}>
+          <img src={logoimg} alt="Logo ideas para regalos" />
+          <img src={logotext} alt="Logo ideas para regalos" />
         </div>
-      </ul>
+        <div className={styles.ul__container}>
+          <ul className={styles.links__container}>
+            <li className={styles.li_items}>
+              <Link to="/" className={styles.links}>Inicio</Link>
+            </li>
+            <li>
+              <Link to="/explorar" className={styles.links}>Explorar</Link>
+            </li>
+            <li>
+              <Link to="/eventos" className={styles.links}>Eventos</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-    
-  )
+  );
 }
 
-export default NavLoggedOut
+export default NavLoggedOut;
