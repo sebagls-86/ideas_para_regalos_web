@@ -1,34 +1,55 @@
-import React, {useState} from "react";
-import styles from "./css/componentesPage.module.css"
+import React, { useState } from "react";
+import styles from "./css/componentesPage.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
+import Button from "../../components/button/Button";
 function ComponentesPage() {
 
-  const [openModal, setOpenModal] = useState(false) 
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <div className={styles.body}>
       <h1 className="text-center text-primary-dark py-5">Componentes</h1>
       <Container>
-        {/* <Row className="gap-2">
-            <h2 className={styles.subtitulo}>Botones:</h2>
-          <Col md={6} className="outline">
-            <h3 className="text-secondary pb-3">Links:</h3>
-            <div className="d-flex justify-content-around flex-column gap-3 flex-md-row">
-              <Links title="Regalar" url="/componentess" type="primary"/>
-              <Links title="Acceder" url="/componentes" type="secondary"/>
-            </div>
-          </Col>
-        </Row> */}
         <Row>
           <Col>
-            <button onClick={() => setOpenModal(true)}>Modal</button>
-            {openModal && <ModalLogin closeModal = {setOpenModal} />}
-            
+            <h2 className={styles.subtitulo}>Botones:</h2>
+            <div className="d-flex flex-column gap-2 pt-3">
+              <Col sm={6}>
+                <Button
+                  label={"primary__button"}
+                  className="btn primary__button"
+                />
+              </Col>
+              <Col sm={6}>
+                <Button
+                  label={"primary__button-outline"}
+                  className="btn primary__button-outline"
+                />
+              </Col>
+              <Col sm={6}>
+                <Button
+                  label={"secondary__button-outline "}
+                  className="btn secondary__button-outline"
+                />
+              </Col>
+              <Col sm={6}>
+                <Button
+                  label={"secondary__button-outline variante "}
+                  className="btn color--green"
+                />
+              </Col>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <h2 className={styles.subtitulo}>Modal:</h2>
+          <Col>
+            <Button label="Open Modal" className="btn primary__button" onClick={() => setOpenModal(true)}/>
+            {openModal && <ModalLogin closeModal={setOpenModal} />}
           </Col>
         </Row>
       </Container>
-
     </div>
   );
 }
