@@ -42,9 +42,9 @@ function ComponentesPage() {
             </div>
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-3">
           <h2 className={styles.subtitulo}>Modal:</h2>
-          <Col>
+          <Col sm={6} className="pt-3">
             <Button label="Open Modal" className="btn primary__button" onClick={() => setOpenModal(true)}/>
             {openModal && <ModalLogin closeModal={setOpenModal} />}
           </Col>
