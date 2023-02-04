@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import styles from "./css/componentesPage.module.css"
 import { Col, Container, Row } from "react-bootstrap";
-import Modal from "../../components/modal/Modal";
-
+import ModalLogin from "../../modules/modalLogin/ModalLogin";
 function ComponentesPage() {
 
   const [openModal, setOpenModal] = useState(false) 
@@ -24,7 +23,7 @@ function ComponentesPage() {
         <Row>
           <Col>
             <button onClick={() => setOpenModal(true)}>Modal</button>
-            {openModal && <Modal closeModal = {setOpenModal} title="Iniciar sesión" />}
+            {openModal && <ModalLogin closeModal = {setOpenModal} />}
             
           </Col>
         </Row>

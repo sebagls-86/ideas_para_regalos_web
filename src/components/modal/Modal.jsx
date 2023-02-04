@@ -26,5 +26,7 @@ function Modal({ closeModal, title, children }) {
 }
 Modal.propTypes = {
   title: PropTypes.string,
+  children: PropTypes.element,
+  closeModal: PropTypes.func,
 };
 export default Modal;

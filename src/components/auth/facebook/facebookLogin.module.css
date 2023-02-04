@@ -1,5 +1,4 @@
-
-.facebook__button{
+.facebook__button {
     border: 1px solid #525558;
     border-radius: 30px;
     background-color: #fff;
@@ -12,18 +11,24 @@
     padding-bottom: var(--fz-12);
     width: 100%;
 }
-.facebook__logo{
+
+.facebook__logo {
     fill: #1977F2;
     width: 24px;
     height: 24px;
 }
-.facebook__text{
-    font-weight: 700;
-    font-size: var(--fz-19);
-}
 
+.facebook__text {
+    font-weight: 700;
+    font-size: var(--fz-14);
+}
+@media only screen and (min-width: 768px) {
+    .facebook__text {
+        font-size: var(--fz-19);
+    }
+}
 @media only screen and (min-width: 1024px) {
-    .facebook__button{
+    .facebook__button {
         padding: var(--fz-12) var(--fz-66);
-        }
+    }
 }

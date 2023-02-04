@@ -1,0 +1,30 @@
+.form__control {
+    border: 1px solid #333;
+    border-radius: 0;
+}
+
+.form__control:focus {
+    border: 1px solid #333;
+    box-shadow: none;
+}
+
+.form__floating {
+    font-size: var(--fz-14);
+}
+
+.input__label {
+    color: #525558;
+}
+
+@media only screen and (min-width: 768px) {
+    .facebook__text {
+        font-size: var(--fz-19);
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .facebook__button {
+        padding: var(--fz-12) var(--fz-66);
+    }
+
+}

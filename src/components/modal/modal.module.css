@@ -1,4 +1,4 @@
-.modal{
+.modal {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 0;
@@ -7,34 +7,45 @@
     height: 100%;
     display: flex;
     justify-content: center;
+
 }
-.modal__content{
+
+.modal__content {
     background-color: #fff;
     width: min(100% - 1rem, 720px);
     margin-inline: auto;
-    margin-top: 3rem;
+    margin-top: 1rem;
     margin-bottom: 3rem;
+    border-radius: 1rem;
 }
-.modal__button{
+
+.modal__button {
     border: none;
     background-color: #fff;
+    padding-top: 1.18rem;
+    padding-left: 1.18rem;
+    padding-right: 0px;
+    border-radius: 15px;
 }
-.modal__button:is(:active, :focus){
+
+.modal__button:is(:active, :focus) {
     outline: none;
 }
-.modal__body{
+
+.modal__body {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.modal__title{
+
+.modal__title {
 
     font-weight: 800;
     font-size: clamp(2rem, 10vw, 2.625rem);
-    margin-top: 2rem;
-    margin-bottom: 2.23rem;
 }
 
-@media only screen and (min-width: 768px) {}
-
-@media only screen and (min-width: 1024px) {}
+@media only screen and (min-width: 768px) {
+    .modal__title {
+        margin-top: 2rem;
+    }
+}
