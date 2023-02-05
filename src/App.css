@@ -204,7 +204,7 @@ a:focus {
 @media only screen and (min-width: 768px) {
   .contenedor {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 100px repeat(3, 1fr);
     grid-template-rows: 1fr;
     grid-template-areas: "menu content content content";
     max-width: 1168px;
@@ -215,6 +215,8 @@ a:focus {
   .content {
     border-right: 1px solid rgba(0, 0, 0, 0.322);
     border-left: 1px solid rgba(0, 0, 0, 0.322);
+    height: calc(100vh - 74px);
+    overflow: scroll;
   }
 
   .right__aside {
