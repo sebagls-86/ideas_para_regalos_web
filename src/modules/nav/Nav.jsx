@@ -1,5 +1,6 @@
 import React from "react";
 import logoimg from "../../assets/logoIdeasParaRegalos.png"
+import crearPost from "../../assets/crear__post__nav.svg"
 import NavLinks from "../../components/navLinks/NavLinks";
 import { AiOutlineCompass, AiOutlineBell, AiOutlineHome, AiOutlineUser, AiOutlineCalendar } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -33,8 +34,8 @@ function Nav() {
           icon={<AiOutlineUser className="fw-700 fs-3" />}
         />
       </ul>
-      <Link to="/" className={styles.nav__logo}>
-        <img src={logoimg} alt="Logo ideas para regalos" />
+      <Link to="/nuevoRegalo" className={styles.nav__publicar}>
+        <img src={crearPost} alt="Crear publicacón" />
       </Link>
     </nav>
   );

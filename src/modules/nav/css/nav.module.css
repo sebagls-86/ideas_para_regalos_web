@@ -18,6 +18,10 @@
 .nav__logo{
     display: none;
 }
+.nav__publicar{
+    background-color: var(--primary-dark);
+    border-radius: 50%;
+}
 
 @media only screen and (min-width: 768px) {
     .nav__container{
