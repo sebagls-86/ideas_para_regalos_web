@@ -13,31 +13,29 @@ function Nav() {
       </Link>
       <ul className={styles.nav__ul}>
         <NavLinks
-          title="Inicio"
           url="/"
-          icon={<AiOutlineHome className="mr-3 fw-700 fs-3" />}
+          icon={<AiOutlineHome className="fw-700 fs-3" />}
         />
         <NavLinks
-          title="Explorar"
           url="/explorar"
-          icon={<AiOutlineCompass className="mr-3 fw-700 fs-3" />}
+          icon={<AiOutlineCompass className="fw-700 fs-3" />}
         />
         <NavLinks
-          title="Notificaciones"
           url="/notificaciones"
-          icon={<AiOutlineBell className="mr-3 fw-700 fs-3" />}
+          icon={<AiOutlineBell className=" fw-700 fs-3" />}
         />
         <NavLinks
-          title="Eventos"
           url="/eventos"
-          icon={<AiOutlineCalendar className="mr-3 fw-700 fs-3" />}
+          icon={<AiOutlineCalendar className=" fw-700 fs-3" />}
         />
          <NavLinks
-          title="Perfil"
           url="/perfil"
-          icon={<AiOutlineUser className="mr-3 fw-700 fs-3" />}
+          icon={<AiOutlineUser className="fw-700 fs-3" />}
         />
       </ul>
+      <Link to="/" className={styles.nav__logo}>
+        <img src={logoimg} alt="Logo ideas para regalos" />
+      </Link>
     </nav>
   );
 }
