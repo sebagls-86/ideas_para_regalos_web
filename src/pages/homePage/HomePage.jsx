@@ -7,7 +7,7 @@ import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
-
+import LoginMobile from "../../modules/loginMobile/LoginMobile";
 function HomePage(props) {
   const [user] = useAuthState(auth);
 
@@ -84,9 +84,14 @@ function HomePage(props) {
       <div className="contenedor">
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
-          <Col className="mt-3 px-3 d-flex justify-content-center">
-            <Search />
+          <Col>
+            <LoginMobile />
           </Col>
+          {user && (
+            <Col className="mt-3 px-3 d-flex justify-content-center">
+              <Search />
+            </Col>
+          )}
           <div className="mt-3 p-3 bordes-y">
             {Publicaciones.map((post, index) => {
               return (

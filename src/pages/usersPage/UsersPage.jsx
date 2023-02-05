@@ -8,6 +8,7 @@ function UsersPage() {
   const [user] = useAuthState(auth);
   const { userName } = useParams();
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (!user) {
       navigate("/");
