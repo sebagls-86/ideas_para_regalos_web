@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "../../modules/login/Login";
+import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col } from "react-bootstrap";
 
 import Search from "../../components/search/Search";
@@ -101,7 +101,7 @@ function HomePage(props) {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            <Login />
+            <AsideLogin />
           </div>
         </aside>
       </div>
