@@ -4,7 +4,7 @@ import crearPost from "../../assets/crear__post__nav.svg"
 import NavLinks from "../../components/navLinks/NavLinks";
 import { AiOutlineCompass, AiOutlineBell, AiOutlineHome, AiOutlineUser, AiOutlineCalendar } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import styles from "./css/nav.module.css"
+import styles from "./nav.module.css"
 
 function Nav() {
   return (

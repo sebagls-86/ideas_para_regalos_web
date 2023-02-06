@@ -177,6 +177,9 @@ a:focus {
 
 .left__aside {
   grid-area: menu;
+  position: sticky;
+  bottom: 0;
+  left: 0;
 }
 
 .content {
@@ -229,7 +232,6 @@ a:focus {
     grid-template-columns: 100px repeat(4, 1fr);
     grid-template-areas: "menu content content content right__aside";
     max-width: 1512px;
-
   }
 
   .right__aside {
