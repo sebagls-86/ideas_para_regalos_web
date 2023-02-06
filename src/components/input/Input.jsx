@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import styles from "./input.module.css";
 
-function Input({ type, name, placeholder, required, label }) {
+function Input({ type, name, placeholder, required, label, onChange }) {
   return (
     <div className={`${styles.form__floating} form-floating`}>
       <input
@@ -12,6 +12,7 @@ function Input({ type, name, placeholder, required, label }) {
         name={name}
         placeholder={placeholder}
         required={required}
+        onChange={onChange}
       />
       <label htmlFor={name} className={styles.input__label}>
         {label}
