@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "../../components/modal/Modal";
 import styles from "./modalLogin.module.css";
 import { Col } from "react-bootstrap";
@@ -7,7 +7,22 @@ import FacebookLogin from "../../components/auth/facebook/FacebookLogin";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 
+
 function ModalLogin({ closeModal }) {
+  const [form, setForm] = useState({})
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
+    console.log(e.target.value)
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    closeModal(false)
+  }
+
   return (
     <Modal closeModal={closeModal} title="Iniciar sesión">
       <Col>
@@ -20,6 +35,8 @@ function ModalLogin({ closeModal }) {
           <p>o</p>
           <hr />
         </div>
+        <form onSubmit={handleSubmit}>
+
         <div className={styles.buttons__container}>
           <Input
             type="email"
@@ -27,6 +44,7 @@ function ModalLogin({ closeModal }) {
             placeholder="Correo electrónico"
             required="required"
             label="Correo electrónico"
+            onChange = {handleChange}
           />
           <Input
             type="password"
@@ -34,10 +52,12 @@ function ModalLogin({ closeModal }) {
             placeholder="Contraseña"
             required="required"
             label="Contraseña"
+            onChange = {handleChange}
           />
         </div>
+          <Button label="Ingresar" className="btn primary__button" onClick={handleSubmit}/>
+        </form>
         <div className={styles.actions__container}>
-          <Button label="Siguiente" className="btn primary__button" />
           <Button
             label="¿Olvidaste tu contraseña?"
             className="btn secondary__button-outline"

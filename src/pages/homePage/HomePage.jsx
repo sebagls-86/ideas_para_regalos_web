@@ -1,13 +1,16 @@
 import React from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col } from "react-bootstrap";
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../utils/firebase";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
-
+import LoginMobile from "../../modules/loginMobile/LoginMobile";
 function HomePage(props) {
+  const [user] = useAuthState(auth);
+
   const Publicaciones = [
     {
       id: 1,
@@ -18,11 +21,12 @@ function HomePage(props) {
       post_tags: ["Ropa", "Calzado", "Viajes"],
       post_description:
         "Deje de perder tiempo compilando reseñas y use nuestra lista para una compra informada. Encuentre los productos adecuados dentro de su presupuesto y necesidades. Hallar productos top. Productos top. ",
-      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_images: [
+        "https://random.imagecdn.app/500/500",
+        "https://random.imagecdn.app/500/500",
+      ],
       post_likes: 1,
       post_comments: 99,
-
-
     },
     {
       id: 2,
@@ -33,11 +37,12 @@ function HomePage(props) {
       post_tags: ["Lectura", "Instrumentos", "Fotografía"],
       post_description:
         "Ideas regalos originales Regalos originales, Regalos originales para hombres, Regalos originales para mujeres, Regalos originales para parejas, Regalos ..5",
-      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_images: [
+        "https://random.imagecdn.app/500/500",
+        "https://random.imagecdn.app/500/500",
+      ],
       post_likes: 16,
       post_comments: 12,
-
-
     },
     {
       id: 3,
@@ -48,7 +53,10 @@ function HomePage(props) {
       post_tags: ["senderismo", "Deportes", "Baile"],
       post_description:
         "Que este San Valentín Vibre alto, Chau desayunos , flores y cenas, Sorprendx placer. Regala una nueva experiencia, que esta no se limita a disfrutarse por una única vez. Atención personalizada. Seguridad y discreción. Envíos Sin Cargo.",
-      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_images: [
+        "https://random.imagecdn.app/500/500",
+        "https://random.imagecdn.app/500/500",
+      ],
       post_likes: 22,
       post_comments: 55,
     },
@@ -61,24 +69,29 @@ function HomePage(props) {
       post_tags: ["arte pop", "calzado", "Fotografía"],
       post_description:
         "Fanbag Fin de año. Regala una experiencia para navidad. Cenas, Aventuras, Día de Spa, Teatro y más. Regalá Físico o Digital y Envía al Instante. Más de 3.000 Experiencias.5",
-      post_images: ["https://random.imagecdn.app/500/500", "https://random.imagecdn.app/500/500"],
+      post_images: [
+        "https://random.imagecdn.app/500/500",
+        "https://random.imagecdn.app/500/500",
+      ],
       post_likes: 125,
       post_comments: 15,
-
     },
   ];
 
   return (
     <>
-    <NavLoggedOut/>
+      {!user && <NavLoggedOut />}
       <div className="contenedor">
-        <div className="left__aside">
-          <Nav />
-        </div>
+        <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
-          <Col className="mt-3 px-3 d-flex justify-content-center">
-            <Search />
+          <Col>
+            <LoginMobile />
           </Col>
+          {user && (
+            <Col className="mt-3 px-3 d-flex justify-content-center">
+              <Search />
+            </Col>
+          )}
           <div className="mt-3 p-3 bordes-y">
             {Publicaciones.map((post, index) => {
               return (

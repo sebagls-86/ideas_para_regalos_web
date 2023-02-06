@@ -1,7 +1,7 @@
 :root {
   --white: #fff;
-  --primary-dark: #008037;
-  --primary-dark-over: #007330;
+  --primary-dark: #6667AB;
+  --primary-dark-over: #45468d;
   --secondary: #333;
   --gray: #f2f4f5;
   --shadow-color: #8722d5;
@@ -177,6 +177,9 @@ a:focus {
 
 .left__aside {
   grid-area: menu;
+  position: sticky;
+  bottom: 0;
+  left: 0;
 }
 
 .content {
@@ -204,7 +207,7 @@ a:focus {
 @media only screen and (min-width: 768px) {
   .contenedor {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 100px repeat(3, 1fr);
     grid-template-rows: 1fr;
     grid-template-areas: "menu content content content";
     max-width: 1168px;
@@ -215,6 +218,8 @@ a:focus {
   .content {
     border-right: 1px solid rgba(0, 0, 0, 0.322);
     border-left: 1px solid rgba(0, 0, 0, 0.322);
+    height: calc(100vh - 74px);
+    overflow: scroll;
   }
 
   .right__aside {
@@ -227,7 +232,6 @@ a:focus {
     grid-template-columns: 100px repeat(4, 1fr);
     grid-template-areas: "menu content content content right__aside";
     max-width: 1512px;
-
   }
 
   .right__aside {

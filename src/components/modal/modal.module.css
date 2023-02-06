@@ -7,14 +7,16 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 
 }
 
 .modal__content {
     background-color: #fff;
     width: min(100% - 1rem, 720px);
+    height: min(100% - 2rem, 781px);
     margin-inline: auto;
-    margin-top: 1rem;
+    margin-top: 3rem;
     margin-bottom: 3rem;
     border-radius: 1rem;
 }

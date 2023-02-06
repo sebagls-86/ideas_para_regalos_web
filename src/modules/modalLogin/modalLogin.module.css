@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 15px;
     padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .hr_container {
