@@ -1,6 +1,6 @@
 :root {
   --white: #fff;
-  --primary-dark: #6667AB;
+  --primary-dark: #6667ab;
   --primary-dark-over: #45468d;
   --secondary: #333;
   --gray: #f2f4f5;
@@ -79,12 +79,10 @@ a:focus {
 
 .fw-600 {
   font-weight: 600;
-
 }
 
 .fw-700 {
   font-weight: 700;
-
 }
 
 .bordes-y {
@@ -201,7 +199,6 @@ a:focus {
       "content"
       "menu";
   }
-
 }
 
 @media only screen and (min-width: 768px) {
@@ -212,16 +209,17 @@ a:focus {
     grid-template-areas: "menu content content content";
     max-width: 1168px;
     padding: 0 1rem;
-
   }
 
   .content {
     border-right: 1px solid rgba(0, 0, 0, 0.322);
     border-left: 1px solid rgba(0, 0, 0, 0.322);
     height: calc(100vh - 74px);
-    overflow: scroll;
+    overflow-y: scroll;
   }
-
+  ::-webkit-scrollbar {
+    display: none;
+  }
   .right__aside {
     display: none;
   }
