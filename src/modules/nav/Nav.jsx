@@ -1,10 +1,16 @@
 import React from "react";
-import logoimg from "../../assets/logoIdeasParaRegalos.png"
-import crearPost from "../../assets/crear__post__nav.svg"
+import logoimg from "../../assets/logoIdeasParaRegalos.png";
+import crearPost from "../../assets/crear__post__nav.svg";
 import NavLinks from "../../components/navLinks/NavLinks";
-import { AiOutlineCompass, AiOutlineBell, AiOutlineHome, AiOutlineUser, AiOutlineCalendar } from "react-icons/ai";
+import {
+  AiOutlineCompass,
+  AiOutlineBell,
+  AiOutlineHome,
+  AiOutlineUser,
+  AiOutlineCalendar,
+} from "react-icons/ai";
 import { Link } from "react-router-dom";
-import styles from "./nav.module.css"
+import styles from "./nav.module.css";
 
 function Nav() {
   return (
@@ -13,10 +19,7 @@ function Nav() {
         <img src={logoimg} alt="Logo ideas para regalos" />
       </Link>
       <ul className={styles.nav__ul}>
-        <NavLinks
-          url="/"
-          icon={<AiOutlineHome className="fw-700 fs-3" />}
-        />
+        <NavLinks url="/" icon={<AiOutlineHome className="fw-700 fs-3" />} />
         <NavLinks
           url="/explorar"
           icon={<AiOutlineCompass className="fw-700 fs-3" />}
@@ -29,7 +32,7 @@ function Nav() {
           url="/eventos"
           icon={<AiOutlineCalendar className=" fw-700 fs-3" />}
         />
-         <NavLinks
+        <NavLinks
           url="/perfil"
           icon={<AiOutlineUser className="fw-700 fs-3" />}
         />
