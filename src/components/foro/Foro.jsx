@@ -1,10 +1,11 @@
 import React from "react";
-import styles from "./css/post.module.css";
+import styles from "./foro.module.css";
 import { AiOutlineHeart, AiOutlineEllipsis } from "react-icons/ai";
 import { FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-function Post({
+function Foro({
   id,
   name,
   userName,
@@ -79,5 +80,8 @@ function Post({
     </div>
   );
 }
-
-export default Post;
+Foro.propTypes = {
+  label: PropTypes.string,
+  className: PropTypes.string,
+};
+export default Foro;
