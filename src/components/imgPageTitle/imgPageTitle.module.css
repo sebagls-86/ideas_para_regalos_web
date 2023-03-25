@@ -1,0 +1,28 @@
+.container {
+    position: relative;
+}
+.title_container{
+    background-color: rgba(255, 255, 255, 0.583);
+    z-index: 9;
+    width: 100%;
+    position: inherit;
+}
+.title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    padding-left: 2.5rem;
+    padding-top: 23px;
+    padding-bottom: 23px;
+    background-color: rgba(255, 255, 255, 0.583);
+
+}
+
+
+.img_container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+}
