@@ -11,6 +11,7 @@ import SectionEvents from '../../modules/sectionEvents/SectionEvents';
 import LoginMobile from '../../modules/loginMobile/LoginMobile';
 import NavLoggedOut from '../../modules/navLoggedOut/NavLoggedOut';
 import AsideLogin from '../../modules/asideLogin/AsideLogin';
+import SectionFeatured from '../../modules/sectionFeatured/SectionFeatured';
 
 function ExplorarPage() {
   const categorias = [
@@ -77,6 +78,23 @@ function ExplorarPage() {
       img: "https://random.imagecdn.app/500/500",
     }
   ];
+  const destacados = [
+    {
+      id: 1,
+      name: "AirPods Max",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 2,
+      name: "Secadora de pelo",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 3,
+      name: "Cámara de fotos",
+      img: "https://random.imagecdn.app/500/500",
+    },
+  ];
   const [user] = useAuthState(auth);
   return (
     <>
@@ -95,6 +113,7 @@ function ExplorarPage() {
           <div className="mt-3 p-3">
             <SectionCategory data={categorias} title={"Categorías"}/>
             <SectionEvents data={eventos} title={"Eventos"}/>
+            <SectionFeatured data={destacados} title={"Productos Destacados"}/>
           </div>
         </div>
         <aside className="right__aside">
