@@ -4,7 +4,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import Button from "../../components/button/Button";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
-import SimpleCard from "../../components/simpleCard/SimpleCard";
 function ComponentesPage() {
   const [openModal, setOpenModal] = useState(false);
 
@@ -65,7 +64,6 @@ function ComponentesPage() {
         <ImgPageTitle title="Titulo" />
       </Container> */}
       <div className="mt-3">
-        <SimpleCard title="Electrónicos" image="https://random.imagecdn.app/200/150" />
       </div>
     </div>
   );
