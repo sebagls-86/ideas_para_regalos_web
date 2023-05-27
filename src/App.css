@@ -69,6 +69,7 @@ a:focus {
 .fz-15 {
   font-size: var(--fz-15);
 }
+
 .fz-17 {
   font-size: var(--fz-17);
 }
@@ -85,7 +86,7 @@ a:focus {
   font-weight: 700;
 }
 
-.br-10{
+.br-10 {
   border-radius: 10px;
 }
 
@@ -218,12 +219,14 @@ a:focus {
   .content {
     border-right: 1px solid rgba(0, 0, 0, 0.322);
     border-left: 1px solid rgba(0, 0, 0, 0.322);
-    height: calc(100vh - 74px);
     overflow-y: scroll;
+    height: 100%;
   }
+
   ::-webkit-scrollbar {
     display: none;
   }
+
   .right__aside {
     display: none;
   }
@@ -234,6 +237,10 @@ a:focus {
     grid-template-columns: 100px repeat(4, 1fr);
     grid-template-areas: "menu content content content right__aside";
     max-width: 1512px;
+  }
+
+  .content {
+    height: 100%;
   }
 
   .right__aside {
