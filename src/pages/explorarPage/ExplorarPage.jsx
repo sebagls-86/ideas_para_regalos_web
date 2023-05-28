@@ -1,19 +1,20 @@
-import React from 'react'
-import Nav from '../../modules/nav/Nav';
+import React from "react";
+import Nav from "../../modules/nav/Nav";
 import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
-import banner from '../../assets/bannerExplorar.png'
+import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
-import SectionCategory from '../../modules/sectionCategory/SectionCategory';
-import SectionEvents from '../../modules/sectionEvents/SectionEvents';
-import LoginMobile from '../../modules/loginMobile/LoginMobile';
-import NavLoggedOut from '../../modules/navLoggedOut/NavLoggedOut';
-import AsideLogin from '../../modules/asideLogin/AsideLogin';
-import SectionFeatured from '../../modules/sectionFeatured/SectionFeatured';
-import EventSnipet from '../../modules/eventSnipet/EventSnipet';
-import UserSuggestions from '../../modules/userSuggestions/UserSuggestions'
+import SectionCategory from "../../modules/sectionCategory/SectionCategory";
+import SectionEvents from "../../modules/sectionEvents/SectionEvents";
+import LoginMobile from "../../modules/loginMobile/LoginMobile";
+import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
+import AsideLogin from "../../modules/asideLogin/AsideLogin";
+import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
+import EventSnipet from "../../modules/eventSnipet/EventSnipet";
+import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
+import Links from "../../components/link/Links";
 
 function ExplorarPage() {
   const categorias = [
@@ -46,7 +47,7 @@ function ExplorarPage() {
       id: 6,
       name: "Autos",
       img: "https://random.imagecdn.app/500/500",
-    }
+    },
   ];
   const eventos = [
     {
@@ -78,7 +79,7 @@ function ExplorarPage() {
       id: 6,
       name: "Autos",
       img: "https://random.imagecdn.app/500/500",
-    }
+    },
   ];
   const destacados = [
     {
@@ -100,7 +101,7 @@ function ExplorarPage() {
   const [user] = useAuthState(auth);
   return (
     <>
-    {!user && <NavLoggedOut />}
+      {!user && <NavLoggedOut />}
       <div className="contenedor">
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
@@ -109,26 +110,41 @@ function ExplorarPage() {
           </Col>
           {user && (
             <Col className="d-flex justify-content-center">
-              <img src={banner} alt="banner" className={styles.explorar__banner}/>
+              <img
+                src={banner}
+                alt="banner"
+                className={styles.explorar__banner}
+              />
             </Col>
           )}
           <div className="mt-3 p-3">
-            <SectionCategory data={categorias} title={"Categorías"}/>
-            <SectionEvents data={eventos} title={"Eventos"}/>
-            <SectionFeatured data={destacados} title={"Productos Destacados"}/>
+            <SectionCategory data={categorias} title={"Categorías"} />
+            <SectionEvents data={eventos} title={"Eventos"} />
+            <SectionFeatured data={destacados} title={"Productos Destacados"} />
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
             <Search />
             <AsideLogin />
-            <EventSnipet/>
-            <UserSuggestions/>
+            {user && (
+              <div>
+                <EventSnipet />
+                <UserSuggestions />
+                <div className="mt-5 d-flex justify-content-center ">
+                  <Links
+                    title="Post nuevo regalo"
+                    url="/nuevoRegalo"
+                    type={"primary"}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </aside>
       </div>
     </>
-  )
+  );
 }
 
-export default ExplorarPage
+export default ExplorarPage;
