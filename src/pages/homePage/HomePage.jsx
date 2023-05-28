@@ -8,6 +8,10 @@ import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
+import EventSnipet from "../../modules/eventSnipet/EventSnipet";
+import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
+import Links from "../../components/link/Links";
+
 function HomePage(props) {
   const [user] = useAuthState(auth);
 
@@ -77,7 +81,87 @@ function HomePage(props) {
       post_comments: 15,
     },
   ];
-
+  const categorias = [
+    {
+      id: 1,
+      name: "Electrónica",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 2,
+      name: "Belleza",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 3,
+      name: "Moda",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 4,
+      name: "Fitness",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 5,
+      name: "Salud",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 6,
+      name: "Autos",
+      img: "https://random.imagecdn.app/500/500",
+    },
+  ];
+  const eventos = [
+    {
+      id: 1,
+      name: "Electrónica",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 2,
+      name: "Belleza",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 3,
+      name: "Moda",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 4,
+      name: "Fitness",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 5,
+      name: "Salud",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 6,
+      name: "Autos",
+      img: "https://random.imagecdn.app/500/500",
+    },
+  ];
+  const destacados = [
+    {
+      id: 1,
+      name: "AirPods Max",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 2,
+      name: "Secadora de pelo",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 3,
+      name: "Cámara de fotos",
+      img: "https://random.imagecdn.app/500/500",
+    },
+  ];
   return (
     <>
       {!user && <NavLoggedOut />}
@@ -87,11 +171,6 @@ function HomePage(props) {
           <Col>
             <LoginMobile />
           </Col>
-          {user && (
-            <Col className="mt-3 px-3 d-flex justify-content-center">
-              <Search />
-            </Col>
-          )}
           <div className="mt-3 p-3 bordes-y">
             {Publicaciones.map((post, index) => {
               return (
@@ -114,7 +193,23 @@ function HomePage(props) {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
+          {user && (
+              <Search />
+          )}
             <AsideLogin />
+            {user && (
+              <div>
+                <EventSnipet />
+                <UserSuggestions />
+                <div className="mt-5 d-flex justify-content-center ">
+                  <Links
+                    title="Post nuevo regalo"
+                    url="/nuevoRegalo"
+                    type={"primary"}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </aside>
       </div>
