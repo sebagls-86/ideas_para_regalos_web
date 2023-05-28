@@ -13,6 +13,7 @@ import NavLoggedOut from '../../modules/navLoggedOut/NavLoggedOut';
 import AsideLogin from '../../modules/asideLogin/AsideLogin';
 import SectionFeatured from '../../modules/sectionFeatured/SectionFeatured';
 import EventSnipet from '../../modules/eventSnipet/EventSnipet';
+import UserSuggestions from '../../modules/userSuggestions/UserSuggestions'
 
 function ExplorarPage() {
   const categorias = [
@@ -122,6 +123,7 @@ function ExplorarPage() {
             <Search />
             <AsideLogin />
             <EventSnipet/>
+            <UserSuggestions/>
           </div>
         </aside>
       </div>
