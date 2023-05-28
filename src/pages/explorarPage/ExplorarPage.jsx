@@ -12,6 +12,7 @@ import LoginMobile from '../../modules/loginMobile/LoginMobile';
 import NavLoggedOut from '../../modules/navLoggedOut/NavLoggedOut';
 import AsideLogin from '../../modules/asideLogin/AsideLogin';
 import SectionFeatured from '../../modules/sectionFeatured/SectionFeatured';
+import EventSnipet from '../../modules/eventSnipet/EventSnipet';
 
 function ExplorarPage() {
   const categorias = [
@@ -120,6 +121,7 @@ function ExplorarPage() {
           <div className="container pt-2">
             <Search />
             <AsideLogin />
+            <EventSnipet/>
           </div>
         </aside>
       </div>
