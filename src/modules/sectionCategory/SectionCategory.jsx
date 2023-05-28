@@ -14,6 +14,7 @@ function SectionCategory({title, data}) {
               key={data.id}
               label={data.name}
               img={data.img}
+              url={`/explorar/${data.name.toLowerCase()}`}
             />
           );
         })}

@@ -13,7 +13,7 @@ function SectionFeatured({ data, title }) {
               key={featured.id}
               title={featured.name}
               img={featured.img}
-              url={"/" + featured.id}
+              url={`/explorar/productos/${featured.id}`}
             />
           );
         })}

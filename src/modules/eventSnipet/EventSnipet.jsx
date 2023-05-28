@@ -55,7 +55,7 @@ function EventSnipet() {
       <h5 className={styles.title}>Eventos Próximos</h5>
       <div className={styles.content}>
         {eventosProximos.map((event, index) => {
-          return <WordsEdges key={event.id} label={event.event} />;
+          return <WordsEdges key={event.id} label={event.event} to={`/explorar/${event.event}`} />;
         })}
       </div>
     </div>

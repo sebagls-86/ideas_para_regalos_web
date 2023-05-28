@@ -14,6 +14,7 @@ function SectionEvents({data, title}) {
               key={category.id}
               label={category.name}
               img={category.img}
+              url={`/explorar/${category.name.toLowerCase()}`}
             />
           );
         })}
