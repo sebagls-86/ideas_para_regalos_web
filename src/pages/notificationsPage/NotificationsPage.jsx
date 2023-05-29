@@ -17,6 +17,7 @@ import Links from "../../components/link/Links";
 import styles from "./notificationsPage.module.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import NotificationAll from "../../modules/notificationAll/NotificationAll";
 
 function NotificationsPage() {
   const [user] = useAuthState(auth);
@@ -38,11 +39,7 @@ function NotificationsPage() {
               className="mb-3"
             >
               <Tab eventKey="todos" title="Todos">
-                {/* <Sonnet /> */}
-                asdasdasdasdasdasdasdasdasdas
-                asdasdasdasdasdasdasdasdasdas
-                asdasdasdasdasdasdasdasdasdas
-                asdasdasdasdasdasdasdasdasdas
+                <NotificationAll/>
               </Tab>
               <Tab eventKey="menciones" title="Menciones">
                 {/* <Sonnet /> */}
