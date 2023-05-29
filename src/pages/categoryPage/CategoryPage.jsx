@@ -35,20 +35,20 @@ function CategoryPage() {
       img: "https://random.imagecdn.app/500/500",
     },
     {
-        id: 1,
-        name: "AirPods Max",
-        img: "https://random.imagecdn.app/500/500",
-      },
-      {
-        id: 2,
-        name: "Secadora de pelo",
-        img: "https://random.imagecdn.app/500/500",
-      },
-      {
-        id: 3,
-        name: "Cámara de fotos",
-        img: "https://random.imagecdn.app/500/500",
-      },
+      id: 1,
+      name: "AirPods Max",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 2,
+      name: "Secadora de pelo",
+      img: "https://random.imagecdn.app/500/500",
+    },
+    {
+      id: 3,
+      name: "Cámara de fotos",
+      img: "https://random.imagecdn.app/500/500",
+    },
   ];
   const eventos = [
     {
@@ -107,7 +107,7 @@ function CategoryPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search />
+            {user && <Search />}
             <AsideLogin />
             {user && (
               <div>

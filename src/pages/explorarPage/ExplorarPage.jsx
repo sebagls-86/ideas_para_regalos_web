@@ -125,7 +125,7 @@ function ExplorarPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search />
+            {user && <Search />}
             <AsideLogin />
             {user && (
               <div>

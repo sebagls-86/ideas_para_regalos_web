@@ -193,9 +193,7 @@ function HomePage(props) {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-          {user && (
-              <Search />
-          )}
+            {user && <Search />}
             <AsideLogin />
             {user && (
               <div>
