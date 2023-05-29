@@ -195,6 +195,13 @@ a:focus {
   display: none;
 }
 
+.nav-link {
+  color: var(--secondary);
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: var(--primary-dark);
+}
+
 @media (min-width: 600px) {
   .contenedor {
     display: grid;
@@ -248,3 +255,4 @@ a:focus {
     display: block;
   }
 }
+

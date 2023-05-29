@@ -5,9 +5,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from './pages/homePage/HomePage';
 import UsersPage from './pages/usersPage/UsersPage';
 import ComponentesPage from './pages/componentesPage/ComponentesPage';
-import ExplorarPage from './pages/explorarPage/ExplorarPage';
+import ExplorarPage from './pages/explorarPage/ExplorarPage'; 
 import NotFoundPage from './pages/notFoundPage/NotFound';
 import CategoryPage from './pages/categoryPage/CategoryPage';
+import NotificationsPage from './pages/notificationsPage/NotificationsPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/componentes" element={<ComponentesPage />} />
         <Route path="/explorar" element={<ExplorarPage />} />
         <Route path="/explorar/:category" element={<CategoryPage />} />
+        <Route path="/notificaciones" element={<NotificationsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
