@@ -6,7 +6,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./categoryPage.module.css";
-import SectionCategory from "../../modules/sectionCategory/SectionCategory";
 import SectionEvents from "../../modules/sectionEvents/SectionEvents";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
