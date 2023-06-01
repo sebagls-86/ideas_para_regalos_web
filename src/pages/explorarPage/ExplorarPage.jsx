@@ -15,6 +15,7 @@ import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
+import PageTitle from "../../components/pageTitle/PageTitle";
 
 function ExplorarPage() {
   const categorias = [
@@ -105,6 +106,8 @@ function ExplorarPage() {
       <div className="contenedor">
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
+        <PageTitle title="Explorar"/>
+
           <Col>
             <LoginMobile />
           </Col>

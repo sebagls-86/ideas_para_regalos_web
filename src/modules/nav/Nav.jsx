@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import styles from "./nav.module.css";
 
-function Nav() {
+function Nav({user}) {
   return (
     <nav className={styles.nav__container}>
       <Link to="/" className={styles.nav__logo}>
@@ -33,7 +33,7 @@ function Nav() {
           icon={<AiOutlineCalendar className=" fw-700 fs-3" />}
         />
         <NavLinks
-          url="/perfil"
+          url={`/perfil/@${user}`}
           icon={<AiOutlineUser className="fw-700 fs-3" />}
         />
       </ul>

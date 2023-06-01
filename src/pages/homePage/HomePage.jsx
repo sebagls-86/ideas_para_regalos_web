@@ -14,6 +14,7 @@ import Links from "../../components/link/Links";
 
 function HomePage(props) {
   const [user] = useAuthState(auth);
+  console.log(user);
 
   const Publicaciones = [
     {
@@ -86,7 +87,7 @@ function HomePage(props) {
     <>
       {!user && <NavLoggedOut />}
       <div className="contenedor">
-        <div className="left__aside">{user && <Nav />}</div>
+        <div className="left__aside">{user && <Nav user={user.displayName} />}</div>
         <div className="content">
           <Col>
             <LoginMobile />

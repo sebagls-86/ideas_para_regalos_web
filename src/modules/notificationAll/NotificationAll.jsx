@@ -27,7 +27,7 @@ function NotificationAll() {
       userImage: "https://randomuser.me/api/portraits/men/32.jpg",
       notification: "¡Contanos cómo fue tu regalo!",
       time: "1h"
-    },
+    }
   ];
   return (
     <div>

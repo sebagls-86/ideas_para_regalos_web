@@ -5,7 +5,7 @@ import { auth } from "../../utils/firebase";
 import Nav from "../../modules/nav/Nav";
 import Button from "../../components/button/Button";
 import SimplePageTitle from "../../components/simplePageTittle/SimplePageTitle";
-import ImgPageTitle from "../../components/imgPageTitle/ImgPageTitle";
+import PageTitle from "../../components/pageTitle/PageTitle";
 function UsersPage() {
   const [user] = useAuthState(auth);
   const { userName } = useParams();
@@ -32,7 +32,7 @@ function UsersPage() {
       <div className="contenedor">
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
-          <ImgPageTitle title="Perfil"/>
+          <PageTitle title="Perfil"/>
         </div>
         
         <aside className="right__aside">

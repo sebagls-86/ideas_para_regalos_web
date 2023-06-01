@@ -188,6 +188,8 @@ a:focus {
 .content {
   grid-area: content;
   padding: 0 0rem;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .right__aside {
