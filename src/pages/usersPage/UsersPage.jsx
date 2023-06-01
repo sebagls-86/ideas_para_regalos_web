@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
+import Nav from "../../modules/nav/Nav";
 import Button from "../../components/button/Button";
-
+import SimplePageTitle from "../../components/simplePageTittle/SimplePageTitle";
+import PageTitle from "../../components/pageTitle/PageTitle";
 function UsersPage() {
   const [user] = useAuthState(auth);
   const { userName } = useParams();
@@ -17,7 +19,6 @@ function UsersPage() {
 
   return (
     <>
-      <div>UsersPage {userName}</div>
       {user && (
         <div className="d-flex flex-column gap-3 mt-3">
           <Button
@@ -27,6 +28,19 @@ function UsersPage() {
           />
         </div>
       )}
+      
+      <div className="contenedor">
+        <div className="left__aside">{user && <Nav />}</div>
+        <div className="content">
+          <PageTitle title="Perfil"/>
+        </div>
+        
+        <aside className="right__aside">
+          <div className="container pt-2">
+            
+          </div>
+        </aside>
+      </div>
     </>
   );
 }

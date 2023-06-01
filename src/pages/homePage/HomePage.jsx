@@ -8,8 +8,13 @@ import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
+import EventSnipet from "../../modules/eventSnipet/EventSnipet";
+import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
+import Links from "../../components/link/Links";
+
 function HomePage(props) {
   const [user] = useAuthState(auth);
+  console.log(user);
 
   const Publicaciones = [
     {
@@ -77,21 +82,16 @@ function HomePage(props) {
       post_comments: 15,
     },
   ];
-
+  
   return (
     <>
       {!user && <NavLoggedOut />}
       <div className="contenedor">
-        <div className="left__aside">{user && <Nav />}</div>
+        <div className="left__aside">{user && <Nav user={user.displayName} />}</div>
         <div className="content">
           <Col>
             <LoginMobile />
           </Col>
-          {user && (
-            <Col className="mt-3 px-3 d-flex justify-content-center">
-              <Search />
-            </Col>
-          )}
           <div className="mt-3 p-3 bordes-y">
             {Publicaciones.map((post, index) => {
               return (
@@ -114,7 +114,21 @@ function HomePage(props) {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
+            {user && <Search />}
             <AsideLogin />
+            {user && (
+              <div>
+                <EventSnipet />
+                <UserSuggestions />
+                <div className="mt-5 d-flex justify-content-center ">
+                  <Links
+                    title="Post nuevo regalo"
+                    url="/nuevoRegalo"
+                    type={"primary"}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </aside>
       </div>

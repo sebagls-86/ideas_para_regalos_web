@@ -5,7 +5,6 @@ import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import Button from "../../components/button/Button";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
 function ComponentesPage() {
-
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -46,17 +45,26 @@ function ComponentesPage() {
         <Row className="mt-3">
           <h2 className={styles.subtitulo}>Modal:</h2>
           <Col sm={6} className="pt-3">
-            <Button label="Open Modal" className="btn primary__button" onClick={() => setOpenModal(true)}/>
+            <Button
+              label="Open Modal"
+              className="btn primary__button"
+              onClick={() => setOpenModal(true)}
+            />
             {openModal && <ModalLogin closeModal={setOpenModal} />}
           </Col>
         </Row>
       </Container>
 
-
       <Row className="mt-3">
-      <h2 className={styles.subtitulo}>Nav no logueado:</h2>
-          <NavLoggedOut/>
-        </Row>
+        <h2 className={styles.subtitulo}>Nav no logueado:</h2>
+        <NavLoggedOut />
+      </Row>
+      {/* <Container className="mt-3">
+        <h2 className={styles.subtitulo}>imgPageTitle</h2>
+        <ImgPageTitle title="Titulo" />
+      </Container> */}
+      <div className="mt-3">
+      </div>
     </div>
   );
 }

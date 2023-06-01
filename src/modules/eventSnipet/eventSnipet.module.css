@@ -1,0 +1,18 @@
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
+    
+}
+.container{
+    background-color: #EFF1F1;
+    margin-top: 1rem;
+    padding: 1rem 1rem;
+    border-radius: 15px;
+
+}
+.title{
+    font-weight: 700;
+    font-size: 1.1rem;
+}
