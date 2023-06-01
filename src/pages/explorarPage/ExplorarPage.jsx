@@ -106,20 +106,17 @@ function ExplorarPage() {
       <div className="contenedor">
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
-        <PageTitle title="Explorar"/>
-
+          <PageTitle title="Explorar" />
           <Col>
             <LoginMobile />
           </Col>
-          {user && (
-            <Col className="d-flex justify-content-center">
-              <img
-                src={banner}
-                alt="banner"
-                className={styles.explorar__banner}
-              />
-            </Col>
-          )}
+          <Col className="d-flex justify-content-center">
+            <img
+              src={banner}
+              alt="banner"
+              className={styles.explorar__banner}
+            />
+          </Col>
           <div className="mt-3 p-3">
             <SectionCategory data={categorias} title={"Categorías"} />
             <SectionEvents data={eventos} title={"Eventos"} />
