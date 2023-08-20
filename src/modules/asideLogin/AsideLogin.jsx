@@ -4,6 +4,7 @@ import Button from "../../components/button/Button";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
+import Search from "../../components/search/Search";
 
 function AsideLogin() {
   const [openModal, setOpenModal] = useState(false);

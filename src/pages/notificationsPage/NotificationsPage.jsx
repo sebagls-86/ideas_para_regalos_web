@@ -18,6 +18,7 @@ import styles from "./notificationsPage.module.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import NotificationAll from "../../modules/notificationAll/NotificationAll";
+import PageTitle from "../../components/pageTitle/PageTitle";
 
 function NotificationsPage() {
   const [user] = useAuthState(auth);
@@ -26,8 +27,10 @@ function NotificationsPage() {
     <>
       {!user && <NavLoggedOut />}
       <div className="contenedor">
+     
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">
+        <PageTitle title="Notificaciones" />
           <Col>
             <LoginMobile />
           </Col>
@@ -36,7 +39,7 @@ function NotificationsPage() {
             <Tabs
               defaultActiveKey="todos"
               id="uncontrolled-tab-example"
-              className="mb-3"
+              className={styles.notificacionNav}
             >
               <Tab eventKey="todos" title="Todos">
                 <NotificationAll/>

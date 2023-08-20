@@ -1,0 +1,5 @@
+.notificacionNav{
+    justify-content: space-evenly;
+    font-size: var(--fz-17);
+    margin-top: 40px;
+}

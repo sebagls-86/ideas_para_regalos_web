@@ -1,0 +1,18 @@
+.profileNav{
+    justify-content: space-evenly;
+    font-size: var(--fz-17);
+}
+.profileContentMobile{
+    display: none;
+}
+
+
+@media only screen and (max-width: 768px) {
+
+    .profileContentMobile{
+        display: inline-block;
+    }
+    .profileContent{
+        display: none;
+    }
+}
