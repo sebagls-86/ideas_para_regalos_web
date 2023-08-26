@@ -4,7 +4,7 @@ import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
-import banner from "../../assets/sv-banner.png";
+import banner from "../../assets/sv-banner.jpg";
 import styles from "./categoryPage.module.css";
 import SectionEvents from "../../modules/sectionEvents/SectionEvents";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
@@ -14,6 +14,7 @@ import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
+import PageTitle from "../../components/pageTitle/PageTitle";
 
 function CategoryPage() {
   const [user] = useAuthState(auth);
@@ -90,7 +91,7 @@ function CategoryPage() {
           <Col>
             <LoginMobile />
           </Col>
-          
+          <PageTitle title="Explorar" />
             <Col className="d-flex justify-content-center">
               <img
                 src={banner}
