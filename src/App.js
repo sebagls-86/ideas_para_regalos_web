@@ -9,6 +9,7 @@ import ExplorarPage from './pages/explorarPage/ExplorarPage';
 import NotFoundPage from './pages/notFoundPage/NotFound';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import NotificationsPage from './pages/notificationsPage/NotificationsPage';
+import NuevoRegaloPage from './pages/nuevoRegaloPage/NuevoRegaloPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/explorar" element={<ExplorarPage />} />
         <Route path="/explorar/:category" element={<CategoryPage />} />
         <Route path="/notificaciones" element={<NotificationsPage />} />
+        <Route path="/nuevoRegalo" element={<NuevoRegaloPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

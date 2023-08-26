@@ -73,8 +73,9 @@ function UsersPage() {
         </div>
 
         <aside className="right__aside">
-          <div className="container pt-2"></div>
+          
         </aside>
+        <div className="container pt-2"></div>
       </div>
     </>
   );

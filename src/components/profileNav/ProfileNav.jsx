@@ -72,7 +72,7 @@ function ProfileNav({}) {
           className={styles.profileNav}
         >
           <Tab eventKey="publicaciones" title="Publicaciones">
-            <div className="mt-3 p-3 bordes-y">
+            <div className="p-3">
               {Publicaciones.map((post, index) => {
                 return (
                   <Post

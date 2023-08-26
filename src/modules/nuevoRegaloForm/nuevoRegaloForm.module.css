@@ -1,0 +1,59 @@
+.formContainer {
+  max-width: 733px;
+  width: 100%;
+  height: 590px;
+  margin: 0 auto;
+  margin-top: 24px;
+  border-radius: 10px;
+  border: 0.4px solid hsl(0, 0%, 0%);
+  position: relative;
+}
+.inputTitulo {
+  max-width: 676px;
+  width: 100%;
+  height: 48px;
+  border-radius: 5px;
+  border: 0.4px solid #000;
+  background: var(--grey, #f2f4f5);
+  margin: 0 auto;
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+.inputTexto {
+  max-width: 676px;
+  width: 100%;
+  height: 201px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 0.4px solid #000;
+  background: var(--grey, #f2f4f5);
+  margin: 0 auto;
+}
+.span{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.btn_submit_cancel{
+  position: absolute;
+  display: flex;
+  bottom: 18px;
+  right: 29px;
+  gap: 25px;
+}
+
+@media only screen and (max-width: 450px) {
+  .span{
+    font-size: 14px;
+    gap: 5px
+  }
+  .formContainer > svg{
+    width: 18px;
+  }
+
+}
+@media only screen and (max-width: 1200px){
+  .formContainer{
+   padding: 0px 20px;
+  }
+}

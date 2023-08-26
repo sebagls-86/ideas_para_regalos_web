@@ -1,7 +1,7 @@
 :root {
   --white: #fff;
   --primary-dark: #008037;
-  --primary-dark-over: #45468d;
+  --primary-dark-over: #008037;
   --secondary: #333;
   --gray: #f2f4f5;
   --shadow-color: #8722d5;
@@ -195,6 +195,7 @@ a:focus {
 .right__aside {
   grid-area: right__aside;
   display: none;
+  margin-top: 50px;
 }
 
 .nav-link {
