@@ -1,7 +1,7 @@
 :root {
   --white: #fff;
-  --primary-dark: #6667ab;
-  --primary-dark-over: #45468d;
+  --primary-dark: #008037;
+  --primary-dark-over: #008037;
   --secondary: #333;
   --gray: #f2f4f5;
   --shadow-color: #8722d5;
@@ -195,13 +195,21 @@ a:focus {
 .right__aside {
   grid-area: right__aside;
   display: none;
+  margin-top: 50px;
 }
 
 .nav-link {
   color: var(--secondary);
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-  color: var(--primary-dark);
+  font-weight: bold;
+  border-color: var(--white);
+  border-bottom: 2px solid var(--primary-dark);
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
+  border-color: var(--white);
+ color: var(--primary-dark) !important;
+
 }
 
 @media (min-width: 600px) {
@@ -230,6 +238,8 @@ a:focus {
     border-left: 1px solid rgba(0, 0, 0, 0.322);
     overflow-y: scroll;
     height: 100%;
+    
+    position: relative;
   }
 
   ::-webkit-scrollbar {
@@ -257,4 +267,8 @@ a:focus {
     display: block;
   }
 }
-
+@media only screen and (max-width: 768px) {
+  .nav-link{
+    padding: 0;
+  }
+}

@@ -38,7 +38,7 @@ function Nav({user}) {
         />
       </ul>
       <Link to="/nuevoRegalo" className={styles.nav__publicar}>
-        <img src={crearPost} alt="Crear publicacón" />
+        <img src={crearPost} alt="Crear publicación" />
       </Link>
     </nav>
   );

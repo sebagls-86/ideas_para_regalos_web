@@ -17,6 +17,7 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 
+
 function ExplorarPage() {
   const categorias = [
     {
@@ -53,17 +54,17 @@ function ExplorarPage() {
   const eventos = [
     {
       id: 1,
-      name: "Electrónica",
+      name: "Navidad",
       img: "https://random.imagecdn.app/500/500",
     },
     {
       id: 2,
-      name: "Belleza",
+      name: "San Valentín",
       img: "https://random.imagecdn.app/500/500",
     },
     {
       id: 3,
-      name: "Moda",
+      name: "Cumpleaños",
       img: "https://random.imagecdn.app/500/500",
     },
     {

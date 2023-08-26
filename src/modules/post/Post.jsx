@@ -23,7 +23,7 @@ function Post({
           src={userImage}
           alt="imagen perfil usuario"
           width={"54px"}
-          heingt={"54px"}
+          height={"54px"}
         />
       </div>
       <div className={styles.post__content}>

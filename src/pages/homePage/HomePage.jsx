@@ -11,6 +11,8 @@ import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
+import PageTitle from "../../components/pageTitle/PageTitle";
+import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 
 function HomePage(props) {
   const [user] = useAuthState(auth);
@@ -89,10 +91,13 @@ function HomePage(props) {
       <div className="contenedor">
         <div className="left__aside">{user && <Nav user={user.displayName} />}</div>
         <div className="content">
+        <PageTitle title="Inicio" />
           <Col>
             <LoginMobile />
           </Col>
+          <NuevoRegaloHome></NuevoRegaloHome>
           <div className="mt-3 p-3 bordes-y">
+        
             {Publicaciones.map((post, index) => {
               return (
                 <Post

@@ -1,0 +1,25 @@
+
+.nuevoRegaloContainer{
+    display: flex;
+    margin-top: 75px;
+    padding: 1rem;
+    gap: 1rem;
+}
+.nuevoRegaloInput{
+    border: none;
+    border-bottom: 0.5px solid;
+    border-radius: 0;
+    padding: 18px;
+}
+.icons{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .nuevoRegaloInput{
+        padding: 10px;
+    }
+    
+}
