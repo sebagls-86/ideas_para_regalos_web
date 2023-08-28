@@ -1,5 +1,22 @@
+.categoryContainer{
+    margin-left: 2rem;
+}
 .title{
     font-weight: 700;
     font-size: 20px;
-    /* padding-top: 0.875rem; */
+    margin-bottom: 0.875rem;
+}
+.categoryImage{
+    width: 103%;
+    border-radius: 10px;
+}
+h3{
+    font-size: 20px;
+    padding-top: 0.875rem;
+}
+@media (max-width: 768px) {
+    .categoryImage{
+        width: 100%;
+        border-radius: 10px;
+    }
 }

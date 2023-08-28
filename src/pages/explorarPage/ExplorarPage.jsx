@@ -18,7 +18,10 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 
 
+
+
 function ExplorarPage() {
+
   const categorias = [
     {
       id: 1,
@@ -118,10 +121,13 @@ function ExplorarPage() {
               className={styles.explorar__banner}
             />
           </Col>
-          <div className="mt-3 p-3">
+          <div className="mt-3">
             <SectionCategory data={categorias} title={"Categorías"} />
             <SectionEvents data={eventos} title={"Eventos"} />
             <SectionFeatured data={destacados} title={"Productos Destacados"} />
+          
+
+
           </div>
         </div>
         <aside className="right__aside">

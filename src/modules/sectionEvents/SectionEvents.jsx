@@ -8,7 +8,7 @@ function SectionEvents({data, title}) {
     <div>
       <h2 className={styles.title}>{title}</h2>
       <div className="d-flex flex-wrap gap-3 justify-content-center pt-3">
-        {data.map((category, index) => {
+        {data.map((category, index) => { 
           return (
             <CardExplorer
               key={category.id}
