@@ -272,3 +272,9 @@ a:focus {
     padding: 0;
   }
 }
+.swiper-pagination-bullet-active {
+  background-color: #fff !important;
+}
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{
+  bottom: 40px !important;
+}

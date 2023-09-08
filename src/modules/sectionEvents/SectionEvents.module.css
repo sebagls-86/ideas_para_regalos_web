@@ -1,5 +1,25 @@
+
+.eventsContainer{
+    margin-left: 2rem;
+    margin-top: 1.875rem;
+}
 .title{
     font-weight: 700;
     font-size: 20px;
-    padding-top: 2rem;
+    margin-bottom: 0.875rem;
+}
+.eventImage{
+    width: 103%;
+    border-radius: 10px;
+}
+h3{
+    font-size: 20px;
+    padding-top: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .eventImage{
+        width: 100%;
+        border-radius: 10px;
+    }
 }
