@@ -1,26 +1,21 @@
-
-.productsContainer{
+.productsContainer {
+    
+  margin-top: 3.375rem;
+}
+.title {
     margin-left: 2rem;
-    margin-top: 1.875rem;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 0.875rem;
 }
-.title{
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 0.875rem;
+.swiperSlide{
+    margin-left: 2rem;
+    width: fit-content !important;
+    margin-right: 0 !important;
 }
-swiper-slide{
-    width: 244px !important;
-height: 383px !important;
-
-}
-h3{
-    font-size: 20px;
-    padding-top: 0.875rem;
-}
-
 @media (max-width: 768px) {
-    .eventImage{
-        width: 100%;
-        border-radius: 10px;
-    }
+  .eventImage {
+    width: 100%;
+    border-radius: 10px;
+  }
 }

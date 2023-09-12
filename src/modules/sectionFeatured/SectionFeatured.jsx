@@ -1,79 +1,73 @@
-
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import valentin from "../../assets/san-valentin-event.png";
-import christmas from "../../assets/xmas-event.png";
-import birthday from "../../assets/birthday-event.png";
+import camera from "../../assets/camera.png";
+import hairdryer from "../../assets/hair-dryer.png";
+import airpods from "../../assets/airpodsmax.png";
+import facemassage from "../../assets/face-massage.png"
+import sunscreen from "../../assets/sunscreen.png"
+import serum from "../../assets/serum.png"
 import styles from "./sectionFeatured.module.css";
+
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Link } from "react-router-dom";
+import ProductCard from "../../components/productCard/ProductCard";
 
 
 export default function SectionFeatured() {
+
   return (
     <>
-    <div className={styles.productsContainer}>
-      <h2 className={styles.title}>Productos destacados</h2>
-      <Swiper
+      <div className={styles.productsContainer}>
+        <h2 className={styles.title}>Productos destacados</h2>
+        <Swiper
+          slidesPerView={3}
+          spaceBetween={30}
+          modules={[Pagination]}
+          autoplay={{ delay: 3000 }}
+          breakpoints={{
+            768: {
+              slidesPerView: 3,
+            },
 
-        slidesPerView={4}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination]}
-        autoplay={{ delay: 3000 }}
-        breakpoints={{
-         
-          768: {
-            slidesPerView: 3,
-          },
-          
-          0: {
-            slidesPerView: 1,
-          },
-        }}
-        
-      >
-        <Link to="">
-        <SwiperSlide>
-          {" "}
-          <img
-            src={christmas}
-            alt="banner"
-            className={styles.eventImage}
-          />
-          <h3 id="category">Navidad</h3>
-        </SwiperSlide>
-        </Link>
-        <SwiperSlide className={styles.category}> 
-          <img
-            src={birthday}
-            alt="beauty"
-            className={styles.eventImage}
-          />
-          <h3>Cumpleaños</h3>
-          </SwiperSlide>
-        <SwiperSlide> <img
-            src={valentin}
-            alt="fashion"
-            className={styles.eventImage}
-          />
-          <h3>San Valentín</h3></SwiperSlide>
-        <SwiperSlide> <img
-            src={birthday}
-            alt="fashion"
-          />
-          <label>Belleza</label></SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
-      </Swiper>
+            0: {
+              slidesPerView: 1,
+            },
+          }}
+        >
+           <Link to="">
+            <SwiperSlide className={styles.swiperSlide}>
+              <ProductCard image={airpods} name="Airpods Max" />
+            </SwiperSlide>
+          </Link>
+          <Link to="">
+          <SwiperSlide className={styles.swiperSlide}>
+              <ProductCard image={hairdryer} name="Secadora de pelo" />
+            </SwiperSlide>
+          </Link>
+          <Link to="">
+          <SwiperSlide className={styles.swiperSlide}>
+              <ProductCard image={camera} name="Cámara de fotos" />
+            </SwiperSlide>
+          </Link>
+          <Link to="">
+          <SwiperSlide className={styles.swiperSlide}>
+              <ProductCard image={facemassage} name="Set guasha" />
+            </SwiperSlide>
+          </Link>
+          <Link to="">
+          <SwiperSlide className={styles.swiperSlide}>
+              <ProductCard image={sunscreen} name="Protector solar" />
+            </SwiperSlide>
+          </Link>
+          <Link to="">
+          <SwiperSlide className={styles.swiperSlide}>
+              <ProductCard image={serum} name="Sérum" />
+            </SwiperSlide>
+          </Link>
+        </Swiper>
       </div>
     </>
   );

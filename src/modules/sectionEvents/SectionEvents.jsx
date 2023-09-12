@@ -61,11 +61,7 @@ export default function SectionEvents() {
             className={styles.eventImage}
           />
           <h3>San Valentín</h3></SwiperSlide>
-        <SwiperSlide> <img
-            src={birthday}
-            alt="fashion"
-          />
-          <label>Belleza</label></SwiperSlide>
+      
         <SwiperSlide>Slide 5</SwiperSlide>
         <SwiperSlide>Slide 6</SwiperSlide>
         <SwiperSlide>Slide 7</SwiperSlide>

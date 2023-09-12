@@ -1,14 +1,21 @@
-import React from 'react'
-import styles from "./productCard.module.css"
-import { Link } from 'react-router-dom'
-function ProductCard({title, img, url}) {
-  return (
-    <Link to={url} className={styles.productContainer}>
-        
-        <img src={img} alt={title} className={styles.image} />
-        <p className={styles.title}>{title}</p>
-    </Link>
-  )
-}
+import React, { useState } from "react";
+import styles from "./productCard.module.css";
 
-export default ProductCard
+export default function ProductCard({ image, name }) {
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSaveClick = () => {
+    setIsSaved(!isSaved);
+  };
+
+  return (
+    <div className={styles.productCard}>
+      <img src={image} alt="" className={styles.productImage} />
+      <button
+        className={`${styles.saveButton} ${isSaved ? styles.clicked : ""}`}
+        onClick={handleSaveClick}
+      ></button>
+      <h3 id="product">{name}</h3>
+    </div>
+  );
+}
