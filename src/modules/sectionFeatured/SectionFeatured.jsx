@@ -8,7 +8,11 @@ import sunscreen from "../../assets/sunscreen.png"
 import serum from "../../assets/serum.png"
 import styles from "./sectionFeatured.module.css";
 
-import { Pagination } from "swiper/modules";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
@@ -24,8 +28,9 @@ export default function SectionFeatured() {
         <h2 className={styles.title}>Productos destacados</h2>
         <Swiper
           slidesPerView={3}
+          navigation={true}
           spaceBetween={30}
-          modules={[Pagination]}
+          modules={[Navigation]}
           autoplay={{ delay: 3000 }}
           breakpoints={{
             768: {

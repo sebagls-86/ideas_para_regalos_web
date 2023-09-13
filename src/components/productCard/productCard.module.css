@@ -19,7 +19,7 @@
   .saveButton {
     position: absolute;
     right: 15px;
-    bottom: 145px;
+    bottom: 80px;
     border-radius: 25px;
     background: url(/src/assets/bookmark.svg) center no-repeat;
     background-color: rgba(217, 217, 217, 0.5);
