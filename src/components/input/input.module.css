@@ -1,6 +1,6 @@
 .form__control {
     border: 1px solid #333;
-    border-radius: 0;
+    border-radius: 3px;
 }
 
 .form__control:focus {

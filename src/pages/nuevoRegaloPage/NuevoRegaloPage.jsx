@@ -33,7 +33,7 @@ function NuevoRegaloPage() {
             <LoginMobile />
           </Col>
           <div className={styles.content}>
-            <div className="d-flex">
+            <div className="d-flex gap-5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="54"
