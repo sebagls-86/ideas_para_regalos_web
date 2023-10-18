@@ -8,11 +8,11 @@ import Button from "../../components/button/Button";
 import banner from "../../assets/bannerPerfil.png";
 import SimplePageTitle from "../../components/simplePageTittle/SimplePageTitle";
 import PageTitle from "../../components/pageTitle/PageTitle";
-import styles from "./usersPage.module.css";
+import styles from "./myAccountPage.module.css";
 import Post from "../../modules/post/Post";
 import ProfileNav from "../../components/profileNav/ProfileNav";
 
-function UsersPage() {
+function MyAccountPage() {
   const [user] = useAuthState(auth);
   const { userName } = useParams();
   const navigate = useNavigate();
@@ -81,4 +81,4 @@ function UsersPage() {
   );
 }
 
-export default UsersPage;
+export default MyAccountPage;
