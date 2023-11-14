@@ -67,9 +67,6 @@ function NuevoRegaloPage() {
       label1: 'Username3',
       label2: '@username3',
     },
-    {
-      label: 'user pp'
-    },
   ];
   return (
     <>
