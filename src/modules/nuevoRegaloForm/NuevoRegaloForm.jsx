@@ -43,6 +43,7 @@ function NuevoRegaloForm() {
     }
     .nav-tabs > li:nth-child(4) .nav-link {
       border-right: none;
+      border-top-right-radius: 10px;
     }
     .nav-tabs > li:nth-child(1) .nav-link {
       border-top-left-radius: 10px;
