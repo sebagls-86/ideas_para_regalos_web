@@ -1,27 +1,76 @@
-import React from "react";
+import React, { useState } from 'react';
 import Nav from "../../modules/nav/Nav";
 import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
-import banner from "../../assets/bannerExplorar.png";
 import styles from "./nuevoRegaloPage.module.css";
-import SectionCategory from "../../modules/sectionCategory/SectionCategory";
-import SectionEvents from "../../modules/sectionEvents/SectionEvents";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import SelectUser from "../../modules/selectUser/SelectUser";
+import SelectButton from "../../components/selectButton/SelectButton";
 import NuevoRegaloForm from "../../modules/nuevoRegaloForm/NuevoRegaloForm";
+import ModalCreateProfile from "../../modules/modalCreateProfile/ModalCreateProfile"
 
 function NuevoRegaloPage() {
   const [user] = useAuthState(auth);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [showNewProfileModal, setShowNewProfileModal] = useState(false);
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (option) => {
+    if (option.value === 'Open Modal') {
+      handleNewProfileClick(); // Open modal for 'Crear nuevo'
+    } else {
+      setSelectedOption(option);
+      setIsOpen(false);
+    }
+  };
+
+  const handleNewProfileClick = () => {
+    setShowNewProfileModal(true);
+    setIsOpen(false); // Close the dropdown when opening the modal
+  };
+
+  const options = [
+    { label: 'Crear nuevo', value: 'Open Modal', type: 'link', link: '#modal' },
+    {
+      label: 'user1',
+      value: 'Picture with Labels',
+      type: 'imageWithLabels',
+      imageUrl: require('../../assets/person3.svg').default,
+      label1: 'Username1',
+      label2: '@username1',
+    },
+    {
+      label: 'user2',
+      value: 'Picture with Labels',
+      type: 'imageWithLabels',
+      imageUrl: require('../../assets/person3.svg').default,
+      label1: 'Username2',
+      label2: '@username2',
+    },
+    {
+      label: 'user3',
+      value: 'Picture with Labels',
+      type: 'imageWithLabels',
+      imageUrl: require('../../assets/person3.svg').default,
+      label1: 'Username3',
+      label2: '@username3',
+    },
+    {
+      label: 'user pp'
+    },
+  ];
   return (
     <>
       {!user && <NavLoggedOut />}
@@ -50,8 +99,21 @@ function NuevoRegaloPage() {
             <p>¿Para quién es el regalo?</p>
      
             </div>
-            <div className={styles.select_user_container}> <SelectUser/></div>
+            <div className={styles.select_user_container}> 
+    
+            <SelectButton
+          label="Elegir persona"
+          isOpen={isOpen}
+          toggleDropdown={toggleDropdown}
+          options={options}
+          handleOptionSelect={handleOptionSelect}
+          selectedOption={selectedOption} 
+        />
+            </div>
             <NuevoRegaloForm></NuevoRegaloForm>
+            {showNewProfileModal && (
+            <ModalCreateProfile closeModal={() => setShowNewProfileModal(false)} />
+          )}
           </div>
         </div>
         <aside className="right__aside">

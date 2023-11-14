@@ -1,6 +1,10 @@
+.selectButtonContainer {
+  position: relative;
+}
+
 .selectButton {
-    font-size: 17px;
-    color:  #525558;
+  font-size: 17px;
+  color: #525558;
   max-width: 360px;
   width: 100%;
   height: 48px;
@@ -12,35 +16,47 @@
   border: 0.4px solid #000;
   background: var(--white);
 }
-.userOptionList{
-    position: absolute;
-    max-width: 360px;
-    width: 100%;
-    background: var(--white);
-    z-index: 999;
-    border: 0.4px solid #000;
-    
 
+.optionsList {
+  width: 100%;
+  background: var(--white);
+  z-index: 999;
+  max-width: 360px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.userOptionListTitle {
+
+.linkOption{
     padding: 10px 18px;
 }
-.userOptionListTitle a{
-    color: var(--primary-dark) !important;
-    font-size: 17px;
-    font-weight: 400;
+.linkOption a {
+  color: var(--primary-dark);
+  font-size: 17px;
+  font-weight: 400;
+
 }
-.userOptionListTitle a:hover{
-    font-weight: 700;
+
+.linkOption a:hover {
+  font-weight: 700;
+  background-color: none !important;
+
 }
-.optionItem{
-    width: 100%;
-    height: 80px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
+.userOption{
+  width: 100%;
+  height: 80px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.userOption:hover, .textOption:hover{
+  background-color: var(--gray);
+}
+.userOption, .textOption{
     padding: 13px 18px;
-}
-.optionItem:hover{
-    background-color: var(--gray);
 }
