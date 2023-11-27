@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import styles from "./nuevoRegaloForm.module.css";
 import Tab from "react-bootstrap/Tab";
@@ -11,52 +11,50 @@ import SelectButton from "../../components/selectButton/SelectButton";
 function NuevoRegaloForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [showNewProfileModal, setShowNewProfileModal] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-
-
-  const handleNewProfileClick = () => {
-    setShowNewProfileModal(true);
-    setIsOpen(false); 
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false); // Close the dropdown when an option is selected
   };
+
 
   const options = [
     {
-      label: 'Año nuevo'
+      label: "Año nuevo",
     },
     {
-      label: 'Día del animal'
+      label: "Día del animal",
     },
     {
-      label: 'Día del amigo'
+      label: "Día del amigo",
     },
     {
-      label: 'Día del estudiante'
+      label: "Día del estudiante",
     },
     {
-      label: 'Día del fotógrafo'
+      label: "Día del fotógrafo",
     },
     {
-      label: 'Día del hermano'
+      label: "Día del hermano",
     },
     {
-      label: 'Día del niño'
+      label: "Día del niño",
     },
     {
-      label: 'Día de la madre'
+      label: "Día de la madre",
     },
     {
-      label: 'Día de la mujer'
+      label: "Día de la mujer",
     },
     {
-      label: 'Día del padre'
+      label: "Día del padre",
     },
     {
-      label: 'Otro'
+      label: "Otro",
     },
   ];
   return (
@@ -157,21 +155,21 @@ function NuevoRegaloForm() {
             }
           >
             <div className={styles.selectEvent}>
-            <SelectButton
-          label="Elegir evento"
-          isOpen={isOpen}
-          toggleDropdown={toggleDropdown}
-          options={options}
-          selectedOption={selectedOption} 
-        />
+              <SelectButton
+                label="Elegir evento"
+                isOpen={isOpen}
+                toggleDropdown={toggleDropdown}
+                options={options}
+                selectedOption={selectedOption}
+                handleOptionSelect={handleOptionSelect}
+              />
             </div>
-            
           </Tab>
           <Tab
             eventKey="imagen"
             title={
               <span className={styles.span}>
-                <MyIcon name="image"className={styles.icon}/> Imagen
+                <MyIcon name="image" className={styles.icon} /> Imagen
               </span>
             }
           >

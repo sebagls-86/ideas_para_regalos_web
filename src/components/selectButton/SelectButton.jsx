@@ -1,5 +1,3 @@
-// SelectButton.jsx
-
 import React from "react";
 import expandDown from "../../assets/expand-icon.svg";
 import expandClose from "../../assets/expand-close.svg";
@@ -11,7 +9,7 @@ function SelectButton({
   toggleDropdown,
   options,
   handleOptionSelect,
-  selectedOption, 
+  selectedOption,
 }) {
   return (
     <div className={styles.selectButtonContainer}>
@@ -20,7 +18,7 @@ function SelectButton({
         onClick={toggleDropdown}
         aria-expanded={isOpen}
       >
-        {selectedOption ? selectedOption.label : label} 
+        {selectedOption ? selectedOption.label : label}
         {isOpen ? (
           <img src={expandClose} alt="Expand Close" />
         ) : (
@@ -53,7 +51,7 @@ const renderOption = (option) => {
     case "link":
       return (
         <div className={styles.linkOption}>
-          <a href={option.link}  rel="noopener noreferrer">
+          <a href={option.link} rel="noopener noreferrer">
             {option.label}
           </a>
         </div>
