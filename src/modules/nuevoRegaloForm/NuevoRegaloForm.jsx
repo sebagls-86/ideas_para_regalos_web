@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Form from "react-bootstrap/Form";
 import styles from "./nuevoRegaloForm.module.css";
 import Tab from "react-bootstrap/Tab";
@@ -5,8 +6,59 @@ import Tabs from "react-bootstrap/Tabs";
 import Button from "react-bootstrap/Button";
 import SelectEvent from "../selectEvent/SelectEvent";
 import MyIcon from "../../components/myIcon/MyIcon";
+import SelectButton from "../../components/selectButton/SelectButton";
 
 function NuevoRegaloForm() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [showNewProfileModal, setShowNewProfileModal] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+
+
+  const handleNewProfileClick = () => {
+    setShowNewProfileModal(true);
+    setIsOpen(false); 
+  };
+
+  const options = [
+    {
+      label: 'Año nuevo'
+    },
+    {
+      label: 'Día del animal'
+    },
+    {
+      label: 'Día del amigo'
+    },
+    {
+      label: 'Día del estudiante'
+    },
+    {
+      label: 'Día del fotógrafo'
+    },
+    {
+      label: 'Día del hermano'
+    },
+    {
+      label: 'Día del niño'
+    },
+    {
+      label: 'Día de la madre'
+    },
+    {
+      label: 'Día de la mujer'
+    },
+    {
+      label: 'Día del padre'
+    },
+    {
+      label: 'Otro'
+    },
+  ];
   return (
     <>
       <style type="text/css">
@@ -104,7 +156,16 @@ function NuevoRegaloForm() {
               </span>
             }
           >
-            <SelectEvent></SelectEvent>
+            <div className={styles.selectEvent}>
+            <SelectButton
+          label="Elegir evento"
+          isOpen={isOpen}
+          toggleDropdown={toggleDropdown}
+          options={options}
+          selectedOption={selectedOption} 
+        />
+            </div>
+            
           </Tab>
           <Tab
             eventKey="imagen"

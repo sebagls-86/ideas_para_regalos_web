@@ -41,6 +41,9 @@
   right: 29px;
   gap: 25px;
 }
+.selectEvent{
+  margin: 44px 48px;
+}
 
 @media only screen and (max-width: 450px) {
   .span{
