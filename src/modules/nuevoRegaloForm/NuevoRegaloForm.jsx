@@ -7,10 +7,13 @@ import Button from "react-bootstrap/Button";
 import SelectEvent from "../selectEvent/SelectEvent";
 import MyIcon from "../../components/myIcon/MyIcon";
 import SelectButton from "../../components/selectButton/SelectButton";
+import { FormControl } from "react-bootstrap";
 
 function NuevoRegaloForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -20,7 +23,6 @@ function NuevoRegaloForm() {
     setSelectedOption(option);
     setIsOpen(false); // Close the dropdown when an option is selected
   };
-
 
   const options = [
     {
@@ -57,6 +59,31 @@ function NuevoRegaloForm() {
       label: "Otro",
     },
   ];
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      setSelectedFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUpload = () => {
+    if (selectedFile) {
+      console.log("Image uploaded:", selectedFile);
+      // You may want to send the image to the server or update the state, etc.
+    } else {
+      alert("Please select an image file");
+    }
+  };
+
   return (
     <>
       <style type="text/css">
@@ -174,6 +201,30 @@ function NuevoRegaloForm() {
             }
           >
             {/* <Sonnet /> */}
+            <Form>
+              <div className={styles.uploadImage}>
+                <label className={styles.customFileInput}>
+                  <span>Seleccionar archivo</span>
+
+                  {/* Hidden input button */}
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{display: "none"}}
+                  />
+                </label>
+                {/* Display preview of selected image */}
+                {previewImage && (
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className={styles.previewImage}
+                  />
+                )}
+              </div>
+            </Form>
           </Tab>
         </Tabs>
         <div className={styles.btn_submit_cancel}>
