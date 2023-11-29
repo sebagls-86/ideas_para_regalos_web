@@ -41,6 +41,30 @@
   right: 29px;
   gap: 25px;
 }
+.selectEvent{
+  margin: 44px 48px;
+}
+.uploadImage{
+  margin: 50px;
+}
+.customFileInput{
+  background-image: url("/src/assets/upload-icon.svg");
+  height: 50px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  background-position: center;
+}
+.customFileInput span{
+  padding-top: 50px;
+}
+
+.previewImage{
+  width: 40%;
+  position: absolute;
+  top: 200px
+}
 
 @media only screen and (max-width: 450px) {
   .span{

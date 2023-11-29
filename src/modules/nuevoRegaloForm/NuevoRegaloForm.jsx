@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import styles from "./nuevoRegaloForm.module.css";
 import Tab from "react-bootstrap/Tab";
@@ -5,8 +6,84 @@ import Tabs from "react-bootstrap/Tabs";
 import Button from "react-bootstrap/Button";
 import SelectEvent from "../selectEvent/SelectEvent";
 import MyIcon from "../../components/myIcon/MyIcon";
+import SelectButton from "../../components/selectButton/SelectButton";
+import { FormControl } from "react-bootstrap";
 
 function NuevoRegaloForm() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false); // Close the dropdown when an option is selected
+  };
+
+  const options = [
+    {
+      label: "Año nuevo",
+    },
+    {
+      label: "Día del animal",
+    },
+    {
+      label: "Día del amigo",
+    },
+    {
+      label: "Día del estudiante",
+    },
+    {
+      label: "Día del fotógrafo",
+    },
+    {
+      label: "Día del hermano",
+    },
+    {
+      label: "Día del niño",
+    },
+    {
+      label: "Día de la madre",
+    },
+    {
+      label: "Día de la mujer",
+    },
+    {
+      label: "Día del padre",
+    },
+    {
+      label: "Otro",
+    },
+  ];
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      setSelectedFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUpload = () => {
+    if (selectedFile) {
+      console.log("Image uploaded:", selectedFile);
+      // You may want to send the image to the server or update the state, etc.
+    } else {
+      alert("Please select an image file");
+    }
+  };
+
   return (
     <>
       <style type="text/css">
@@ -43,6 +120,7 @@ function NuevoRegaloForm() {
     }
     .nav-tabs > li:nth-child(4) .nav-link {
       border-right: none;
+      border-top-right-radius: 10px;
     }
     .nav-tabs > li:nth-child(1) .nav-link {
       border-top-left-radius: 10px;
@@ -103,17 +181,50 @@ function NuevoRegaloForm() {
               </span>
             }
           >
-            <SelectEvent></SelectEvent>
+            <div className={styles.selectEvent}>
+              <SelectButton
+                label="Elegir evento"
+                isOpen={isOpen}
+                toggleDropdown={toggleDropdown}
+                options={options}
+                selectedOption={selectedOption}
+                handleOptionSelect={handleOptionSelect}
+              />
+            </div>
           </Tab>
           <Tab
             eventKey="imagen"
             title={
               <span className={styles.span}>
-                <MyIcon name="image"className={styles.icon}/> Imagen
+                <MyIcon name="image" className={styles.icon} /> Imagen
               </span>
             }
           >
             {/* <Sonnet /> */}
+            <Form>
+              <div className={styles.uploadImage}>
+                <label className={styles.customFileInput}>
+                  <span>Seleccionar archivo</span>
+
+                  {/* Hidden input button */}
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{display: "none"}}
+                  />
+                </label>
+                {/* Display preview of selected image */}
+                {previewImage && (
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className={styles.previewImage}
+                  />
+                )}
+              </div>
+            </Form>
           </Tab>
         </Tabs>
         <div className={styles.btn_submit_cancel}>
