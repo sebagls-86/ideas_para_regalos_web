@@ -25,8 +25,26 @@
     gap: 9px;
     margin-top: 1rem;
 }
-
-
+.interest_description{
+    font-size: 18px;
+    text-align: center;
+}
+.options_container{
+    display: block;
+    gap: 20px;
+}
+.option_box{
+border: 0.5px solid var(--Neutral-0, #525558);
+    height: 39px;
+    border-radius: 30px;
+    padding: 7px 20px 0 20px;
+    cursor: pointer; 
+    margin: 5px;
+    
+}
+.selected {
+    color: var(--primary-dark);
+  }
 @media only screen and (min-width: 768px) {
     .buttons__container {
         padding-top: 1.31rem;

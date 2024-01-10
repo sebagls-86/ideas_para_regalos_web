@@ -16,7 +16,6 @@ function ModalCreateProfile({ closeModal }) {
       ...form,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.value);
   };
 
   const handleNextStep = () => {
@@ -38,6 +37,21 @@ function ModalCreateProfile({ closeModal }) {
     { label: '50-64' },
     { label: '65+' },
   ];
+
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const interestOptions = ["Deporte", "Arte", "Fútbol", "Música", "Videojuegos","Cocinar", "Natación", "Viajes", "Leer", "Animales", "Fotografía", "Entretenimiento", "Otro"];
+
+  const handleChangeInterest = (word) => {
+    if (selectedInterests.includes(word)) {
+      // si esta seleccionado, remover
+      setSelectedInterests((prevInterests) =>
+        prevInterests.filter((interest) => interest !== word)
+      );
+    } else {
+      // no seleccionado, seleccionar
+      setSelectedInterests((prevInterests) => [...prevInterests, word]);
+    }
+  };
 
   const getTitleForStep = () => {
     switch (currentStep) {
@@ -94,23 +108,22 @@ function ModalCreateProfile({ closeModal }) {
 
       case 2:
         return (
-          <>
-            <SelectButton
-              label="Edad"
-              isOpen={isAgeDropdownOpen}
-              options={options}
-              handleOptionSelect={() => {}}
-              selectedOption={null}
-              toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
-            />
-            <Input
-              type="text"
-              name="name"
-              placeholder="Relación"
-              required="required"
-              label="Relación"
-              onChange={handleChange}
-            />
+          <> 
+          <p className={styles.interest_description}>Elegí 4 o más tópicos de su interés para poder buscar mejores recomendaciones.</p>
+          <div className={styles.options_container}>
+          {interestOptions.map((word, index) => (
+            <label key={index} className={styles.option_box}>
+              <div
+                className={`${styles.selectionBox} ${
+                  selectedInterests.includes(word) && styles.selected
+                }`}
+                onClick={() => handleChangeInterest(word)}
+              >
+                {word}
+              </div>
+            </label>
+          ))}
+        </div>
             <form onSubmit={handleSubmit}>
               <Button
                 label="Finalizar"
@@ -120,7 +133,6 @@ function ModalCreateProfile({ closeModal }) {
             </form>
           </>
         );
-
       default:
         return null;
     }
