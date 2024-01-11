@@ -27,16 +27,6 @@ function ModalCreateProfile({ closeModal }) {
     closeModal(false);
   };
 
-  const options = [
-    { label: '0-5' },
-    { label: '6-11' },
-    { label: '12-17' },
-    { label: '18-24' },
-    { label: '25-34' },
-    { label: '35-49' },
-    { label: '50-64' },
-    { label: '65+' },
-  ];
 
   const [selectedInterests, setSelectedInterests] = useState([]);
   const interestOptions = ["Deporte", "Arte", "Fútbol", "Música", "Videojuegos","Cocinar", "Natación", "Viajes", "Leer", "Animales", "Fotografía", "Entretenimiento", "Otro"];
@@ -52,6 +42,30 @@ function ModalCreateProfile({ closeModal }) {
       setSelectedInterests((prevInterests) => [...prevInterests, word]);
     }
   };
+
+  //edad
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = (option) => {
+    setForm({
+      ...form,
+      edad: option.label, 
+    });
+    setSelectedOption(option); 
+    setIsAgeDropdownOpen(false); 
+  };
+  
+  const options = [
+    { label: '0-5' },
+    { label: '6-11' },
+    { label: '12-17' },
+    { label: '18-24' },
+    { label: '25-34' },
+    { label: '35-49' },
+    { label: '50-64' },
+    { label: '65+' },
+  ];
+
 
   const getTitleForStep = () => {
     switch (currentStep) {
@@ -87,14 +101,14 @@ function ModalCreateProfile({ closeModal }) {
               label="Apellido"
               onChange={handleChange}
             />
-            <SelectButton
-              label="Edad"
-              isOpen={isAgeDropdownOpen}
-              options={options}
-              handleOptionSelect={() => {}}
-              selectedOption={null}
-              toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
-            />
+         <SelectButton
+  label="Edad"
+  isOpen={isAgeDropdownOpen}
+  options={options}
+  handleOptionSelect={handleOptionSelect}
+  selectedOption={selectedOption}
+  toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
+/>
             <Input
               type="text"
               name="name"
