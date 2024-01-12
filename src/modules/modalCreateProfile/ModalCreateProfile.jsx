@@ -4,120 +4,170 @@ import styles from "./modalCreateProfile.module.css";
 import { Col } from "react-bootstrap";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
-import SelectButton from "../../components/selectButton/SelectButton"
+import SelectButton from "../../components/selectButton/SelectButton";
 
-
-function ModalLogin({ closeModal }) {
-  const [form, setForm] = useState({})
+function ModalCreateProfile({ closeModal }) {
+  const [form, setForm] = useState({});
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
 
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
-    })
-    console.log(e.target.value)
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    closeModal(false)
-  }
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showNewProfileModal, setShowNewProfileModal] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleOptionSelect = (option) => {
-    if (option.value === 'Open Modal') {
-      handleNewProfileClick(); // Open modal for 'Crear nuevo'
+  const handleNextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    closeModal(false);
+  };
+
+
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const interestOptions = ["Deporte", "Arte", "Fútbol", "Música", "Videojuegos","Cocinar", "Natación", "Viajes", "Leer", "Animales", "Fotografía", "Entretenimiento", "Otro"];
+
+  const handleChangeInterest = (word) => {
+    if (selectedInterests.includes(word)) {
+      // si esta seleccionado, remover
+      setSelectedInterests((prevInterests) =>
+        prevInterests.filter((interest) => interest !== word)
+      );
     } else {
-      setSelectedOption(option);
-      setIsOpen(false);
+      // no seleccionado, seleccionar
+      setSelectedInterests((prevInterests) => [...prevInterests, word]);
     }
   };
 
-  const handleNewProfileClick = () => {
-    setShowNewProfileModal(true);
-    setIsOpen(false); // Close the dropdown when opening the modal
+  //edad
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = (option) => {
+    setForm({
+      ...form,
+      edad: option.label, 
+    });
+    setSelectedOption(option); 
+    setIsAgeDropdownOpen(false); 
+  };
+  
+  const options = [
+    { label: '0-5' },
+    { label: '6-11' },
+    { label: '12-17' },
+    { label: '18-24' },
+    { label: '25-34' },
+    { label: '35-49' },
+    { label: '50-64' },
+    { label: '65+' },
+  ];
+
+
+  const getTitleForStep = () => {
+    switch (currentStep) {
+      case 1:
+        return "¿Para quién es el regalo?";
+
+      case 2:
+        return "¿Sus intereses?";
+
+      default:
+        return "¿Para quién es el regalo?";
+    }
   };
 
-  const options = [
-  
-    {
-      label: '0-5'
-    },
-    {
-      label: '6-11'
-    },
-    {
-      label: '12-17'
-    },
-    {
-      label: '18-24'
-    },
-    {
-      label: '25-34'
-    },
-    {
-      label: '35-49'
-    },
-    {
-      label: '50-64'
-    },
-    {
-      label: '65+'
-    },
-  ]
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <>
+            <Input
+              type="text"
+              name="name"
+              placeholder="Nombre"
+              required="required"
+              label="Nombre"
+              onChange={handleChange}
+            />
+            <Input
+              type="text"
+              name="name"
+              placeholder="Apellido"
+              required="required"
+              label="Apellido"
+              onChange={handleChange}
+            />
+         <SelectButton
+  label="Edad"
+  isOpen={isAgeDropdownOpen}
+  options={options}
+  handleOptionSelect={handleOptionSelect}
+  selectedOption={selectedOption}
+  toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
+/>
+            <Input
+              type="text"
+              name="name"
+              placeholder="Relación"
+              required="required"
+              label="Relación"
+              onChange={handleChange}
+            />
+          </>
+        );
+
+      case 2:
+        return (
+          <> 
+          <p className={styles.interest_description}>Elegí 4 o más tópicos de su interés para poder buscar mejores recomendaciones.</p>
+          <div className={styles.options_container}>
+          {interestOptions.map((word, index) => (
+            <label key={index} className={styles.option_box}>
+              <div
+                className={`${styles.selectionBox} ${
+                  selectedInterests.includes(word) && styles.selected
+                }`}
+                onClick={() => handleChangeInterest(word)}
+              >
+                {word}
+              </div>
+            </label>
+          ))}
+        </div>
+            <form onSubmit={handleSubmit}>
+              <Button
+                label="Finalizar"
+                className="btn primary__button"
+                onClick={handleSubmit}
+              />
+            </form>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <Modal closeModal={closeModal} title="¿Para quién es el regalo?">
+    <Modal closeModal={closeModal} title={getTitleForStep()}>
       <Col>
         <div className={styles.buttons__container}>
-        <Input
-            type="text"
-            name="name"
-            placeholder="Nombre"
-            required="required"
-            label="Nombre"
-            onChange = {handleChange}
-          />
-            <Input
-            type="text"
-            name="name"
-            placeholder="Apellido"
-            required="required"
-            label="Apellido"
-            onChange = {handleChange}
-          />
-           <SelectButton
-          label="Edad"
-          isOpen={isOpen}
-          toggleDropdown={toggleDropdown}
-          options={options}
-          handleOptionSelect={handleOptionSelect}
-          selectedOption={selectedOption} 
-          />
-           <Input
-            type="text"
-            name="name"
-            placeholder="Relación"
-            required="required"
-            label="Relación"
-            onChange = {handleChange}
-          />
-          
+          {renderStepContent()}
+          {currentStep === 1 && (
+            <Button
+              label="Siguiente"
+              className="btn primary__button"
+              onClick={handleNextStep}
+            />
+          )}
         </div>
-
-        <form onSubmit={handleSubmit}>
-          <Button label="Siguiente" className="btn primary__button" onClick={handleSubmit}/>
-        </form>
-       
-      
       </Col>
     </Modal>
   );
 }
 
-export default ModalLogin;
+export default ModalCreateProfile;
