@@ -27,9 +27,22 @@ function ModalCreateProfile({ closeModal }) {
     closeModal(false);
   };
 
-
   const [selectedInterests, setSelectedInterests] = useState([]);
-  const interestOptions = ["Deporte", "Arte", "Fútbol", "Música", "Videojuegos","Cocinar", "Natación", "Viajes", "Leer", "Animales", "Fotografía", "Entretenimiento", "Otro"];
+  const interestOptions = [
+    "Deporte",
+    "Arte",
+    "Fútbol",
+    "Música",
+    "Videojuegos",
+    "Cocinar",
+    "Natación",
+    "Viajes",
+    "Leer",
+    "Animales",
+    "Fotografía",
+    "Entretenimiento",
+    "Otro",
+  ];
 
   const handleChangeInterest = (word) => {
     if (selectedInterests.includes(word)) {
@@ -49,23 +62,22 @@ function ModalCreateProfile({ closeModal }) {
   const handleOptionSelect = (option) => {
     setForm({
       ...form,
-      edad: option.label, 
+      edad: option.label,
     });
-    setSelectedOption(option); 
-    setIsAgeDropdownOpen(false); 
+    setSelectedOption(option);
+    setIsAgeDropdownOpen(false);
   };
-  
-  const options = [
-    { label: '0-5' },
-    { label: '6-11' },
-    { label: '12-17' },
-    { label: '18-24' },
-    { label: '25-34' },
-    { label: '35-49' },
-    { label: '50-64' },
-    { label: '65+' },
-  ];
 
+  const options = [
+    { label: "0-5" },
+    { label: "6-11" },
+    { label: "12-17" },
+    { label: "18-24" },
+    { label: "25-34" },
+    { label: "35-49" },
+    { label: "50-64" },
+    { label: "65+" },
+  ];
 
   const getTitleForStep = () => {
     switch (currentStep) {
@@ -101,14 +113,20 @@ function ModalCreateProfile({ closeModal }) {
               label="Apellido"
               onChange={handleChange}
             />
-         <SelectButton
-  label="Edad"
-  isOpen={isAgeDropdownOpen}
-  options={options}
-  handleOptionSelect={handleOptionSelect}
-  selectedOption={selectedOption}
-  toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
-/>
+            <SelectButton
+              label="Edad"
+              isOpen={isAgeDropdownOpen}
+              options={options}
+              handleOptionSelect={handleOptionSelect}
+              selectedOption={selectedOption}
+              toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
+            />
+              <Input
+              type="date"
+              placeholder="Cumpleaños"
+              required="required"
+              label="birthday"
+            />
             <Input
               type="text"
               name="name"
@@ -122,22 +140,25 @@ function ModalCreateProfile({ closeModal }) {
 
       case 2:
         return (
-          <> 
-          <p className={styles.interest_description}>Elegí 4 o más tópicos de su interés para poder buscar mejores recomendaciones.</p>
-          <div className={styles.options_container}>
-          {interestOptions.map((word, index) => (
-            <label key={index} className={styles.option_box}>
-              <div
-                className={`${styles.selectionBox} ${
-                  selectedInterests.includes(word) && styles.selected
-                }`}
-                onClick={() => handleChangeInterest(word)}
-              >
-                {word}
-              </div>
-            </label>
-          ))}
-        </div>
+          <>
+            <p className={styles.interest_description}>
+              Elegí 4 o más tópicos de su interés para poder buscar mejores
+              recomendaciones.
+            </p>
+            <div className={styles.options_container}>
+              {interestOptions.map((word, index) => (
+                <label key={index} className={styles.option_box}>
+                  <div
+                    className={`${styles.selectionBox} ${
+                      selectedInterests.includes(word) && styles.selected
+                    }`}
+                    onClick={() => handleChangeInterest(word)}
+                  >
+                    {word}
+                  </div>
+                </label>
+              ))}
+            </div>
             <form onSubmit={handleSubmit}>
               <Button
                 label="Finalizar"
