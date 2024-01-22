@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import Search from "../search/Search";
+import { FiSearch } from "react-icons/fi";
+import createNew from "../../assets/crear__post__nav.svg";
 
 function ProfileNav({}) {
   const Publicaciones = [
@@ -59,6 +62,19 @@ function ProfileNav({}) {
           </Tab>
           <Tab eventKey="wishlist" title="Lista de deseados">
             {/* <Sonnet /> */}
+            <div className={styles.container}>
+              <form>
+                <button className={styles.button}>
+                  <FiSearch className={styles.icon} />
+                </button>
+                <input className={styles.searchbar} type="search"></input>
+              </form>
+              <button className={styles.createNew}>
+              <img src={createNew} alt="Crear publicación" /> Crear nuevo
+                </button>
+                
+
+            </div>
           </Tab>
           <Tab eventKey="profiles" title="Mis perfiles">
             {/* <Sonnet /> */}
@@ -93,7 +109,7 @@ function ProfileNav({}) {
             </div>
           </Tab>
           <Tab eventKey="wishlist" title="Lista">
-           <div className=""> hola</div>
+            <div className=""> hola</div>
           </Tab>
           <Tab eventKey="profiles" title="Perfiles">
             {/* <Sonnet /> */}
