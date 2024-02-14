@@ -5,9 +5,14 @@ import styles from "./loginMobile.module.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 
-function LoginMobile() {
-  const [openModal, setOpenModal] = useState(false);
+function LoginMobile({ setOpenModal }) {
+
   const [user] = useAuthState(auth);
+
+  const openModalHandler = () => {
+      setOpenModal(true);
+    };
+  
   if (!user)
     return (
       <div className={styles.login__container}>
@@ -15,9 +20,9 @@ function LoginMobile() {
         <Button
           label="Iniciar sesión"
           className="btn primary__button-outline"
-          onClick={() => setOpenModal(true)}
+          onClick={openModalHandler}
         />
-        {openModal && <ModalLogin closeModal={setOpenModal} />}
+        {<ModalLogin closeModal={setOpenModal} />}
       </div>
     );
 }

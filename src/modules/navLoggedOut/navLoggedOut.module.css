@@ -30,6 +30,15 @@
   color: #ffed4b;
 }
 
+
+
+.login_button{ 
+  background-color: none;
+  color: #fcf3a6;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
 @media only screen and (min-width: 768px) {
   .links {
     font-size: 1.125rem;
@@ -43,4 +52,7 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .login_button {
+    display: none;
+  }
 }

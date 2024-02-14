@@ -1,0 +1,165 @@
+.profiles__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.profiles__table_th,
+.profiles__table_td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.profiles__table th {
+  background-color: #f2f2f2;
+}
+
+.profiles__table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.profiles__table tbody tr:hover {
+  background-color: #ddd;
+}
+
+.profiles_iconWrapper {
+  margin-right: 10px;
+}
+
+.profile_interest_buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.profile_interest_container {
+  margin-bottom: 12px; /* Espacio entre grupos de botones */
+}
+
+.profile_interest_button {
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  margin-top: 2px;
+  padding: 8px 16px; /* Ajusta el espacio interno de los botones */
+  margin-right: 10px; /* Espacio entre botones dentro del mismo grupo */
+  transition: background-color 0.3s;
+}
+
+.profile_interest_button:hover {
+  background-color: red;
+}
+
+.profile_interest_remove_icon {
+  margin-left: 4px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra ligera */
+  max-width: 80%;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal input[type="text"],
+.modal select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.modal button {
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #ddd; /* Cambia el color de fondo al pasar el ratón */
+}
+
+.modal button svg {
+  margin-right: 5px;
+}
+
+.custom-modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-modal-footer button {
+  color: white;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-modal-footer button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.action_buttons {
+  button:hover {
+    background-color: green;
+  }
+  background-color: white;
+  width: 100%;
+  display: flex;
+  margin: 0 10px;
+
+  }
+
+  .action_buttons_container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .action_buttons_td {
+    justify-content: center;
+    align-items: center;
+  }
+
+@media only screen and (min-width: 768px) {
+  .profiles__images {
+    width: 200px;
+    flex-direction: row;
+  }
+  .profiles__images img {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .profiles__images {
+    width: 250px;
+  }
+  .profiles__images img {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 1512px) {
+  .profiles__images {
+    width: 300px;
+  }
+  .profiles__images img {
+    width: 100%;
+  }
+}

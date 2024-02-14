@@ -195,7 +195,7 @@ a:focus {
 .right__aside {
   grid-area: right__aside;
   display: none;
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .nav-link {

@@ -1,5 +1,5 @@
 .login__container {
-    display: flex;
+    display: none;
     margin: 1rem 1rem;
     gap: 1rem;
 

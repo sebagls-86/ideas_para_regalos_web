@@ -1,0 +1,162 @@
+.list__container{
+    padding-top: var(--fz-30);
+    padding-bottom: var(--fz-25);
+    display: flex;
+
+}
+.list__container:not(:last-child){
+    border-bottom: 1px solid rgba(0, 0, 0, 0.322);
+}
+.container__image img{
+    border-radius: 50%;
+}
+.list__content{
+    /* width: 100%; */
+    margin-left: 1rem;
+}
+.user__container{
+    /* width: 100%; */
+    display: flex;
+    justify-content: space-between;
+}
+.content__user{
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    /* width: 300px; */
+    gap: 0px 0.75rem;
+}
+.user__username{
+    font-size: var(--fz-20);
+    font-weight: 800;
+}
+.user__tagname{
+    font-size: var(--fz-15);
+    font-weight: 600;
+
+}
+.user__tagname:hover{
+    color: var(--primary-dark);
+
+}
+.user__timepost{
+    font-size: var(--fz-9);
+    font-weight: 600;
+}
+
+.more__actions{
+    font-weight: 800;
+    font-size: var(--fz-20);
+
+}
+.list__title{
+    font-size: var(--fz-17);
+}
+.content__tags{
+    display: flex;
+    flex-direction: row;
+    gap: var(--fz-11);
+    padding-top: 0.5rem;
+}
+.list_tags{
+    font-size: var(--fz-11);
+    font-weight: 600;
+}
+.list__images{
+    margin-top: var(--fz-15);
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    width: 200px;
+    gap: var(--fz-11);
+}
+.list__images img{
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--fz-15);
+}
+.list__text{
+    margin-top: var(--fz-15);
+    font-size: var(--fz-17);
+}
+.list__actions{
+    display: flex;
+    gap: 1.43rem;
+    margin-top: 1.85rem;
+}
+.actions__content{
+    display: flex;
+    gap: var(--fz-11);
+}
+
+.product_list {
+    display: flex;
+    list-style: none; /* Eliminar los estilos de lista predeterminados */
+    padding: 0; /* Eliminar el relleno predeterminado de la lista */
+  }
+  
+  .product_list li {
+    /* Estilos opcionales para los elementos de la lista de productos */
+    margin-right: 10px; /* Espacio entre los elementos */
+  }
+  
+  .product_button:hover {
+    background-color: #e0e0e0; /* Cambiar el color de fondo al pasar el cursor */
+  }
+
+  .product_button {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    margin-top: 2px;
+    padding: 8px 16px; /* Ajusta el espacio interno de los botones */
+    margin-right: 10px; /* Espacio entre botones dentro del mismo grupo */
+    transition: background-color 0.3s;
+  }
+  
+  .product_button:hover {
+    background-color: red;
+  }
+  
+  .product_remove_icon {
+    margin-left: 4px;
+  }
+
+@media only screen and (min-width: 768px) {
+    .list__images{
+        width: 200px;
+        flex-direction: row;
+
+    }
+    .list__images img{
+        width: 100%;
+        
+
+    }
+    
+}
+@media only screen and (min-width: 1024px) {
+    .list__images{
+        width: 250px;
+
+    }
+    .list__images img{
+        width: 100%;
+        
+
+    }
+
+}
+@media only screen and (min-width: 1512px) {
+    .list__images{
+        width: 300px;
+
+    }
+    .list__images img{
+        width: 100%;
+        
+
+    }
+
+}

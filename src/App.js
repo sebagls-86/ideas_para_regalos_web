@@ -10,13 +10,15 @@ import NotFoundPage from './pages/notFoundPage/NotFound';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import NotificationsPage from './pages/notificationsPage/NotificationsPage';
 import NuevoRegaloPage from './pages/nuevoRegaloPage/NuevoRegaloPage';
+import ForumsPage from './pages/forums/ForumsPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/perfil/:userName" element={<MyAccountPage />} />
+        <Route path="/perfil/:user_id" element={<MyAccountPage />} />
+        <Route path="/forums/:forum_id" element={<ForumsPage />} />
         <Route path="/componentes" element={<ComponentesPage />} />
         <Route path="/explorar" element={<ExplorarPage />} />
         <Route path="/explorar/:category" element={<CategoryPage />} />
