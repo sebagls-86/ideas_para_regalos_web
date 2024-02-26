@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/list.module.css";
-import { AiOutlineEllipsis } from "react-icons/ai";
 import { Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import EditListModal from "./EditListModal";
 import AddProductsModal from "./AddProductsModal";
 import jwtDecode from "jwt-decode";
-import { FaTimes } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 function WishList() {
   const [listData, setListData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showDeleteOption, setShowDeleteOption] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editedListName, setEditedListName] = useState("");
+  const [showDeleteListConfirmationModal, setShowDeleteListConfirmationModal] =
+    useState(false);
   const [selectedList, setSelectedList] = useState(null);
-  const [originalList, setOriginalList] = useState(null);
   const [productsCatalog, setProductsCatalog] = useState(null);
   const [productToRemove, setProductToRemove] = useState(null);
+  const [listToRemove, setListToRemove] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [filteredAvailableProducts, setFilteredAvailableProducts] = useState(
     []
   );
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showAddProductsModal, setShowAddProductsModal] = useState(false);
+  const [selectedListId, setSelectedListId] = useState(null);
 
   const { user_id } = useParams();
   const userId = parseInt(user_id);
@@ -81,14 +82,6 @@ function WishList() {
     fetchProductsCatalog();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  const handleButtonClick = () => {
-    setShowDeleteOption(!showDeleteOption);
-  };
-
   const handleEdit = async (list) => {
     try {
       const response = await fetch(
@@ -99,11 +92,14 @@ function WishList() {
       }
       const listData = await response.json();
       setSelectedList(listData);
-      setOriginalList(list);
-      setShowEditModal(true);
     } catch (error) {
       console.error("Error fetching post data:", error);
     }
+  };
+
+  const handleDeleteList = (list) => {
+    setListToRemove(list);
+    setShowDeleteListConfirmationModal(true);
   };
 
   const handleDelete = async (listId) => {
@@ -213,12 +209,6 @@ function WishList() {
     }
   };
 
-  const handleCloseModal = () => {
-    setShowEditModal(false);
-    setSelectedList(null);
-    setOriginalList(null);
-  };
-
   const handleCreateList = () => {
     navigate("/createList");
   };
@@ -234,14 +224,16 @@ function WishList() {
     setShowAddProductsModal(true);
   };
 
-   const handleToggleProduct = (product) => {
+  const handleToggleProduct = (product) => {
     const isProductSelected = selectedProducts.some(
-      (selectedProduct) => selectedProduct.product_catalog_id === product.product_catalog_id
+      (selectedProduct) =>
+        selectedProduct.product_catalog_id === product.product_catalog_id
     );
-  
+
     if (isProductSelected) {
       const updatedProducts = selectedProducts.filter(
-        (selectedProduct) => selectedProduct.product_catalog_id !== product.product_catalog_id
+        (selectedProduct) =>
+          selectedProduct.product_catalog_id !== product.product_catalog_id
       );
       setSelectedProducts(updatedProducts);
     } else {
@@ -251,34 +243,79 @@ function WishList() {
 
   const updateListsWithNewProducts = (listId, newProducts) => {
     const updatedListData = listData.map((list) => {
-        console.log('list.list_id:', list.list_id);
-        console.log('listId:', listId);
-    
-        if (list.list_id === listId) {
-            const updatedProducts = [...list.products, ...newProducts.map(product => product.name)];
-            return {
-                ...list,
-                products: updatedProducts,
-            };
-        }
-        return list;
+      console.log("list.list_id:", list.list_id);
+      console.log("listId:", listId);
+
+      if (list.list_id === listId) {
+        const updatedProducts = [
+          ...list.products,
+          ...newProducts.map((product) => product.name),
+        ];
+        return {
+          ...list,
+          products: updatedProducts,
+        };
+      }
+      return list;
     });
     setListData(updatedListData);
-};
+  };
 
-  console.log("selectedList:", selectedList);
-  console.log("selectedProducts:", selectedProducts);
+  const handleListClick = (listId) => {
+    setSelectedListId(listId);
+  };
+
+  const handleEditListName = (list) => {
+    setEditMode(true);
+    setEditedListName(list.list_name);
+  };
+
+  const handleSaveEditListName = async (list) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/lists/${list.list_id}`,
+        {
+          method: "PATCH", // Utilizamos PATCH para actualizar el recurso existente
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ list_name: editedListName }), 
+        }
+      );
+      if (response.ok) {
+        alert("Nombre de lista actualizado correctamente");
+        // Actualizamos el nombre de la lista en el estado local
+        const updatedListData = listData.map((listItem) => {
+          if (listItem.list_id === list.list_id) {
+            return {
+              ...listItem,
+              list_name: editedListName,
+            };
+          }
+          return listItem;
+        });
+        setEditMode(false);
+        setListData(updatedListData);
+      } else {
+        alert("Error al actualizar el nombre de la lista");
+        console.error("Error al actualizar el nombre de la lista");
+      }
+    } catch (error) {
+      alert("Error al enviar solicitud de actualización del nombre de la lista");
+      console.error(
+        "Error al enviar solicitud de actualización del nombre de la lista:",
+        error
+      );
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setEditedListName(event.target.value);
+  };
 
   return (
     <div>
-      <EditListModal
-        show={showEditModal}
-        onHide={handleCloseModal}
-        selectedList={selectedList}
-        setSelectedList={setSelectedList}
-        originalList={originalList}
-        handleCloseModal={handleCloseModal}
-      />
       <AddProductsModal
         show={showAddProductsModal}
         onHide={() => setShowAddProductsModal(false)}
@@ -312,64 +349,182 @@ function WishList() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Modal
+        show={showDeleteListConfirmationModal}
+        onHide={() => setShowDeleteListConfirmationModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Está seguro de que desea eliminar la lista "{listToRemove?.list_name}
+          "?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowDeleteListConfirmationModal(false)}
+          >
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleDelete}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Button variant="primary" onClick={handleCreateList}>
         Crear lista
       </Button>
       {listData === null ? (
         <p>Todavía no hay listas</p>
+      ) : selectedListId ? (
+        <div className={styles.list__container}>
+          <div className={styles.list__content}>
+            <div className={styles.user__container}>
+              <div className={styles.content__user}>
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={editedListName}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <p className={styles.user__username}>
+                    {
+                      listData.find((list) => list.list_id === selectedListId)
+                        .list_name
+                    }
+                  </p>
+                )}
+                {editMode ? (
+                  <div>
+                   
+                    <Button
+                      variant="primary"
+                      onClick={() =>
+                        handleSaveEditListName(
+                          listData.find(
+                            (list) => list.list_id === selectedListId
+                          )
+                        )
+                      }
+                    >
+                      Guardar
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => {
+                        setEditMode(false);
+                        setEditedListName(
+                          listData.find(
+                            (list) => list.list_id === selectedListId
+                          ).list_name
+                        );
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="primary"
+                    onClick={() =>
+                      handleEditListName(
+                        listData.find((list) => list.list_id === selectedListId)
+                      )
+                    }
+                  >
+                    Editar
+                  </Button>
+                )}
+              </div>
+            </div>
+            <div className={styles.product_container}>
+              {listData
+                .find((list) => list.list_id === selectedListId)
+                .products.map((product, index) => {
+                  const productInfo = productsCatalog.data.find(
+                    (item) => item.name === product
+                  );
+                  return (
+                    <div key={index} className={styles.product_item}>
+                      {productInfo && (
+                        <div
+                          key={index}
+                          className={styles.product_card}
+                          onClick={() =>
+                            handleRemoveProduct(
+                              listData.find(
+                                (list) => list.list_id === selectedListId
+                              ),
+                              product
+                            )
+                          }
+                        >
+                          <img
+                            src={`http://localhost:8080${productInfo.images}`}
+                            alt={productInfo.name}
+                            className={styles.product_image}
+                          />
+                          <p className={styles.product_name}>
+                            {productInfo.name}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+            <Button
+              variant="primary"
+              onClick={() =>
+                handleAddProduct(
+                  listData.find((list) => list.list_id === selectedListId)
+                )
+              }
+            >
+              Agregar
+            </Button>
+            <Button onClick={() => setSelectedListId(null)}>Atras</Button>
+          </div>
+        </div>
       ) : (
         listData.map((list) => (
-          <div className={styles.list__container} key={list.list_id}>
+          <div
+            className={styles.list__container}
+            key={list.list_id}
+            onClick={() => {
+              handleListClick(list.list_id);
+            }}
+          >
             <div className={styles.list__content}>
               <div className={styles.user__container}>
                 <div className={styles.content__user}>
                   <p className={styles.user__username}>{list.list_name}</p>
-                  <p className={styles.user__timepost}>5h</p>
                 </div>
                 {userId === tokenUserId && (
                   <div className={styles.more__actions}>
-                    <Button variant="link" onClick={handleButtonClick}>
-                      <AiOutlineEllipsis />
-                    </Button>
-                    {showDeleteOption && (
-                      <>
-                        <Button variant="link" onClick={() => handleEdit(list)}>
-                          Editar
-                        </Button>
-                        <Button
-                          variant="link"
-                          onClick={() => handleDelete(list.list_id)}
-                        >
-                          Borrar
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className={styles.product_container}>
-                {list.products.length === 0 ? (
-                  <p>Esta lista todavía no tiene productos</p>
-                ) : (
-                  list.products.map((product, index) => (
                     <Button
-                      key={index}
-                      className={styles.product_button}
-                      onClick={() => handleRemoveProduct(list, product)}
+                      className={styles.action_buttons}
+                      onClick={() => handleEdit(list)}
                     >
-                      {product}
-                      <FaTimes
+                      <FaEdit className={styles.profile_interest_remove_icon} />
+                    </Button>
+                    <Button
+                      className={styles.action_buttons}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteList(list);
+                      }}
+                    >
+                      <FaTrash
                         className={styles.profile_interest_remove_icon}
                       />
                     </Button>
-                  ))
+                  </div>
                 )}
-                <Button
-                  variant="primary"
-                  onClick={() => handleAddProduct(list)}
-                >
-                  Agregar
-                </Button>
               </div>
             </div>
           </div>

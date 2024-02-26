@@ -6,7 +6,7 @@ function EditListModal({
   onHide,
   setShowInterestModal,
   selectedInterests,
-  profileId, // Nuevo prop: ID del perfil
+  profileId,
   updateProfilesWithNewInterests,
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,14 +22,17 @@ function EditListModal({
         interest_id: selectedInterests.map((interest) => interest.interest_id),
       };
 
-      const response = await fetch("http://localhost:8080/api/v1/profileInterests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/profileInterests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         alert("Error al guardar intereses");
@@ -38,7 +41,7 @@ function EditListModal({
 
       setIsLoading(false);
       setShowInterestModal(false);
-      updateProfilesWithNewInterests(selectedInterests); 
+      updateProfilesWithNewInterests(selectedInterests);
     } catch (error) {
       alert("Error al guardar intereses");
       console.error("Error saving interests:", error);
@@ -52,17 +55,17 @@ function EditListModal({
         <Modal.Title>Selecciona un interés</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        
-          <Button>
-           
-          </Button>
- 
+        <Button></Button>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
           Cerrar
         </Button>
-        <Button variant="primary" onClick={handleSaveInterests} disabled={isLoading}>
+        <Button
+          variant="primary"
+          onClick={handleSaveInterests}
+          disabled={isLoading}
+        >
           {isLoading ? "Guardando..." : "Guardar"}
         </Button>
       </Modal.Footer>
