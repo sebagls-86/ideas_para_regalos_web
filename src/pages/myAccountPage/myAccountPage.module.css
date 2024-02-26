@@ -1,6 +1,8 @@
 .perfil_banner {
   width: 100%;
+  cursor: pointer;
 }
+
 .profile_picture {
   width: 165px;
   height: 165px;
@@ -11,15 +13,35 @@
   background-color: green;
   margin-bottom: 12px;
   transform: translateX(-0%) translateY(-0%);
+  cursor: pointer;
 }
-.btn {
-  position: absolute;
-  right: 0;
-  transform: translateX(-50%) translateY(-150%);
+
+.button__container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
   border: 1px solid #dedfe6;
   border-radius: 15px;
   padding-inline: 5px;
 }
+
+.custom__button {
+  border: none;
+  border-radius: 20px;
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.profile_info_container {
+  border-radius: 8px;
+  padding: 20px;
+  }
+
+
 @media only screen and (max-width: 768px) {
   .profile_picture {
     width: 85px;
@@ -27,3 +49,4 @@
     border: 5px solid white;
   }
 }
+

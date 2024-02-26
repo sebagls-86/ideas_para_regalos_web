@@ -1,0 +1,144 @@
+.perfil_banner {
+  width: 100%;
+  cursor: pointer;
+}
+
+.profile_picture {
+  width: 165px;
+  height: 165px;
+  margin-top: -8%;
+  margin-left: 3%;
+  border: 8px solid white;
+  border-radius: 100px;
+  background-color: green;
+  margin-bottom: 12px;
+  transform: translateX(-0%) translateY(-0%);
+  cursor: pointer;
+}
+
+.button__container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  border: 1px solid #dedfe6;
+  border-radius: 15px;
+  padding-inline: 5px;
+}
+
+.custom__button {
+  border: none;
+  border-radius: 20px;
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.profile_info_container {
+  border-radius: 8px;
+  padding: 20px;
+  }
+
+  .text_area{
+    width: "100%";
+    padding: "10px";
+    border-radius: "8px";
+    border: "1px solid #ccc";
+    margin-bottom: "10px";
+    resize: "none";
+    }
+
+  .send_button{
+    border: "none";
+    border-radius: "20px";
+    background-color: "green";
+    color: "white";
+    padding: "10px 20px";
+    cursor: "pointer";
+    font-weight: "bold";
+  }
+
+  .forum_title {
+    font-size: 24px;
+    margin-top: 6rem;
+    margin-bottom: 10px;
+  }
+  
+  .forum_description {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .forum_event {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .forum_message {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .forum_message_item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .forum_username,
+  .forum_date {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  
+  .forum_images {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .forum_image {
+    max-width: 100px;
+    max-height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .modal_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  
+  }
+
+  .forum_title_container,
+.forum_description_container {
+  position: relative;
+  margin-bottom: 20px; 
+  margin-top: 10rem;
+}
+
+.edit_button_container {
+  position: absolute;
+  top: 0rem; /* Ajusta la posición vertical según sea necesario */
+  right: 10px; /* Ajusta la posición horizontal según sea necesario */
+}
+
+/* Estilos adicionales según sea necesario */
+.edit_button_container button {
+  margin-left: 10px; /* Espaciado entre botones */
+}
+
+
+@media only screen and (max-width: 768px) {
+  .profile_picture {
+    width: 85px;
+    height: 85px;
+    border: 5px solid white;
+  }
+}
+

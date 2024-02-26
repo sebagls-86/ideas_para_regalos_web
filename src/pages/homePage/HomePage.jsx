@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,114 +14,38 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 
-function HomePage(props) {
+function HomePage() {
   const [user] = useAuthState(auth);
-  console.log(user);
+  const [tokenExists, setTokenExists] = useState(false);
 
-  const Publicaciones = [
-    {
-      id: 1,
-      name: "Marcos",
-      userName: "@Marcos",
-      userImage: "https://randomuser.me/api/portraits/men/33.jpg",
-      post_title: "Regalo para mi novia en su cumpleaños",
-      post_tags: ["Ropa", "Calzado", "Viajes"],
-      post_description:
-        "Deje de perder tiempo compilando reseñas y use nuestra lista para una compra informada. Encuentre los productos adecuados dentro de su presupuesto y necesidades. Hallar productos top. Productos top. ",
-      post_images: [
-        "https://random.imagecdn.app/500/500",
-        "https://random.imagecdn.app/500/500",
-      ],
-      post_likes: 1,
-      post_comments: 99,
-    },
-    {
-      id: 2,
-      name: "Ani",
-      userName: "@AniBK",
-      userImage: "https://randomuser.me/api/portraits/women/10.jpg",
-      post_title: "Regalo para mi novio",
-      post_tags: ["Lectura", "Instrumentos", "Fotografía"],
-      post_description:
-        "Ideas regalos originales Regalos originales, Regalos originales para hombres, Regalos originales para mujeres, Regalos originales para parejas, Regalos ..5",
-      post_images: [
-        "https://random.imagecdn.app/500/500",
-        "https://random.imagecdn.app/500/500",
-      ],
-      post_likes: 16,
-      post_comments: 12,
-    },
-    {
-      id: 3,
-      name: "Horacio",
-      userName: "@Horacito",
-      userImage: "https://randomuser.me/api/portraits/men/22.jpg",
-      post_title: "No se que regalar cumple de 15",
-      post_tags: ["senderismo", "Deportes", "Baile"],
-      post_description:
-        "Que este San Valentín Vibre alto, Chau desayunos , flores y cenas, Sorprendx placer. Regala una nueva experiencia, que esta no se limita a disfrutarse por una única vez. Atención personalizada. Seguridad y discreción. Envíos Sin Cargo.",
-      post_images: [
-        "https://random.imagecdn.app/500/500",
-        "https://random.imagecdn.app/500/500",
-      ],
-      post_likes: 22,
-      post_comments: 55,
-    },
-    {
-      id: 4,
-      name: "seba",
-      userName: "@seba",
-      userImage: "https://randomuser.me/api/portraits/men/99.jpg",
-      post_title: "Ayuda!",
-      post_tags: ["arte pop", "calzado", "Fotografía"],
-      post_description:
-        "Fanbag Fin de año. Regala una experiencia para navidad. Cenas, Aventuras, Día de Spa, Teatro y más. Regalá Físico o Digital y Envía al Instante. Más de 3.000 Experiencias.5",
-      post_images: [
-        "https://random.imagecdn.app/500/500",
-        "https://random.imagecdn.app/500/500",
-      ],
-      post_likes: 125,
-      post_comments: 15,
-    },
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null && token !== undefined) {
+      setTokenExists(true);
+    }
+}, []);
+
   
   return (
     <>
-      {!user && <NavLoggedOut />}
+      {(!user && !tokenExists) && <NavLoggedOut />}
       <div className="contenedor">
-        <div className="left__aside">{user && <Nav user={user.displayName} />}</div>
+        <div className="left__aside">{(user || tokenExists) && <Nav user={user?.displayName} />}</div>
         <div className="content">
-        <PageTitle title="Inicio" />
-          <Col>
+          <PageTitle title="Inicio" />
+          {(!user && !tokenExists) && <Col>
             <LoginMobile />
-          </Col>
+          </Col>}
           <NuevoRegaloHome></NuevoRegaloHome>
           <div className="mt-3 p-3 bordes-y">
-        
-            {Publicaciones.map((post, index) => {
-              return (
-                <Post
-                  key={index}
-                  id={post.id}
-                  name={post.name}
-                  userName={post.userName}
-                  userImage={post.userImage}
-                  post_title={post.post_title}
-                  post_tags={post.post_tags}
-                  post_description={post.post_description}
-                  post_images={post.post_images}
-                  post_likes={post.post_likes}
-                  post_comments={post.post_comments}
-                />
-              );
-            })}
+            <Post />
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {user && <Search />}
-            <AsideLogin />
-            {user && (
+            {(user || tokenExists) && <Search />}
+            {(!user && !tokenExists) && <AsideLogin />}
+            {(user || tokenExists) && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

@@ -1,18 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logoimg from "../../assets/logoIdeasParaRegalos.png";
 import crearPost from "../../assets/crear__post__nav.svg";
 import NavLinks from "../../components/navLinks/NavLinks";
+import { useNavigate } from "react-router-dom";
 import {
   AiOutlineCompass,
   AiOutlineBell,
   AiOutlineHome,
   AiOutlineUser,
   AiOutlineCalendar,
+  AiOutlineLogout,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import styles from "./nav.module.css";
+import jwtDecode from "jwt-decode";
 
-function Nav({user}) {
+function Nav() {
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+    window.location.reload();
+  };
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUserData(decoded);
+    }
+  }, []);
+
   return (
     <nav className={styles.nav__container}>
       <Link to="/" className={styles.nav__logo}>
@@ -33,13 +54,18 @@ function Nav({user}) {
           icon={<AiOutlineCalendar className=" fw-700 fs-3" />}
         />
         <NavLinks
-          url={`/perfil/@${user}`}
+          url={`/perfil/${userData?.user_id}`}
           icon={<AiOutlineUser className="fw-700 fs-3" />}
         />
       </ul>
       <Link to="/nuevoRegalo" className={styles.nav__publicar}>
         <img src={crearPost} alt="Crear publicación" />
       </Link>
+      <div className={styles.logout_icon}>
+        <icon onClick={handleLogout} className="fw-700 fs-3" cursor="pointer">
+          <AiOutlineLogout className="fw-700 fs-3" />
+        </icon>
+      </div>
     </nav>
   );
 }
