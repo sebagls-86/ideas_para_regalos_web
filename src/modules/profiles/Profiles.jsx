@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import styles from "./css/profiles.module.css";
 import { Modal, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+import { IoMdClose, IoIosSearch } from "react-icons/io";
 import InterestModal from "./InterestsModal";
 import EditProfileModal from "./EditProfileModal";
 import NuevoPerfilModal from "./NuevoPerfilModal";
+import { AiOutlinePlus } from "react-icons/ai";
 
 function Profiles() {
   const [profilesData, setProfilesData] = useState(null);
@@ -512,8 +513,10 @@ function Profiles() {
       <Modal
         show={showDeleteProfileConfirmationModal}
         onHide={() => setShowDeleteProfileConfirmationModal(false)}
+        centered
       >
-        <Modal.Header closeButton className={styles.modal__header}>
+        <Modal.Header className={styles.modal__header}>
+          <IoMdClose className={styles.custom_close_button} />
           <Modal.Title className={styles.modal__title}>
             ¿Estás seguro?
           </Modal.Title>
@@ -595,7 +598,7 @@ function Profiles() {
                             }
                           >
                             {interest.interest}
-                            <FaTimes
+                            <IoMdClose
                               className={styles.profile_interest_remove_icon}
                             />
                           </Button>
@@ -620,14 +623,18 @@ function Profiles() {
       ) : (
         <div>
           <div className={styles.create_new_container}>
-            <form>
-              <input type="search"></input>
-            </form>
+            <div className={styles.search_bar}>
+              <form>
+                <input type="search"></input>
+                <IoIosSearch />
+              </form>
+            </div>
 
             <Button
               onClick={() => setShowNewProfileModal(true)}
               className={styles.create_new_button}
             >
+              <AiOutlinePlus />
               Crear nuevo
             </Button>
           </div>

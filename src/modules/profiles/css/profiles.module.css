@@ -6,13 +6,23 @@
   text-align: center;
   font-weight: bolder;
 }
+
+.custom_close_button {
+  font-size: 20px;
+  position: absolute;
+  left: 3%;
+  top: 5%;
+
+}
 .modal__title {
   font-weight: 600;
   text-align: center;
+  margin-top: 30px;
 }
 .modal__body {
   font-size: 20px;
   text-align: center;
+  padding: 30px;
 }
 .modal__footer {
   justify-content: center !important;
@@ -47,10 +57,42 @@
   width: 100%;
   padding: 25px 0px;
 }
+.edit_buttons button, .edit_buttons button:hover{
+  background-color: var(--primary-dark);
+  border: none;
+}
+.search_bar{
+  position: relative;
+}
+.search_bar input{
+  width: 200%;
+  height: 36px;
+  border-radius: 10px;
+  border: 0.5px solid;
+ 
+}
+.search_bar svg{
+  margin-right: 5px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 3%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .create_new_button,
 .create_new_button:hover {
   background-color: var(--primary-dark);
   border: none;
+
+}
+.create_new_button svg{
+  fill: white;
+  margin-right: 5px;
+  width: 22px;
+  height: 22px;
+  position: relative !important;
 }
 
 .profiles__table {
@@ -108,11 +150,14 @@
 }
 
 .profile_interest_button:hover {
-  background-color: red;
+  border-color: red;
+  background-color: transparent;
+  color: var(--black);
 }
 
 .profile_interest_remove_icon {
-  margin-left: 4px;
+  margin-left: 7px;
+  
 }
 .profile_gift_icon,
 .profile_edit_icon,
@@ -241,12 +286,13 @@
   width: 35px;
   padding: 10px;
   border-radius: 30px;
+  margin-left: 40px;
 }
 .go_back_button,
 .go_back_button:hover {
   background-image: url(/src/assets/go-back-icon.svg);
-  background-color: transparent;
-  border: none;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 @media only screen and (min-width: 768px) {
@@ -274,3 +320,4 @@
     width: 100%;
   }
 }
+
