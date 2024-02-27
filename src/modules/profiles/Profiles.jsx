@@ -483,21 +483,27 @@ function Profiles() {
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmar eliminación</Modal.Title>
+        <Modal.Header closeButton className={styles.modal__header}>
+          <Modal.Title className={styles.modal__title}>
+            ¿Estás seguro?
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          ¿Está seguro de que desea eliminar el interés "
-          {interestToRemove?.interest}"?
+        <Modal.Body className={styles.modal__body}>
+          Se eliminará "{interestToRemove?.interest}" de sus intereses
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className={styles.modal__footer}>
           <Button
             variant="secondary"
             onClick={() => setShowConfirmationModal(false)}
+            className={styles.modal__cancel}
           >
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleConfirmRemoveInterest}>
+          <Button
+            variant="primary"
+            onClick={handleConfirmRemoveInterest}
+            className={styles.modal__confirm}
+          >
             Confirmar
           </Button>
         </Modal.Footer>
@@ -507,23 +513,26 @@ function Profiles() {
         show={showDeleteProfileConfirmationModal}
         onHide={() => setShowDeleteProfileConfirmationModal(false)}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmar eliminación</Modal.Title>
+        <Modal.Header closeButton className={styles.modal__header}>
+          <Modal.Title className={styles.modal__title}>
+            ¿Estás seguro?
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          ¿Está seguro de que desea eliminar el perfil "{profileToRemove?.name}
-          "?
+        <Modal.Body className={styles.modal__body}>
+          Se eliminará "{profileToRemove?.name}" de tus perfiles
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className={styles.modal__footer}>
           <Button
             variant="secondary"
             onClick={() => setShowDeleteProfileConfirmationModal(false)}
+            className={styles.modal__cancel}
           >
             Cancelar
           </Button>
           <Button
             variant="primary"
             onClick={() => handleConfirmDeleteProfile(profileToRemove)}
+            className={styles.modal__confirm}
           >
             Confirmar
           </Button>
@@ -532,34 +541,46 @@ function Profiles() {
 
       {selectedProfile ? (
         <div>
-          <table className={styles.profiles__table}>
+          <div className={styles.edit_buttons}>
+            <Button
+              onClick={() => setSelectedProfile(null)}
+              className={styles.go_back_button}
+            ></Button>{" "}
+            {/* Atras */}
+            <Button onClick={() => handleEditModal(selectedProfile)}>
+              Editar
+            </Button>
+          </div>
+          <table
+            className={`${styles.profiles__table} ${styles.profiles__table__info}`}
+          >
             <tbody>
               <tr>
-                <th className={styles.profiles__table_th}>Name</th>
+                <th className={styles.profiles__table_th}>Nombre</th>
                 <td className={styles.profiles__table_td}>
                   {selectedProfile.name}
                 </td>
               </tr>
               <tr>
-                <th className={styles.profiles__table_th}>Last Name</th>
+                <th className={styles.profiles__table_th}>Apellido</th>
                 <td className={styles.profiles__table_td}>
                   {selectedProfile.last_name}
                 </td>
               </tr>
               <tr>
-                <th className={styles.profiles__table_th}>Age Range</th>
+                <th className={styles.profiles__table_th}>Edad</th>
                 <td className={styles.profiles__table_td}>
                   {selectedProfile.age_range}
                 </td>
               </tr>
               <tr>
-                <th className={styles.profiles__table_th}>Relationship</th>
+                <th className={styles.profiles__table_th}>Relación</th>
                 <td className={styles.profiles__table_td}>
                   {selectedProfile.relationship}
                 </td>
               </tr>
               <tr>
-                <th className={styles.profiles__table_th}>Interests</th>
+                <th className={styles.profiles__table_th}>Intereses</th>
                 <td className={styles.profiles__table_td}>
                   <div>
                     {selectedProfile.interests &&
@@ -579,59 +600,65 @@ function Profiles() {
                             />
                           </Button>
                         ))}
+                        <Button
+                          className={`${styles.profile_interest_buttons} ${styles.interest_add_button}`}
+                          onClick={() =>
+                            handleShowInterestModal(selectedProfile)
+                          }
+                        ></Button>{" "}
+                        {/* Agregar */}
                       </div>
                     ) : (
                       <span>N/A</span>
                     )}
-                    <div className={styles.profile_interest_container}>
-                      <Button
-                        className={styles.profile_interest_buttons}
-                        onClick={() => handleShowInterestModal(selectedProfile)}
-                      >
-                        Agregar
-                      </Button>
-                    </div>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <Button onClick={() => handleEditModal(selectedProfile)}>
-            Editar
-          </Button>
-          <Button onClick={() => setSelectedProfile(null)}>Atras</Button>
         </div>
       ) : (
         <div>
-          <Button onClick={() => setShowNewProfileModal(true)}>
-            Crear nuevo perfil
-          </Button>
+          <div className={styles.create_new_container}>
+            <form>
+              <input type="search"></input>
+            </form>
+
+            <Button
+              onClick={() => setShowNewProfileModal(true)}
+              className={styles.create_new_button}
+            >
+              Crear nuevo
+            </Button>
+          </div>
           {profilesData === null ? (
             <p>Todavía no hay perfiles</p>
           ) : (
             <table className={styles.profiles__table}>
-              <thead>
-                <tr>
-                  <th className={styles.profiles__table_th}>Name</th>
-
-                  <th className={styles.profiles__table_th}>Acciones</th>
-                </tr>
-              </thead>
               <tbody>
                 {profilesData.map((profile) => (
-                  <tr key={profile.profile_id}>
-                    <td className={styles.profiles__table_td}>
-                      {profile.name}
-                    </td>
-                    <td className={styles.action_buttons_td}>
+                  <div
+                    key={profile.profile_id}
+                    className={styles.profiles__table__container}
+                  >
+                    <div></div>
+                    <div>
+                      <div>{profile.name}</div>
+                      <div>{profile.relationship}</div>
+                    </div>
+                    <div className={styles.action_buttons_td}>
                       <div className={styles.action_buttons_container}>
+                        <Button
+                          className={styles.action_buttons}
+                          onClick={() => profile}
+                        >
+                          <div className={styles.profile_gift_icon} />
+                        </Button>
                         <Button
                           className={styles.action_buttons}
                           onClick={() => handleEdit(profile)}
                         >
-                          <FaEdit
-                            className={styles.profile_interest_remove_icon}
-                          />
+                          <div className={styles.profile_edit_icon} />
                         </Button>
                         <Button
                           className={styles.action_buttons}
@@ -640,13 +667,11 @@ function Profiles() {
                             handleDeleteProfile(profile);
                           }}
                         >
-                          <FaTrash
-                            className={styles.profile_interest_remove_icon}
-                          />
+                          <div className={styles.profile_delete_icon} />
                         </Button>
                       </div>
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 ))}
               </tbody>
             </table>
