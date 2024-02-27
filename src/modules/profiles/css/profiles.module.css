@@ -76,7 +76,7 @@
   width: 24px;
   height: 24px;
   position: absolute;
-  left: 3%;
+  left: 203%;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -293,6 +293,12 @@
   background-image: url(/src/assets/go-back-icon.svg);
   background-color: transparent !important;
   border: none !important;
+}
+
+.icon_style {
+  cursor: pointer;
+  color: white;
+  padding: 5px;
 }
 
 @media only screen and (min-width: 768px) {

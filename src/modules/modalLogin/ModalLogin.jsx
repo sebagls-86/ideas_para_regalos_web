@@ -10,6 +10,7 @@ import Button from "../../components/button/Button";
 function ModalLogin({ closeModal }) {
   const [form, setForm] = useState({});
   const [error, setError] = useState(null);
+  const [showModal] = useState(true); 
 
   const handleChange = (e) => {
     setForm({
@@ -17,6 +18,9 @@ function ModalLogin({ closeModal }) {
       [e.target.name]: e.target.value
     });
   };
+
+  console.log("closeModal function:", closeModal);
+  console.log("ModalLogin rendering...");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +50,7 @@ function ModalLogin({ closeModal }) {
   console.log("token", localStorage.getItem("token"));
 
   return (
-    <Modal closeModal={closeModal} title="Iniciar sesión">
+    <Modal closeModal={closeModal} title="Iniciar sesión" show={showModal}>
       <Col>
         <div className={styles.buttons__container}>
           <GoogleLogin />

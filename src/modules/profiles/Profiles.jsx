@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./css/profiles.module.css";
-import { Modal, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
 import InterestModal from "./InterestsModal";
 import EditProfileModal from "./EditProfileModal";
-import NuevoPerfilModal from "./NuevoPerfilModal";
+import CustomModal from "./CustomModal";
+import NewProfile from "../modalCreateProfile/ModalCreateProfile";
 import { AiOutlinePlus } from "react-icons/ai";
 
 function Profiles() {
@@ -27,9 +28,11 @@ function Profiles() {
   const [editingProfile, setEditingProfile] = useState(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [interestToRemove, setInterestToRemove] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
+  const inputRef = useRef(null);
 
   const token = localStorage.getItem("token");
 
@@ -444,6 +447,25 @@ function Profiles() {
     setShowNewProfileModal(true);
   };
 
+  const filteredProfiles = profilesData
+    ? profilesData.filter((profile) =>
+        profile.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
+  const handleSearchClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleClearClick = () => {
+    setSearchTerm("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   return (
     <div>
       <EditProfileModal
@@ -467,7 +489,7 @@ function Profiles() {
         updateProfilesWithNewInterests={updateProfilesWithNewInterests}
       />
 
-      <NuevoPerfilModal
+      <NewProfile
         show={showNewProfileModal}
         onHide={() => handleShowNewProfileModal(false)}
         ageRanges={ageRanges}
@@ -480,67 +502,25 @@ function Profiles() {
         handleSaveNewProfile={handleSaveNewProfile}
       />
 
-      <Modal
+      <CustomModal
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
-      >
-        <Modal.Header closeButton className={styles.modal__header}>
-          <Modal.Title className={styles.modal__title}>
-            ¿Estás seguro?
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.modal__body}>
-          Se eliminará "{interestToRemove?.interest}" de sus intereses
-        </Modal.Body>
-        <Modal.Footer className={styles.modal__footer}>
-          <Button
-            variant="secondary"
-            onClick={() => setShowConfirmationModal(false)}
-            className={styles.modal__cancel}
-          >
-            Cancelar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleConfirmRemoveInterest}
-            className={styles.modal__confirm}
-          >
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        title="¿Estás seguro?"
+        bodyContent={`Se eliminará "${interestToRemove?.interest.interest}" de sus intereses`}
+        onCancel={() => setShowConfirmationModal(false)}
+        onConfirm={handleConfirmRemoveInterest}
+        confirmButtonText="Confirmar"
+      />
 
-      <Modal
+      <CustomModal
         show={showDeleteProfileConfirmationModal}
         onHide={() => setShowDeleteProfileConfirmationModal(false)}
-        centered
-      >
-        <Modal.Header className={styles.modal__header}>
-          <IoMdClose className={styles.custom_close_button} />
-          <Modal.Title className={styles.modal__title}>
-            ¿Estás seguro?
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.modal__body}>
-          Se eliminará "{profileToRemove?.name}" de tus perfiles
-        </Modal.Body>
-        <Modal.Footer className={styles.modal__footer}>
-          <Button
-            variant="secondary"
-            onClick={() => setShowDeleteProfileConfirmationModal(false)}
-            className={styles.modal__cancel}
-          >
-            Cancelar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => handleConfirmDeleteProfile(profileToRemove)}
-            className={styles.modal__confirm}
-          >
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        title="¿Estás seguro?"
+        bodyContent={`Se eliminará "${profileToRemove?.name}" de tus perfiles`}
+        onCancel={() => setShowDeleteProfileConfirmationModal(false)}
+        onConfirm={() => handleConfirmDeleteProfile(profileToRemove)}
+        confirmButtonText="Confirmar"
+      />
 
       {selectedProfile ? (
         <div>
@@ -549,7 +529,6 @@ function Profiles() {
               onClick={() => setSelectedProfile(null)}
               className={styles.go_back_button}
             ></Button>{" "}
-            {/* Atras */}
             <Button onClick={() => handleEditModal(selectedProfile)}>
               Editar
             </Button>
@@ -609,7 +588,6 @@ function Profiles() {
                             handleShowInterestModal(selectedProfile)
                           }
                         ></Button>{" "}
-                        {/* Agregar */}
                       </div>
                     ) : (
                       <span>N/A</span>
@@ -624,9 +602,25 @@ function Profiles() {
         <div>
           <div className={styles.create_new_container}>
             <div className={styles.search_bar}>
-              <form>
-                <input type="search"></input>
-                <IoIosSearch />
+              <form style={{ position: "relative" }}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ flex: 1 }}
+                />
+                {!searchTerm ? (
+                  <IoIosSearch
+                    className={styles.icon_style}
+                    onClick={handleSearchClick}
+                  />
+                ) : (
+                  <IoMdClose
+                    className={styles.icon_style}
+                    onClick={handleClearClick}
+                  />
+                )}
               </form>
             </div>
 
@@ -638,51 +632,68 @@ function Profiles() {
               Crear nuevo
             </Button>
           </div>
-          {profilesData === null ? (
-            <p>Todavía no hay perfiles</p>
-          ) : (
-            <table className={styles.profiles__table}>
-              <tbody>
-                {profilesData.map((profile) => (
-                  <div
-                    key={profile.profile_id}
-                    className={styles.profiles__table__container}
-                  >
-                    <div></div>
-                    <div>
-                      <div>{profile.name}</div>
-                      <div>{profile.relationship}</div>
-                    </div>
-                    <div className={styles.action_buttons_td}>
-                      <div className={styles.action_buttons_container}>
-                        <Button
-                          className={styles.action_buttons}
-                          onClick={() => profile}
-                        >
-                          <div className={styles.profile_gift_icon} />
-                        </Button>
-                        <Button
-                          className={styles.action_buttons}
-                          onClick={() => handleEdit(profile)}
-                        >
-                          <div className={styles.profile_edit_icon} />
-                        </Button>
-                        <Button
-                          className={styles.action_buttons}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteProfile(profile);
-                          }}
-                        >
-                          <div className={styles.profile_delete_icon} />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <table className={styles.profiles__table}>
+            <tbody>
+              {profilesData ? (
+                profilesData.length > 0 ? (
+                  filteredProfiles.length > 0 ? (
+                    filteredProfiles.map((profile) => (
+                      <tr
+                        key={profile.profile_id}
+                        className={styles.profiles__table__container}
+                      >
+                        <td>
+                          <div>
+                            <div>{profile.name}</div>
+                            <div>{profile.relationship}</div>
+                          </div>
+                        </td>
+                        <td className={styles.action_buttons_td}>
+                          <div className={styles.action_buttons_container}>
+                            <Button
+                              className={styles.action_buttons}
+                              onClick={() => profile}
+                            >
+                              <div className={styles.profile_gift_icon} />
+                            </Button>
+                            <Button
+                              className={styles.action_buttons}
+                              onClick={() => handleEdit(profile)}
+                            >
+                              <div className={styles.profile_edit_icon} />
+                            </Button>
+                            <Button
+                              className={styles.action_buttons}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteProfile(profile);
+                              }}
+                            >
+                              <div className={styles.profile_delete_icon} />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="2">
+                        No se encontraron perfiles que coincidan con la búsqueda
+                      </td>
+                    </tr>
+                  )
+                ) : (
+                  <tr>
+                    <td colSpan="2">Todavía no hay perfiles</td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="2">Todavía no hay perfiles</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

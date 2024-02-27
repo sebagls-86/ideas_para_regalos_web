@@ -4,7 +4,6 @@ import Button from "../../components/button/Button";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import Search from "../../components/search/Search";
 
 function AsideLogin() {
   const [openModal, setOpenModal] = useState(false);
@@ -17,9 +16,12 @@ function AsideLogin() {
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
-            onClick={() => setOpenModal(true)}
+            onClick={() => {
+              console.log("Abriendo modal...");
+              setOpenModal(true);
+            }}
           />
-          {openModal && <ModalLogin closeModal={setOpenModal} />}
+          {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
         </div>
         <div className="d-flex justify-content-center align-items-center gap-5 flex-column flex-xl-row mt-5">
           <Link to="/ayuda" className="fz-17">

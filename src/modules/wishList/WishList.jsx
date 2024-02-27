@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/list.module.css";
-import { Button, Modal } from "react-bootstrap";
+import { Spinner, Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import AddProductsModal from "./AddProductsModal";
+import ModalCreateList from "./ModalCreateList";
 import jwtDecode from "jwt-decode";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -24,6 +25,7 @@ function WishList() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showAddProductsModal, setShowAddProductsModal] = useState(false);
   const [selectedListId, setSelectedListId] = useState(null);
+  const [showCreateListModal, setShowCreateListModal] = useState(false);
 
   const { user_id } = useParams();
   const userId = parseInt(user_id);
@@ -210,7 +212,7 @@ function WishList() {
   };
 
   const handleCreateList = () => {
-    navigate("/createList");
+    setShowCreateListModal(true);
   };
 
   const handleAddProduct = (list) => {
@@ -275,7 +277,7 @@ function WishList() {
       const response = await fetch(
         `http://localhost:8080/api/v1/lists/${list.list_id}`,
         {
-          method: "PATCH", // Utilizamos PATCH para actualizar el recurso existente
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -285,7 +287,6 @@ function WishList() {
       );
       if (response.ok) {
         alert("Nombre de lista actualizado correctamente");
-        // Actualizamos el nombre de la lista en el estado local
         const updatedListData = listData.map((listItem) => {
           if (listItem.list_id === list.list_id) {
             return {
@@ -314,6 +315,42 @@ function WishList() {
     setEditedListName(event.target.value);
   };
 
+  const handleSaveNewList = async (newList) => {
+    try {
+      const dataToSend = {
+        list_name: newList.list_name,
+        list_type_id: 2
+      };
+
+      const response = await fetch(
+        `http://localhost:8080/api/v1/lists`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
+      if (response.ok) {
+        alert("Lista creada correctamente");
+        const data = await response.json();
+        setListData([...listData, data.data]);
+        setShowCreateListModal(false);
+      } else {
+        alert("Error al crear la lista");
+        console.error("Error al crear la lista");
+      }
+    } catch (error) {
+      alert("Error al enviar solicitud de creación de la lista");
+      console.error(
+        "Error al enviar solicitud de creación de la lista:",
+        error
+      );
+    }
+  }
+
   return (
     <div>
       <AddProductsModal
@@ -326,6 +363,13 @@ function WishList() {
         listId={selectedList ? selectedList.list_id : null}
         updateListsWithNewProducts={updateListsWithNewProducts}
       />
+
+      <ModalCreateList
+        show={showCreateListModal}
+        onHide={() => setShowCreateListModal(false)}
+        handleSaveNewList={handleSaveNewList}
+      />
+
       <Modal
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
@@ -377,6 +421,7 @@ function WishList() {
       <Button variant="primary" onClick={handleCreateList}>
         Crear lista
       </Button>
+      {loading && <Spinner />}
       {listData === null ? (
         <p>Todavía no hay listas</p>
       ) : selectedListId ? (
