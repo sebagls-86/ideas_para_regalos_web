@@ -1,162 +1,164 @@
-.list__container{
-    padding-top: var(--fz-30);
-    padding-bottom: var(--fz-25);
-    display: flex;
-
+.list__container {
+  padding-top: var(--fz-30);
+  padding-bottom: var(--fz-25);
+  display: flex;
 }
-.list__container:not(:last-child){
-    border-bottom: 1px solid rgba(0, 0, 0, 0.322);
+.list__container:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.322);
 }
-.container__image img{
-    border-radius: 50%;
+.container__image img {
+  border-radius: 50%;
 }
-.list__content{
-    /* width: 100%; */
-    margin-left: 1rem;
+.list__content {
+  /* width: 100%; */
+  margin-left: 1rem;
 }
-.user__container{
-    /* width: 100%; */
-    display: flex;
-    justify-content: space-between;
+.user__container {
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
 }
-.content__user{
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    /* width: 300px; */
-    gap: 0px 0.75rem;
+.content__user {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  /* width: 300px; */
+  gap: 0px 0.75rem;
 }
-.user__username{
-    font-size: var(--fz-20);
-    font-weight: 800;
+.user__username {
+  font-size: var(--fz-20);
+  font-weight: 800;
 }
-.user__tagname{
-    font-size: var(--fz-15);
-    font-weight: 600;
-
+.user__tagname {
+  font-size: var(--fz-15);
+  font-weight: 600;
 }
-.user__tagname:hover{
-    color: var(--primary-dark);
-
+.user__tagname:hover {
+  color: var(--primary-dark);
 }
-.user__timepost{
-    font-size: var(--fz-9);
-    font-weight: 600;
+.user__timepost {
+  font-size: var(--fz-9);
+  font-weight: 600;
 }
 
-.more__actions{
-    font-weight: 800;
-    font-size: var(--fz-20);
+.more__actions {
+  font-weight: 800;
+  font-size: var(--fz-20);
+}
+.list__title {
+  font-size: var(--fz-17);
+}
+.content__tags {
+  display: flex;
+  flex-direction: row;
+  gap: var(--fz-11);
+  padding-top: 0.5rem;
+}
+.list_tags {
+  font-size: var(--fz-11);
+  font-weight: 600;
+}
+.list__images {
+  margin-top: var(--fz-15);
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  width: 200px;
+  gap: var(--fz-11);
+}
+.list__images img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--fz-15);
+}
+.list__text {
+  margin-top: var(--fz-15);
+  font-size: var(--fz-17);
+}
+.list__actions {
+  display: flex;
+  gap: 1.43rem;
+  margin-top: 1.85rem;
+}
+.actions__content {
+  display: flex;
+  gap: var(--fz-11);
+}
 
-}
-.list__title{
-    font-size: var(--fz-17);
-}
-.content__tags{
+.product_container {
     display: flex;
-    flex-direction: row;
-    gap: var(--fz-11);
-    padding-top: 0.5rem;
-}
-.list_tags{
-    font-size: var(--fz-11);
-    font-weight: 600;
-}
-.list__images{
-    margin-top: var(--fz-15);
-    display: flex;
-    /* flex-wrap: wrap; */
-    flex-direction: column;
-    width: 200px;
-    gap: var(--fz-11);
-}
-.list__images img{
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--fz-15);
-}
-.list__text{
-    margin-top: var(--fz-15);
-    font-size: var(--fz-17);
-}
-.list__actions{
-    display: flex;
-    gap: 1.43rem;
-    margin-top: 1.85rem;
-}
-.actions__content{
-    display: flex;
-    gap: var(--fz-11);
-}
-
-.product_list {
-    display: flex;
-    list-style: none; /* Eliminar los estilos de lista predeterminados */
-    padding: 0; /* Eliminar el relleno predeterminado de la lista */
-  }
-  
-  .product_list li {
-    /* Estilos opcionales para los elementos de la lista de productos */
-    margin-right: 10px; /* Espacio entre los elementos */
-  }
-  
-  .product_button:hover {
-    background-color: #e0e0e0; /* Cambiar el color de fondo al pasar el cursor */
+    flex-wrap: wrap; /* Permite que las tarjetas se envuelvan cuando no haya suficiente espacio */
+    justify-content: space-between; /* Distribuye las tarjetas horizontalmente con espacio entre ellas */
+    max-width: 100%; /* Establece el ancho máximo del contenedor al 100% del espacio disponible */
   }
 
-  .product_button {
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 16px;
-    margin-top: 2px;
-    padding: 8px 16px; /* Ajusta el espacio interno de los botones */
-    margin-right: 10px; /* Espacio entre botones dentro del mismo grupo */
-    transition: background-color 0.3s;
+.product_card {
+  width: calc(
+    25% - 10px
+  ); /* Ajusta el ancho de cada tarjeta al 25% del contenedor con un margen derecho */
+  display: inline-block;
+  flex-direction: column; /* Establecer la dirección de los elementos como vertical */
+  width: 200px; /* Establecer el ancho deseado para la tarjeta */
+  padding: 0; /* Eliminar el relleno de la tarjeta */
+  border: 1px solid #ccc; /* Añadir un borde a la tarjeta */
+  border-radius: 8px; /* Redondear las esquinas de la tarjeta */
+}
+
+.product_image {
+  width: 100%; /* La imagen ocupa todo el ancho disponible */
+  height: 75%; /* La imagen ocupa el 75% de la altura de la tarjeta */
+  object-fit: cover; /* Ajustar la imagen para que cubra todo el espacio disponible */
+  border-top-left-radius: 8px; /* Redondear la esquina superior izquierda de la imagen */
+  border-top-right-radius: 8px; /* Redondear la esquina superior derecha de la imagen */
+}
+
+.product_name {
+  text-align: center; /* Centra el texto dentro de la tarjeta */
+  margin-top: 10px; 
+}
+
+.product_item {
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    padding: 10px; /* Añade un relleno alrededor del texto */
+    margin-right: 10px; /* Ajusta la separación horizontal entre las tarjetas */
   }
-  
-  .product_button:hover {
-    background-color: red;
-  }
-  
-  .product_remove_icon {
-    margin-left: 4px;
-  }
+
+.product_card:hover {
+  background-color: #f0f0f0;
+}
+
+.product_content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.product_card:hover {
+  background-color: red; /* Cambia el color de fondo al hacer hover */
+}
 
 @media only screen and (min-width: 768px) {
-    .list__images{
-        width: 200px;
-        flex-direction: row;
-
-    }
-    .list__images img{
-        width: 100%;
-        
-
-    }
-    
+  .list__images {
+    width: 200px;
+    flex-direction: row;
+  }
+  .list__images img {
+    width: 100%;
+  }
 }
 @media only screen and (min-width: 1024px) {
-    .list__images{
-        width: 250px;
-
-    }
-    .list__images img{
-        width: 100%;
-        
-
-    }
-
+  .list__images {
+    width: 250px;
+  }
+  .list__images img {
+    width: 100%;
+  }
 }
 @media only screen and (min-width: 1512px) {
-    .list__images{
-        width: 300px;
-
-    }
-    .list__images img{
-        width: 100%;
-        
-
-    }
-
+  .list__images {
+    width: 300px;
+  }
+  .list__images img {
+    width: 100%;
+  }
 }
