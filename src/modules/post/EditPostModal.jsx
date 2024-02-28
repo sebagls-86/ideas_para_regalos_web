@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import Modal from "../../components/modal/Modal";
+import { Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/button/Button";
+import styles from "./css/post.module.css";
 
 function EditPostModal({
   show,
@@ -14,6 +18,7 @@ function EditPostModal({
   const [profiles, setProfiles] = useState([]);
   const [selectedProfileId, setSelectedProfileId] = useState(null);
   const [selectedEventType, setSelectedEventType] = useState(null);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
@@ -65,9 +70,24 @@ function EditPostModal({
           },
         });
 
+        if (!response.ok) {
+          const responseBody = await response.text();
+          if (responseBody.includes("invalid token")) {
+            alert("Su sesión ha expirado. Por favor, inicie sesión nuevamente");
+            localStorage.removeItem("token");
+            navigate("/");
+            return;
+          } else {
+            alert("Error al obtener perfiles");
+            console.error("Error al obtener perfiles:", response.statusText);
+            return;
+          }
+        }
+
         const data = await response.json();
         setProfiles(data.data);
         setIsLoading(false);
+
         if (selectedPost.data.profile.profile_id) {
           setSelectedProfileId(selectedPost.data.profile.profile_id);
         }
@@ -78,17 +98,19 @@ function EditPostModal({
     };
 
     fetchProfiles();
-  }, [selectedPost, token]);
+  }, [selectedPost, token, navigate]);
 
   const handleEventTypeChange = (eventTypeId) => {
     // Encuentra el tipo de evento seleccionado por su ID
-    const selectedEventType = eventTypes.find((type) => type.event_type_id === parseInt(eventTypeId));
-  
+    const selectedEventType = eventTypes.find(
+      (type) => type.event_type_id === parseInt(eventTypeId)
+    );
+
     // Actualiza selectedPost con el nuevo tipo de evento
     setSelectedPost({
       ...selectedPost,
       event: selectedEventType.name,
-      event_type_id: selectedEventType.event_type_id
+      event_type_id: selectedEventType.event_type_id,
     });
   };
 
@@ -169,98 +191,97 @@ function EditPostModal({
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Editar perfil</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <form>
-          <div className="form-group">
-            <label>Titulo:</label>
-            <input
-              type="text"
-              className="form-control"
-              value={selectedPost?.data.title || ""}
-              onChange={(e) =>
-                setSelectedPost({
-                  ...selectedPost,
-                  data: {
-                    ...selectedPost.data,
-                    title: e.target.value,
-                  },
-                })
-              }
+    <Modal
+      show={show}
+      closeModal={onHide}
+      title="Editar Foro"
+      contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}
+    >
+      <Col>
+        <div className={styles.buttons__container}>
+          <form>
+            <div className={`${styles.form__floating} form-floating`}>
+              <label>Titulo:</label>
+              <input
+                type="text"
+                className={`${styles.form__control} form-control`}
+                value={selectedPost?.data.title || ""}
+                onChange={(e) =>
+                  setSelectedPost({
+                    ...selectedPost,
+                    data: {
+                      ...selectedPost.data,
+                      title: e.target.value,
+                    },
+                  })
+                }
+              />
+            </div>
+            <div className={`${styles.form__floating} form-floating`}>
+              <label>Descripción:</label>
+              <textarea
+                className={`${styles.form__control} form-control`}
+                value={selectedPost?.data.description || ""}
+                onChange={(e) =>
+                  setSelectedPost({
+                    ...selectedPost,
+                    data: {
+                      ...selectedPost.data,
+                      description: e.target.value,
+                    },
+                  })
+                }
+              />
+            </div>
+            <div className={`${styles.form__floating} form-floating`}>
+              <label className={styles.input__label}>Tipo de Evento:</label>
+              <select
+                className={`${styles.form__control} form-control`}
+                onChange={(e) => handleEventTypeChange(e.target.value)}
+              >
+                {isLoading ? (
+                  <option value="">Cargando...</option>
+                ) : (
+                  eventTypes.map((eventType) => (
+                    <option
+                      key={eventType.event_type_id}
+                      value={eventType.event_type_id}
+                      selected={
+                        selectedPost &&
+                        selectedPost.data.event === eventType.name
+                      }
+                    >
+                      {eventType.name}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
+            <div className={`${styles.form__floating} form-floating`}>
+              <label>Perfil:</label>
+              <select
+                className={`${styles.form__control} form-control`}
+                value={selectedProfileId}
+                onChange={handleEventChange}
+              >
+                {profiles &&
+                  profiles.map((profile) => (
+                    <option key={profile.profile_id} value={profile.profile_id}>
+                      {profile.name} {profile.last_name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </form>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button
+              label="Guardar"
+              className="btn primary__button"
+              onClick={handleSaveChanges}
             />
           </div>
-          <div className="form-group">
-            <label>Descripción:</label>
-            <textarea
-              className="form-control"
-              value={selectedPost?.data.description || ""}
-              onChange={(e) =>
-                setSelectedPost({
-                  ...selectedPost,
-                  data: {
-                    ...selectedPost.data,
-                    description: e.target.value,
-                  },
-                })
-              }
-            />
-          </div>
-          <div className="form-group">
-  <label htmlFor="eventTypeSelect">Tipo de Evento:</label>
-  <select
-    id="eventTypeSelect"
-    className="form-control"
-    onChange={(e) => handleEventTypeChange(e.target.value)}
-  >
-    {isLoading ? (
-      <option value="">Cargando...</option>
-    ) : (
-      eventTypes.map((eventType) => {
-        return (
-          <option
-            key={eventType.event_type_id}
-            value={eventType.event_type_id}
-            selected={
-              selectedPost && selectedPost.data.event === eventType.name
-            }
-          >
-            {eventType.name}
-          </option>
-        );
-      })
-    )}
-  </select>
-</div>
-          <div className="form-group">
-            <label>Perfil:</label>
-            <select
-              id="profileSelect"
-              className="form-control"
-              value={selectedProfileId}
-              onChange={handleEventChange}
-            >
-              {profiles.map((profile) => (
-                <option key={profile.profile_id} value={profile.profile_id}>
-                  {profile.name} {profile.last_name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </form>
-      </Modal.Body>
-      <Modal.Footer
-        style={{ display: "flex", justifyContent: "space-between" }}
-      >
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Cerrar
-        </Button>
-        <Button variant="primary" onClick={handleSaveChanges}>
-          Guardar
-        </Button>
-      </Modal.Footer>
+        </div>
+      </Col>
     </Modal>
   );
 }
