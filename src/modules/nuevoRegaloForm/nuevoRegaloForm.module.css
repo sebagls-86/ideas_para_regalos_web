@@ -1,13 +1,68 @@
 .formContainer {
   max-width: 733px;
   width: 100%;
-  height: 590px;
+  height: calc(80% - 2rem); /* Corregir la coma que estaba causando un error */
+  max-height: 781px; /* Ajustar maxHeight para que sea una propiedad separada */
   margin: 0 auto;
   margin-top: 24px;
   border-radius: 10px;
   border: 0.4px solid hsl(0, 0%, 0%);
   position: relative;
 }
+
+/* Estilos de los tabs */
+.nav-tabs {
+  display: grid;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+}
+
+.navitem,
+.nav-tabs .nav-link {
+  display: flex;
+  width: 100%;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px;
+  border-right: 0.4px solid;
+  border-bottom: 0.4px solid;
+}
+
+.nav-tabs .nav-link.active {
+  font-weight: bold;
+  background: var(--grey, #f2f4f5);
+  border-right: 0.4px solid #000;
+  border-bottom: 2px solid var(--primary-dark);
+}
+
+.nav-tabs .nav-link:hover {
+  border-bottom: 0.4px solid #000;
+  border-right: 0.4px solid #000;
+}
+
+.nav-tabs > li:nth-child(4) .nav-link {
+  border-right: none;
+  border-top-right-radius: 10px;
+}
+
+.nav-tabs > li:nth-child(1) .nav-link {
+  border-top-left-radius: 10px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .nav-tabs {
+    margin-left: -20px;
+    margin-right: -20px;
+    width: calc(100% + 40px);
+  }
+}
+
+/* Aquí continúan los estilos restantes */
 .inputTitulo {
   max-width: 676px;
   width: 100%;
@@ -29,25 +84,25 @@
   background: var(--grey, #f2f4f5);
   margin: 0 auto;
 }
-.span{
+.span {
   display: flex;
   gap: 15px;
   align-items: center;
 }
-.btn_submit_cancel{
+.btn_submit_cancel {
   position: absolute;
   display: flex;
   bottom: 18px;
   right: 29px;
   gap: 25px;
 }
-.selectEvent{
+.selectEvent {
   margin: 44px 48px;
 }
-.uploadImage{
+.uploadImage {
   margin: 50px;
 }
-.customFileInput{
+.customFileInput {
   background-image: url("/src/assets/upload-icon.svg");
   height: 50px;
   background-repeat: no-repeat;
@@ -56,28 +111,25 @@
   justify-content: center;
   background-position: center;
 }
-.customFileInput span{
+.customFileInput span {
   padding-top: 50px;
 }
-
-.previewImage{
+.previewImage {
   width: 40%;
   position: absolute;
-  top: 200px
+  top: 200px;
 }
-
 @media only screen and (max-width: 450px) {
-  .span{
+  .span {
     font-size: 14px;
-    gap: 5px
+    gap: 5px;
   }
-  .formContainer > svg{
+  .formContainer > svg {
     width: 18px;
   }
-
 }
-@media only screen and (max-width: 1200px){
-  .formContainer{
-   padding: 0px 20px;
+@media only screen and (max-width: 1200px) {
+  .formContainer {
+    padding: 0px 20px;
   }
 }

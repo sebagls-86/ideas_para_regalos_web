@@ -6,7 +6,7 @@ import { auth } from "../../utils/firebase";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
-import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
+import NavBar from "../../modules/navBar/NavBar";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
@@ -28,11 +28,13 @@ function HomePage() {
   
   return (
     <>
-      {(!user && !tokenExists) && <NavLoggedOut />}
+      {(!user && !tokenExists)}
+      <NavBar />
       <div className="contenedor">
         <div className="left__aside">{(user || tokenExists) && <Nav user={user?.displayName} />}</div>
         <div className="content">
           <PageTitle title="Inicio" />
+          
           {(!user && !tokenExists) && <Col>
             <LoginMobile />
           </Col>}

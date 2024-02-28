@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import styles from "./css/profiles.module.css";
+import styles from "./modal.module.css";
 
-function CustomModal({
+function ConfirmDeleteModal({
     show,
     onHide,
     title,
@@ -15,15 +15,15 @@ function CustomModal({
   }) {
     return (
       <Modal show={show} onHide={onHide} centered>
-        <Modal.Header closeButton className={styles.modal__header}>
-          <Modal.Title className={styles.modal__title}>
+        <Modal.Header closeButton className={styles.modal__delete_header}>
+          <Modal.Title className={styles.modal__delete_title}>
             {title}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className={styles.modal__body}>
+        <Modal.Body className={styles.modal__delete_body}>
           {bodyContent}
         </Modal.Body>
-        <Modal.Footer className={styles.modal__footer}>
+        <Modal.Footer className={styles.modal__delete_footer}>
           <Button
             variant="secondary"
             onClick={onCancel}
@@ -43,4 +43,4 @@ function CustomModal({
     );
   }
 
-  export default CustomModal;
+  export default ConfirmDeleteModal;

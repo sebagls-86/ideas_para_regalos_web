@@ -5,13 +5,11 @@ import { Col } from "react-bootstrap";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 import SelectButton from "../../components/selectButton/SelectButton";
+import { fetchAvailableInterests, fetchAgeRanges, fetchRelationships } from "../api/api";
 
 function ModalCreateProfile({
   show,
   onHide,
-  ageRanges,
-  relationships,
-  interests,
   selectedInterests,
   setSelectedInterests,
   handleToggleInterest,
@@ -25,6 +23,9 @@ function ModalCreateProfile({
     selectedRelationship: "",
   });
   const [currentStep, setCurrentStep] = useState(1);
+  const [ageRanges, setAgeRanges] = useState([]);
+  const [interests, setInterests] = useState([]);
+  const [relationships, setRelationships] = useState([]);
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [isRelationshipDropdownOpen, setIsRelationshipDropdownOpen] =
     useState(false);
@@ -32,6 +33,45 @@ function ModalCreateProfile({
   const [selectedAgeOption, setSelectedAgeOption] = useState(null);
   const [selectedRelationshipOption, setSelectedRelationshipOption] =
     useState(null);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const ageRanges = await fetchAgeRanges();
+          setAgeRanges(ageRanges);
+        } catch (error) {
+          console.error("Error fetching age ranges and relationships:", error);
+        }
+      };
+    
+      fetchData();
+    }, []);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const relationships = await fetchRelationships();
+          setRelationships(relationships);
+        } catch (error) {
+          console.error("Error fetching age ranges and relationships:", error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+  
+    useEffect(() => {
+      const fetchInterests = async () => {
+        try {
+          const interests = await fetchAvailableInterests();
+          setInterests(interests);
+        } catch (error) {
+          console.error("Error fetching available interests:", error);
+        }
+      };
+  
+      fetchInterests();
+    }, []);
 
   useEffect(() => {
     console.log("Form state:", form);
@@ -135,10 +175,10 @@ function ModalCreateProfile({
               value={form.lastName}
               onChange={handleChange}
             />
-            <SelectButton
+              <SelectButton
               label="Edad"
               isOpen={isAgeDropdownOpen}
-              options={ageRanges.map((ageRange) => ({
+              options={(ageRanges || []).map((ageRange) => ({
                 label: ageRange.name,
                 value: ageRange.age_range_id,
               }))}
@@ -148,10 +188,10 @@ function ModalCreateProfile({
               selectedOption={selectedAgeOption}
               toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
             />
-            <SelectButton
+           <SelectButton
               label="Relación"
               isOpen={isRelationshipDropdownOpen}
-              options={relationships.map((relationship) => ({
+              options={(relationships || []).map((relationship) => ({
                 label: relationship.relationship_name,
                 value: relationship.relationship_id,
               }))}

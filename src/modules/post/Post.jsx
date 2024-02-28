@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/post.module.css";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import ModalLogin from "../modalLogin/ModalLogin";
 import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 function Post() {
   const [postData, setPostData] = useState(null);
+  const [openModal, setOpenModal] = React.useState(false);
   const [loading, setLoading] = useState(true);
+  const [likesData, setLikesData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const decoded = token ? jwtDecode(token) : null;
+  const userId = decoded ? decoded.user_id : null;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,12 +39,75 @@ function Post() {
           setLoading(false);
           console.log("Error 400");
         }
+
+        // Fetch de los likes del usuario
+        const likesResponse = await fetch(
+          `http://localhost:8080/api/v1/forums/likes/${userId}`
+        );
+        if (!likesResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const likesData = await likesResponse.json();
+        setLikesData(likesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
-  }, [navigate]);
+  }, [userId, navigate]);
+
+  const handleLike = async (postId) => {
+    if (isLoggedIn) {
+      try {
+        const updatedLikesData = await fetch(`http://localhost:8080/api/v1/forums/${postId}/like`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (updatedLikesData.ok) {
+          const updatedLikesResponse = await updatedLikesData.json();
+          console.log("updatedLikesResponse", updatedLikesResponse);
+          const updatedUserLikesResponse = await fetch(
+            `http://localhost:8080/api/v1/forums/likes/${userId}`
+          );
+          if (!updatedUserLikesResponse.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const updatedUserLikesData = await updatedUserLikesResponse.json();
+          console.log("updatedUserLikesData", updatedUserLikesData);
+          
+          setLikesData(updatedUserLikesData);
+  
+          setPostData(prevPostData =>
+            prevPostData.map(post => {
+              if (post.forum_id === postId) {
+                const likesCount = updatedLikesResponse.data.likes || 0;
+                return { ...post, likes: likesCount }; 
+              }
+              return post;
+            })
+          );
+        } else {
+          console.error("Failed to like post");
+        }
+      } catch (error) {
+        console.error("Error liking post:", error);
+      }
+    } else {
+      setOpenModal(true);
+      // Si el usuario no está logueado, abrir el modal de login
+      // Código para abrir el modal de login...
+    }
+  };
+  
+
+  useEffect(() => {
+    // Verificar si el usuario está logueado
+    setIsLoggedIn(!!token);
+  }, [token]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -44,58 +115,71 @@ function Post() {
 
   return (
     <div>
-    {!postData || postData.length === 0 ? (
-  <p>Todavía no hay publicaciones</p>
-) : (
-      postData.map((post) => (
-        <div className={styles.post__container} key={post.forum_id}>
-          <div className={styles.container__image}>
-            <img
-              src={`http://localhost:8080${post.avatar}`}
-              alt="imagen perfil usuario"
-              width={"54px"}
-              height={"54px"}
-            />
-          </div>
-          <div className={styles.post__content}>
-            <div className={styles.user__container}>
-              <div className={styles.content__user}>
-                <p className={styles.user__username}>{post.name}</p>
-                <Link
-                  to={`/perfil/${parseInt(post.user_id)}`}
-                  className={styles.user__tagname}
+      {!postData || postData.length === 0 ? (
+        <p>Todavía no hay publicaciones</p>
+      ) : (
+        postData.map((post) => (
+          <div className={styles.post__container} key={post.forum_id}>
+            <div className={styles.container__image}>
+              <img
+                src={`http://localhost:8080${post.avatar}`}
+                alt="imagen perfil usuario"
+                width={"54px"}
+                height={"54px"}
+              />
+            </div>
+            <div className={styles.post__content}>
+              <div className={styles.user__container}>
+                <div className={styles.content__user}>
+                  <p className={styles.user__username}>{post.name}</p>
+                  <Link
+                    to={`/perfil/${parseInt(post.user_id)}`}
+                    className={styles.user__tagname}
+                  >
+                    {post.user_name}
+                  </Link>
+                  <p className={styles.user__timepost}>5h</p>
+                </div>
+              </div>
+              <Link to={`/forums/${parseInt(post.forum_id)}`}>
+                <h2 className={styles.post__title}>{post.title}</h2>
+                <div className={styles.content__tags}>
+                  {post.event && (
+                    <span className={styles.post_tags}>{post.event}</span>
+                  )}
+                </div>
+                <div>
+                  <p className={styles.post__text}>{post.description}</p>
+                </div>
+              </Link>
+              <div className={styles.post__actions}>
+                <div
+                  className={styles.actions__content}
+                  onClick={() => handleLike(post.forum_id)}
                 >
-                  {post.user_name}
-                </Link>
-                <p className={styles.user__timepost}>5h</p>
+                  {likesData &&
+                  likesData.data &&
+                  likesData.data.some(
+                    (like) => like.forum_id === post.forum_id
+                  ) ? (
+                    <AiFillHeart fill="red" className={styles.heart_icon} />
+                  ) : (
+                    <AiOutlineHeart className={styles.heart_icon} />
+                  )}
+                  <span className={styles.post_tags}>{post.likes}</span>
+                </div>
+                <div className={styles.actions__content}>
+                  <FiMessageSquare />
+                  <span className={styles.post_tags}>
+                    {post.messages ? post.messages.length : 0}
+                  </span>
+                </div>
               </div>
             </div>
-            <Link
-            to={`/forums/${parseInt(post.forum_id)}`}>
-            <h2 className={styles.post__title}>{post.title}</h2>
-            <div className={styles.content__tags}>
-              {post.event && (
-                <span className={styles.post_tags}>{post.event}</span>
-              )}
-            </div>
-            <div>
-              <p className={styles.post__text}>{post.description}</p>
-             </div>
-            <div className={styles.post__actions}>
-              <div className={styles.actions__content}>
-                <AiOutlineHeart />
-                <span className={styles.post_tags}>{post.likes}</span>
-              </div>
-              <div className={styles.actions__content}>
-                <FiMessageSquare />
-                <span className={styles.post_tags}>{post.messages.length}</span>
-              </div>
-            </div>
-            </Link>
           </div>
-        </div>
         ))
-    )}
+      )}
+      {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
     </div>
   );
 }

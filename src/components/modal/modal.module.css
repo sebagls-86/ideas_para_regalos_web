@@ -35,6 +35,51 @@
     outline: none;
 }
 
+.modal__delete_header {
+    border: none;
+    text-align: center;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center;
+    font-weight: bolder;
+  }
+
+.modal__delete_title {
+    font-weight: 600;
+    text-align: center;
+    margin-top: 30px;
+  }
+  .modal__delete_body {
+    font-size: 20px;
+    text-align: center;
+    padding: 30px;
+  }
+  .modal__delete_footer {
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+.modal__confirm,
+.modal__cancel,
+.modal__confirm:hover,
+.modal__cancel:hover {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  padding: 15px 50px;
+}
+.modal__cancel,
+.modal__cancel:hover {
+  color: red;
+  border-right: 0.5px solid lightgray;
+  border-radius: 0;
+  height: 100%;
+}
+.modal__confirm,
+.modal__confirm:hover {
+  color: green;
+}
+
 .modal__body {
     display: flex;
     flex-direction: column;

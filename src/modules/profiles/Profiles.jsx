@@ -5,9 +5,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
 import InterestModal from "./InterestsModal";
 import EditProfileModal from "./EditProfileModal";
-import CustomModal from "./CustomModal";
+import CustomModal from "../../components/modal/ConfirmDeleteModal";
 import NewProfile from "../modalCreateProfile/ModalCreateProfile";
 import { AiOutlinePlus } from "react-icons/ai";
+import {
+  fetchAvailableInterests,
+  fetchAgeRanges,
+  fetchRelationships,
+} from "../api/api";
 
 function Profiles() {
   const [profilesData, setProfilesData] = useState(null);
@@ -97,38 +102,43 @@ function Profiles() {
     fetchAvailableInterests();
   }, []);
 
-  const fetchAvailableInterests = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/interests");
-      if (response.ok) {
-        const data = await response.json();
-        setAvailableInterests(data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching available interests:", error);
-    }
-  };
-
   useEffect(() => {
-    const fetchAgeRangesAndRelationships = async () => {
+    const fetchInterests = async () => {
       try {
-        const ageRangeResponse = await fetch(
-          "http://localhost:8080/api/v1/ageRanges"
-        );
-        const ageRangeData = await ageRangeResponse.json();
-        setAgeRanges(ageRangeData.data);
-
-        const relationshipResponse = await fetch(
-          "http://localhost:8080/api/v1/relationships"
-        );
-        const relationshipData = await relationshipResponse.json();
-        setRelationships(relationshipData.data);
+        const data = await fetchAvailableInterests();
+        setInterests(data);
       } catch (error) {
-        console.error("Error fetching age ranges and relationships:", error);
+        console.error("Error fetching available interests:", error);
       }
     };
 
-    fetchAgeRangesAndRelationships();
+    fetchInterests();
+  }, []);
+
+  useEffect(() => {
+    const fetchAgeRangesData = async () => {
+      try {
+        const data = await fetchAgeRanges();
+        setAgeRanges(data);
+      } catch (error) {
+        console.error("Error fetching age ranges:", error);
+      }
+    };
+
+    fetchAgeRangesData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRelationshipsData = async () => {
+      try {
+        const data = await fetchRelationships();
+        setRelationships(data);
+      } catch (error) {
+        console.error("Error fetching relationships:", error);
+      }
+    };
+
+    fetchRelationshipsData();
   }, []);
 
   const handleEdit = (profile) => {
@@ -232,24 +242,27 @@ function Profiles() {
   };
 
   const updateProfilesWithNewInterests = (newInterests) => {
-    const newProfilesData = profilesData.map((profile) => {
+    const updatedSelectedProfile = { ...selectedProfile };
+    updatedSelectedProfile.interests = [
+      ...updatedSelectedProfile.interests,
+      ...newInterests,
+    ];
+
+    setSelectedProfile(updatedSelectedProfile);
+
+    const updatedProfilesData = profilesData.map((profile) => {
       if (profile.profile_id === selectedProfile.profile_id) {
-        const updatedProfile = { ...profile };
-        updatedProfile.interests = [
-          ...updatedProfile.interests,
-          ...newInterests,
-        ];
-        return updatedProfile;
+        return updatedSelectedProfile;
       }
       return profile;
     });
-    setProfilesData(newProfilesData);
 
+    setProfilesData(updatedProfilesData);
     setSelectedInterests([]);
   };
 
   const filterAvailableInterests = () => {
-    if (!selectedProfile) return availableInterests; // Si no hay perfil seleccionado, retornar todos los intereses disponibles
+    if (!selectedProfile) return availableInterests;
 
     const selectedInterestIds = selectedProfile.interests.map(
       (interest) => interest.interest_id
@@ -267,12 +280,9 @@ function Profiles() {
   const filteredAvailableInterests = filterAvailableInterests();
 
   const handleShowInterestModal = (profile) => {
-    console.log(
-      "Perfil seleccionado para mostrar el modal de intereses:",
-      profile
-    );
     fetchAvailableInterests();
     setSelectedProfile(profile);
+    console.log("Selected Profile:", profile); // Verifica el valor de profile
     setShowInterestModal(true);
   };
 
@@ -303,11 +313,6 @@ function Profiles() {
   const handleConfirmRemoveInterest = async () => {
     try {
       const { profile, interest } = interestToRemove;
-      console.log(
-        "Perfil seleccionado para confirmar eliminación de interés:",
-        profile
-      );
-      console.log("Interés a eliminar confirmado:", interest);
       const interestId = interest.interest_id;
 
       const deleteResponse = await fetch(
@@ -328,21 +333,43 @@ function Profiles() {
         throw new Error("Network response was not ok");
       }
 
+      // Eliminar el interés del perfil seleccionado
+      const updatedSelectedProfile = updateSelectedProfileAfterInterestRemoval(
+        profile,
+        interestId
+      );
+
+      // Actualizar el estado de selectedProfile
+      setSelectedProfile(updatedSelectedProfile);
+
       setShowConfirmationModal(false);
       alert("Interés eliminado con éxito");
+
+      // Actualizar profilesData
       const updatedProfilesData = profilesData.map((p) => {
         if (p.profile_id === profile.profile_id) {
-          return {
-            ...p,
-            interests: p.interests.filter((i) => i.interest_id !== interestId),
-          };
+          return updatedSelectedProfile;
         }
         return p;
       });
+
+      // Actualizar el estado de profilesData
       setProfilesData(updatedProfilesData);
     } catch (error) {
       console.error("Error removing interest:", error);
     }
+  };
+
+  const updateSelectedProfileAfterInterestRemoval = (
+    profile,
+    interestIdToRemove
+  ) => {
+    return {
+      ...selectedProfile,
+      interests: selectedProfile.interests.filter(
+        (i) => i.interest_id !== interestIdToRemove
+      ),
+    };
   };
 
   const handleConfirmDeleteProfile = async (profile) => {
@@ -464,6 +491,11 @@ function Profiles() {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+  };
+
+  const handleGiftClick = (profile) => {
+    // Redirigir al usuario a la página de Nuevo Regalo con el perfil seleccionado
+    window.location.href = `http://localhost:3000/nuevoRegalo?profileId=${profile.profile_id}`;
   };
 
   return (
@@ -652,7 +684,7 @@ function Profiles() {
                           <div className={styles.action_buttons_container}>
                             <Button
                               className={styles.action_buttons}
-                              onClick={() => profile}
+                              onClick={() => handleGiftClick(profile)}
                             >
                               <div className={styles.profile_gift_icon} />
                             </Button>

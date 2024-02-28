@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+//import { Modal, Button } from "react-bootstrap";
+import Button from "../../components/button/Button";
+import Modal from "../../components/modal/Modal";
+import styles from "./css/profiles.module.css";
 
 function InterestsModal({
   show,
@@ -24,14 +27,17 @@ function InterestsModal({
         interest_id: selectedInterests.map((interest) => interest.interest_id),
       };
 
-      const response = await fetch("http://localhost:8080/api/v1/profileInterests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/profileInterests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         alert("Error al guardar intereses");
@@ -40,7 +46,7 @@ function InterestsModal({
 
       setIsLoading(false);
       setShowInterestModal(false);
-      updateProfilesWithNewInterests(selectedInterests); 
+      updateProfilesWithNewInterests(selectedInterests);
     } catch (error) {
       alert("Error al guardar intereses");
       console.error("Error saving interests:", error);
@@ -49,38 +55,29 @@ function InterestsModal({
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Selecciona un interés</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    <Modal show={show} closeModal={onHide} title="Selecciona intereses">
+      <div className={styles.modal_content}>
         {filteredAvailableInterests.map((interest) => (
           <Button
             key={interest.interest_id}
+            label={interest.interest}
+            className={`${styles.interestButton} ${
+              selectedInterests.includes(interest)
+                ? styles.selectedInterest
+                : ""
+            }`}
             onClick={() => handleToggleInterest(interest)}
-            style={{
-              marginBottom: "10px",
-              marginLeft: "10px",
-              backgroundColor: selectedInterests.includes(interest)
-                ? "#007bff"
-                : "white",
-              color: selectedInterests.includes(interest)
-                ? "white"
-                : "#007bff",
-            }}
-          >
-            {interest.interest}
-          </Button>
+            isSelected={selectedInterests.includes(interest)}
+          />
         ))}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Cerrar
-        </Button>
-        <Button variant="primary" onClick={handleSaveInterests} disabled={isLoading}>
-          {isLoading ? "Guardando..." : "Guardar"}
-        </Button>
-      </Modal.Footer>
+      </div>
+      <div style={{ marginTop: "20px", textAlign: "right" }}>
+        <Button
+          label="Finalizar"
+          className="btn primary__button"
+          onClick={handleSaveInterests}
+        />
+      </div>
     </Modal>
   );
 }

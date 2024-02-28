@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./css/list.module.css";
-import { Spinner, Button, Modal } from "react-bootstrap";
+import { Spinner, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import AddProductsModal from "./AddProductsModal";
 import ModalCreateList from "./ModalCreateList";
+import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
 import jwtDecode from "jwt-decode";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { AiOutlinePlus } from "react-icons/ai";
+import { IoMdClose, IoIosSearch } from "react-icons/io";
+
+function getRandomPastelColor() {
+  const hue = Math.floor(Math.random() * 360);
+  const pastel = "hsl(" + hue + ", 55%, 85%)";
+  return pastel;
+}
 
 function WishList() {
   const [listData, setListData] = useState(null);
@@ -26,6 +34,9 @@ function WishList() {
   const [showAddProductsModal, setShowAddProductsModal] = useState(false);
   const [selectedListId, setSelectedListId] = useState(null);
   const [showCreateListModal, setShowCreateListModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const inputRef = useRef(null);
+  const [listColors, setListColors] = useState({});
 
   const { user_id } = useParams();
   const userId = parseInt(user_id);
@@ -63,6 +74,16 @@ function WishList() {
     };
     fetchData();
   }, [userId, navigate]);
+
+  useEffect(() => {
+    if (listData) {
+      const colors = {};
+      listData.forEach((list) => {
+        colors[list.list_id] = getRandomPastelColor();
+      });
+      setListColors(colors);
+    }
+  }, [listData]);
 
   useEffect(() => {
     const fetchProductsCatalog = async () => {
@@ -211,20 +232,18 @@ function WishList() {
     }
   };
 
-  const handleCreateList = () => {
-    setShowCreateListModal(true);
-  };
+  /*Por ahora no vamos a usar esta accion y los productos se agregan desde Explorar*/
 
-  const handleAddProduct = (list) => {
-    const availableProducts = productsCatalog.data;
-    const filteredProducts = availableProducts.filter(
-      (product) => !list.products.includes(product.name)
-    );
-    setFilteredAvailableProducts(filteredProducts);
-    setSelectedList(list);
-    setSelectedProducts([]);
-    setShowAddProductsModal(true);
-  };
+  // const handleAddProduct = (list) => {
+  //   const availableProducts = productsCatalog.data;
+  //   const filteredProducts = availableProducts.filter(
+  //     (product) => !list.products.includes(product.name)
+  //   );
+  //   setFilteredAvailableProducts(filteredProducts);
+  //   setSelectedList(list);
+  //   setSelectedProducts([]);
+  //   setShowAddProductsModal(true);
+  // };
 
   const handleToggleProduct = (product) => {
     const isProductSelected = selectedProducts.some(
@@ -282,7 +301,7 @@ function WishList() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ list_name: editedListName }), 
+          body: JSON.stringify({ list_name: editedListName }),
         }
       );
       if (response.ok) {
@@ -303,7 +322,9 @@ function WishList() {
         console.error("Error al actualizar el nombre de la lista");
       }
     } catch (error) {
-      alert("Error al enviar solicitud de actualización del nombre de la lista");
+      alert(
+        "Error al enviar solicitud de actualización del nombre de la lista"
+      );
       console.error(
         "Error al enviar solicitud de actualización del nombre de la lista:",
         error
@@ -319,20 +340,17 @@ function WishList() {
     try {
       const dataToSend = {
         list_name: newList.list_name,
-        list_type_id: 2
+        list_type_id: 2,
       };
 
-      const response = await fetch(
-        `http://localhost:8080/api/v1/lists`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
+      const response = await fetch(`http://localhost:8080/api/v1/lists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dataToSend),
+      });
       if (response.ok) {
         alert("Lista creada correctamente");
         const data = await response.json();
@@ -349,7 +367,28 @@ function WishList() {
         error
       );
     }
-  }
+  };
+
+  console.log("list", listData);
+
+  const filteredLists = listData
+    ? listData.filter((list) =>
+        list.list_name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
+  const handleSearchClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleClearClick = () => {
+    setSearchTerm("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   return (
     <div>
@@ -370,84 +409,56 @@ function WishList() {
         handleSaveNewList={handleSaveNewList}
       />
 
-      <Modal
+      <ConfirmDeleteModal
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmar eliminación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          ¿Está seguro de que desea eliminar el producto "
-          {productToRemove?.productName}"?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowConfirmationModal(false)}
-          >
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleConfirmDeleteProduct}>
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        title="¿Estás seguro?"
+        bodyContent={`Se eliminará "${productToRemove?.productName}" de su lista`}
+        onCancel={() => setShowConfirmationModal(false)}
+        onConfirm={handleConfirmDeleteProduct}
+        confirmButtonText="Confirmar"
+      />
 
-      <Modal
+      <ConfirmDeleteModal
         show={showDeleteListConfirmationModal}
         onHide={() => setShowDeleteListConfirmationModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmar eliminación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          ¿Está seguro de que desea eliminar la lista "{listToRemove?.list_name}
-          "?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowDeleteListConfirmationModal(false)}
-          >
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleDelete}>
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        title="¿Estás seguro?"
+        bodyContent={`Se eliminará "${listToRemove?.list_name}" de sus listas`}
+        onCancel={() => setShowDeleteListConfirmationModal(false)}
+        onConfirm={() => handleDelete()}
+        confirmButtonText="Confirmar"
+      />
 
-      <Button variant="primary" onClick={handleCreateList}>
-        Crear lista
-      </Button>
-      {loading && <Spinner />}
-      {listData === null ? (
-        <p>Todavía no hay listas</p>
-      ) : selectedListId ? (
-        <div className={styles.list__container}>
+      {selectedListId ? (
+        <div>
+          <div className={styles.edit_buttons}>
+            <Button
+              onClick={() => setSelectedListId(null)}
+              className={styles.go_back_button}
+            ></Button>{" "}
+            <Button
+            className={styles.create_new_button}
+              onClick={() =>
+                handleEditListName(
+                  listData.find((list) => list.list_id === selectedListId)
+                )
+              }
+            >
+              Editar
+            </Button>
+          </div>
           <div className={styles.list__content}>
             <div className={styles.user__container}>
               <div className={styles.content__user}>
                 {editMode ? (
-                  <input
-                    type="text"
-                    value={editedListName}
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <p className={styles.user__username}>
-                    {
-                      listData.find((list) => list.list_id === selectedListId)
-                        .list_name
-                    }
-                  </p>
-                )}
-                {editMode ? (
                   <div>
-                   
+                    <input
+                      type="text"
+                      value={editedListName}
+                      onChange={handleInputChange}
+                    />
                     <Button
-                      variant="primary"
+                    className={styles.create_new_button}
                       onClick={() =>
                         handleSaveEditListName(
                           listData.find(
@@ -459,7 +470,7 @@ function WishList() {
                       Guardar
                     </Button>
                     <Button
-                      variant="primary"
+                     className={styles.create_new_button}
                       onClick={() => {
                         setEditMode(false);
                         setEditedListName(
@@ -473,16 +484,12 @@ function WishList() {
                     </Button>
                   </div>
                 ) : (
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      handleEditListName(
-                        listData.find((list) => list.list_id === selectedListId)
-                      )
+                  <p className={styles.user__username_product}>
+                    {
+                      listData.find((list) => list.list_id === selectedListId)
+                        .list_name
                     }
-                  >
-                    Editar
-                  </Button>
+                  </p>
                 )}
               </div>
             </div>
@@ -522,58 +529,94 @@ function WishList() {
                   );
                 })}
             </div>
-            <Button
-              variant="primary"
-              onClick={() =>
-                handleAddProduct(
-                  listData.find((list) => list.list_id === selectedListId)
-                )
-              }
-            >
+            <Button className={styles.create_new_button} onClick={() => navigate("/explorar")}>
               Agregar
             </Button>
-            <Button onClick={() => setSelectedListId(null)}>Atras</Button>
           </div>
         </div>
       ) : (
-        listData.map((list) => (
-          <div
-            className={styles.list__container}
-            key={list.list_id}
-            onClick={() => {
-              handleListClick(list.list_id);
-            }}
-          >
-            <div className={styles.list__content}>
-              <div className={styles.user__container}>
-                <div className={styles.content__user}>
-                  <p className={styles.user__username}>{list.list_name}</p>
-                </div>
-                {userId === tokenUserId && (
-                  <div className={styles.more__actions}>
-                    <Button
-                      className={styles.action_buttons}
-                      onClick={() => handleEdit(list)}
-                    >
-                      <FaEdit className={styles.profile_interest_remove_icon} />
-                    </Button>
-                    <Button
-                      className={styles.action_buttons}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteList(list);
-                      }}
-                    >
-                      <FaTrash
-                        className={styles.profile_interest_remove_icon}
-                      />
-                    </Button>
-                  </div>
+        <div>
+          <div className={styles.create_new_container}>
+            <div className={styles.search_bar}>
+              <form style={{ position: "relative" }}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ flex: 1 }}
+                />
+                {!searchTerm ? (
+                  <IoIosSearch
+                    className={styles.icon_style}
+                    onClick={handleSearchClick}
+                  />
+                ) : (
+                  <IoMdClose
+                    className={styles.icon_style}
+                    onClick={handleClearClick}
+                  />
                 )}
-              </div>
+              </form>
             </div>
+
+            <Button
+              onClick={() => setShowCreateListModal(true)}
+              className={styles.create_new_button}
+            >
+              <AiOutlinePlus />
+              Crear nueva lista
+            </Button>
           </div>
-        ))
+          <div className={styles.whole_list}>
+            {loading && <Spinner />}
+            {listData === null ? (
+              <p>Todavía no hay listas</p>
+            ) : filteredLists.length > 0 ? (
+              filteredLists.map((list) => (
+                <div
+                  className={styles.list__container}
+                  key={list.list_id}
+                  onClick={() => {
+                    handleListClick(list.list_id);
+                  }}
+                  style={{ backgroundColor: listColors[list.list_id] }}
+                >
+                  <div className={styles.list__content}>
+                    <div className={styles.user__container}>
+                      <div className={styles.content__user}>
+                        <p className={styles.user__username}>
+                          {list.list_name}
+                        </p>
+                      </div>
+                      {userId === tokenUserId && (
+                        <div className={styles.more__actions}>
+                          <Button
+                            className={styles.action_buttons}
+                            onClick={() => handleEdit(list)}
+                          >
+                            <div className={styles.list_edit_icon} />
+                          </Button>
+                          <Button
+                            className={styles.action_buttons}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteList(list);
+                            }}
+                          >
+                             <div className={styles.list_delete_icon} />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No se encontraron listas que coincidan con la búsqueda</p>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

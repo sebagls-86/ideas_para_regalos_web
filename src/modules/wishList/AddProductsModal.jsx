@@ -37,7 +37,7 @@ function AddProductsModal({
         throw new Error("Network response was not ok");
       }
   
-      // Si la respuesta es exitosa, actualiza la lista con los nuevos productos seleccionados
+      alert("Intereses guardados correctamente");
       updateListsWithNewProducts(listId, selectedProducts);
   
       setIsLoading(false);
