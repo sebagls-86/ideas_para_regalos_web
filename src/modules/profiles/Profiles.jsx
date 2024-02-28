@@ -678,7 +678,7 @@ function Profiles() {
                   ) : (
                     <tr>
                       <td colSpan="2">
-                        No se encontraron perfiles que coincidan con la búsqueda
+                      No se encontraron resultados para tu búsqueda.
                       </td>
                     </tr>
                   )

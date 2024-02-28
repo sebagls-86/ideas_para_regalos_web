@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import styles from "./css/profiles.module.css";
+import { IoMdClose } from "react-icons/io";
 
 function CustomModal({
     show,
@@ -15,7 +16,8 @@ function CustomModal({
   }) {
     return (
       <Modal show={show} onHide={onHide} centered>
-        <Modal.Header closeButton className={styles.modal__header}>
+        <Modal.Header  className={styles.modal__header}>
+        <IoMdClose className={styles.custom_close_button} onClick={onHide} />
           <Modal.Title className={styles.modal__title}>
             {title}
           </Modal.Title>

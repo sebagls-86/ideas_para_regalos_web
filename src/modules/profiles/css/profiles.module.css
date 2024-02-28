@@ -12,6 +12,7 @@
   position: absolute;
   left: 3%;
   top: 5%;
+  cursor: pointer;
 
 }
 .modal__title {
@@ -31,22 +32,23 @@
 .modal__confirm,
 .modal__cancel,
 .modal__confirm:hover,
-.modal__cancel:hover {
-  background-color: transparent;
+.modal__cancel:hover, .modal__confirm:active, .modal__cancel:active  {
+  background-color: transparent !important;
   border: none;
   font-size: 20px;
   padding: 15px 50px;
 }
 .modal__cancel,
 .modal__cancel:hover {
-  color: red;
+  color: red !important;
   border-right: 0.5px solid lightgray;
   border-radius: 0;
   height: 100%;
 }
 .modal__confirm,
-.modal__confirm:hover {
-  color: green;
+.modal__confirm:hover{
+  color: green !important;
+  
 }
 .create_new_container,
 .edit_buttons {
@@ -63,23 +65,29 @@
 }
 .search_bar{
   position: relative;
+  width: 100%;
+    max-width: 300px;
 }
-.search_bar input{
-  width: 200%;
+
+.search_bar input {
+  width: calc(100% - 30px);
   height: 36px;
+  padding-left: 30px; 
   border-radius: 10px;
   border: 0.5px solid;
- 
 }
-.search_bar svg{
-  margin-right: 5px;
+
+.search_bar svg {
   width: 24px;
   height: 24px;
   position: absolute;
-  left: 203%;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
+  
 }
+
+
 
 .create_new_button,
 .create_new_button:hover {
@@ -116,6 +124,7 @@
 .profiles__table__info .profile_interest_container {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 .profiles__table__container {
   display: flex;
@@ -165,6 +174,9 @@
   width: 20px;
   height: 22px;
   background-repeat: no-repeat;
+}
+.profile_edit_icon button:active{
+  background-color: red;
 }
 .profile_gift_icon {
   background-image: url("/src/assets/buttons/gift-icon.svg");
@@ -247,6 +259,9 @@
   border-color: #0056b3;
 }
 
+.action_buttons:active{
+  background-color: transparent !important;
+}
 .action_buttons {
   button:hover {
     background-color: green;
@@ -286,7 +301,7 @@
   width: 35px;
   padding: 10px;
   border-radius: 30px;
-  margin-left: 40px;
+  /*margin-left: 40px;*/
 }
 .go_back_button,
 .go_back_button:hover {
@@ -317,6 +332,7 @@
   .profiles__images img {
     width: 100%;
   }
+
 }
 @media only screen and (min-width: 1512px) {
   .profiles__images {
@@ -325,5 +341,6 @@
   .profiles__images img {
     width: 100%;
   }
+  
 }
 
