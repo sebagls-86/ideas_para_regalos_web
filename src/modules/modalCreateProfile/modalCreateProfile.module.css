@@ -45,6 +45,28 @@ border: 0.5px solid var(--Neutral-0, #525558);
 .selected {
     color: var(--primary-dark);
   }
+
+  .interestButton {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .selectedInterest {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .scrollable_div {
+    max-height: 300px; /* Establece la altura máxima que deseas para el div */
+    overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura máxima */
+  }
+
 @media only screen and (min-width: 768px) {
     .buttons__container {
         padding-top: 1.31rem;

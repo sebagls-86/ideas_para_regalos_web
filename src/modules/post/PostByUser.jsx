@@ -105,6 +105,8 @@ function PostByUser() {
     setOriginalPost(null);
   };
 
+  console.log("postdata", postData)
+
   return (
     <div>
       <EditPostModal
@@ -116,9 +118,9 @@ function PostByUser() {
         handleCloseModal={handleCloseModal}
       />
 
-      {postData === null ? (
-        <p>Todavía no hay publicaciones</p>
-      ) : (
+{!postData || postData.length === 0 ? (
+  <p>Todavía no hay publicaciones</p>
+) : (
         postData.map((post) => (
           <div key={post.forum_id} className={styles.post__container}>
             <div className={styles.container__image}>

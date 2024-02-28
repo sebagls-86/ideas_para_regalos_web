@@ -4,14 +4,12 @@ import styles from "./modal.module.css";
 import { AiOutlineClose } from "react-icons/ai";
 import { Col } from "react-bootstrap";
 
-function Modal({ closeModal, title, children }) {
+function Modal({ closeModal, title, children, show }) {
+  console.log("Modal show:", show);
   return (
-    <div className={styles.modal}>
+    <div className={styles.modal} style={{ display: show ? "block" : "none" }}>
       <div className={styles.modal__content}>
-        <button
-          className={styles.modal__button}
-          onClick={() => closeModal(false)}
-        >
+        <button className={styles.modal__button} onClick={closeModal}>
           <AiOutlineClose />
         </button>
         <div className={styles.modal__body}>
@@ -24,9 +22,12 @@ function Modal({ closeModal, title, children }) {
     </div>
   );
 }
+
 Modal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.element,
   closeModal: PropTypes.func,
+  show: PropTypes.bool.isRequired,
 };
+
 export default Modal;

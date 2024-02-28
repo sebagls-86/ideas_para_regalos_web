@@ -44,9 +44,9 @@ function Post() {
 
   return (
     <div>
-    {postData === null ? (
-      <p>Todavía no hay publicaciones</p>
-    ) : (
+    {!postData || postData.length === 0 ? (
+  <p>Todavía no hay publicaciones</p>
+) : (
       postData.map((post) => (
         <div className={styles.post__container} key={post.forum_id}>
           <div className={styles.container__image}>
