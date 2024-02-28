@@ -291,19 +291,18 @@ function ForumsPage() {
                     </div>
                   )}
                 </div>
+                <ul className={styles.forum_interests}>
+                  {forumData.data.profile.interests.map((interest) => (
+                    <li key={interest.interest_id}>{interest.interest}</li>
+                  ))}
+                </ul>
                 <p className={styles.forum_description}>
                   {forumData.data.description}
                 </p>
                 <div>
-                  <p> Regalo para: {forumData.data.profile.name}</p>
+                  {/*<p> Regalo para: {forumData.data.profile.name}</p>*/}
                   <p> Rango de Edad: {forumData.data.profile.age_range} </p>
                   <p> Relacion: {forumData.data.profile.relationship} </p>
-                  <p>Intereses:</p>
-                  <ul>
-                    {forumData.data.profile.interests.map((interest) => (
-                      <li key={interest.interest_id}>{interest.interest}</li>
-                    ))}
-                  </ul>
                 </div>
               </div>
               {forumData && forumData.data && forumData.data.messages && (
@@ -363,12 +362,14 @@ function ForumsPage() {
                         </div>
                       ) : (
                         <>
+                      
+                         <p className={styles.forum_username}>
+                            {message.user_name}
+                          </p>
                           <p className={styles.forum_message}>
                             {message.message}
                           </p>
-                          <p className={styles.forum_username}>
-                            {message.user_name}
-                          </p>
+                        
                           <p className={styles.forum_date}>{message.date}</p>
                           {message.image &&
                             Array.isArray(message.image) &&

@@ -1,3 +1,8 @@
+.forum_interests{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
 .perfil_banner {
   width: 100%;
   cursor: pointer;
@@ -35,6 +40,7 @@
   font-weight: bold;
   margin: 10px;
 }
+
 
 .profile_info_container {
   border-radius: 8px;
