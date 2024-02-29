@@ -302,6 +302,7 @@ function ForumsPage() {
                 <div>
                   {/*<p> Regalo para: {forumData.data.profile.name}</p>*/}
                   <p> Rango de Edad: {forumData.data.profile.age_range} </p>
+                  <p> USERNAME: {forumData.data.name} </p>
                   <p> Relacion: {forumData.data.profile.relationship} </p>
                 </div>
               </div>

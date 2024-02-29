@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./css/list.module.css";
 import { Spinner, Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
@@ -6,6 +6,15 @@ import AddProductsModal from "./AddProductsModal";
 import ModalCreateList from "./ModalCreateList";
 import jwtDecode from "jwt-decode";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { IoMdClose, IoIosSearch } from "react-icons/io";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiEditAlt } from "react-icons/bi";
+
+function getRandomPastelColor() {
+  const hue = Math.floor(Math.random() * 360);
+  const pastel = "hsl(" + hue + ", 55%, 85%)";
+  return pastel;
+}
 
 function WishList() {
   const [listData, setListData] = useState(null);
@@ -33,6 +42,34 @@ function WishList() {
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
   const tokenUserId = decoded.user_id;
+  const inputRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [listColors, setListColors] = useState({});
+
+  //const filteredListData = listData.filter((list) =>
+  //list.list_name.toLowerCase().includes(searchTerm.toLowerCase())
+  //);
+  
+  
+  //const filteredListData = filteredListData
+    //? filteredListData.filter((list) =>
+       // list.name.toLowerCase().includes(searchTerm.toLowerCase())
+      //)
+    //: [];
+
+  const handleClose = () => {
+    setShowDeleteListConfirmationModal(false);
+  };
+
+  useEffect(() => {
+    if (listData) {
+      const colors = {};
+      listData.forEach((list) => {
+        colors[list.list_id] = getRandomPastelColor();
+      });
+      setListColors(colors);
+    }
+  }, [listData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -282,7 +319,7 @@ function WishList() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ list_name: editedListName }), 
+          body: JSON.stringify({ list_name: editedListName }),
         }
       );
       if (response.ok) {
@@ -303,7 +340,9 @@ function WishList() {
         console.error("Error al actualizar el nombre de la lista");
       }
     } catch (error) {
-      alert("Error al enviar solicitud de actualización del nombre de la lista");
+      alert(
+        "Error al enviar solicitud de actualización del nombre de la lista"
+      );
       console.error(
         "Error al enviar solicitud de actualización del nombre de la lista:",
         error
@@ -319,20 +358,17 @@ function WishList() {
     try {
       const dataToSend = {
         list_name: newList.list_name,
-        list_type_id: 2
+        list_type_id: 2,
       };
 
-      const response = await fetch(
-        `http://localhost:8080/api/v1/lists`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
+      const response = await fetch(`http://localhost:8080/api/v1/lists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dataToSend),
+      });
       if (response.ok) {
         alert("Lista creada correctamente");
         const data = await response.json();
@@ -349,7 +385,18 @@ function WishList() {
         error
       );
     }
-  }
+  };
+  const handleSearchClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+  const handleClearClick = () => {
+    setSearchTerm("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   return (
     <div>
@@ -374,7 +421,7 @@ function WishList() {
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className={styles.modal__header}>
           <Modal.Title>Confirmar eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -397,184 +444,237 @@ function WishList() {
       <Modal
         show={showDeleteListConfirmationModal}
         onHide={() => setShowDeleteListConfirmationModal(false)}
+        centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmar eliminación</Modal.Title>
+        <Modal.Header className={styles.modal__header}>
+          <IoMdClose
+            className={styles.custom_close_button}
+            onClick={handleClose}
+          />
+          <Modal.Title className={styles.modal__title}>
+            ¿Estás seguro?
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          ¿Está seguro de que desea eliminar la lista "{listToRemove?.list_name}
-          "?
+        <Modal.Body className={styles.modal__body}>
+          Se eliminará la lista "{listToRemove?.list_name}
+          ".
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className={styles.modal__footer}>
           <Button
             variant="secondary"
             onClick={() => setShowDeleteListConfirmationModal(false)}
+            className={styles.modal__cancel}
           >
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleDelete}>
+          <Button
+            variant="primary"
+            onClick={handleDelete}
+            className={styles.modal__confirm}
+          >
             Confirmar
           </Button>
         </Modal.Footer>
       </Modal>
 
-      <Button variant="primary" onClick={handleCreateList}>
-        Crear lista
-      </Button>
-      {loading && <Spinner />}
-      {listData === null ? (
-        <p>Todavía no hay listas</p>
-      ) : selectedListId ? (
-        <div className={styles.list__container}>
-          <div className={styles.list__content}>
-            <div className={styles.user__container}>
-              <div className={styles.content__user}>
-                {editMode ? (
-                  <input
-                    type="text"
-                    value={editedListName}
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <p className={styles.user__username}>
-                    {
-                      listData.find((list) => list.list_id === selectedListId)
-                        .list_name
-                    }
-                  </p>
-                )}
-                {editMode ? (
-                  <div>
-                   
-                    <Button
+      <div className={styles.create_new_container}>
+        <div className={styles.search_bar}>
+          <form style={{ position: "relative" }}>
+            <input
+              ref={inputRef}
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ flex: 1 }}
+            />
+            {!searchTerm ? (
+              <IoIosSearch
+                className={styles.icon_style}
+                onClick={handleSearchClick}
+              />
+            ) : (
+              <IoMdClose
+                className={styles.icon_style}
+                onClick={handleClearClick}
+              />
+            )}
+          </form>
+        </div>
+
+        <Button onClick={handleCreateList} className={styles.create_new_button}>
+          <AiOutlinePlus />
+          Crear lista
+        </Button>
+      </div>
+
+      <div className={styles.whole_list}>
+        {loading && <Spinner />}
+        {listData === null ? (
+          <p>Todavía no hay listas</p>
+        ) : selectedListId ? (
+          <div
+            className={styles.list__container}
+            style={{ backgroundColor: listColors[selectedListId] }}
+          >
+            <div className={styles.list__content}>
+              <div className={styles.user__container}>
+                <div className={styles.content__user}>
+                  {editMode ? (
+                    <input
+                      type="text"
+                      value={editedListName}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
+                    <p className={styles.user__username}>
+                      {
+                        listData.find((list) => list.list_id === selectedListId)
+                          .list_name
+                      }
+                    </p>
+                  )}
+                  {editMode ? (
+                    <div>
+                      <Button
+                        variant="primary"
+                        onClick={() =>
+                          handleSaveEditListName(
+                            listData.find(
+                              (list) => list.list_id === selectedListId
+                            )
+                          )
+                        }
+                      >
+                        Guardar
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          setEditMode(false);
+                          setEditedListName(
+                            listData.find(
+                              (list) => list.list_id === selectedListId
+                            ).list_name
+                          );
+                        }}
+                      >
+                        Cancelar
+                      </Button>
+                    </div>
+                  ) : (
+                    <BiEditAlt
+                      className={styles.edit_list_name_button}
                       variant="primary"
                       onClick={() =>
-                        handleSaveEditListName(
+                        handleEditListName(
                           listData.find(
                             (list) => list.list_id === selectedListId
                           )
                         )
                       }
                     >
-                      Guardar
-                    </Button>
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        setEditMode(false);
-                        setEditedListName(
-                          listData.find(
-                            (list) => list.list_id === selectedListId
-                          ).list_name
-                        );
-                      }}
-                    >
-                      Cancelar
-                    </Button>
-                  </div>
-                ) : (
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      handleEditListName(
-                        listData.find((list) => list.list_id === selectedListId)
-                      )
-                    }
-                  >
-                    Editar
-                  </Button>
-                )}
-              </div>
-            </div>
-            <div className={styles.product_container}>
-              {listData
-                .find((list) => list.list_id === selectedListId)
-                .products.map((product, index) => {
-                  const productInfo = productsCatalog.data.find(
-                    (item) => item.name === product
-                  );
-                  return (
-                    <div key={index} className={styles.product_item}>
-                      {productInfo && (
-                        <div
-                          key={index}
-                          className={styles.product_card}
-                          onClick={() =>
-                            handleRemoveProduct(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
-                              ),
-                              product
-                            )
-                          }
-                        >
-                          <img
-                            src={`http://localhost:8080${productInfo.images}`}
-                            alt={productInfo.name}
-                            className={styles.product_image}
-                          />
-                          <p className={styles.product_name}>
-                            {productInfo.name}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
-            <Button
-              variant="primary"
-              onClick={() =>
-                handleAddProduct(
-                  listData.find((list) => list.list_id === selectedListId)
-                )
-              }
-            >
-              Agregar
-            </Button>
-            <Button onClick={() => setSelectedListId(null)}>Atras</Button>
-          </div>
-        </div>
-      ) : (
-        listData.map((list) => (
-          <div
-            className={styles.list__container}
-            key={list.list_id}
-            onClick={() => {
-              handleListClick(list.list_id);
-            }}
-          >
-            <div className={styles.list__content}>
-              <div className={styles.user__container}>
-                <div className={styles.content__user}>
-                  <p className={styles.user__username}>{list.list_name}</p>
+                      Editar
+                    </BiEditAlt>
+                  )}
                 </div>
-                {userId === tokenUserId && (
-                  <div className={styles.more__actions}>
-                    <Button
-                      className={styles.action_buttons}
-                      onClick={() => handleEdit(list)}
-                    >
-                      <FaEdit className={styles.profile_interest_remove_icon} />
-                    </Button>
-                    <Button
-                      className={styles.action_buttons}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteList(list);
-                      }}
-                    >
-                      <FaTrash
-                        className={styles.profile_interest_remove_icon}
-                      />
-                    </Button>
-                  </div>
-                )}
               </div>
+              <div className={styles.product_container}>
+                {listData
+                  .find((list) => list.list_id === selectedListId)
+                  .products.map((product, index) => {
+                    const productInfo = productsCatalog.data.find(
+                      (item) => item.name === product
+                    );
+                    return (
+                      <div key={index} className={styles.product_item}>
+                        {productInfo && (
+                          <div
+                            key={index}
+                            className={styles.product_card}
+                            onClick={() =>
+                              handleRemoveProduct(
+                                listData.find(
+                                  (list) => list.list_id === selectedListId
+                                ),
+                                product
+                              )
+                            }
+                          >
+                            <img
+                              src={`http://localhost:8080${productInfo.images}`}
+                              alt={productInfo.name}
+                              className={styles.product_image}
+                            />
+                            <p className={styles.product_name}>
+                              {productInfo.name}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
+              {/*Atras*/}
+              <Button
+                onClick={() => setSelectedListId(null)}
+                className={styles.go_back_button}
+              ></Button>
+              <Button
+                variant="primary"
+                onClick={() =>
+                  handleAddProduct(
+                    listData.find((list) => list.list_id === selectedListId)
+                  )
+                }
+              >
+                Agregar
+              </Button>
             </div>
           </div>
-        ))
-      )}
+        ) : (
+          listData.map((list) => (
+            <div
+              className={styles.list__container}
+              key={list.list_id}
+              onClick={() => {
+                handleListClick(list.list_id);
+              }}
+              style={{ backgroundColor: listColors[list.list_id] }}
+            >
+              <div className={styles.list__content}>
+                <div className={styles.user__container}>
+                  <div className={styles.content__user}>
+                    <p className={styles.user__username}>{list.list_name}</p>
+                  </div>
+                  {userId === tokenUserId && (
+                    <div className={styles.more__actions}>
+                      <Button
+                        className={styles.action_buttons}
+                        onClick={() => handleEdit(list)}
+                      >
+                        <FaEdit
+                          className={styles.profile_interest_remove_icon}
+                        />
+                      </Button>
+                      <Button
+                        className={styles.action_buttons}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteList(list);
+                        }}
+                      >
+                        <FaTrash
+                          className={styles.profile_interest_remove_icon}
+                        />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

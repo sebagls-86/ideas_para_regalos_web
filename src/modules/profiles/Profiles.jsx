@@ -525,10 +525,11 @@ function Profiles() {
       {selectedProfile ? (
         <div>
           <div className={styles.edit_buttons}>
+            {/*Atras*/}
             <Button
               onClick={() => setSelectedProfile(null)}
               className={styles.go_back_button}
-            ></Button>{" "}
+            ></Button>
             <Button onClick={() => handleEditModal(selectedProfile)}>
               Editar
             </Button>

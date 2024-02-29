@@ -38,14 +38,14 @@ function ModalCreateList({ show, onHide, handleSaveNewList }) {
   };
 
   return (
-    <div className={styles.modal} style={{ display: show ? "block" : "none" }}>
+    <div className={styles.modal} style={{ display: show ? "block" : "none"}}>
       <div className={styles.modal__content}>
         <button className={styles.modal__button} onClick={handleClose}>
           <AiOutlineClose />
         </button>
         <div className={styles.modal__body}>
           <h2 className={styles.modal__title}>Nueva lista</h2>
-          <Col xs={10} sm={8} md={7}>
+          <Col style={{ marginTop: "2rem"}}>
             <Input
               type="text"
               name="list_name"
