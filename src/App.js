@@ -11,6 +11,7 @@ import CategoryPage from './pages/categoryPage/CategoryPage';
 import NotificationsPage from './pages/notificationsPage/NotificationsPage';
 import NuevoRegaloPage from './pages/nuevoRegaloPage/NuevoRegaloPage';
 import ForumsPage from './pages/forums/ForumsPage';
+import FaqPage from './pages/faqPage/FaqPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/notificaciones" element={<NotificationsPage />} />
         <Route path="/nuevoRegalo" element={<NuevoRegaloPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/preguntasFrecuentes" element={<FaqPage />} />
       </Routes>
     </BrowserRouter>
   );
