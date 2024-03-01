@@ -190,6 +190,9 @@ a:focus {
   padding: 0 0rem;
   height: 100vh;
   overflow-y: scroll;
+
+  /*puede salir mal*/
+  width: 100%;
 }
 
 .right__aside {
@@ -294,4 +297,10 @@ a:focus {
   width: 45px !important;
   height: 45px !important;
   border-radius: 45px !important;
+}
+.full-width{
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  padding: 0;
 }

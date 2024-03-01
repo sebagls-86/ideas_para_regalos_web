@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
+import NavBar from "../../modules/navBar/NavBar";
 import styles from "./faqPage.module.css";
 import { Col } from "react-bootstrap";
 
@@ -18,7 +18,8 @@ function FaqPage() {
 
   return (
     <>
-      {!user && !tokenExists && <NavLoggedOut />}
+      {!user && !tokenExists}
+      <NavBar />
       <div className={styles.container}>
         <div className="">
           <h1 className={styles.page_title}>Preguntas frecuentes</h1>
@@ -38,7 +39,7 @@ function FaqPage() {
               </p>
             </div>
             <div>
-            <h4 className={styles.question_title}>
+              <h4 className={styles.question_title}>
                 ¿Cómo puedo interactuar con otros usuarios y compartir ideas de
                 regalos?
               </h4>
@@ -55,7 +56,7 @@ function FaqPage() {
           </Col>
           <Col className={styles.column}>
             <div>
-            <h4 className={styles.question_title}>
+              <h4 className={styles.question_title}>
                 ¿Existe alguna función para guardar o marcar las ideas de
                 regalos que me interesen para consultarlas más tarde?
               </h4>
@@ -80,7 +81,7 @@ function FaqPage() {
             </div>
 
             <div>
-            <h4 className={styles.question_title}>
+              <h4 className={styles.question_title}>
                 ¿Cómo puedo asegurarme de que las recomendaciones de regalos
                 sean útiles y apropiadas?
               </h4>

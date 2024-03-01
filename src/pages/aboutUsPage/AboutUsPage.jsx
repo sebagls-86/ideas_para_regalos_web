@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
+import NavBar from "../../modules/navBar/NavBar";
 import styles from "./aboutUsPage.module.css";
 
 import { Col } from "react-bootstrap";
@@ -19,17 +19,20 @@ function AboutUsPage() {
 
   return (
     <>
-      {!user && !tokenExists && <NavLoggedOut />}
+      {!user && !tokenExists}
+      <NavBar />
       <div className={styles.banner}></div>
-      <Col className={styles.col_content }>
-        <h1 className={styles.page_title } >Ideas para regalos</h1>
-        <h5  className={styles.sub_title } >Ideas únicas para regalar momentos inolvidables</h5>
+      <Col className={styles.col_content}>
+        <h1 className={styles.page_title}>Ideas para regalos</h1>
+        <h5 className={styles.sub_title}>
+          Ideas únicas para regalar momentos inolvidables
+        </h5>
         <p>
           Tu comunidad en línea para descubrir y compartir sugerencias de
-          regalos personalizadas.<br/>
-          Desde ideas clásicas hasta las más originales,
-          estamos para ayudarte a encontrar el <br/> regalo perfecto para
-          cualquier ocasión.
+          regalos personalizadas.
+          <br />
+          Desde ideas clásicas hasta las más originales, estamos para ayudarte a
+          encontrar el <br /> regalo perfecto para cualquier ocasión.
         </p>
       </Col>
     </>
