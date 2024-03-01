@@ -12,6 +12,7 @@ import NotificationsPage from './pages/notificationsPage/NotificationsPage';
 import NuevoRegaloPage from './pages/nuevoRegaloPage/NuevoRegaloPage';
 import ForumsPage from './pages/forums/ForumsPage';
 import FaqPage from './pages/faqPage/FaqPage';
+import AboutUsPage from './pages/aboutUsPage/AboutUsPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/nuevoRegalo" element={<NuevoRegaloPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/preguntasFrecuentes" element={<FaqPage />} />
+        <Route path="/nosotros" element={<AboutUsPage />} />
       </Routes>
     </BrowserRouter>
   );
