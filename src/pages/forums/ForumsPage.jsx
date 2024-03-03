@@ -3,9 +3,10 @@ import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col, Button, Modal } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
-import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
+import NavBar from "../../modules/navBar/NavBar";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import EditPostModal from "../../modules/post/EditPostModal";
@@ -16,6 +17,7 @@ import styles from "./forumsPage.module.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import ModalLogin from "../../modules/modalLogin/ModalLogin";
 
 function ForumsPage() {
   const [user] = useAuthState(auth);
@@ -27,6 +29,11 @@ function ForumsPage() {
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
   const [messageEditing, setMessageEditing] = useState(null);
+  const [forumLikesData, setForumLikesData] = useState(null);
+  const [messageLikesData, setMessageLikesData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [openModal, setOpenModal] = React.useState(false);
   const [eventTypes, setEventTypes] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -40,32 +47,60 @@ function ForumsPage() {
     if (token) {
       const decoded = jwtDecode(token);
       setUserData(decoded);
+      setUserId(decoded.user_id);
     }
   }, []);
 
   useEffect(() => {
-    const fetchForumData = async () => {
+    // Verificar si el usuario está logueado
+    setIsLoggedIn(!!token);
+  }, [token]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
+        // Fetch del foro
+        const forumResponse = await fetch(
           `http://localhost:8080/api/v1/forums/${forum_id}`
         );
-        if (response.ok) {
-          const forumData = await response.json();
+        if (forumResponse.ok) {
+          const forumData = await forumResponse.json();
           setForumData(forumData);
-        }
-        if (response.status === 404) {
+        } else if (forumResponse.status === 404) {
           navigate("/notFound");
           console.error("El foro no existe.");
         } else {
-          console.error("Error fetching forum data:", response.statusText);
+          console.error("Error al obtener los datos del foro:", forumResponse.statusText);
+        }
+  
+        // Fetch de likes del usuario para mensajes
+        const messageLikesResponse = await fetch(
+          `http://localhost:8080/api/v1/messages/likes/${userId}`
+        );
+        if (messageLikesResponse.ok) {
+          const messageLikesData = await messageLikesResponse.json();
+          setMessageLikesData(messageLikesData);
+        } else {
+          console.error("Error al obtener los likes del usuario para los mensajes:", messageLikesResponse.statusText);
+        }
+  
+        // Fetch de likes del usuario para foros
+        const forumLikesResponse = await fetch(
+          `http://localhost:8080/api/v1/forums/likes/${userId}`
+        );
+        if (forumLikesResponse.ok) {
+          const forumLikesData = await forumLikesResponse.json();
+          setForumLikesData(forumLikesData);
+        } else {
+          console.error("Error al obtener los likes del usuario para los foros:", forumLikesResponse.statusText);
         }
       } catch (error) {
-        console.error("Error fetching forum data:", error);
+        console.error("Error al obtener los datos:", error);
       }
     };
-
-    fetchForumData();
-  }, [forum_id, navigate]);
+  
+    fetchData();
+  }, [forum_id, userId, navigate]);
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -137,9 +172,17 @@ function ForumsPage() {
           },
         }
       );
-
+  
       if (response.ok) {
+        const updatedMessages = forumData.data.messages.filter(
+          (message) => message.message_id !== messageId
+        );
+        const updatedForumData = { ...forumData };
+        updatedForumData.data.messages = updatedMessages;
+        setForumData(updatedForumData);
+  
         alert("El mensaje se ha eliminado correctamente.");
+        setShowDeleteModal(false);
         console.log("El mensaje se ha eliminado correctamente.");
       } else {
         alert("Error al intentar eliminar el mensaje.");
@@ -147,9 +190,11 @@ function ForumsPage() {
           "Error al intentar eliminar el mensaje:",
           response.statusText
         );
+        setShowDeleteModal(false);
       }
     } catch (error) {
       console.error("Error al intentar eliminar el mensaje:", error);
+      setShowDeleteModal(false);
     }
   };
 
@@ -199,7 +244,7 @@ function ForumsPage() {
       const response = await fetch(
         `http://localhost:8080/api/v1/messages/${messageEditing.message_id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -241,6 +286,106 @@ function ForumsPage() {
     setOriginalPost(null);
   };
 
+  const handleLikePost = async (postId) => {
+    if (isLoggedIn) {
+      try {
+        const updatedLikesData = await fetch(
+          `http://localhost:8080/api/v1/forums/${postId}/like`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (updatedLikesData.ok) {
+          const updatedLikesResponse = await updatedLikesData.json();
+          console.log("updatedLikesResponse", updatedLikesResponse);
+
+          const updatedForumData = { ...forumData };
+          const likesCount = updatedLikesResponse.data.likes || 0;
+          updatedForumData.data.likes = likesCount;
+
+          setForumData(updatedForumData);
+
+          const updatedUserLikesResponse = await fetch(
+            `http://localhost:8080/api/v1/forums/likes/${userId}`
+          );
+          if (!updatedUserLikesResponse.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const updatedUserLikesData = await updatedUserLikesResponse.json();
+          console.log("updatedUserLikesData", updatedUserLikesData);
+
+          setForumLikesData(updatedUserLikesData);
+        } else {
+          console.error("Failed to like post");
+        }
+      } catch (error) {
+        console.error("Error liking post:", error);
+      }
+    } else {
+      setOpenModal(true);
+    }
+  };
+
+  const handleLikeMessage = async (messageId) => {
+    if (isLoggedIn) {
+      try {
+        const updatedLikesData = await fetch(
+          `http://localhost:8080/api/v1/messages/${messageId}/like`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (updatedLikesData.ok) {
+          const updatedLikesResponse = await updatedLikesData.json();
+          console.log("updatedLikesResponse", updatedLikesResponse);
+
+          // Actualizar los datos del mensaje con la nueva cantidad de likes
+          const updatedForumData = { ...forumData };
+          const updatedMessages = updatedForumData.data.messages.map(
+            (message) => {
+              if (message.message_id === messageId) {
+                return {
+                  ...message,
+                  likes: updatedLikesResponse.data.likes || 0,
+                };
+              }
+              return message;
+            }
+          );
+          updatedForumData.data.messages = updatedMessages;
+
+          setForumData(updatedForumData);
+
+          // Actualizar los datos de los likes del usuario
+          const updatedUserLikesResponse = await fetch(
+            `http://localhost:8080/api/v1/messages/likes/${userId}`
+          );
+          if (!updatedUserLikesResponse.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const updatedUserLikesData = await updatedUserLikesResponse.json();
+          console.log("updatedUserLikesData", updatedUserLikesData);
+
+          setMessageLikesData(updatedUserLikesData);
+        } else {
+          console.error("Failed to like message");
+        }
+      } catch (error) {
+        console.error("Error liking message:", error);
+      }
+    } else {
+      setOpenModal(true);
+    }
+  };
+
   return (
     <>
       {showDeleteModal && (
@@ -264,7 +409,8 @@ function ForumsPage() {
           </Modal.Footer>
         </Modal>
       )}
-      {!user && !tokenExists && <NavLoggedOut />}
+      {!user && !tokenExists}
+      <NavBar />
       <div className="contenedor">
         <div className="left__aside">
           {(user || tokenExists) && <Nav user={user?.displayName} />}
@@ -304,6 +450,24 @@ function ForumsPage() {
                       <li key={interest.interest_id}>{interest.interest}</li>
                     ))}
                   </ul>
+                </div>
+
+                <div
+                  className={styles.actions__content}
+                  onClick={() => handleLikePost(forumData.data.forum_id)}
+                >
+                  {forumLikesData &&
+                  forumLikesData.data &&
+                  forumLikesData.data.some(
+                    (like) => like.forum_id === forumData.data.forum_id
+                  ) ? (
+                    <AiFillHeart fill="red" className={styles.heart_icon} />
+                  ) : (
+                    <AiOutlineHeart className={styles.heart_icon} />
+                  )}
+                  <span className={styles.post_tags}>
+                    {forumData.data.likes}
+                  </span>
                 </div>
               </div>
               {forumData && forumData.data && forumData.data.messages && (
@@ -401,6 +565,28 @@ function ForumsPage() {
                               </button>
                             </div>
                           )}
+                          <div
+                            className={styles.actions__content}
+                            onClick={() =>
+                              handleLikeMessage(message.message_id)
+                            }
+                          >
+                            {messageLikesData &&
+                            messageLikesData.data &&
+                            messageLikesData.data.some(
+                              (like) => like.message_id === message.message_id
+                            ) ? (
+                              <AiFillHeart
+                                fill="red"
+                                className={styles.heart_icon}
+                              />
+                            ) : (
+                              <AiOutlineHeart className={styles.heart_icon} />
+                            )}
+                            <span className={styles.post_tags}>
+                              {message.likes}
+                            </span>
+                          </div>
                         </>
                       )}
                     </li>
@@ -484,6 +670,7 @@ function ForumsPage() {
           originalPost={originalPost}
           handleCloseModal={handleCloseModal}
         />
+        {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
       </div>
     </>
   );

@@ -8,7 +8,7 @@ import banner from "../../assets/sv-banner.jpg";
 import styles from "./categoryPage.module.css";
 import SectionEvents from "../../modules/sectionEvents/SectionEvents";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
-import NavLoggedOut from "../../modules/navLoggedOut/NavLoggedOut";
+import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
@@ -84,7 +84,8 @@ function CategoryPage() {
   ];
   return (
     <>
-      {!user && <NavLoggedOut />}
+      {!user}
+      <NavBar />
       <div className="contenedor">
         <div className="left__aside">{user && <Nav />}</div>
         <div className="content">

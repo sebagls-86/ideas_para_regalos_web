@@ -30,13 +30,16 @@
   color: #ffed4b;
 }
 
-
-
 .login_button{ 
-  background-color: none;
+  padding-bottom: 0.5rem;
   color: #fcf3a6;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 0.875rem;
+  background-color: transparent;
+  font-weight: 700;
+}
+
+.login_button:is(:hover, :focus, :active) {
+  color: #ffed4b;
 }
 
 @media only screen and (min-width: 768px) {

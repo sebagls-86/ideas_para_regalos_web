@@ -5,9 +5,8 @@ import Form from "react-bootstrap/Form";
 import styles from "./nuevoRegaloHome.module.css";
 import MyIcon from "../myIcon/MyIcon";
 import { Link } from "react-router-dom";
-import Button from "../button/Button"
+import Button from "../button/Button";
 import Links from "../link/Links";
-
 
 function NuevoRegaloHome() {
   const [user] = useAuthState(auth);
@@ -29,26 +28,22 @@ function NuevoRegaloHome() {
           />
         </svg>
         <Link to="/nuevoRegalo" className="w-100">
-        <Form.Control
-          type="text"
-          id=""
-          aria-describedby="passwordHelpBlock"
-          placeholder="¿Para quién es el regalo?"
-          className={styles.nuevoRegaloInput}
-        />
-        <div className="d-flex justify-content-between align-items-center mt-5">
-        <div className={styles.icons}>
-        <MyIcon name="calendar"/>
-        <MyIcon name="heart"/>
-        <MyIcon name="image"/>
-        <MyIcon name="list"/>
-        </div>
-        <Links
-                    title="Regalar"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-        </div>
+          <Form.Control
+            type="text"
+            id=""
+            aria-describedby="passwordHelpBlock"
+            placeholder="¿Para quién es el regalo?"
+            className={styles.nuevoRegaloInput}
+          />
+          <div className="d-flex justify-content-between align-items-center mt-5">
+            <div className={styles.icons}>
+              <MyIcon name="calendar" />
+              <MyIcon name="heart" />
+              <MyIcon name="image" />
+              <MyIcon name="list" />
+            </div>
+            <Links title="Regalar" url="/nuevoRegalo" type={"primary"} />
+          </div>
         </Link>
       </div>
     </>

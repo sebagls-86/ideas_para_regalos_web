@@ -1,14 +1,23 @@
 import React from "react";
-import styles from "./navLoggedOut.module.css";
+import styles from "./navBar.module.css";
 import { Link } from "react-router-dom";
 import logoimg from "../../assets/logo_mascota_ipr.svg";
 import logotext from "../../assets/logo_letras_ipr.svg";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
-import ModalLogin from "../../modules/modalLogin/ModalLogin";
-import { Button } from "react-bootstrap";
+import LoginMobile from "../loginMobile/LoginMobile";
+import ModalLogin from "../modalLogin/ModalLogin";
 
-function NavLoggedOut() {
+function NavBar() {
   const [openModal, setOpenModal] = React.useState(false);
+  const [tokenExists, setTokenExists] = React.useState(false);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setTokenExists(true);
+    } else {
+      setTokenExists(false);
+    }
+  }, []);
 
   const openModalHandler = () => {
     setOpenModal(true);
@@ -38,18 +47,16 @@ function NavLoggedOut() {
                 Eventos
               </Link>
             </li>
-            <li>
-              <Button
-              className={styles.login_button}
-                label="Iniciar sesión"
-                onClick={openModalHandler}
-              >
-                Iniciar Sesion
-              </Button>
-            </li>
+            {!tokenExists && (
+              <li>
+                <Link onClick={openModalHandler} className={styles.links}>
+                  Iniciar sesión
+                </Link>
+              </li>
+            )}
           </ul>
           <div className={styles.login__container}>
-            <LoginMobile setOpenModal={setOpenModal} />
+            {!tokenExists && <LoginMobile setOpenModal={setOpenModal} />}
           </div>
         </div>
       </div>
@@ -58,4 +65,4 @@ function NavLoggedOut() {
   );
 }
 
-export default NavLoggedOut;
+export default NavBar;
