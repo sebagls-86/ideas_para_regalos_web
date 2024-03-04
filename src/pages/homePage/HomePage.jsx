@@ -3,7 +3,6 @@ import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
 import NavBar from "../../modules/navBar/NavBar";
@@ -45,7 +44,7 @@ function HomePage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(user || tokenExists) && <Search />}
+            {(user || tokenExists)}
             {(!user && !tokenExists) && <AsideLogin />}
             {(user || tokenExists) && (
               <div>
