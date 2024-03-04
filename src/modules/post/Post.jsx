@@ -5,12 +5,14 @@ import { FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ModalLogin from "../modalLogin/ModalLogin";
 import { useNavigate } from "react-router-dom";
+import Search from "../../components/search/Search";
 import jwtDecode from "jwt-decode";
 
 function Post() {
   const [postData, setPostData] = useState(null);
   const [openModal, setOpenModal] = React.useState(false);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [likesData, setLikesData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -60,13 +62,16 @@ function Post() {
   const handleLike = async (postId) => {
     if (isLoggedIn) {
       try {
-        const updatedLikesData = await fetch(`http://localhost:8080/api/v1/forums/${postId}/like`, {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const updatedLikesData = await fetch(
+          `http://localhost:8080/api/v1/forums/${postId}/like`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
           console.log("updatedLikesResponse", updatedLikesResponse);
@@ -78,14 +83,14 @@ function Post() {
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
           console.log("updatedUserLikesData", updatedUserLikesData);
-          
+
           setLikesData(updatedUserLikesData);
-  
-          setPostData(prevPostData =>
-            prevPostData.map(post => {
+
+          setPostData((prevPostData) =>
+            prevPostData.map((post) => {
               if (post.forum_id === postId) {
                 const likesCount = updatedLikesResponse.data.likes || 0;
-                return { ...post, likes: likesCount }; 
+                return { ...post, likes: likesCount };
               }
               return post;
             })
@@ -98,14 +103,10 @@ function Post() {
       }
     } else {
       setOpenModal(true);
-      // Si el usuario no está logueado, abrir el modal de login
-      // Código para abrir el modal de login...
     }
   };
-  
 
   useEffect(() => {
-    // Verificar si el usuario está logueado
     setIsLoggedIn(!!token);
   }, [token]);
 
@@ -113,13 +114,34 @@ function Post() {
     return <div>Loading...</div>;
   }
 
+  const filteredData = searchTerm
+  ? postData.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : postData;
+  
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
     <div>
-      {!postData || postData.length === 0 ? (
-        <p>Todavía no hay publicaciones</p>
+      <div>
+      <Search onSearch={handleSearch} />
+      </div>
+      {!filteredData || filteredData.length === 0 ? (
+        <p>No se encontraron publicaciones con los términos de búsqueda.</p>
       ) : (
-        postData.map((post) => (
-          <div className={styles.post__container} key={post.forum_id}>
+        postData
+          .filter((post) => 
+            post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            post.description.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((post) => (
+            <div className={styles.post__container} key={post.forum_id}>
             <div className={styles.container__image}>
               <img
                 src={`http://localhost:8080${post.avatar}`}

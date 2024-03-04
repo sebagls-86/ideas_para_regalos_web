@@ -1,30 +1,42 @@
 import React, { useState } from "react";
 import Button from "../../components/button/Button";
 import ModalLogin from "../modalLogin/ModalLogin";
+import ModalRegister from "../modalRegister/ModalRegister";
 import styles from "./loginMobile.module.css";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 
-function LoginMobile({ setOpenModal }) {
 
-  const [user] = useAuthState(auth);
-
-  const openModalHandler = () => {
-      setOpenModal(true);
-    };
+function LoginMobile() {
+  const [openModal, setOpenModal] = useState(false);
+  const [openRegisterModal, setOpenRegisterModal] = useState(false);
   
-  if (!user)
-    return (
-      <div className={styles.login__container}>
-        <Button label="Registrarse" className="btn primary__button" />
-        <Button
-          label="Iniciar sesión"
-          className="btn primary__button-outline"
-          onClick={openModalHandler}
-        />
-        {<ModalLogin closeModal={setOpenModal} />}
-      </div>
-    );
+  const openModalHandler = () => {
+    setOpenModal(true);
+    setOpenRegisterModal(false); // Asegurarse de que el modal de registro esté cerrado al abrir el de inicio de sesión
+  };
+
+  const openModalRegisterHandler = () => {
+    setOpenRegisterModal(true);
+    setOpenModal(false);
+  };
+
+  return (
+    <div className={styles.login__container}>
+      <Button
+        label="Registrarse"
+        className="btn primary__button"
+        onClick={openModalRegisterHandler}
+      />
+      <Button
+        label="Iniciar sesión"
+        className="btn primary__button-outline"
+        onClick={openModalHandler}
+      />
+      {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
+      {openRegisterModal && (
+        <ModalRegister closeModal={() => setOpenRegisterModal(false)} />
+      )}
+    </div>
+  );
 }
 
 export default LoginMobile;

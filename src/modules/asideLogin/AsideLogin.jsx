@@ -2,17 +2,27 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
+import ModalRegister from "../modalRegister/ModalRegister"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 
 function AsideLogin() {
   const [openModal, setOpenModal] = useState(false);
+  const [registerModal, setOpenRegisterModal] = useState(false)
   const [user] = useAuthState(auth);
+
+  console.log("registerModal", registerModal)
   if (!user)
     return (
       <>
         <div className="d-flex flex-column gap-3 mt-3">
-          <Button label="Registrarse" className="btn primary__button" />
+         <Button
+            label="Registrarse"
+            className="btn primary__button"
+            onClick={() => {
+              setOpenRegisterModal(true);
+            }}
+          />
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
@@ -22,6 +32,7 @@ function AsideLogin() {
             }}
           />
           {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
+          {registerModal && <ModalRegister closeModal={() => setOpenRegisterModal(false)} />}
         </div>
         <div className="d-flex justify-content-center align-items-center gap-5 flex-column flex-xl-row mt-5">
           <Link to="/ayuda" className="fz-17">

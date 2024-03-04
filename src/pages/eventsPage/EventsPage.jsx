@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import { Col, Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import Search from "../../components/search/Search";
@@ -10,26 +10,41 @@ import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
+import { Link } from "react-router-dom";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import styles from "./eventsPage.module.css";
-import Button from "../../components/button/Button";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
 
 function EventsPage() {
   const [user] = useAuthState(auth);
   const [tokenExists, setTokenExists] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [scheduledEvents, setScheduledEvents] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null && token !== undefined) {
       setTokenExists(true);
     }
+
+    // Llamada a la API para obtener eventos programados
+    fetch("http://localhost:8080/api/v1/scheduledEvents/upcoming")
+      .then((response) => response.json())
+      .then((data) => {
+        // Agregar URL base a las rutas de las imágenes
+        const eventsWithImageURLs = data.data.map((event) => ({
+          ...event,
+          image: `http://localhost:8080/images/eventTypes/${event.image}`,
+        }));
+        setScheduledEvents(eventsWithImageURLs);
+      })
+      .catch((error) =>
+        console.error("Error fetching scheduled events:", error)
+      );
   }, []);
 
   return (
     <>
-      {!user && !tokenExists}
       <NavBar />
       <div
         className={`contenedor ${!user && !tokenExists ? "full-width" : ""}`}
@@ -46,97 +61,32 @@ function EventsPage() {
               <LoginMobile />
             </Col>
           )}
-          {user || tokenExists ? (
-            <>
-              <PageTitle title="Eventos" />
-              {/*SIGNED IN*/}
-              <div
-                className={`${styles.singleColumn} ${styles.singleColumn_signed_in} `}
-              >
-                <div className={`${styles.row}  ${styles.row_signed_in} `}>
-                  <div className={`${styles.banner} ${styles.first_banner}`} />
-                  <div>
-                    <div className={styles.events_list}>
-                      <ul>
-                        <li>1 de Enero - Año nuevo</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${styles.row}  ${styles.row_signed_in} `}>
-                  <div className={`${styles.banner} ${styles.second_banner}`} />
-                  <div>
-                    <div className={styles.products_list}>
-                      <ul>
-                        <li>1 de Enero - Año nuevo</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${styles.row}  ${styles.row_signed_in} `}>
-                  <div className={`${styles.banner} ${styles.third_banner}`} />
-                  <div>
-                    <div className={styles.products_list}>
-                      <ul>
-                        <li>REGALO</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {/*SIGNED OUT*/}
-              <div className={styles.singleColumn}>
-                <div className={styles.row}>
-                  <div className={`${styles.banner} ${styles.first_banner}`} />
-                  <div>
-                    <div className={styles.events_list}>
-                      <ul>
-                        <li>1 de Enero - Año nuevo</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.row}>
-                  <div className={`${styles.banner} ${styles.second_banner}`} />
-                  <div>
-                    <div className={styles.products_list}>
-                      <ul>
-                        <li>1 de Enero - Año nuevo</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.row}>
-                  <div className={`${styles.banner} ${styles.third_banner}`} />
-                  <div>
-                    <div className={styles.link_to}>
-                      <h5>
-                        ¡Dale un toque personal a tus regalos en cada ocasión
-                        especial!
-                      </h5>
-                      <p>
-                        Encuentra la manera perfecta de expresar tu afecto con
-                        nuestras opciones de personalización única.
-                      </p>
-
-                      <Button
-                        className={`btn primary__button-outline ${styles.start_btn}`}
-                        label={"Empezar"}
-                        onClick={() => setOpenModal(true)}
+          <>
+            <PageTitle title="Eventos" />
+            <div
+              className={`${styles.singleColumn} ${styles.singleColumn_signed_in}`}
+            >
+              {scheduledEvents.map((event) => (
+                <Link to={`/explorar/${event.event_type_name}`} key={event.scheduled_event_id}>
+                  <div className={`${styles.row} ${styles.row_signed_in}`}>
+                    <div>
+                      <img
+                        src={event.image}
+                        alt={event.event_type_name}
+                        className={styles.eventImage}
                       />
                     </div>
+                    <div>
+                      <div>
+                        <h3>{event.event_type_name}</h3>
+                        <p>{event.date}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </>
-          )}
+                </Link>
+              ))}
+            </div>
+          </>
         </div>
         {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
         {user ||
