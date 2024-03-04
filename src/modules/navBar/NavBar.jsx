@@ -27,24 +27,26 @@ function NavBar() {
     <nav className={styles.nav}>
       <div className={styles.nav__container}>
         <div className={styles.logo__container}>
+          <Link to="/" >
           <img src={logoimg} alt="Logo ideas para regalos" />
           <img src={logotext} alt="Logo ideas para regalos" />
+          </Link>
         </div>
         <div className={styles.ul__container}>
           <ul className={styles.links__container}>
             <li className={styles.li_items}>
-              <Link to="/" className={styles.links}>
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link to="/explorar" className={styles.links}>
-                Explorar
-              </Link>
-            </li>
-            <li>
               <Link to="/eventos" className={styles.links}>
                 Eventos
+              </Link>
+            </li>
+            <li>
+              <Link to="/preguntasFrecuentes" className={styles.links}>
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link to="/nosotros" className={styles.links}>
+                Nosotros
               </Link>
             </li>
             {!tokenExists && (
@@ -54,6 +56,7 @@ function NavBar() {
                 </Link>
               </li>
             )}
+
           </ul>
           <div className={styles.login__container}>
             {!tokenExists && <LoginMobile setOpenModal={setOpenModal} />}
