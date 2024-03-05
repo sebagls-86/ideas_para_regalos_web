@@ -4,13 +4,32 @@ import styles from "./eventSnipet.module.css";
 
 function EventSnipet() {
   const [eventosProximos, setEventosProximos] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/scheduledEvents/upcoming")
-      .then(response => response.json())
-      .then(data => setEventosProximos(data.data))
-      .catch(error => console.error("Error fetching upcoming events:", error));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.data === "No results found") {
+          setEventosProximos([]);
+        } else {
+          setEventosProximos(data.data);
+        }
+      })
+      .catch(error => {
+        setError(error);
+        console.error("Error fetching upcoming events:", error);
+      });
   }, []);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className={styles.container}>
