@@ -16,9 +16,13 @@ function EventSnipet() {
     <div className={styles.container}>
       <h5 className={styles.title}>Eventos Próximos</h5>
       <div className={styles.content}>
-        {eventosProximos.map(event => (
-          <WordsEdges key={event.scheduled_event_id} label={event.event_type_name} to={`/explorar/${event.event_type_name}`} />
-        ))}
+        {eventosProximos.length === 0 ? (
+          <p>No hay eventos disponibles</p>
+        ) : (
+          eventosProximos.map(event => (
+            <WordsEdges key={event.scheduled_event_id} label={event.event_type_name} to={`/explorar/${event.event_type_name}`} />
+          ))
+        )}
       </div>
     </div>
   );
