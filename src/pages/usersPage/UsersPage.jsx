@@ -4,24 +4,25 @@ import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
-import banner from "../../assets/bannerExplorar.png";
-import SectionCategory from "../../modules/sectionCategory/SectionCategory";
-import SectionEvents from "../../modules/sectionEvents/SectionEvents";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
-import styles from "./notificationsPage.module.css";
+import styles from "./usersPage.module.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import NotificationAll from "../../modules/notificationAll/NotificationAll";
+import Users from "../../modules/users/AllUsers";
 import PageTitle from "../../components/pageTitle/PageTitle";
+import Followers from "../../modules/users/Followers";
+import Following from "../../modules/users/Following";
+import Actividad from "../../modules/users/Actividad";
 
-function NotificationsPage() {
+function UsersPage() {
   const [user] = useAuthState(auth);
+const token = localStorage.getItem("token");
+const tokenExists = token !== null && token !== undefined;
 
   return (
     <>
@@ -29,9 +30,9 @@ function NotificationsPage() {
       <NavBar />
       <div className="contenedor">
      
-        <div className="left__aside">{user && <Nav />}</div>
+        <div className="left__aside">{(user || tokenExists) && <Nav />}</div>
         <div className="content">
-        <PageTitle title="Notificaciones" />
+        <PageTitle title="Usuarios" />
           <Col>
             <LoginMobile />
           </Col>
@@ -43,15 +44,19 @@ function NotificationsPage() {
               className={styles.notificacionNav}
             >
               <Tab eventKey="todos" title="Todos">
-                <NotificationAll/>
+                <Users/>
               </Tab>
-              <Tab eventKey="menciones" title="Menciones">
-                {/* <Sonnet /> */}
+              <Tab eventKey="seguidores" title="Seguidores">
+              <Followers/>
               </Tab>
-              <Tab eventKey="comentarios" title="Comentarios">
-                {/* <Sonnet /> */}
+              <Tab eventKey="siguiendo" title="Siguiendo">
+                <Following/>
+              </Tab>
+              <Tab eventKey="actividad" title="Actividad">
+                <Actividad/>
               </Tab>
             </Tabs>
+            
           </div>
         </div>
         <aside className="right__aside">
@@ -78,4 +83,4 @@ function NotificationsPage() {
   );
 }
 
-export default NotificationsPage;
+export default UsersPage;

@@ -429,7 +429,7 @@ function ForumsPage() {
               <div>
                 <div className={styles.forum_title_container}>
                   <p className={styles.forum_title}>{forumData.data.title}</p>
-                  {userData.user_id === forumData.data.user_id && (
+                  {userData.user_id === forumData.data.user_id && forumData.status ===1 && (
                     <div className={styles.edit_button_container}>
                       <Button onClick={() => handleEdit(forumData.data)}>
                         Editar
@@ -595,7 +595,7 @@ function ForumsPage() {
               )}
             </>
           )}
-          {tokenExists && (
+          {tokenExists && forumData && forumData.data && forumData.data.status === 1 && (
             <div style={{ marginTop: "20px" }}>
               <textarea
                 className={styles.text_area}

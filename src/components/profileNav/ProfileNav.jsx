@@ -3,6 +3,7 @@ import styles from "./profileNav.module.css";
 import PostByUser from "../../modules/post/PostByUser";
 import WishList from "../../modules/wishList/WishList";
 import Profiles from "../../modules/profiles/Profiles";
+import Likes from "../../modules/likes/Likes";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useParams } from "react-router-dom";
@@ -42,9 +43,10 @@ function ProfileNav() {
             <Tab eventKey="profiles" title="Perfiles">
               <Profiles reload={reloadProfiles} />
             </Tab>
-          ) : (
-            ""
-          )}
+          ) : null}
+          <Tab eventKey="likes" title="Me gusta">
+            <Likes/>
+          </Tab>
         </Tabs>
       </div>
       <div className={styles.profileContentMobile}>

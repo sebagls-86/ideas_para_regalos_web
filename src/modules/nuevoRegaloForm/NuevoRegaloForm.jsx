@@ -8,10 +8,12 @@ import MyIcon from "../../components/myIcon/MyIcon";
 import SelectButton from "../../components/selectButton/SelectButton";
 import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
-import { fetchEventTypes } from "../api/api";
+import { fetchEventTypes, fetchGiftsRateSuggestions } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import ModalLogin from "../modalLogin/ModalLogin";
+import Modal from "../../components/modal/Modal";
+import ModalSuggestions from "./ModalSuggestions";
 
 function NuevoRegaloForm({ selectedProfile }) {
   console.log("selectedProfile:", selectedProfile);
@@ -19,10 +21,14 @@ function NuevoRegaloForm({ selectedProfile }) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [eventTypes, setEventTypes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showCalendar, setShowCalendar] = useState(true);
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [showSuggestionsModal, setShowSuggestionsModal] = useState(false);
+  const [giftsRateSuggestions, setGiftsRateSuggestions] = useState(null); // Estado para almacenar las sugerencias de tarifas de regalo
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -43,18 +49,51 @@ function NuevoRegaloForm({ selectedProfile }) {
   }, []);
 
   const handleCreateForum = async () => {
-    const day = selectedDate.getDate().toString().padStart(2, "0"); // Agregar ceros a la izquierda si es necesario
-    const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0"); // Agregar ceros a la izquierda si es necesario
+    try {
+      // Realizar la solicitud de sugerencias de tarifas de regalo
+      const ageRange = selectedProfile.age_range;
+      const interests = selectedProfile.interests.map(
+        (interest) => interest.interest
+      );
+
+      const suggestions = await fetchGiftsRateSuggestions(ageRange, interests);
+
+      if (suggestions && suggestions.length > 0) {
+        // Si hay sugerencias, mostrar un modal con la información
+        setGiftsRateSuggestions(suggestions);
+        setShowSuggestionsModal(true);
+      } else {
+        createForum();
+      }
+    } catch (error) {
+      console.error("Error fetching gifts rate suggestions:", error);
+    }
+  };
+
+  const createForum = async () => {
+    const day = selectedDate.getDate().toString().padStart(2, "0");
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
     const year = selectedDate.getFullYear();
     const formattedDate = `${day}/${month}/${year}`;
-
+  
+    let endFormattedDate = null;
+  
+    if (selectedEndDate) {
+      const endDay = selectedEndDate.getDate().toString().padStart(2, "0");
+      const endMonth = (selectedEndDate.getMonth() + 1).toString().padStart(2, "0");
+      const endYear = selectedEndDate.getFullYear();
+      endFormattedDate = `${endDay}/${endMonth}/${endYear}`;
+    }
+  
     if (selectedOption && selectedProfile) {
       const eventPostData = {
         event_type_id: selectedOption.value,
         user_id: userId,
         name: titulo,
         date: formattedDate,
+        end_date: endFormattedDate,
       };
+  
 
       try {
         const eventResponse = await fetch(
@@ -82,6 +121,7 @@ function NuevoRegaloForm({ selectedProfile }) {
           status: 1,
           event_id: eventId,
           title: titulo,
+          end_date: endFormattedDate,
         };
 
         const forumResponse = await fetch(
@@ -118,7 +158,6 @@ function NuevoRegaloForm({ selectedProfile }) {
         }
       }
     } else {
-      // Si no se ha seleccionado un evento o un perfil, muestra un mensaje de alerta
       console.error(
         "Por favor, seleccione un evento y un perfil antes de enviar el formulario."
       );
@@ -129,19 +168,27 @@ function NuevoRegaloForm({ selectedProfile }) {
     setSelectedDate(date);
   };
 
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setShowCalendar(!event.target.checked);
+  };
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    setIsOpen(false); // Cerrar el menú desplegable cuando se selecciona una opción
+    setIsOpen(false);
   };
 
   const isDisabled =
-    !selectedProfile || // Verifica si no se ha seleccionado un evento
-    !selectedDate || // Verifica si no se ha seleccionado una fecha
-    titulo.trim() === "" || // Verifica si el título está vacío
+    !selectedProfile ||
+    !selectedDate ||
+    titulo.trim() === "" ||
     descripcion.trim() === "" ||
     !selectedOption;
 
@@ -158,6 +205,14 @@ function NuevoRegaloForm({ selectedProfile }) {
   return (
     <>
       <div className={styles.formContainer}>
+        {showSuggestionsModal && (
+          <ModalSuggestions
+            closeModal={() => setShowSuggestionsModal(false)}
+            suggestions={giftsRateSuggestions}
+            onCancel={() => setShowSuggestionsModal(false)}
+            createForum={createForum} // Pasar la función createForum
+          />
+        )}
         <Tabs defaultActiveKey="publicar" id="uncontrolled-tab-example">
           <Tab
             eventKey="publicar"
@@ -196,7 +251,33 @@ function NuevoRegaloForm({ selectedProfile }) {
               </span>
             }
           >
-            <Calendar value={selectedDate} onChange={handleDateChange} />
+            <div>
+              <p>¿Cuándo es el evento?</p>
+              <Calendar value={selectedDate} onChange={handleDateChange} />
+            </div>
+          </Tab>
+          <Tab
+            eventKey="endDate"
+            title={
+              <span className={styles.span}>
+                <MyIcon name="calendar" /> Finalizacion
+              </span>
+            }
+          >
+            <div>
+              <p>¿Hasta cuándo recibis sugerencias?</p>
+              {showCalendar && (
+                <Calendar value={selectedEndDate} onChange={handleEndDateChange} />
+              )}
+              <p>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  checked={!showCalendar}
+                />
+                Dejar el foro siempre abierto
+              </p>
+            </div>
           </Tab>
           <Tab
             eventKey="evento"
@@ -247,8 +328,29 @@ function NuevoRegaloForm({ selectedProfile }) {
             </div>
           )}
         </>
-        {showModal && (
-          <ModalLogin closeModal={() => setShowModal(false)} />
+        {showModal && <ModalLogin closeModal={() => setShowModal(false)} />}
+        {giftsRateSuggestions && (
+          <Modal
+            showModal={showModal}
+            closeModal={() => setShowModal(false)}
+            title="Sugerencias de tarifas de regalo"
+            content={giftsRateSuggestions.map((suggestion, index) => (
+              <div key={index}>
+                <p>{suggestion.name}</p>
+                <p>{suggestion.description}</p>
+                <Button
+                  label="Crear"
+                  className="btn primary__button"
+                  onClick={createForum}
+                />
+                <Button
+                  label="No Crear"
+                  className="btn secondary__button"
+                  onClick={() => setShowModal(false)}
+                />
+              </div>
+            ))}
+          />
         )}
       </div>
     </>
