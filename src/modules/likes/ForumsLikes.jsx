@@ -1,0 +1,45 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import styles from "./css/likes.module.css";
+import jwtDecode from "jwt-decode";
+
+function ForumsLikes() {
+  const [forums, setForums] = useState([]);
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const userId = decoded.user_id;
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/v1/forums/likes/${userId}`)
+      .then((response) => response.json())
+      .then((data) => setForums(data.data))
+      .catch((error) => console.error("Error fetching forums:", error));
+  }, [userId]);
+
+  return (
+    <div>
+      <div className={styles.forumsContainer}>
+        {forums === null || forums.length === 0 ? (
+          <p>No hay foros disponibles.</p>
+        ) : (
+          forums.map((forum) => (
+            <Link
+              to={`/forums/${forum.forum_id}`}
+              key={forum.forum_id}
+              className={styles.forumLink}
+            >
+              <div className={styles.forum}>
+                <h3>{forum.title}</h3>
+                <p>{forum.description}</p>
+                <p>Creado por: {forum.user_name}</p>
+                <p>Fecha de creación: {forum.created_at}</p>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default ForumsLikes;

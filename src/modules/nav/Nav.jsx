@@ -5,7 +5,7 @@ import NavLinks from "../../components/navLinks/NavLinks";
 import { useNavigate } from "react-router-dom";
 import {
   AiOutlineCompass,
-  AiOutlineBell,
+  AiOutlineUsergroupAdd,
   AiOutlineHome,
   AiOutlineUser,
   AiOutlineCalendar,
@@ -46,8 +46,8 @@ function Nav() {
           icon={<AiOutlineCompass className="fw-700 fs-3" />}
         />
         <NavLinks
-          url="/notificaciones"
-          icon={<AiOutlineBell className=" fw-700 fs-3" />}
+          url="/users"
+          icon={<AiOutlineUsergroupAdd className=" fw-700 fs-3" />}
         />
         <NavLinks
           url="/eventos"

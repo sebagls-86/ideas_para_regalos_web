@@ -56,3 +56,30 @@ export async function fetchAgeRanges() {
       throw error;
     }
   }
+
+  export async function fetchGiftsRateSuggestions(ageRangeId, interests) {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/giftsRates/suggestions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          age_range: ageRangeId,
+          interests: interests,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al obtener las sugerencias de tarifas de regalo");
+      }
+  
+      const data = await response.json();
+      return data.data; // Retorna los datos de las sugerencias de tarifas de regalo
+    } catch (error) {
+      console.error("Error fetching gifts rate suggestions:", error);
+      return null;
+    }
+  }
+  
+  
