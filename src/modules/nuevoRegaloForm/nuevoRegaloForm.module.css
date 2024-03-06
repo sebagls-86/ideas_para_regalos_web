@@ -119,6 +119,43 @@
   position: absolute;
   top: 200px;
 }
+
+.suggestionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.suggestion {
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: calc(33.33% - 20px); /* 33.33% with 20px gap */
+  max-width: 300px;
+}
+
+.suggestion h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333333;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+  .suggestion {
+    width: calc(50% - 20px); /* 50% with 20px gap */
+  }
+}
+
+@media (max-width: 576px) {
+  .suggestion {
+    width: 100%; /* 100% width */
+  }
+}
+
+
 @media only screen and (max-width: 450px) {
   .span {
     font-size: 14px;
