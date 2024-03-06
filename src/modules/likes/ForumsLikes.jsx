@@ -10,7 +10,7 @@ function ForumsLikes() {
   const userId = decoded.user_id;
 
   useEffect(() => {
-    fetch(` http://localhost:8080/api/v1/forums/likes/${userId}`)
+    fetch(`http://localhost:8080/api/v1/forums/likes/${userId}`)
       .then((response) => response.json())
       .then((data) => setForums(data.data))
       .catch((error) => console.error("Error fetching forums:", error));
@@ -19,7 +19,9 @@ function ForumsLikes() {
   return (
     <div>
       <div className={styles.forumsContainer}>
-        {forums.length > 0 ? (
+        {forums === null || forums.length === 0 ? (
+          <p>No hay foros disponibles.</p>
+        ) : (
           forums.map((forum) => (
             <Link
               to={`/forums/${forum.forum_id}`}
@@ -34,8 +36,6 @@ function ForumsLikes() {
               </div>
             </Link>
           ))
-        ) : (
-          <p>No hay foros disponibles.</p>
         )}
       </div>
     </div>
