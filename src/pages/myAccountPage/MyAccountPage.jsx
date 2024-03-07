@@ -201,6 +201,7 @@ function MyAccountPage() {
               <div className={styles.profile_info_container}>
                 <h4>{userData.name}</h4>
                 <p>{userData.user_name}</p>
+                <p>{userData.birth_date}</p>
               </div>
               {buttonElement}
             </div>

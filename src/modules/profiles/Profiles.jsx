@@ -661,7 +661,7 @@ function Profiles() {
               className={styles.create_new_button}
             >
               <AiOutlinePlus />
-              Crear nuevo
+              Nuevo perfil
             </Button>
           </div>
           <table className={styles.profiles__table}>

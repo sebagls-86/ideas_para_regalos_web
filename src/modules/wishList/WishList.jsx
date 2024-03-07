@@ -565,7 +565,7 @@ function WishList() {
               className={styles.create_new_button}
             >
               <AiOutlinePlus />
-              Crear nueva lista
+              Nueva lista
             </Button>
           </div>
           <div className={styles.whole_list}>
