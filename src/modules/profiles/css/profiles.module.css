@@ -48,6 +48,9 @@
 .modal__confirm:hover {
   color: green;
 }
+.create_new_container{
+  border-bottom: 0.5px solid;
+}
 .create_new_container,
 .edit_buttons {
   display: flex;
@@ -63,22 +66,25 @@
 }
 .search_bar{
   position: relative;
+  width: 100%;
+  max-width: 300px;
 }
 .search_bar input{
-  width: 200%;
+  width: calc(100% - 30px);
   height: 36px;
+  padding-left: 30px;
   border-radius: 10px;
   border: 0.5px solid;
- 
 }
+ 
 .search_bar svg{
-  margin-right: 5px;
   width: 24px;
   height: 24px;
   position: absolute;
-  left: 203%;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
+  padding: 0;
 }
 
 .create_new_button,
@@ -120,7 +126,6 @@
 .profiles__table__container {
   display: flex;
   justify-content: space-between;
-  border-top: 0.5px solid;
   border-bottom: 0.5px solid;
   padding: 30px;
 }

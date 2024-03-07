@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import styles from "./modal.module.css";
+import { AiOutlineClose } from "react-icons/ai";
 
 function ConfirmDeleteModal({
     show,
@@ -15,8 +16,12 @@ function ConfirmDeleteModal({
   }) {
     return (
       <Modal show={show} onHide={onHide} centered>
-        <Modal.Header closeButton className={styles.modal__delete_header}>
+        <Modal.Header className={styles.modal__delete_header}>
+        <button className={`${styles.modal__button} ${styles.deleteModal_close_btn}`} onClick={onHide}>
+          <AiOutlineClose />
+        </button>
           <Modal.Title className={styles.modal__delete_title}>
+         
             {title}
           </Modal.Title>
         </Modal.Header>

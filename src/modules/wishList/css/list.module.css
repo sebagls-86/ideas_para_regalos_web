@@ -197,6 +197,9 @@
   align-items: center;
   z-index: 9999;
 }
+.modal__title{
+  margin-bottom: 2rem;
+}
 
 .modal__content {
   background-color: #fff;

@@ -70,9 +70,12 @@ function ForumsPage() {
           navigate("/notFound");
           console.error("El foro no existe.");
         } else {
-          console.error("Error al obtener los datos del foro:", forumResponse.statusText);
+          console.error(
+            "Error al obtener los datos del foro:",
+            forumResponse.statusText
+          );
         }
-  
+
         // Fetch de likes del usuario para mensajes
         const messageLikesResponse = await fetch(
           `http://localhost:8080/api/v1/messages/likes/${userId}`
@@ -81,9 +84,12 @@ function ForumsPage() {
           const messageLikesData = await messageLikesResponse.json();
           setMessageLikesData(messageLikesData);
         } else {
-          console.error("Error al obtener los likes del usuario para los mensajes:", messageLikesResponse.statusText);
+          console.error(
+            "Error al obtener los likes del usuario para los mensajes:",
+            messageLikesResponse.statusText
+          );
         }
-  
+
         // Fetch de likes del usuario para foros
         const forumLikesResponse = await fetch(
           `http://localhost:8080/api/v1/forums/likes/${userId}`
@@ -92,13 +98,16 @@ function ForumsPage() {
           const forumLikesData = await forumLikesResponse.json();
           setForumLikesData(forumLikesData);
         } else {
-          console.error("Error al obtener los likes del usuario para los foros:", forumLikesResponse.statusText);
+          console.error(
+            "Error al obtener los likes del usuario para los foros:",
+            forumLikesResponse.statusText
+          );
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     };
-  
+
     fetchData();
   }, [forum_id, userId, navigate]);
 
@@ -172,7 +181,7 @@ function ForumsPage() {
           },
         }
       );
-  
+
       if (response.ok) {
         const updatedMessages = forumData.data.messages.filter(
           (message) => message.message_id !== messageId
@@ -180,7 +189,7 @@ function ForumsPage() {
         const updatedForumData = { ...forumData };
         updatedForumData.data.messages = updatedMessages;
         setForumData(updatedForumData);
-  
+
         alert("El mensaje se ha eliminado correctamente.");
         setShowDeleteModal(false);
         console.log("El mensaje se ha eliminado correctamente.");
@@ -426,21 +435,38 @@ function ForumsPage() {
           )}
           {forumData && forumData.data && (
             <>
+            
               <div>
                 <div className={styles.forum_title_container}>
+                <div className={styles.user_info}>
+                    <img
+                      src={`http://localhost:8080${forumData.data.avatar}`}
+                      alt="avatar"
+                      width={"100px"}
+                      height={"100px"}
+                      className={styles.profile_picture}
+                    />
+                    <Col>
+                      <p> nombre: {forumData.data.name}</p>
+                      <p> username: {forumData.data.user_name}</p>
+                    </Col>
+                  </div>
                   <p className={styles.forum_title}>{forumData.data.title}</p>
-                  {userData.user_id === forumData.data.user_id && forumData.status ===1 && (
-                    <div className={styles.edit_button_container}>
-                      <Button onClick={() => handleEdit(forumData.data)}>
-                        Editar
-                      </Button>
-                    </div>
-                  )}
+                  {userData.user_id === forumData.data.user_id &&
+                    forumData.status === 1 && (
+                      <div className={styles.edit_button_container}>
+                        <Button onClick={() => handleEdit(forumData.data)}>
+                          Editar
+                        </Button>
+                      </div>
+                    )}
                 </div>
                 <p className={styles.forum_description}>
                   {forumData.data.description}
                 </p>
                 <div>
+                
+
                   <p> Regalo para: {forumData.data.profile.name}</p>
                   <p> Rango de Edad: {forumData.data.profile.age_range} </p>
                   <p> Relacion: {forumData.data.profile.relationship} </p>
@@ -595,53 +621,56 @@ function ForumsPage() {
               )}
             </>
           )}
-          {tokenExists && forumData && forumData.data && forumData.data.status === 1 && (
-            <div style={{ marginTop: "20px" }}>
-              <textarea
-                className={styles.text_area}
-                rows="4"
-                cols="50"
-                placeholder="Escribe tu mensaje..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              ></textarea>
-              <br />
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                id="fileInput"
-                onChange={handleImageChange}
-              />
-              <div>
-                <Button className={styles.send_button} onClick={addImage}>
-                  Agregar Imagen
+          {tokenExists &&
+            forumData &&
+            forumData.data &&
+            forumData.data.status === 1 && (
+              <div style={{ marginTop: "20px" }}>
+                <textarea
+                  className={styles.text_area}
+                  rows="4"
+                  cols="50"
+                  placeholder="Escribe tu mensaje..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                ></textarea>
+                <br />
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="fileInput"
+                  onChange={handleImageChange}
+                />
+                <div>
+                  <Button className={styles.send_button} onClick={addImage}>
+                    Agregar Imagen
+                  </Button>
+                  {imageFiles.map((file, index) => (
+                    <div key={index}>
+                      <img
+                        src={file ? URL.createObjectURL(file) : ""}
+                        alt={`Imagen ${index + 1}`}
+                        width="50"
+                        height="50"
+                      />
+                      <Button
+                        className={styles.remove_button}
+                        onClick={() => removeImage(index)}
+                      >
+                        Quitar
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  className={styles.send_button}
+                  onClick={handleSendMessage} // Función para enviar el mensaje
+                >
+                  Enviar
                 </Button>
-                {imageFiles.map((file, index) => (
-                  <div key={index}>
-                    <img
-                      src={file ? URL.createObjectURL(file) : ""}
-                      alt={`Imagen ${index + 1}`}
-                      width="50"
-                      height="50"
-                    />
-                    <Button
-                      className={styles.remove_button}
-                      onClick={() => removeImage(index)}
-                    >
-                      Quitar
-                    </Button>
-                  </div>
-                ))}
               </div>
-              <Button
-                className={styles.send_button}
-                onClick={handleSendMessage} // Función para enviar el mensaje
-              >
-                Enviar
-              </Button>
-            </div>
-          )}
+            )}
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
