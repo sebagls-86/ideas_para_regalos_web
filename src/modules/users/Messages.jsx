@@ -12,7 +12,10 @@ function Messages() {
   useEffect(() => {
     fetch(`http://localhost:8080/api/v1/relations/messages-activity/${userId}`)
       .then(response => response.json())
-      .then(data => setMessages(data.data))
+      .then(data => {
+        if (Array.isArray(data.data)) {
+          setMessages(data.data);
+        }})
       .catch(error => console.error("Error fetching messages:", error));
   }, [userId]);
 

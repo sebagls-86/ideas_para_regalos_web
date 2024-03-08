@@ -21,6 +21,16 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 
 
 function ExplorarPage() {
+  const [tokenExists, setTokenExists] = React.useState(false);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setTokenExists(true);
+    } else {
+      setTokenExists(false);
+    }
+  }, []);
 
   const categorias = [
     {
@@ -133,9 +143,9 @@ function ExplorarPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {user && <Search />}
-            <AsideLogin />
-            {user && (
+            {(user || tokenExists)}
+            {(!user && !tokenExists) && <AsideLogin />}
+            {(user || tokenExists) && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

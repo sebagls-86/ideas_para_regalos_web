@@ -61,9 +61,9 @@ const tokenExists = token !== null && token !== undefined;
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {user && <Search />}
-            <AsideLogin />
-            {user && (
+            {(user || tokenExists)}
+            {(!user && !tokenExists) && <AsideLogin />}
+            {(user || tokenExists) && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

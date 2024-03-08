@@ -140,18 +140,22 @@ function WishList() {
       if (response.ok) {
         alert("Lista eliminada correctamente");
         console.log("Eliminado correctamente");
-        // Eliminar la lista eliminada de la lista de datos actualizada
+        
         const updatedListData = listData.filter(
           (list) => list.list_id !== listId
         );
+        setShowDeleteListConfirmationModal(false);
         setListData(updatedListData);
+
       } else {
         alert("Error al eliminar");
         console.error("Error al eliminar");
+        setShowDeleteListConfirmationModal(false);
       }
     } catch (error) {
       alert("Error al enviar solicitud de eliminación");
       console.error("Error al enviar solicitud de eliminación:", error);
+      setShowDeleteListConfirmationModal(false);
     }
   };
 
@@ -425,7 +429,7 @@ function WishList() {
         title="¿Estás seguro?"
         bodyContent={`Se eliminará "${listToRemove?.list_name}" de sus listas`}
         onCancel={() => setShowDeleteListConfirmationModal(false)}
-        onConfirm={() => handleDelete()}
+        onConfirm={() => handleDelete(listToRemove?.list_id)}
         confirmButtonText="Confirmar"
       />
 
