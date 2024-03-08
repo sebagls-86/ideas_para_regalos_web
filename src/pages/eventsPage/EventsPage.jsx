@@ -23,24 +23,32 @@ function EventsPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token !== null && token !== undefined) {
-      setTokenExists(true);
-    }
-
-    // Llamada a la API para obtener eventos programados
+    setTokenExists(token !== null && token !== undefined);
+  
+    // Fetch upcoming events with robust error handling
     fetch("http://localhost:8080/api/v1/scheduledEvents/upcoming")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API request failed with status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
-        // Agregar URL base a las rutas de las imágenes
+        if (!data || !data.data || !data.data.length) {
+          console.warn("No upcoming events found from the API response.");
+          setScheduledEvents([]);
+          return;
+        }
+  
         const eventsWithImageURLs = data.data.map((event) => ({
           ...event,
           image: `http://localhost:8080/images/eventTypes/${event.image}`,
         }));
         setScheduledEvents(eventsWithImageURLs);
       })
-      .catch((error) =>
-        console.error("Error fetching scheduled events:", error)
-      );
+      .catch((error) => {
+        console.error("Error fetching scheduled events:", error);
+      });
   }, []);
 
   return (

@@ -262,19 +262,21 @@ function Profiles() {
   };
 
   const filterAvailableInterests = () => {
-    if (!selectedProfile) return availableInterests;
-
+    if (!selectedProfile) {
+      return availableInterests;
+    }
+  
+    if (!selectedProfile.interests) {
+      console.warn("selectedProfile.interests no está definido");
+      return availableInterests;
+    }
+  
     const selectedInterestIds = selectedProfile.interests.map(
       (interest) => interest.interest_id
     );
-
-    const filteredInterests = availableInterests.filter((interest) => {
-      return !selectedInterestIds.includes(interest.interest_id);
-    });
-
-    console.log("Intereses filtrados:", filteredInterests);
-
-    return filteredInterests;
+    return availableInterests.filter((interest) =>
+      !selectedInterestIds.includes(interest.interest_id)
+    );
   };
 
   const filteredAvailableInterests = filterAvailableInterests();

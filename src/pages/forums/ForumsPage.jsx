@@ -440,7 +440,7 @@ function ForumsPage() {
                 <div className={styles.forum_title_container}>
                 <div className={styles.user_info}>
                     <img
-                      src={`http://localhost:8080${forumData.data.avatar}`}
+                      src={`http://localhost:8080/images/users/${forumData.data.avatar}`}
                       alt="avatar"
                       width={"100px"}
                       height={"100px"}

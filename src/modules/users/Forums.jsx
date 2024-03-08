@@ -12,7 +12,10 @@ function Forums() {
   useEffect(() => {
     fetch(`http://localhost:8080/api/v1/relations/forums-activity/${userId}`)
       .then(response => response.json())
-      .then(data => setForums(data.data))
+      .then(data => {
+        if (Array.isArray(data.data)) {
+          setForums(data.data);
+        }})
       .catch(error => console.error("Error fetching forums:", error));
   }, [userId]);
 
