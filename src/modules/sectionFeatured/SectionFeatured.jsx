@@ -1,16 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import camera from "../../assets/camera.png";
-import hairdryer from "../../assets/hair-dryer.png";
-import airpods from "../../assets/airpodsmax.png";
-import facemassage from "../../assets/face-massage.png"
-import sunscreen from "../../assets/sunscreen.png"
-import serum from "../../assets/serum.png"
 import styles from "./sectionFeatured.module.css";
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -18,61 +12,79 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
-
+import jwtDecode from "jwt-decode";
 
 export default function SectionFeatured() {
+  const [featured, setFeatured] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
+
+  let userId = null;
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    userId = decodedToken.user_id;
+  }
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/v1/productsCatalogAssociations/featured"
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        const data = responseData.data || [];
+        setFeatured(data);
+      } else {
+        console.error("Error fetching events:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <div className={styles.productsContainer}>
         <h2 className={styles.title}>Productos destacados</h2>
-        <Swiper
-          slidesPerView={3}
-          navigation={true}
-          spaceBetween={30}
-          modules={[Navigation]}
-          autoplay={{ delay: 3000 }}
-          breakpoints={{
-            768: {
-              slidesPerView: 3,
-            },
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <Swiper
+            slidesPerView={3}
+            navigation={true}
+            spaceBetween={30}
+            modules={[Navigation]}
+            autoplay={{ delay: 3000 }}
+            breakpoints={{
+              768: {
+                slidesPerView: 3,
+              },
 
-            0: {
-              slidesPerView: 1,
-            },
-          }}
-        >
-           <Link to="">
-            <SwiperSlide className={styles.swiperSlide}>
-              <ProductCard image={airpods} name="Airpods Max" />
-            </SwiperSlide>
-          </Link>
-          <Link to="">
-          <SwiperSlide className={styles.swiperSlide}>
-              <ProductCard image={hairdryer} name="Secadora de pelo" />
-            </SwiperSlide>
-          </Link>
-          <Link to="">
-          <SwiperSlide className={styles.swiperSlide}>
-              <ProductCard image={camera} name="Cámara de fotos" />
-            </SwiperSlide>
-          </Link>
-          <Link to="">
-          <SwiperSlide className={styles.swiperSlide}>
-              <ProductCard image={facemassage} name="Set guasha" />
-            </SwiperSlide>
-          </Link>
-          <Link to="">
-          <SwiperSlide className={styles.swiperSlide}>
-              <ProductCard image={sunscreen} name="Protector solar" />
-            </SwiperSlide>
-          </Link>
-          <Link to="">
-          <SwiperSlide className={styles.swiperSlide}>
-              <ProductCard image={serum} name="Sérum" />
-            </SwiperSlide>
-          </Link>
-        </Swiper>
+              0: {
+                slidesPerView: 1,
+              },
+            }}
+          >
+            {featured.map((featured, index) => (
+              <Link to="" key={index}>
+                <SwiperSlide>
+                  <ProductCard
+                    image={`http://localhost:8080/images/products-catalog/${featured.image_name}`}
+                    name={featured.product_name}
+                    userId={userId}
+                    productId={featured.product_catalog_id}
+                  />
+                </SwiperSlide>
+              </Link>
+            ))}
+          </Swiper>
+        )}
       </div>
     </>
   );

@@ -6,6 +6,8 @@ import HomePage from './pages/homePage/HomePage';
 import MyAccountPage from './pages/myAccountPage/MyAccountPage';
 import ComponentesPage from './pages/componentesPage/ComponentesPage';
 import ExplorarPage from './pages/explorarPage/ExplorarPage'; 
+import ProductsByCategory from './pages/explorarPage/ProductsByCategory'; 
+import ProductsByEvent from './pages/explorarPage/ProductsByEvent';
 import NotFoundPage from './pages/notFoundPage/NotFound';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import UsersPage from './pages/usersPage/UsersPage';
@@ -24,6 +26,8 @@ function App() {
         <Route path="/forums/:forum_id" element={<ForumsPage />} />
         <Route path="/componentes" element={<ComponentesPage />} />
         <Route path="/explorar" element={<ExplorarPage />} />
+        <Route path="/explorar/eventos/:eventId" element={<ProductsByEvent />} />
+        <Route path="/explorar/categorias/:categoryId" element={<ProductsByCategory />} />
         <Route path="/explorar/:category" element={<CategoryPage />} />
         <Route path="/users" element={<UsersPage />} />
         <Route path="/nuevoRegalo" element={<NuevoRegaloPage />} />
@@ -31,6 +35,7 @@ function App() {
         <Route path="/preguntasFrecuentes" element={<FaqPage />} />
         <Route path="/nosotros" element={<AboutUsPage />} />
         <Route path="/eventos" element={<EventsPage />} />
+
       </Routes>
     </BrowserRouter>
   );

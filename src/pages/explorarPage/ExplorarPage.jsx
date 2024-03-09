@@ -17,9 +17,6 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 
-
-
-
 function ExplorarPage() {
   const [tokenExists, setTokenExists] = React.useState(false);
 
@@ -32,94 +29,13 @@ function ExplorarPage() {
     }
   }, []);
 
-  const categorias = [
-    {
-      id: 1,
-      name: "Electrónica",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 2,
-      name: "Belleza",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 3,
-      name: "Moda",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 4,
-      name: "Fitness",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 5,
-      name: "Salud",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 6,
-      name: "Autos",
-      img: "https://random.imagecdn.app/500/500",
-    },
-  ];
-  const eventos = [
-    {
-      id: 1,
-      name: "Navidad",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 2,
-      name: "San Valentín",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 3,
-      name: "Cumpleaños",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 4,
-      name: "Fitness",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 5,
-      name: "Salud",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 6,
-      name: "Autos",
-      img: "https://random.imagecdn.app/500/500",
-    },
-  ];
-  const destacados = [
-    {
-      id: 1,
-      name: "AirPods Max",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 2,
-      name: "Secadora de pelo",
-      img: "https://random.imagecdn.app/500/500",
-    },
-    {
-      id: 3,
-      name: "Cámara de fotos",
-      img: "https://random.imagecdn.app/500/500",
-    },
-  ];
   const [user] = useAuthState(auth);
   return (
     <>
       {!user}
       <NavBar />
       <div className="contenedor">
-        <div className="left__aside">{user && <Nav />}</div>
+      <div className="left__aside">{(user || tokenExists) && <Nav user={user?.displayName} />}</div>
         <div className="content">
           <PageTitle title="Explorar" />
           <Col>
@@ -133,12 +49,9 @@ function ExplorarPage() {
             />
           </Col>
           <div className="mt-3">
-            <SectionCategory data={categorias} title={"Categorías"} />
-            <SectionEvents data={eventos} title={"Eventos"} />
-            <SectionFeatured data={destacados} title={"Productos Destacados"} />
-          
-
-
+            <SectionCategory title={"Categorías"} />
+            <SectionEvents title={"Eventos"} />
+            <SectionFeatured title={"Productos Destacados"} />
           </div>
         </div>
         <aside className="right__aside">

@@ -284,7 +284,6 @@ function Profiles() {
   const handleShowInterestModal = (profile) => {
     fetchAvailableInterests();
     setSelectedProfile(profile);
-    console.log("Selected Profile:", profile); // Verifica el valor de profile
     setShowInterestModal(true);
   };
 
@@ -306,8 +305,6 @@ function Profiles() {
   };
 
   const handleRemoveInterest = (profile, interest) => {
-    console.log("Perfil seleccionado para eliminar interés:", profile);
-    console.log("Interés a eliminar:", interest.interest);
     setInterestToRemove({ profile, interest });
     setShowConfirmationModal(true);
   };
@@ -412,6 +409,7 @@ function Profiles() {
 
   const handleSaveNewProfile = async (newProfile) => {
     try {
+      // Crear el perfil
       const profileResponse = await fetch(
         "http://localhost:8080/api/v1/profiles",
         {
@@ -428,14 +426,16 @@ function Profiles() {
           }),
         }
       );
-
+  
       if (!profileResponse.ok) {
         throw new Error("Failed to save new profile");
       }
-
+  
       const {
         data: { profile_id },
       } = await profileResponse.json();
+  
+      // Crear los intereses asociados al perfil
       const interestsResponse = await fetch(
         "http://localhost:8080/api/v1/profileInterests",
         {
@@ -450,12 +450,28 @@ function Profiles() {
           }),
         }
       );
-
+  
       if (!interestsResponse.ok) {
+        // Si la creación de intereses falla, eliminar el perfil
+        const deleteProfileResponse = await fetch(
+          `http://localhost:8080/api/v1/profiles/${profile_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (!deleteProfileResponse.ok) {
+          throw new Error("Failed to delete profile");
+        }
+  
         setShowNewProfileModal(false);
         throw new Error("Failed to save profile interests");
       }
-
+  
       setShowNewProfileModal(false);
       alert("Nuevo perfil guardado con éxito!");
       setProfilesData((prevProfilesData) => [

@@ -9,11 +9,13 @@
     border: 1px solid #000;
     border-radius: 10px;
     position: relative;
+    z-index: 1;
   }
   .productImage {
     width: 15.1rem;
     height: 15.375rem;
     border-bottom: 0.3px solid #000;
+    z-index: 1;
    
   }
   .saveButton {
@@ -28,6 +30,11 @@
     border: none;
     
   }
+
+  .product_name {
+    font-size: 1.125rem;
+    padding: 0.5rem;
+  }
   .saveButton:hover{
       background-color: rgba(217, 217, 217, 0.5);
       background-image: url(/src/assets/bookmark-clicked.svg);
@@ -35,6 +42,49 @@
   .saveButton.clicked {
       background-image: url(/src/assets/bookmark-clicked.svg);
     }
+
+    .closeButton {
+      cursor: pointer;
+    }
+
+
+    .popover {
+      position: absolute;
+      top: 5rem; /* Posición inicial, ajustar según sea necesario */
+      left: 120%;
+      margin-top: 10px;
+      transform: translateX(-50%);
+      background-color:white; /* Fondo blanco */
+      border: 1px solid #888;
+      border-radius: 5px;
+      padding: 10px;
+      width: fit-content; /* Ancho ajustado al contenido */
+      height: auto; /* Altura ajustada al contenido */
+      max-width: 80%; /* Ancho máximo para evitar que se extienda demasiado */
+      z-index: 999; /* Asegúrate de que el popover esté por encima de otros elementos */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+    
+    .popoverContent {
+      max-height: 200px; /* Altura máxima del contenido, añade desplazamiento si es necesario */
+      overflow-y: auto;
+    }
+    
+    .popover ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .popover li {
+      padding: 15px 0;
+      cursor: pointer;
+    }
+    
+    .popover li:hover {
+      background-color: green; /* Cambia el color de fondo al pasar el ratón */
+    }
+    
     
   
   @media (max-width: 768px) {
