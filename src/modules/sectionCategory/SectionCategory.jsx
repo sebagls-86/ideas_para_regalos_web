@@ -10,7 +10,7 @@ export default function SectionCategory() {
   useEffect(() => {
     fetchCategories();
   }, []);
-  
+
   const fetchCategories = async () => {
     try {
       const response = await fetch("http://localhost:8080/api/v1/categories");
@@ -30,42 +30,45 @@ export default function SectionCategory() {
 
   return (
     <div className={styles.categoryContainer}>
-    <h2 className={styles.title}>Categorías</h2>
-    {loading ? (
-      <p>Loading...</p> // Indicador de carga
-    ) : (
-      <Swiper
-        slidesPerView={3}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        breakpoints={{
-          768: {
-            slidesPerView: 3,
-          },
-          0: {
-            slidesPerView: 1,
-          },
-        }}
-        loop={true}
-        autoplay={{ delay: 3000 }}
-      >
-        {categories.map((category, index) => (
-            <Link to="" key={index}>
-              <SwiperSlide>
+      <h2 className={styles.title}>Categorías</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <Swiper
+          slidesPerView={3}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          breakpoints={{
+            768: {
+              slidesPerView: 3,
+            },
+            0: {
+              slidesPerView: 1,
+            },
+          }}
+          loop={true}
+          autoplay={{ delay: 3000 }}
+        >
+          {categories.map((category, index) => (
+            <SwiperSlide key={index}>
+              <Link
+                to={`/explorar/categorias/${category.category_id}`}
+                className={styles.categoryLink}
+              >
                 {category.image ? (
                   <img
-                    src={`http://localhost:8080${category.image}`} // Agregar la URL base a la ruta de la imagen
+                    src={`http://localhost:8080${category.image}`}
                     alt="banner"
                     className={styles.categoryImage}
                   />
                 ) : (
-                  <div className={styles.placeholder}></div> // Placeholder en caso de que no haya imagen
+                  <div className={styles.placeholder}></div>
                 )}
                 <h3>{category.name}</h3>
-              </SwiperSlide>
-            </Link>
+              </Link>
+            </SwiperSlide>
           ))}
         </Swiper>
       )}

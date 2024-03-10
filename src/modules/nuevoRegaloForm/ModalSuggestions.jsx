@@ -43,13 +43,13 @@ function ModalSuggestions({ closeModal, suggestions, onCancel, createForum }) {
         </div>
         <div className={styles.buttonsContainer}>
           <Button
-            label="Me gustan"
+            label="Me gustan. No quiero crear un foro."
             className="btn primary__button-outline"
             onClick={handleCancel}
           />
 
           <Button
-            label="Crear foro"
+            label="Crear foro para tener más opciones."
             className="btn primary__button-outline"
             onClick={handleCreate}
           />

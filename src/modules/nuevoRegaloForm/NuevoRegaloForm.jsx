@@ -14,6 +14,7 @@ import jwtDecode from "jwt-decode";
 import ModalLogin from "../modalLogin/ModalLogin";
 import Modal from "../../components/modal/Modal";
 import ModalSuggestions from "./ModalSuggestions";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function NuevoRegaloForm({ selectedProfile }) {
   console.log("selectedProfile:", selectedProfile);
@@ -28,7 +29,11 @@ function NuevoRegaloForm({ selectedProfile }) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [showSuggestionsModal, setShowSuggestionsModal] = useState(false);
-  const [giftsRateSuggestions, setGiftsRateSuggestions] = useState(null); // Estado para almacenar las sugerencias de tarifas de regalo
+  const [giftsRateSuggestions, setGiftsRateSuggestions] = useState(null);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [redirectToProfile, setRedirectToProfile] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -75,16 +80,18 @@ function NuevoRegaloForm({ selectedProfile }) {
     const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
     const year = selectedDate.getFullYear();
     const formattedDate = `${day}/${month}/${year}`;
-  
+
     let endFormattedDate = null;
-  
+
     if (selectedEndDate) {
       const endDay = selectedEndDate.getDate().toString().padStart(2, "0");
-      const endMonth = (selectedEndDate.getMonth() + 1).toString().padStart(2, "0");
+      const endMonth = (selectedEndDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
       const endYear = selectedEndDate.getFullYear();
       endFormattedDate = `${endDay}/${endMonth}/${endYear}`;
     }
-  
+
     if (selectedOption && selectedProfile) {
       const eventPostData = {
         event_type_id: selectedOption.value,
@@ -93,7 +100,6 @@ function NuevoRegaloForm({ selectedProfile }) {
         date: formattedDate,
         end_date: endFormattedDate,
       };
-  
 
       try {
         const eventResponse = await fetch(
@@ -140,20 +146,19 @@ function NuevoRegaloForm({ selectedProfile }) {
           throw new Error("Error al crear el foro");
         }
 
-        // Si ambos llamados están OK, muestra un mensaje de éxito y redirige al usuario a la página /perfil/user_id
-        alert("Foro creado con éxito");
-        // Aquí puedes blanquear el formulario
+        setSuccessMessage("Foro creado exitosamente.");
+        setRedirectToProfile(true);
+        setShowResponseModal(true);
         setTitulo("");
         setDescripcion("");
-        // Redirigir al usuario a la página /perfil/user_id
-        navigate(`/perfil/${userId}`);
       } catch (error) {
         // Si hay algún error en alguna de las llamadas fetch, muestra un mensaje de error correspondiente
         if (error.message === "Error al crear el evento") {
-          alert("Error al crear el evento");
+          setErrorMessage("Error al crear el foro.");
         } else if (error.message === "Error al crear el foro") {
-          alert("Error al crear el foro");
+          setErrorMessage("Error al crear el foro.");
         } else {
+          setErrorMessage("Error al crear el foro.");
           console.error("Error al crear el foro:", error);
         }
       }
@@ -204,13 +209,25 @@ function NuevoRegaloForm({ selectedProfile }) {
 
   return (
     <>
+      <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          if (successMessage && redirectToProfile) {
+            navigate(`/perfil/${userId}`);
+          }
+        }}
+        confirmButtonText="Aceptar"
+      />
       <div className={styles.formContainer}>
         {showSuggestionsModal && (
           <ModalSuggestions
             closeModal={() => setShowSuggestionsModal(false)}
             suggestions={giftsRateSuggestions}
             onCancel={() => setShowSuggestionsModal(false)}
-            createForum={createForum} // Pasar la función createForum
+            createForum={createForum}
           />
         )}
         <Tabs defaultActiveKey="publicar" id="uncontrolled-tab-example">
@@ -267,7 +284,10 @@ function NuevoRegaloForm({ selectedProfile }) {
             <div>
               <p>¿Hasta cuándo recibis sugerencias?</p>
               {showCalendar && (
-                <Calendar value={selectedEndDate} onChange={handleEndDateChange} />
+                <Calendar
+                  value={selectedEndDate}
+                  onChange={handleEndDateChange}
+                />
               )}
               <p>
                 <input

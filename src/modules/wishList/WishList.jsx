@@ -140,13 +140,12 @@ function WishList() {
       if (response.ok) {
         alert("Lista eliminada correctamente");
         console.log("Eliminado correctamente");
-        
+
         const updatedListData = listData.filter(
           (list) => list.list_id !== listId
         );
         setShowDeleteListConfirmationModal(false);
         setListData(updatedListData);
-
       } else {
         alert("Error al eliminar");
         console.error("Error al eliminar");
@@ -373,8 +372,6 @@ function WishList() {
     }
   };
 
-  console.log("list", listData);
-
   const filteredLists = listData
     ? listData.filter((list) =>
         list.list_name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -441,7 +438,7 @@ function WishList() {
               className={styles.go_back_button}
             ></Button>{" "}
             <Button
-            className={styles.create_new_button}
+              className={styles.create_new_button}
               onClick={() =>
                 handleEditListName(
                   listData.find((list) => list.list_id === selectedListId)
@@ -462,7 +459,7 @@ function WishList() {
                       onChange={handleInputChange}
                     />
                     <Button
-                    className={styles.create_new_button}
+                      className={styles.create_new_button}
                       onClick={() =>
                         handleSaveEditListName(
                           listData.find(
@@ -474,7 +471,7 @@ function WishList() {
                       Guardar
                     </Button>
                     <Button
-                     className={styles.create_new_button}
+                      className={styles.create_new_button}
                       onClick={() => {
                         setEditMode(false);
                         setEditedListName(
@@ -498,42 +495,52 @@ function WishList() {
               </div>
             </div>
             <div className={styles.product_container}>
-              {listData
-                .find((list) => list.list_id === selectedListId)
-                .products.map((product, index) => {
-                  const productInfo = productsCatalog.data.find(
-                    (item) => item.name === product
-                  );
-                  return (
-                    <div key={index} className={styles.product_item}>
-                      {productInfo && (
-                        <div
-                          key={index}
-                          className={styles.product_card}
-                          onClick={() =>
-                            handleRemoveProduct(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
-                              ),
-                              product
-                            )
-                          }
-                        >
-                          <img
-                            src={`http://localhost:8080${productInfo.images}`}
-                            alt={productInfo.name}
-                            className={styles.product_image}
-                          />
-                          <p className={styles.product_name}>
-                            {productInfo.name}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+              {listData.find((list) => list.list_id === selectedListId)
+                .products !== null &&
+              listData.find((list) => list.list_id === selectedListId).products
+                .length > 0 ? (
+                listData
+                  .find((list) => list.list_id === selectedListId)
+                  .products.map((product, index) => {
+                    const productInfo = productsCatalog.data.find(
+                      (item) => item.name === product.product
+                    );
+                    return (
+                      <div key={index} className={styles.product_item}>
+                        {productInfo && (
+                          <div
+                            key={index}
+                            className={styles.product_card}
+                            onClick={() =>
+                              handleRemoveProduct(
+                                listData.find(
+                                  (list) => list.list_id === selectedListId
+                                ),
+                                product
+                              )
+                            }
+                          >
+                            <img
+                              src={`http://localhost:8080${productInfo.images}`}
+                              alt={productInfo.name}
+                              className={styles.product_image}
+                            />
+                            <p className={styles.product_name}>
+                              {productInfo.name}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+              ) : (
+                <p>No hay productos todavía</p>
+              )}
             </div>
-            <Button className={styles.create_new_button} onClick={() => navigate("/explorar")}>
+            <Button
+              className={styles.create_new_button}
+              onClick={() => navigate("/explorar")}
+            >
               Agregar
             </Button>
           </div>
@@ -608,7 +615,7 @@ function WishList() {
                               handleDeleteList(list);
                             }}
                           >
-                             <div className={styles.list_delete_icon} />
+                            <div className={styles.list_delete_icon} />
                           </Button>
                         </div>
                       )}
