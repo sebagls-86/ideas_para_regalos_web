@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import ModalLogin from "../../modules/modalLogin/ModalLogin";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function ForumsPage() {
   const [user] = useAuthState(auth);
@@ -38,6 +39,9 @@ function ForumsPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [originalPost, setOriginalPost] = useState(null);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { forum_id } = useParams();
   const [forumData, setForumData] = useState(null);
   const navigate = useNavigate();
@@ -52,14 +56,12 @@ function ForumsPage() {
   }, []);
 
   useEffect(() => {
-    // Verificar si el usuario está logueado
     setIsLoggedIn(!!token);
   }, [token]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch del foro
         const forumResponse = await fetch(
           `http://localhost:8080/api/v1/forums/${forum_id}`
         );
@@ -76,33 +78,21 @@ function ForumsPage() {
           );
         }
 
-        // Fetch de likes del usuario para mensajes
         const messageLikesResponse = await fetch(
           `http://localhost:8080/api/v1/messages/likes/${userId}`
         );
         if (messageLikesResponse.ok) {
           const messageLikesData = await messageLikesResponse.json();
           setMessageLikesData(messageLikesData);
-        } else {
-          console.error(
-            "Error al obtener los likes del usuario para los mensajes:",
-            messageLikesResponse.statusText
-          );
-        }
+        } 
 
-        // Fetch de likes del usuario para foros
         const forumLikesResponse = await fetch(
           `http://localhost:8080/api/v1/forums/likes/${userId}`
         );
         if (forumLikesResponse.ok) {
           const forumLikesData = await forumLikesResponse.json();
           setForumLikesData(forumLikesData);
-        } else {
-          console.error(
-            "Error al obtener los likes del usuario para los foros:",
-            forumLikesResponse.statusText
-          );
-        }
+        } 
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -119,11 +109,11 @@ function ForumsPage() {
           const eventData = await response.json();
           setEventTypes(eventData.data);
         } else {
-          console.error("Error fetching event types:", response.statusText);
-        }
+          setErrorMessage("Hubo un error al obtener los tipos de evento.");
+          setShowResponseModal(true);}
       } catch (error) {
-        console.error("Error fetching event types:", error);
-      }
+        setErrorMessage("Hubo un error al obtener los tipos de evento.");
+        setShowResponseModal(true);}
     };
 
     fetchEventTypes();
@@ -151,12 +141,13 @@ function ForumsPage() {
       if (response.ok) {
         window.location.reload();
       } else {
-        alert("Hubo un error al enviar el mensaje.");
+        setErrorMessage("Hubo un error al enviar el mensaje.");
+        setShowResponseModal(true);
         throw new Error("Hubo un error al enviar el mensaje.");
       }
     } catch (error) {
-      console.error("Error al enviar el mensaje:", error.message);
-    }
+      setErrorMessage("Hubo un error al enviar el mensaje.");
+      setShowResponseModal(true);}
   };
 
   const handleEditMessage = (message) => {
@@ -192,17 +183,12 @@ function ForumsPage() {
 
         alert("El mensaje se ha eliminado correctamente.");
         setShowDeleteModal(false);
-        console.log("El mensaje se ha eliminado correctamente.");
-      } else {
-        alert("Error al intentar eliminar el mensaje.");
-        console.error(
-          "Error al intentar eliminar el mensaje:",
-          response.statusText
-        );
-        setShowDeleteModal(false);
+       } else {
+       setErrorMessage("Error al intentar eliminar el mensaje.");
+       setShowDeleteModal(false);
+        setShowResponseModal(true);
       }
     } catch (error) {
-      console.error("Error al intentar eliminar el mensaje:", error);
       setShowDeleteModal(false);
     }
   };
@@ -264,9 +250,8 @@ function ForumsPage() {
       if (response.ok) {
         window.location.reload();
       } else {
-        alert("Hubo un error al enviar el mensaje.");
-        throw new Error("Hubo un error al enviar el mensaje.");
-      }
+        setErrorMessage("Hubo un error al enviar el mensaje.");
+        setShowResponseModal(true);}
     } catch (error) {
       console.error("Error al enviar el mensaje:", error.message);
     }
@@ -397,6 +382,17 @@ function ForumsPage() {
 
   return (
     <>
+     <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage(null);
+          setErrorMessage(null);
+        }}
+        confirmButtonText="Aceptar"
+      />
       {showDeleteModal && (
         <Modal show={showDeleteModal} onHide={cancelDeleteMessage}>
           <Modal.Header closeButton>

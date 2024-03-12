@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-//import { Modal, Button } from "react-bootstrap";
 import Button from "../../components/button/Button";
 import Modal from "../../components/modal/Modal";
 import styles from "./css/profiles.module.css";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function InterestsModal({
   show,
@@ -11,10 +11,12 @@ function InterestsModal({
   handleToggleInterest,
   setShowInterestModal,
   selectedInterests,
-  profileId, // Nuevo prop: ID del perfil
+  profileId,
   updateProfilesWithNewInterests,
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -23,7 +25,7 @@ function InterestsModal({
       setIsLoading(true);
 
       const requestBody = {
-        profile_id: profileId, // Usamos el ID del perfil
+        profile_id: profileId,
         interest_id: selectedInterests.map((interest) => interest.interest_id),
       };
 
@@ -40,7 +42,8 @@ function InterestsModal({
       );
 
       if (!response.ok) {
-        alert("Error al guardar intereses");
+        setErrorMessage("Error al guardar intereses");
+        setShowResponseModal(true);
         throw new Error("Network response was not ok");
       }
 
@@ -48,37 +51,48 @@ function InterestsModal({
       setShowInterestModal(false);
       updateProfilesWithNewInterests(selectedInterests);
     } catch (error) {
-      alert("Error al guardar intereses");
-      console.error("Error saving interests:", error);
-      setIsLoading(false);
+      setErrorMessage("Error al guardar intereses");
+      setShowInterestModal(false);
+      setShowResponseModal(true);
     }
   };
 
   return (
-    <Modal show={show} closeModal={onHide} title="Selecciona intereses">
-      <div className={styles.modal_content}>
-        {filteredAvailableInterests.map((interest) => (
+    <>
+      <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={errorMessage}
+        onConfirm={() => setShowResponseModal(false)}
+        confirmButtonText="Aceptar"
+      />
+      {isLoading}
+
+      <Modal show={show} closeModal={onHide} title="Selecciona intereses">
+        <div className={styles.modal_content}>
+          {filteredAvailableInterests.map((interest) => (
+            <Button
+              key={interest.interest_id}
+              label={interest.interest}
+              className={`${styles.interestButton} ${
+                selectedInterests.includes(interest)
+                  ? styles.selectedInterest
+                  : ""
+              }`}
+              onClick={() => handleToggleInterest(interest)}
+              isSelected={selectedInterests.includes(interest)}
+            />
+          ))}
+        </div>
+        <div style={{ marginTop: "20px", textAlign: "right" }}>
           <Button
-            key={interest.interest_id}
-            label={interest.interest}
-            className={`${styles.interestButton} ${
-              selectedInterests.includes(interest)
-                ? styles.selectedInterest
-                : ""
-            }`}
-            onClick={() => handleToggleInterest(interest)}
-            isSelected={selectedInterests.includes(interest)}
+            label="Finalizar"
+            className="btn primary__button"
+            onClick={handleSaveInterests}
           />
-        ))}
-      </div>
-      <div style={{ marginTop: "20px", textAlign: "right" }}>
-        <Button
-          label="Finalizar"
-          className="btn primary__button"
-          onClick={handleSaveInterests}
-        />
-      </div>
-    </Modal>
+        </div>
+      </Modal>
+    </>
   );
 }
 

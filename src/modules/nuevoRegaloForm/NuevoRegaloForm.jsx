@@ -17,7 +17,6 @@ import ModalSuggestions from "./ModalSuggestions";
 import ResponseModal from "../../components/modal/ResponseModal";
 
 function NuevoRegaloForm({ selectedProfile }) {
-  console.log("selectedProfile:", selectedProfile);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [eventTypes, setEventTypes] = useState([]);
@@ -115,6 +114,8 @@ function NuevoRegaloForm({ selectedProfile }) {
         );
 
         if (!eventResponse.ok) {
+          setErrorMessage("Error al crear el evento.");
+          setShowResponseModal(true);
           throw new Error("Error al crear el evento");
         }
 
@@ -143,6 +144,8 @@ function NuevoRegaloForm({ selectedProfile }) {
         );
 
         if (!forumResponse.ok) {
+          setErrorMessage("Error al crear el foro.");
+          setShowResponseModal(true);
           throw new Error("Error al crear el foro");
         }
 

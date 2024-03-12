@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function AddProductsModal({
   show,
@@ -12,6 +13,9 @@ function AddProductsModal({
   updateListsWithNewProducts,
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -33,22 +37,38 @@ function AddProductsModal({
       });
   
       if (!response.ok) {
-        alert("Error al guardar intereses");
+        setErrorMessage("Error al guardar productos");
+        setShowResponseModal(true);
         throw new Error("Network response was not ok");
       }
   
-      alert("Intereses guardados correctamente");
+      setSuccessMessage("Productos guardados correctamente");
+      setShowResponseModal(true);
       updateListsWithNewProducts(listId, selectedProducts);
   
       setIsLoading(false);
       setShowAddProductsModal(false);
     } catch (error) {
-      console.error("Error saving interests:", error);
+      setErrorMessage("Error al guardar productos");
       setIsLoading(false);
+      setShowResponseModal(true);
     }
   };
 
   return (
+    <>
+       <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage(null);
+          setErrorMessage(null);
+        }}
+        confirmButtonText="Aceptar"
+      />
+    
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>Selecciona un interés</Modal.Title>
@@ -84,6 +104,7 @@ function AddProductsModal({
         </Button>
       </Modal.Footer>
     </Modal>
+    </>
   );
 }
 
