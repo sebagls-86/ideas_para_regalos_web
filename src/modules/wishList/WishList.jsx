@@ -8,6 +8,7 @@ import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
 import jwtDecode from "jwt-decode";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function getRandomPastelColor() {
   const hue = Math.floor(Math.random() * 360);
@@ -34,6 +35,10 @@ function WishList() {
   const [showAddProductsModal, setShowAddProductsModal] = useState(false);
   const [selectedListId, setSelectedListId] = useState(null);
   const [showCreateListModal, setShowCreateListModal] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
   const [listColors, setListColors] = useState({});
@@ -114,6 +119,7 @@ function WishList() {
         throw new Error("Network response was not ok");
       }
       const listData = await response.json();
+      console.log("listData:", listData);
       setSelectedList(listData);
     } catch (error) {
       console.error("Error fetching post data:", error);
@@ -138,41 +144,39 @@ function WishList() {
         }
       );
       if (response.ok) {
-        alert("Lista eliminada correctamente");
-        console.log("Eliminado correctamente");
-
+        setSuccessMessage("Lista eliminada correctamente");
         const updatedListData = listData.filter(
           (list) => list.list_id !== listId
         );
         setShowDeleteListConfirmationModal(false);
         setListData(updatedListData);
+        setShowResponseModal(true);
       } else {
-        alert("Error al eliminar");
-        console.error("Error al eliminar");
         setShowDeleteListConfirmationModal(false);
+        setErrorMessage("Error al eliminar la lista");
+        setShowResponseModal(true);
       }
     } catch (error) {
-      alert("Error al enviar solicitud de eliminación");
-      console.error("Error al enviar solicitud de eliminación:", error);
       setShowDeleteListConfirmationModal(false);
+      setErrorMessage("Error al eliminar la lista");
+      setShowResponseModal(true);
     }
   };
 
-  const handleRemoveProduct = (list, productName) => {
-    // Buscar el objeto de producto correspondiente en productsCatalog
+  const handleRemoveProduct = (list, selectedProduct) => {
     const product = productsCatalog.data.find(
-      (product) => product.name === productName
+      (product) => product.name === selectedProduct.product
     );
 
     if (product) {
-      // Si se encuentra el producto en productsCatalog, obtener su product_catalog_id
-      const productId = product.product_catalog_id;
+      const productId = selectedProduct.list_product_id;
+      const productName = selectedProduct.product;
 
-      // Pasar la lista completa junto con el nombre del producto y su product_catalog_id
       setProductToRemove({ list, productName, productId });
       setShowConfirmationModal(true);
     } else {
-      console.error("No se pudo encontrar el producto en productsCatalog");
+      setErrorMessage("No se pudo encontrar el producto en productsCatalog");
+      setShowResponseModal(true);
     }
   };
 
@@ -180,7 +184,9 @@ function WishList() {
     try {
       const { list, productId } = productToRemove;
       const listId = list.list_id;
-
+  
+      console.log("Deleting product with ID:", productId, "from list with ID:", listId);
+  
       const response = await fetch(
         `http://localhost:8080/api/v1/lists/${listId}/listProducts/${productId}`,
         {
@@ -191,21 +197,15 @@ function WishList() {
           },
         }
       );
-
+  
+      console.log("Response status:", response.status);
+  
       if (response.ok) {
-        alert("Producto eliminado correctamente");
+        console.log("Product deleted successfully");
+        setSuccessMessage("Producto eliminado correctamente");
         const updatedListData = listData.map((listItem) => {
-          console.log("listItem.list_id:", listItem.list_id);
-          console.log("listId:", listId);
-
           if (listItem.list_id === listId) {
-            const updatedProducts = listItem.products.filter((p) => {
-              console.log("p:", p);
-              console.log("productName:", productToRemove?.productName);
-
-              return p !== productToRemove?.productName;
-            });
-
+            const updatedProducts = listItem.products.filter((p) => p.product !== productToRemove?.productName);
             return {
               ...listItem,
               products: updatedProducts,
@@ -214,24 +214,28 @@ function WishList() {
           return listItem;
         });
         setListData(updatedListData);
+        setShowResponseModal(true);
       } else {
         const responseBody = await response.text();
         if (responseBody.includes("invalid token")) {
-          alert("Su sesión ha expirado. Por favor, inicie sesión nuevamente");
+          setErrorMessage(
+            "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
+          );
           localStorage.removeItem("token");
           navigate("/");
+          setShowResponseModal(true);
         } else if (!response.ok) {
-          alert("Error al eliminar el producto");
+          setErrorMessage("Error al eliminar el producto");
+          setShowResponseModal(true);
         }
       }
       setShowConfirmationModal(false);
+      setShowResponseModal(true);
     } catch (error) {
-      alert("Error al enviar solicitud de eliminación del producto");
-      console.error(
-        "Error al enviar solicitud de eliminación del producto:",
-        error
-      );
+      console.error("Error:", error);
+      setErrorMessage("Error al enviar solicitud de eliminación del producto");
       setShowConfirmationModal(false);
+      setShowResponseModal(true);
     }
   };
 
@@ -321,17 +325,14 @@ function WishList() {
         setEditMode(false);
         setListData(updatedListData);
       } else {
-        alert("Error al actualizar el nombre de la lista");
-        console.error("Error al actualizar el nombre de la lista");
+        setErrorMessage("Error al actualizar el nombre de la lista");
+        setShowResponseModal(true);
       }
     } catch (error) {
-      alert(
+      setErrorMessage(
         "Error al enviar solicitud de actualización del nombre de la lista"
       );
-      console.error(
-        "Error al enviar solicitud de actualización del nombre de la lista:",
-        error
-      );
+      setShowResponseModal(true);
     }
   };
 
@@ -428,6 +429,18 @@ function WishList() {
         onCancel={() => setShowDeleteListConfirmationModal(false)}
         onConfirm={() => handleDelete(listToRemove?.list_id)}
         confirmButtonText="Confirmar"
+      />
+
+      <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage(null);
+          setErrorMessage(null);
+        }}
+        confirmButtonText="Aceptar"
       />
 
       {selectedListId ? (

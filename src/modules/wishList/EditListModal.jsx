@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function EditListModal({
   show,
@@ -10,6 +11,9 @@ function EditListModal({
   updateProfilesWithNewInterests,
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -35,7 +39,9 @@ function EditListModal({
       );
 
       if (!response.ok) {
-        alert("Error al guardar intereses");
+        setErrorMessage("Error al editar lista");
+        onHide();
+        setShowResponseModal(true);
         throw new Error("Network response was not ok");
       }
 
@@ -43,33 +49,47 @@ function EditListModal({
       setShowInterestModal(false);
       updateProfilesWithNewInterests(selectedInterests);
     } catch (error) {
-      alert("Error al guardar intereses");
-      console.error("Error saving interests:", error);
+      setErrorMessage("Error al editar lista");
+      onHide();
       setIsLoading(false);
+      setShowResponseModal(true);
     }
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Selecciona un interés</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Button></Button>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Cerrar
-        </Button>
-        <Button
-          variant="primary"
-          onClick={handleSaveInterests}
-          disabled={isLoading}
-        >
-          {isLoading ? "Guardando..." : "Guardar"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <>
+      <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage(null);
+          setErrorMessage(null);
+        }}
+        confirmButtonText="Aceptar"
+      />
+      <Modal show={show} onHide={onHide}>
+        <Modal.Header closeButton>
+          <Modal.Title>Selecciona un interés</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Button></Button>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            Cerrar
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSaveInterests}
+            disabled={isLoading}
+          >
+            {isLoading ? "Guardando..." : "Guardar"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Spinner, Modal, Button } from "react-bootstrap";
-//import { useAuthState } from "react-firebase-hooks/auth";
-//import { auth } from "../../utils/firebase";
 import Nav from "../../modules/nav/Nav";
 import { Col } from "react-bootstrap";
 import PageTitle from "../../components/pageTitle/PageTitle";
@@ -12,9 +10,9 @@ import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import jwtDecode from "jwt-decode";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function MyAccountPage() {
-  //const [firebaseAuth] = useAuthState(auth);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [formChanges, setFormChanges] = useState({});
@@ -22,6 +20,9 @@ function MyAccountPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [avatarFile, setAvatarFile] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [bannerFile, setBannerFile] = useState(null);
   const [showBannerModal, setShowBannerModal] = useState(false);
   const { user_id } = useParams();
@@ -70,32 +71,14 @@ function MyAccountPage() {
 
   const handleEditClick = () => {
     setShowModal(true);
+    // Save a copy of original user data
+    setFormChanges({});
   };
-
-  let buttonElement;
-  if (userId !== user__id) {
-    buttonElement = (
-      <Button label="Seguir" className={styles.custom__button}>
-        Seguir
-      </Button>
-    );
-  } else {
-    buttonElement = (
-      <Button
-        label="Editar"
-        className={styles.custom__button}
-        onClick={handleEditClick}
-      >
-        Editar
-      </Button>
-    );
-  }
 
   const handleSaveChanges = async () => {
     try {
       const formData = new FormData();
 
-      // Agrega solo los campos modificados al FormData
       for (const key in formChanges) {
         formData.append(key, formChanges[key]);
       }
@@ -125,23 +108,20 @@ function MyAccountPage() {
       );
 
       if (response.ok) {
-        alert("Cambios guardados");
-        window.location.reload();
-
+        setSuccessMessage("Cambios guardados");
         setShowImageModal(false);
         setShowModal(false);
+        setShowResponseModal(true);
       } else {
-        if (response.status === 400) {
-          alert("Error 400");
-          console.log("Error 400");
-          setShowImageModal(false);
-          setShowModal(false);
-          return;
-        }
+        setErrorMessage("Error al guardar los cambios");
+        setShowImageModal(false);
+        setShowModal(false);
+        setShowResponseModal(true);
       }
     } catch (error) {
-      alert("Error al guardar los cambios");
-      console.error("Error saving user data:", error);
+      setErrorMessage("Error al guardar los cambios");
+      setShowModal(false);
+      setShowResponseModal(true);
     }
   };
 
@@ -203,7 +183,19 @@ function MyAccountPage() {
                 <p>{userData.user_name}</p>
                 <p>{userData.birth_date}</p>
               </div>
-              {buttonElement}
+              {userId !== user__id ? (
+                <Button label="Seguir" className={styles.custom__button}>
+                  Seguir
+                </Button>
+              ) : (
+                <Button
+                  label="Editar"
+                  className={styles.custom__button}
+                  onClick={handleEditClick}
+                >
+                  Editar
+                </Button>
+              )}
             </div>
 
             <ProfileNav></ProfileNav>
@@ -237,11 +229,8 @@ function MyAccountPage() {
                 type="text"
                 className="form-control"
                 id="name"
-                value={userData ? userData.name : ""}
-                onChange={(e) => {
-                  handleInputChange("name", e.target.value);
-                  setUserData({ ...userData, name: e.target.value });
-                }}
+                value={formChanges.name || userData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
               />
             </div>
             <div className="form-group">
@@ -250,11 +239,8 @@ function MyAccountPage() {
                 type="text"
                 className="form-control"
                 id="lastName"
-                value={userData ? userData.last_name : ""}
-                onChange={(e) => {
-                  handleInputChange("name", e.target.value);
-                  setUserData({ ...userData, last_name: e.target.value });
-                }}
+                value={formChanges.last_name || userData.last_name}
+                onChange={(e) => handleInputChange("last_name", e.target.value)}
               />
             </div>
             <div className="form-group">
@@ -263,11 +249,8 @@ function MyAccountPage() {
                 type="text"
                 className="form-control"
                 id="userName"
-                value={userData ? userData.user_name : ""}
-                onChange={(e) => {
-                  handleInputChange("name", e.target.value);
-                  setUserData({ ...userData, user_name: e.target.value });
-                }}
+                value={formChanges.user_name || userData.user_name}
+                onChange={(e) => handleInputChange("user_name", e.target.value)}
               />
             </div>
           </form>
@@ -347,7 +330,17 @@ function MyAccountPage() {
           </Button>
         </Modal.Footer>
       </Modal>
-      ;
+      <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage("");
+          setErrorMessage("");
+        }}
+        confirmButtonText="Aceptar"
+      />
     </>
   );
 }

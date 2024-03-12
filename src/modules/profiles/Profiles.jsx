@@ -13,6 +13,7 @@ import {
   fetchAgeRanges,
   fetchRelationships,
 } from "../api/api";
+import ResponseModal from "../../components/modal/ResponseModal";
 
 function Profiles() {
   const [profilesData, setProfilesData] = useState(null);
@@ -27,12 +28,16 @@ function Profiles() {
     showDeleteProfileConfirmationModal,
     setShowDeleteProfileConfirmationModal,
   ] = useState(false);
+  const [originalProfileData, setOriginalProfileData] = useState(null);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [interests, setInterests] = useState([]);
   const [availableInterests, setAvailableInterests] = useState([]);
   const [editingProfile, setEditingProfile] = useState(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [interestToRemove, setInterestToRemove] = useState(null);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { user_id } = useParams();
   const userId = parseInt(user_id);
@@ -101,6 +106,18 @@ function Profiles() {
 
     fetchAvailableInterests();
   }, []);
+
+  useEffect(() => {
+    if (selectedProfile && !showModal) {
+      setEditingProfile({ ...selectedProfile });
+    }
+  }, [selectedProfile, showModal]);
+
+  useEffect(() => {
+    if (selectedProfile) {
+      setOriginalProfileData({ ...selectedProfile });
+    }
+  }, [selectedProfile]);
 
   useEffect(() => {
     const fetchInterests = async () => {
@@ -210,7 +227,9 @@ function Profiles() {
       );
 
       if (!response.ok) {
-        alert("Algo falló. Intenta nuevamente más tarde");
+        setErrorMessage("Algo falló. Intenta nuevamente más tarde");
+        setShowModal(false);
+        setShowResponseModal(true);
         throw new Error("Network response was not ok");
       }
 
@@ -233,11 +252,14 @@ function Profiles() {
         setProfilesData(updatedProfilesData);
       }
 
-      alert("Perfil actualizado con éxito!");
+      setSuccessMessage("Perfil actualizado con éxito!");
       setShowModal(false);
+      setShowResponseModal(true);
     } catch (error) {
-      alert("Algo falló. Intenta nuevamente más tarde");
-      console.error("Error updating profile:", error);
+      setErrorMessage("Algo falló. Intenta nuevamente más tarde");
+      setShowModal(false);
+      setShowResponseModal(true);
+      setSelectedProfile({ ...editingProfile });
     }
   };
 
@@ -265,17 +287,17 @@ function Profiles() {
     if (!selectedProfile) {
       return availableInterests;
     }
-  
+
     if (!selectedProfile.interests) {
       console.warn("selectedProfile.interests no está definido");
       return availableInterests;
     }
-  
+
     const selectedInterestIds = selectedProfile.interests.map(
       (interest) => interest.interest_id
     );
-    return availableInterests.filter((interest) =>
-      !selectedInterestIds.includes(interest.interest_id)
+    return availableInterests.filter(
+      (interest) => !selectedInterestIds.includes(interest.interest_id)
     );
   };
 
@@ -327,24 +349,23 @@ function Profiles() {
       );
 
       if (!deleteResponse.ok) {
-        alert("Algo falló. Intenta nuevamente más tarde");
+        setErrorMessage("Algo falló. Intenta nuevamente más tarde");
         setShowConfirmationModal(false);
+        setShowResponseModal(true);
         throw new Error("Network response was not ok");
       }
 
-      // Eliminar el interés del perfil seleccionado
       const updatedSelectedProfile = updateSelectedProfileAfterInterestRemoval(
         profile,
         interestId
       );
 
-      // Actualizar el estado de selectedProfile
       setSelectedProfile(updatedSelectedProfile);
 
       setShowConfirmationModal(false);
-      alert("Interés eliminado con éxito");
+      setSuccessMessage("Interés eliminado con éxito");
+      setShowResponseModal(true);
 
-      // Actualizar profilesData
       const updatedProfilesData = profilesData.map((p) => {
         if (p.profile_id === profile.profile_id) {
           return updatedSelectedProfile;
@@ -352,7 +373,6 @@ function Profiles() {
         return p;
       });
 
-      // Actualizar el estado de profilesData
       setProfilesData(updatedProfilesData);
     } catch (error) {
       console.error("Error removing interest:", error);
@@ -385,20 +405,22 @@ function Profiles() {
       );
 
       if (!response.ok) {
-        alert("Algo falló. Intenta nuevamente más tarde");
+        setErrorMessage("Algo falló. Intenta nuevamente más tarde");
+        setShowResponseModal(true);
         throw new Error("Network response was not ok");
       }
 
-      alert("Perfil eliminado con éxito");
       const updatedProfilesData = profilesData.filter(
         (p) => p.profile_id !== profile.profile_id
       );
       setProfilesData(updatedProfilesData);
       setSelectedProfile(null);
       setShowDeleteProfileConfirmationModal(false);
+      setSuccessMessage("Perfil eliminado con éxito");
+      setShowResponseModal(true);
     } catch (error) {
-      alert("Algo falló. Intenta nuevamente más tarde");
-      console.error("Error deleting profile:", error);
+      setErrorMessage("Algo falló. Intenta nuevamente más tarde");
+      setShowResponseModal(true);
     }
   };
 
@@ -426,16 +448,17 @@ function Profiles() {
           }),
         }
       );
-  
+
       if (!profileResponse.ok) {
+        setErrorMessage("Error al crear nuevo perfil");
+        setShowResponseModal(true);
         throw new Error("Failed to save new profile");
       }
-  
+
       const {
         data: { profile_id },
       } = await profileResponse.json();
-  
-      // Crear los intereses asociados al perfil
+
       const interestsResponse = await fetch(
         "http://localhost:8080/api/v1/profileInterests",
         {
@@ -450,9 +473,8 @@ function Profiles() {
           }),
         }
       );
-  
+
       if (!interestsResponse.ok) {
-        // Si la creación de intereses falla, eliminar el perfil
         const deleteProfileResponse = await fetch(
           `http://localhost:8080/api/v1/profiles/${profile_id}`,
           {
@@ -463,24 +485,26 @@ function Profiles() {
             },
           }
         );
-  
+
         if (!deleteProfileResponse.ok) {
           throw new Error("Failed to delete profile");
         }
-  
+
         setShowNewProfileModal(false);
         throw new Error("Failed to save profile interests");
       }
-  
+
       setShowNewProfileModal(false);
-      alert("Nuevo perfil guardado con éxito!");
+      setSuccessMessage("Nuevo perfil guardado con éxito");
+      setShowResponseModal(true);
       setProfilesData((prevProfilesData) => [
         ...prevProfilesData,
         { ...newProfile, profile_id },
       ]);
     } catch (error) {
       setShowNewProfileModal(false);
-      console.error("Error saving new profile:", error);
+      setErrorMessage("Algo falló. Intenta nuevamente más tarde");
+      setShowResponseModal(true);
     }
   };
 
@@ -570,6 +594,18 @@ function Profiles() {
         onCancel={() => setShowDeleteProfileConfirmationModal(false)}
         onConfirm={() => handleConfirmDeleteProfile(profileToRemove)}
         confirmButtonText="Confirmar"
+      />
+
+      <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage(null);
+          setErrorMessage(null);
+        }}
+        confirmButtonText="Aceptar"
       />
 
       {selectedProfile ? (
