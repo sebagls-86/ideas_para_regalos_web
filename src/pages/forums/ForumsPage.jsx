@@ -380,6 +380,26 @@ function ForumsPage() {
     }
   };
 
+  console.log("user_id", userData?.user_id);
+  console.log("forumData", forumData?.data.user_id);
+  console.log("status", forumData?.data.status);
+
+  console.log("userData", userData);
+console.log("forumData", forumData);
+console.log("isLoggedIn", isLoggedIn);
+console.log("userId", userId);
+console.log("token", token);
+console.log("forumData.status", forumData?.status);
+console.log(
+  "userData.user_id === forumData.data.user_id && forumData.status === 1",
+  userData?.user_id === forumData?.data?.user_id && forumData?.data.status === 1
+);
+console.log(
+  "Forum data messages",
+  forumData?.data?.messages
+);
+
+
   return (
     <>
      <ResponseModal
@@ -449,7 +469,7 @@ function ForumsPage() {
                   </div>
                   <p className={styles.forum_title}>{forumData.data.title}</p>
                   {userData.user_id === forumData.data.user_id &&
-                    forumData.status === 1 && (
+                    forumData.data.status === 1 && (
                       <div className={styles.edit_button_container}>
                         <Button onClick={() => handleEdit(forumData.data)}>
                           Editar
@@ -492,7 +512,7 @@ function ForumsPage() {
                   </span>
                 </div>
               </div>
-              {forumData && forumData.data && forumData.data.messages && (
+              {forumData && forumData.data && forumData.data.messages &&  forumData.data.status === 1 &&(
                 <ul>
                   {forumData.data.messages.map((message) => (
                     <li

@@ -145,6 +145,14 @@ function MyAccountPage() {
     setShowBannerModal(true);
   };
 
+  if (isLoading) {
+    return <Spinner animation="border" />;
+  }
+  
+  if (!userData) {
+    return <div>No se pudieron cargar los datos del usuario.</div>;
+  }
+
   return (
     <>
       {isLoading && <Spinner />}
