@@ -51,7 +51,9 @@ function ForumsPage() {
     if (token) {
       const decoded = jwtDecode(token);
       setUserData(decoded);
-      setUserId(decoded.user_id);
+      if (decoded) {
+        setUserId(decoded.user_id);
+      }
     }
   }, []);
 
@@ -468,14 +470,14 @@ console.log(
                     </Col>
                   </div>
                   <p className={styles.forum_title}>{forumData.data.title}</p>
-                  {userData.user_id === forumData.data.user_id &&
-                    forumData.data.status === 1 && (
+                  {userData && userData.user_id && userData.user_id === forumData.data.user_id && (
+                    forumData.status === 1 && (
                       <div className={styles.edit_button_container}>
                         <Button onClick={() => handleEdit(forumData.data)}>
                           Editar
                         </Button>
                       </div>
-                    )}
+                    ))}
                 </div>
                 <p className={styles.forum_description}>
                   {forumData.data.description}

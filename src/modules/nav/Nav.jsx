@@ -3,6 +3,7 @@ import logoimg from "../../assets/logoIdeasParaRegalos.png";
 import crearPost from "../../assets/crear__post__nav.svg";
 import NavLinks from "../../components/navLinks/NavLinks";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   AiOutlineCompass,
   AiOutlineUsergroupAdd,
@@ -18,6 +19,7 @@ import jwtDecode from "jwt-decode";
 function Nav() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  const { logout } = useAuth0();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -62,7 +64,7 @@ function Nav() {
         <img src={crearPost} alt="Crear publicación" />
       </Link>
       <div className={styles.logout_icon}>
-        <icon onClick={handleLogout} className="fw-700 fs-3" cursor="pointer">
+        <icon onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} className="fw-700 fs-3" cursor="pointer">
           <AiOutlineLogout className="fw-700 fs-3" />
         </icon>
       </div>

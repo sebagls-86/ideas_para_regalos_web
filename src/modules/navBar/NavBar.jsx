@@ -5,10 +5,12 @@ import logoimg from "../../assets/logo_mascota_ipr.svg";
 import logotext from "../../assets/logo_letras_ipr.svg";
 import LoginMobile from "../loginMobile/LoginMobile";
 import ModalLogin from "../modalLogin/ModalLogin";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function NavBar() {
   const [openModal, setOpenModal] = React.useState(false);
   const [tokenExists, setTokenExists] = React.useState(false);
+  const { loginWithRedirect } = useAuth0();
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,7 +53,7 @@ function NavBar() {
             </li>
             {!tokenExists && (
               <li>
-                <Link onClick={openModalHandler} className={styles.links}>
+                <Link onClick={() => loginWithRedirect()} className={styles.links}>
                   Iniciar sesión
                 </Link>
               </li>

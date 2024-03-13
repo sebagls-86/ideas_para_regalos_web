@@ -5,11 +5,14 @@ import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import ModalRegister from "../modalRegister/ModalRegister"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function AsideLogin() {
   const [openModal, setOpenModal] = useState(false);
   const [registerModal, setOpenRegisterModal] = useState(false)
   const [user] = useAuthState(auth);
+  const { loginWithRedirect } = useAuth0();
 
   console.log("registerModal", registerModal)
   if (!user)
@@ -19,17 +22,12 @@ function AsideLogin() {
          <Button
             label="Registrarse"
             className="btn primary__button"
-            onClick={() => {
-              setOpenRegisterModal(true);
-            }}
+            onClick={() => loginWithRedirect()}
           />
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
-            onClick={() => {
-              console.log("Abriendo modal...");
-              setOpenModal(true);
-            }}
+            onClick={() => loginWithRedirect()}
           />
           {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
           {registerModal && <ModalRegister closeModal={() => setOpenRegisterModal(false)} />}
