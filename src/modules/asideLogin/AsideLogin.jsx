@@ -14,20 +14,21 @@ function AsideLogin() {
   const [user] = useAuthState(auth);
   const { loginWithRedirect } = useAuth0();
 
-  console.log("registerModal", registerModal)
-  if (!user)
+ if (!user)
     return (
       <>
         <div className="d-flex flex-column gap-3 mt-3">
          <Button
             label="Registrarse"
             className="btn primary__button"
-            onClick={() => loginWithRedirect()}
+            onClick={() => loginWithRedirect({ authorizationParams: { screen_hint: "signup" } }, {appState: {returnTo: "/"}})}
+            
           />
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
-            onClick={() => loginWithRedirect()}
+            onClick={() => loginWithRedirect({appState: {returnTo: "/"}})}
+           
           />
           {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
           {registerModal && <ModalRegister closeModal={() => setOpenRegisterModal(false)} />}

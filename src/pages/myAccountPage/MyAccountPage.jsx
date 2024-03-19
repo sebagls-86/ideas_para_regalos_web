@@ -11,13 +11,14 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import jwtDecode from "jwt-decode";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function MyAccountPage() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [formChanges, setFormChanges] = useState({});
   const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
   const [avatarFile, setAvatarFile] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
@@ -27,13 +28,14 @@ function MyAccountPage() {
   const [showBannerModal, setShowBannerModal] = useState(false);
   const { user_id } = useParams();
   const user__id = parseInt(user_id);
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const token = localStorage.getItem("token");
 
   const decoded = jwtDecode(token);
   const userId = decoded.user_id;
 
-  console.log("renderizando MyAccountPage");
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +55,7 @@ function MyAccountPage() {
 
         const data = await response.json();
         setUserData(data.data);
-        setIsLoading(false);
+        //setIsLoading(false);
 
         if (response.status === 400) {
           navigate("/");

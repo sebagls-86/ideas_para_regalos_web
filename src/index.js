@@ -28,11 +28,11 @@ const config = getConfig();
 
 root.render(
 <Auth0Provider
-    domain= {config.domain}
-    clientId={config.clientId}
-    authorizationParams={{
-      redirect_uri: window.location.origin
-    }}
+            domain={config.domain}
+            clientId={config.clientId}
+            redirectUri={window.location.origin}
+            audient={config.audience}   
+            scope= "read:current_user update:current_user_metadata"
   >
     <App />
   </Auth0Provider>,
