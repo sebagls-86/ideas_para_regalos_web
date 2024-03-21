@@ -1,5 +1,5 @@
 {
   "domain": "dev-oraf1nl35nag2oxd.us.auth0.com",
   "clientId": "WTy5RLUirpCMGFljN9YsxVOvzCF6XT4m",
-  "audience": "https://dev-oraf1nl35nag2oxd.us.auth0.com/api/v2/"
+  "audience": "http://localhost:8080/api/v1/"
 }

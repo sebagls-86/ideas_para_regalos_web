@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Search from "../../components/search/Search";
 import styles from './users.module.css'
-import jwtDecode from "jwt-decode";
 
 function Users() {
   const [users, setUsers] = useState([]); // Estado para almacenar los datos de los usuarios
   const [searchTerm, setSearchTerm] = useState("");
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const userId = decoded.user_id;
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  
 
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/users/public")

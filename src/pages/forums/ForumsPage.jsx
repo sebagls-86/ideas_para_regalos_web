@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col, Button, Modal } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
@@ -16,12 +14,12 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 import styles from "./forumsPage.module.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function ForumsPage() {
-  const [user] = useAuthState(auth);
+  const { user, isAuthenticated } = useAuth0();
   const token = localStorage.getItem("token");
   const tokenExists = token !== null && token !== undefined;
   const [message, setMessage] = useState("");
@@ -33,7 +31,6 @@ function ForumsPage() {
   const [forumLikesData, setForumLikesData] = useState(null);
   const [messageLikesData, setMessageLikesData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null);
   const [openModal, setOpenModal] = React.useState(false);
   const [eventTypes, setEventTypes] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -45,17 +42,12 @@ function ForumsPage() {
   const { forum_id } = useParams();
   const [forumData, setForumData] = useState(null);
   const navigate = useNavigate();
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUserData(decoded);
-      if (decoded) {
-        setUserId(decoded.user_id);
-      }
-    }
-  }, []);
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      userInfo.data.user_id) ||
+    null;
 
   useEffect(() => {
     setIsLoggedIn(!!token);
@@ -86,7 +78,7 @@ function ForumsPage() {
         if (messageLikesResponse.ok) {
           const messageLikesData = await messageLikesResponse.json();
           setMessageLikesData(messageLikesData);
-        } 
+        }
 
         const forumLikesResponse = await fetch(
           `http://localhost:8080/api/v1/forums/likes/${userId}`
@@ -94,7 +86,7 @@ function ForumsPage() {
         if (forumLikesResponse.ok) {
           const forumLikesData = await forumLikesResponse.json();
           setForumLikesData(forumLikesData);
-        } 
+        }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -112,10 +104,12 @@ function ForumsPage() {
           setEventTypes(eventData.data);
         } else {
           setErrorMessage("Hubo un error al obtener los tipos de evento.");
-          setShowResponseModal(true);}
+          setShowResponseModal(true);
+        }
       } catch (error) {
         setErrorMessage("Hubo un error al obtener los tipos de evento.");
-        setShowResponseModal(true);}
+        setShowResponseModal(true);
+      }
     };
 
     fetchEventTypes();
@@ -149,7 +143,8 @@ function ForumsPage() {
       }
     } catch (error) {
       setErrorMessage("Hubo un error al enviar el mensaje.");
-      setShowResponseModal(true);}
+      setShowResponseModal(true);
+    }
   };
 
   const handleEditMessage = (message) => {
@@ -185,9 +180,9 @@ function ForumsPage() {
 
         alert("El mensaje se ha eliminado correctamente.");
         setShowDeleteModal(false);
-       } else {
-       setErrorMessage("Error al intentar eliminar el mensaje.");
-       setShowDeleteModal(false);
+      } else {
+        setErrorMessage("Error al intentar eliminar el mensaje.");
+        setShowDeleteModal(false);
         setShowResponseModal(true);
       }
     } catch (error) {
@@ -253,7 +248,8 @@ function ForumsPage() {
         window.location.reload();
       } else {
         setErrorMessage("Hubo un error al enviar el mensaje.");
-        setShowResponseModal(true);}
+        setShowResponseModal(true);
+      }
     } catch (error) {
       console.error("Error al enviar el mensaje:", error.message);
     }
@@ -382,29 +378,9 @@ function ForumsPage() {
     }
   };
 
-  console.log("user_id", userData?.user_id);
-  console.log("forumData", forumData?.data.user_id);
-  console.log("status", forumData?.data.status);
-
-  console.log("userData", userData);
-console.log("forumData", forumData);
-console.log("isLoggedIn", isLoggedIn);
-console.log("userId", userId);
-console.log("token", token);
-console.log("forumData.status", forumData?.status);
-console.log(
-  "userData.user_id === forumData.data.user_id && forumData.status === 1",
-  userData?.user_id === forumData?.data?.user_id && forumData?.data.status === 1
-);
-console.log(
-  "Forum data messages",
-  forumData?.data?.messages
-);
-
-
   return (
     <>
-     <ResponseModal
+      <ResponseModal
         show={showResponseModal}
         onHide={() => setShowResponseModal(false)}
         message={successMessage || errorMessage}
@@ -440,7 +416,7 @@ console.log(
       <NavBar />
       <div className="contenedor">
         <div className="left__aside">
-          {(user || tokenExists) && <Nav user={user?.displayName} />}
+          {(isAuthenticated) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
           <div>
@@ -453,10 +429,9 @@ console.log(
           )}
           {forumData && forumData.data && (
             <>
-            
               <div>
                 <div className={styles.forum_title_container}>
-                <div className={styles.user_info}>
+                  <div className={styles.user_info}>
                     <img
                       src={`http://localhost:8080/images/users/${forumData.data.avatar}`}
                       alt="avatar"
@@ -470,21 +445,20 @@ console.log(
                     </Col>
                   </div>
                   <p className={styles.forum_title}>{forumData.data.title}</p>
-                  {userData && userData.user_id && userData.user_id === forumData.data.user_id && (
+                  {userId &&
+                    userId === forumData.data.user_id &&
                     forumData.status === 1 && (
                       <div className={styles.edit_button_container}>
                         <Button onClick={() => handleEdit(forumData.data)}>
                           Editar
                         </Button>
                       </div>
-                    ))}
+                    )}
                 </div>
                 <p className={styles.forum_description}>
                   {forumData.data.description}
                 </p>
                 <div>
-                
-
                   <p> Regalo para: {forumData.data.profile.name}</p>
                   <p> Rango de Edad: {forumData.data.profile.age_range} </p>
                   <p> Relacion: {forumData.data.profile.relationship} </p>
@@ -514,129 +488,137 @@ console.log(
                   </span>
                 </div>
               </div>
-              {forumData && forumData.data && forumData.data.messages &&  forumData.data.status === 1 &&(
-                <ul>
-                  {forumData.data.messages.map((message) => (
-                    <li
-                      className={styles.forum_message_item}
-                      key={message.message_id}
-                    >
-                      {messageEditing &&
-                      messageEditing.message_id === message.message_id ? (
-                        <div className={styles.edit_message_panel}>
-                          <textarea
-                            className={styles.text_area}
-                            rows="4"
-                            cols="50"
-                            value={messageEditing ? messageEditing.message : ""}
-                            onChange={(e) =>
-                              setMessageEditing({
-                                ...messageEditing,
-                                message: e.target.value,
-                              })
-                            }
-                          ></textarea>
-                          <div>
-                            {imageFiles.map((file, index) => (
-                              <div key={index}>
-                                <img
-                                  src={URL.createObjectURL(file)}
-                                  alt={`Imagen ${index}`}
-                                  style={{
-                                    maxWidth: "100px",
-                                    maxHeight: "100px",
-                                  }}
-                                />
-                                <Button
-                                  className={styles.remove_button}
-                                  onClick={() => removeImage(index)}
-                                >
-                                  Quitar
-                                </Button>
-                              </div>
-                            ))}
-                          </div>
-                          <Button
-                            className={styles.send_button}
-                            onClick={handleSaveEditMessage}
-                          >
-                            Guardar Cambios
-                          </Button>
-                          <Button
-                            className={styles.cancel_button}
-                            onClick={handleCancelEdit}
-                          >
-                            Cancelar
-                          </Button>
-                        </div>
-                      ) : (
-                        <>
-                          <p className={styles.forum_message}>
-                            {message.message}
-                          </p>
-                          <p className={styles.forum_username}>
-                            {message.user_name}
-                          </p>
-                          <p className={styles.forum_date}>{message.date}</p>
-                          {message.image &&
-                            Array.isArray(message.image) &&
-                            message.image.length > 0 && (
-                              <div>
-                                {message.image.map((img, index) => (
+              {forumData &&
+                forumData.data &&
+                forumData.data.messages &&
+                forumData.data.status === 1 && (
+                  <ul>
+                    {forumData.data.messages.map((message) => (
+                      <li
+                        className={styles.forum_message_item}
+                        key={message.message_id}
+                      >
+                        {messageEditing &&
+                        messageEditing.message_id === message.message_id ? (
+                          <div className={styles.edit_message_panel}>
+                            <textarea
+                              className={styles.text_area}
+                              rows="4"
+                              cols="50"
+                              value={
+                                messageEditing ? messageEditing.message : ""
+                              }
+                              onChange={(e) =>
+                                setMessageEditing({
+                                  ...messageEditing,
+                                  message: e.target.value,
+                                })
+                              }
+                            ></textarea>
+                            <div>
+                              {imageFiles.map((file, index) => (
+                                <div key={index}>
                                   <img
-                                    key={index}
-                                    src={`http://localhost:8080/images/messages/${img}`}
+                                    src={URL.createObjectURL(file)}
                                     alt={`Imagen ${index}`}
                                     style={{
                                       maxWidth: "100px",
                                       maxHeight: "100px",
                                     }}
                                   />
-                                ))}
-                              </div>
-                            )}
-                          {userData && message.user_id === userData.user_id && (
-                            <div>
-                              <button
-                                onClick={() => handleEditMessage(message)}
-                              >
-                                Editar
-                              </button>
-                              <button
-                                onClick={() => confirmDeleteMessage(message)}
-                              >
-                                Eliminar
-                              </button>
+                                  <Button
+                                    className={styles.remove_button}
+                                    onClick={() => removeImage(index)}
+                                  >
+                                    Quitar
+                                  </Button>
+                                </div>
+                              ))}
                             </div>
-                          )}
-                          <div
-                            className={styles.actions__content}
-                            onClick={() =>
-                              handleLikeMessage(message.message_id)
-                            }
-                          >
-                            {messageLikesData &&
-                            messageLikesData.data &&
-                            messageLikesData.data.some(
-                              (like) => like.message_id === message.message_id
-                            ) ? (
-                              <AiFillHeart
-                                fill="red"
-                                className={styles.heart_icon}
-                              />
-                            ) : (
-                              <AiOutlineHeart className={styles.heart_icon} />
-                            )}
-                            <span className={styles.post_tags}>
-                              {message.likes}
-                            </span>
+                            <Button
+                              className={styles.send_button}
+                              onClick={handleSaveEditMessage}
+                            >
+                              Guardar Cambios
+                            </Button>
+                            <Button
+                              className={styles.cancel_button}
+                              onClick={handleCancelEdit}
+                            >
+                              Cancelar
+                            </Button>
                           </div>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
+                        ) : (
+                          <>
+                            <p className={styles.forum_message}>
+                              {message.message}
+                            </p>
+                            <p className={styles.forum_username}>
+                              {message.user_name}
+                            </p>
+                            <p className={styles.forum_date}>{message.date}</p>
+                            {message.image &&
+                              Array.isArray(message.image) &&
+                              message.image.length > 0 && (
+                                <div>
+                                  {message.image.map((img, index) => (
+                                    <img
+                                      key={index}
+                                      src={`http://localhost:8080/images/messages/${img}`}
+                                      alt={`Imagen ${index}`}
+                                      style={{
+                                        maxWidth: "100px",
+                                        maxHeight: "100px",
+                                      }}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            {userData &&
+                              message.user_id === userData.user_id && (
+                                <div>
+                                  <button
+                                    onClick={() => handleEditMessage(message)}
+                                  >
+                                    Editar
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      confirmDeleteMessage(message)
+                                    }
+                                  >
+                                    Eliminar
+                                  </button>
+                                </div>
+                              )}
+                            <div
+                              className={styles.actions__content}
+                              onClick={() =>
+                                handleLikeMessage(message.message_id)
+                              }
+                            >
+                              {messageLikesData &&
+                              messageLikesData.data &&
+                              messageLikesData.data.some(
+                                (like) => like.message_id === message.message_id
+                              ) ? (
+                                <AiFillHeart
+                                  fill="red"
+                                  className={styles.heart_icon}
+                                />
+                              ) : (
+                                <AiOutlineHeart className={styles.heart_icon} />
+                              )}
+                              <span className={styles.post_tags}>
+                                {message.likes}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
             </>
           )}
           {tokenExists &&
@@ -683,7 +665,7 @@ console.log(
                 </div>
                 <Button
                   className={styles.send_button}
-                  onClick={handleSendMessage} // Función para enviar el mensaje
+                  onClick={handleSendMessage}
                 >
                   Enviar
                 </Button>
@@ -717,8 +699,7 @@ console.log(
           originalPost={originalPost}
           handleCloseModal={handleCloseModal}
         />
-        {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-      </div>
+       </div>
     </>
   );
 }

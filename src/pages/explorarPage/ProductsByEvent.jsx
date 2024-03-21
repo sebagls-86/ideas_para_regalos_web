@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Search from "../../components/search/Search";
 import styles from "./explorarPage.module.css";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
@@ -14,7 +13,7 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
-import jwtDecode from "jwt-decode";
+import { getCookie } from "../../modules/api/api";
 
 function ProductsByEvent() {
   const [tokenExists, setTokenExists] = React.useState(false);
@@ -23,15 +22,8 @@ function ProductsByEvent() {
   const [eventName, setEventName] = useState("");
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
-
-  let userId = null;
-  const token = localStorage.getItem("token");
-  if (token) {
-    const decode = jwtDecode(token);
-    userId = decode.user_id;
-  }
-
-
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  
   useEffect(() => {
     const fetchProductsByEvent = async () => {
       try {

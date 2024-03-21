@@ -10,8 +10,6 @@ import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
 import { fetchEventTypes, fetchGiftsRateSuggestions } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import ModalLogin from "../modalLogin/ModalLogin";
 import Modal from "../../components/modal/Modal";
 import ModalSuggestions from "./ModalSuggestions";
 import ResponseModal from "../../components/modal/ResponseModal";
@@ -36,8 +34,7 @@ function NuevoRegaloForm({ selectedProfile }) {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  const decoded = token ? jwtDecode(token) : null; // Decodificar el token solo si no es nulo
-  const userId = decoded ? decoded.user_id : null;
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
 
   useEffect(() => {
     const fetchEventTypesData = async () => {
@@ -351,7 +348,6 @@ function NuevoRegaloForm({ selectedProfile }) {
             </div>
           )}
         </>
-        {showModal && <ModalLogin closeModal={() => setShowModal(false)} />}
         {giftsRateSuggestions && (
           <Modal
             showModal={showModal}

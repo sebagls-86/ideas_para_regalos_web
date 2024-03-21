@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
-import jwtDecode from "jwt-decode";
+import { getCookie } from "../api/api";
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -19,8 +19,8 @@ function PostByUser() {
   const userId = parseInt(user_id);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const tokenUserId = decoded.user_id;
+  const tokenUserId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+
 
   useEffect(() => {
     const fetchData = async () => {

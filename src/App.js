@@ -9,6 +9,7 @@ import ExplorarPage from './pages/explorarPage/ExplorarPage';
 import ProductsByCategory from './pages/explorarPage/ProductsByCategory'; 
 import ProductsByEvent from './pages/explorarPage/ProductsByEvent';
 import NotFoundPage from './pages/notFoundPage/NotFound';
+import ErrorPage from './pages/notFoundPage/ErrorPage';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import UsersPage from './pages/usersPage/UsersPage';
 import NuevoRegaloPage from './pages/nuevoRegaloPage/NuevoRegaloPage';
@@ -31,10 +32,11 @@ function App() {
         <Route path="/explorar/:category" element={<CategoryPage />} />
         <Route path="/users" element={<UsersPage />} />
         <Route path="/nuevoRegalo" element={<NuevoRegaloPage />} />
-        <Route path="*" element={<NotFoundPage />} />
         <Route path="/preguntasFrecuentes" element={<FaqPage />} />
         <Route path="/nosotros" element={<AboutUsPage />} />
         <Route path="/eventos" element={<EventsPage />} />
+        <Route path="/error" element={<ErrorPage />} />
+        <Route path="*" element={<NotFoundPage />} />
 
       </Routes>
     </BrowserRouter>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import NavBar from "../../modules/navBar/NavBar";
@@ -13,13 +11,14 @@ import Links from "../../components/link/Links";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import styles from "./eventsPage.module.css";
-import ModalLogin from "../../modules/modalLogin/ModalLogin";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function EventsPage() {
-  const [user] = useAuthState(auth);
   const [tokenExists, setTokenExists] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [scheduledEvents, setScheduledEvents] = useState([]);
+  const { user, isAuthenticated } = useAuth0();
+  const userInfo = (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) || null;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -57,10 +56,10 @@ function EventsPage() {
       <div
         className={`contenedor ${!user && !tokenExists ? "full-width" : ""}`}
       >
-        {user ||
-          (tokenExists && (
+        {
+          (isAuthenticated && (
             <div className="left__aside">
-              <Nav user={user?.displayName} />
+              <Nav userInfo={userInfo} />
             </div>
           ))}
         <div className="content">
@@ -96,14 +95,13 @@ function EventsPage() {
             </div>
           </>
         </div>
-        {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-        {user ||
-          (tokenExists && (
+        {
+          (isAuthenticated && (
             <aside className="right__aside">
               <div className="container pt-2">
-                {user || (tokenExists && <Search />)}
-                {!user && !tokenExists && <AsideLogin />}
-                {(user || tokenExists) && (
+                {(isAuthenticated && <Search />)}
+                {!isAuthenticated && <AsideLogin />}
+                {(isAuthenticated) && (
                   <>
                     <EventSnipet />
                     <UserSuggestions />

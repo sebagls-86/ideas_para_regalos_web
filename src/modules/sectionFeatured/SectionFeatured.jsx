@@ -12,18 +12,13 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
-import jwtDecode from "jwt-decode";
 
 export default function SectionFeatured() {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
 
-  let userId = null;
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    userId = decodedToken.user_id;
-  }
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  
 
   useEffect(() => {
     fetchEvents();

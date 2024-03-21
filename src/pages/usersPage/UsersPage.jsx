@@ -1,9 +1,6 @@
 import React from "react";
 import Nav from "../../modules/nav/Nav";
-import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Search from "../../components/search/Search";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
@@ -18,11 +15,10 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 import Followers from "../../modules/users/Followers";
 import Following from "../../modules/users/Following";
 import Actividad from "../../modules/users/Actividad";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function UsersPage() {
-  const [user] = useAuthState(auth);
-const token = localStorage.getItem("token");
-const tokenExists = token !== null && token !== undefined;
+  const { user, isAuthenticated } = useAuth0();
 
   return (
     <>
@@ -30,7 +26,7 @@ const tokenExists = token !== null && token !== undefined;
       <NavBar />
       <div className="contenedor">
      
-        <div className="left__aside">{(user || tokenExists) && <Nav />}</div>
+        <div className="left__aside">{(isAuthenticated) && <Nav />}</div>
         <div className="content">
         <PageTitle title="Usuarios" />
           <Col>
@@ -61,9 +57,9 @@ const tokenExists = token !== null && token !== undefined;
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(user || tokenExists)}
-            {(!user && !tokenExists) && <AsideLogin />}
-            {(user || tokenExists) && (
+            {(isAuthenticated)}
+            {(!isAuthenticated) && <AsideLogin />}
+            {(isAuthenticated) && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

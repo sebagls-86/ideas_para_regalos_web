@@ -566,12 +566,6 @@ function Profiles() {
       <NewProfile
         show={showNewProfileModal}
         onHide={() => handleShowNewProfileModal(false)}
-        ageRanges={ageRanges}
-        relationships={relationships}
-        interests={interests}
-        selectedInterests={selectedInterests}
-        setSelectedInterests={setSelectedInterests}
-        handleToggleInterest={handleToggleInterest}
         handleCloseNewProfileModal={handleCloseNewProfileModal}
         handleSaveNewProfile={handleSaveNewProfile}
       />

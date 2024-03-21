@@ -4,6 +4,7 @@ import { auth } from "../../utils/firebase";
 import NavBar from "../../modules/navBar/NavBar";
 import styles from "./faqPage.module.css";
 import { Col } from "react-bootstrap";
+import { getCookie } from "../../modules/api/api";
 
 function FaqPage() {
   const [user] = useAuthState(auth);

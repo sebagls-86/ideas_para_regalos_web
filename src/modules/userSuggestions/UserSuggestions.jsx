@@ -2,27 +2,22 @@ import React, { useState, useEffect } from "react";
 import styles from "./userSuggestions.module.css";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Button from "../../components/button/Button";
-import jwtDecode from "jwt-decode";
+import { getCookie } from "../api/api";
 
-function UserSuggestions() {
+function UserSuggestions({userInfo}) {
   const [users, setUsers] = useState(null);
   const [following, setFollowing] = useState({});
 
+  const userId = userInfo?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+
   useEffect(() => {
     const fetchData = async () => {
-      let url = "http://localhost:8080/api/v1/relations/suggestions";
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decoded = jwtDecode(token);
-        const userId = decoded.user_id;
-        url += `/${userId}`;
-      }
+      let url = `http://localhost:8080/api/v1/relations/suggestions/${userId}`;
       const response = await fetch(url);
       const responseData = await response.json();
       if (responseData && responseData.data && responseData.data.length > 0) {
         const usersWithFixedAvatarURL = responseData.data.map(user => ({
           ...user,
-          avatar: `http://localhost:8080/images/users/${user.avatar}`
         }));
         setUsers(usersWithFixedAvatarURL);
       } else {
@@ -31,13 +26,11 @@ function UserSuggestions() {
     };
 
     fetchData();
-  }, []);
+  }, [userInfo]);
 
   const handleFollow = async (relationId) => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decoded = jwtDecode(token);
-      const userId = decoded.user_id;
       const url = "http://localhost:8080/api/v1/relations";
       const requestOptions = {
         method: "POST",
@@ -45,7 +38,7 @@ function UserSuggestions() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ user_id: userId, relation_id: relationId }),
+        body: JSON.stringify({ user_id: userInfo.user_id, relation_id: relationId }),
       };
       const response = await fetch(url, requestOptions);
       if (response.ok) {

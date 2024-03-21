@@ -1,8 +1,6 @@
 import React from "react";
 import Nav from "../../modules/nav/Nav";
-import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
@@ -16,26 +14,23 @@ import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ExplorarPage() {
-  const [tokenExists, setTokenExists] = React.useState(false);
+  const {
+    user,
+    isAuthenticated,
+  } = useAuth0();
 
-  React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setTokenExists(true);
-    } else {
-      setTokenExists(false);
-    }
-  }, []);
+  const userInfo = (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) || null;
 
-  const [user] = useAuthState(auth);
+
   return (
     <>
-      {!user}
+      {isAuthenticated}
       <NavBar />
       <div className="contenedor">
-      <div className="left__aside">{(user || tokenExists) && <Nav user={user?.displayName} />}</div>
+      <div className="left__aside">{(isAuthenticated) && <Nav userInfo={userInfo} />}</div>
         <div className="content">
           <PageTitle title="Explorar" />
           <Col>
@@ -56,9 +51,9 @@ function ExplorarPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(user || tokenExists)}
-            {(!user && !tokenExists) && <AsideLogin />}
-            {(user || tokenExists) && (
+            {(isAuthenticated)}
+            {(!isAuthenticated) && <AsideLogin />}
+            {(isAuthenticated) && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

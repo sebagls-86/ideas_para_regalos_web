@@ -3,10 +3,9 @@ import styles from "./css/post.module.css";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import ModalLogin from "../modalLogin/ModalLogin";
 import { useNavigate } from "react-router-dom";
 import Search from "../../components/search/Search";
-import jwtDecode from "jwt-decode";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Post() {
   const [postData, setPostData] = useState(null);
@@ -15,11 +14,11 @@ function Post() {
   const [searchTerm, setSearchTerm] = useState("");
   const [likesData, setLikesData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const decoded = token ? jwtDecode(token) : null;
-  const userId = decoded ? decoded.user_id : null;
-
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,7 +56,7 @@ function Post() {
     };
 
     fetchData();
-  }, [userId, navigate]);
+  }, [10, navigate]);
 
   const handleLike = async (postId) => {
     if (isLoggedIn) {
@@ -154,12 +153,22 @@ function Post() {
               <div className={styles.user__container}>
                 <div className={styles.content__user}>
                   <p className={styles.user__username}>{post.name}</p>
-                  <Link
-                    to={`/perfil/${parseInt(post.user_id)}`}
-                    className={styles.user__tagname}
-                  >
-                    {post.user_name}
-                  </Link>
+                  {isAuthenticated ? (
+        <Link
+          to={`/perfil/${parseInt(post.user_id)}`}
+          className={styles.user__tagname}
+        >
+          {post.user_name}
+        </Link>
+      ) : (
+        <Link
+          to="/"
+          className={styles.user__tagname}
+          onClick={() => loginWithRedirect()}
+        >
+          {post.user_name}
+        </Link>
+      )}
                   <p className={styles.user__timepost}>5h</p>
                 </div>
               </div>
@@ -201,8 +210,7 @@ function Post() {
           </div>
         ))
       )}
-      {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-    </div>
+      </div>
   );
 }
 

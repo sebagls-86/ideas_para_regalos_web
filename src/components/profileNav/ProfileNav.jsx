@@ -7,15 +7,12 @@ import Likes from "../../modules/likes/Likes";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useParams } from "react-router-dom";
-import jwtDecode from "jwt-decode";
 
-function ProfileNav() {
+function ProfileNav({ userData}) {
   const { user_id } = useParams();
   const [reloadProfiles, setReloadProfiles] = useState(false);
   const user__id = parseInt(user_id);
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const userId = decoded.user_id;
+  const userId = userData?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
 
   useEffect(() => {
     if (reloadProfiles) {

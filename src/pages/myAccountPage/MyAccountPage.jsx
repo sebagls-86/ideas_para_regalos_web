@@ -9,16 +9,14 @@ import ProfileNav from "../../components/profileNav/ProfileNav";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
-import jwtDecode from "jwt-decode";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
 
-function MyAccountPage() {
+function MyAccountPage({ userInfo }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [formChanges, setFormChanges] = useState({});
   const [userData, setUserData] = useState(null);
-  //const [isLoading, setIsLoading] = useState(true);
   const [avatarFile, setAvatarFile] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
@@ -26,55 +24,146 @@ function MyAccountPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [bannerFile, setBannerFile] = useState(null);
   const [showBannerModal, setShowBannerModal] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const { user_id } = useParams();
   const user__id = parseInt(user_id);
   const { user, isAuthenticated, isLoading } = useAuth0();
-
   const token = localStorage.getItem("token");
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
 
-  const decoded = jwtDecode(token);
-  const userId = decoded.user_id;
-
-
+  const [followingUsers, setFollowingUsers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         let url = `http://localhost:8080/api/v1/users/${user__id}`;
-        if (userId !== user__id) {
+        if (!token || userId !== user__id) {
           url = `http://localhost:8080/api/v1/users/public/${user__id}`;
+        }
+
+        const headers = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
         }
 
         const response = await fetch(url, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            ...headers,
           },
         });
 
         const data = await response.json();
         setUserData(data.data);
-        //setIsLoading(false);
 
         if (response.status === 400) {
-          navigate("/");
-          localStorage.removeItem("token");
           console.log("Error 400");
           return;
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+        navigate("/error");
       }
     };
 
     fetchData();
+
+    // Fetch following users
+    const fetchFollowingUsers = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/relations/following/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setFollowingUsers(data.data);
+        } else {
+          console.error("Error fetching following users:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching following users:", error);
+      }
+    };
+
+    fetchFollowingUsers();
   }, [user__id, token, navigate, userId]);
+
+  const isUserFollowing = () => {
+    return followingUsers.some((user) => user.user_id === user__id);
+  };
 
   const handleEditClick = () => {
     setShowModal(true);
-    // Save a copy of original user data
     setFormChanges({});
+  };
+
+  const handleFollow = async () => {
+    try {
+      if (isUserFollowing()) {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/relations/${user__id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          console.log("Solicitud DELETE exitosa");
+          const updatedFollowingUsers = followingUsers.filter(
+            (user) => user.user_id !== user__id
+          );
+          setFollowingUsers(updatedFollowingUsers);
+        } else {
+          console.error(
+            "Error al realizar la solicitud DELETE:",
+            response.statusText
+          );
+        }
+      } else {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/relations/${user__id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          console.log("Solicitud POST exitosa");
+          const updatedFollowingUsers = [
+            ...followingUsers,
+            { user_id: user__id },
+          ];
+          setFollowingUsers(updatedFollowingUsers);
+        } else {
+          console.error(
+            "Error al realizar la solicitud POST:",
+            response.statusText
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -147,12 +236,20 @@ function MyAccountPage() {
     setShowBannerModal(true);
   };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   if (isLoading) {
     return <Spinner animation="border" />;
   }
-  
-  if (!userData) {
-    return <div>No se pudieron cargar los datos del usuario.</div>;
+
+  if (!userData && !isLoading) {
+    return <Spinner animation="border" />;
   }
 
   return (
@@ -160,12 +257,12 @@ function MyAccountPage() {
       {isLoading && <Spinner />}
       {!isLoading && userData && (
         <div className="contenedor">
-          <div className="left__aside">{token && <Nav />}</div>
+          <div className="left__aside">{isAuthenticated && <Nav />}</div>
           <div className="content">
             <PageTitle title="Perfil" />
             <Col className="d-flex justify-content-center">
               <img
-                src={`http://localhost:8080${userData.banner}`}
+                src={userData.banner}
                 alt="banner"
                 className={styles.perfil_banner}
                 width={"60px"}
@@ -174,7 +271,7 @@ function MyAccountPage() {
               />
             </Col>
             <img
-              src={`http://localhost:8080${userData.avatar}`}
+              src={userData.avatar}
               alt="avatar"
               width={"100px"}
               height={"100px"}
@@ -194,9 +291,25 @@ function MyAccountPage() {
                 <p>{userData.birth_date}</p>
               </div>
               {userId !== user__id ? (
-                <Button label="Seguir" className={styles.custom__button}>
-                  Seguir
-                </Button>
+                isUserFollowing() ? (
+                  <Button
+                    label="Seguir"
+                    className={styles.custom__button}
+                    onClick={handleFollow}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {isHovered ? "Dejar de seguir" : "Siguiendo"}
+                  </Button>
+                ) : (
+                  <Button
+                    label="Seguir"
+                    className={styles.custom__button}
+                    onClick={handleFollow}
+                  >
+                    Seguir
+                  </Button>
+                )
               ) : (
                 <Button
                   label="Editar"
@@ -208,7 +321,7 @@ function MyAccountPage() {
               )}
             </div>
 
-            <ProfileNav></ProfileNav>
+            <ProfileNav userInfo={userInfo}></ProfileNav>
           </div>
           <aside className="right__aside">
             <div className="container pt-2">
@@ -285,7 +398,12 @@ function MyAccountPage() {
         <Modal.Body>
           <form>
             <div className="form-group">
-              <label htmlFor="avatar">Seleccionar nueva imagen:</label>
+              <label
+                htmlFor="
+avatar"
+              >
+                Seleccionar nueva imagen:
+              </label>
               <input
                 type="file"
                 accept="image/*"

@@ -3,12 +3,9 @@ import styles from "./navBar.module.css";
 import { Link } from "react-router-dom";
 import logoimg from "../../assets/logo_mascota_ipr.svg";
 import logotext from "../../assets/logo_letras_ipr.svg";
-//import LoginMobile from "../loginMobile/LoginMobile";
-import ModalLogin from "../modalLogin/ModalLogin";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function NavBar() {
-  const [openModal, setOpenModal] = React.useState(false);
   const [tokenExists, setTokenExists] = React.useState(false);
   const { isAuthenticated } = useAuth0();
   const { loginWithRedirect } = useAuth0();
@@ -22,9 +19,7 @@ function NavBar() {
     }
   }, []);
 
-  const openModalHandler = () => {
-    setOpenModal(true);
-  };
+ 
 
   return (
     <nav className={styles.nav}>
@@ -66,8 +61,7 @@ function NavBar() {
           </div>
         </div>
       </div>
-      {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-    </nav>
+     </nav>
   );
 }
 

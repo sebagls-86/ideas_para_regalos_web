@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
 import NavBar from "../../modules/navBar/NavBar";
 import Nav from "../../modules/nav/Nav";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
@@ -13,7 +11,7 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import styles from "./explorarPage.module.css";
 import ProductCard from "../../components/productCard/ProductCard";
-import jwtDecode from "jwt-decode";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ProductsByCategory() {
   const { categoryId } = useParams();
@@ -21,14 +19,10 @@ function ProductsByCategory() {
   const [categoryName, setCategoryName] = useState("");
   const [loading, setLoading] = useState(true);
   const [tokenExists, setTokenExists] = useState(false);
-  const [user] = useAuthState(auth);
-
-  let userId = null;
-  const token = localStorage.getItem("token");
-  if (token) {
-    const decode = jwtDecode(token);
-    userId = decode.user_id;
-  }
+  const { isAuthenticated } = useAuth0();
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userInfo = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data) || null;
+  
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
@@ -69,10 +63,10 @@ function ProductsByCategory() {
 
   return (
     <>
-      {!user && <NavBar />}
+      {!isAuthenticated && <NavBar />}
       <div className="contenedor">
         <div className="left__aside">
-          {(user || tokenExists) && <Nav user={user?.displayName} />}
+          {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
           <PageTitle title={categoryName} />
@@ -99,7 +93,7 @@ function ProductsByCategory() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {user || tokenExists ? (
+            {isAuthenticated || tokenExists ? (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

@@ -10,9 +10,6 @@ import { fetchAvailableInterests, fetchAgeRanges, fetchRelationships } from "../
 function ModalCreateProfile({
   show,
   onHide,
-  selectedInterests,
-  setSelectedInterests,
-  handleToggleInterest,
   handleCloseNewProfileModal,
   handleSaveNewProfile,
 }) {
@@ -22,10 +19,15 @@ function ModalCreateProfile({
     selectedAgeRange: "",
     selectedRelationship: "",
   });
+
+  //console.log("selectedInterests:", selectedInterests);
+
   const [currentStep, setCurrentStep] = useState(1);
   const [ageRanges, setAgeRanges] = useState([]);
+  const [selectedInterests, setSelectedInterests] = useState([]);
   const [interests, setInterests] = useState([]);
   const [relationships, setRelationships] = useState([]);
+  const [availableInterests, setAvailableInterests] = useState([]);
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [isRelationshipDropdownOpen, setIsRelationshipDropdownOpen] =
     useState(false);
@@ -33,6 +35,44 @@ function ModalCreateProfile({
   const [selectedAgeOption, setSelectedAgeOption] = useState(null);
   const [selectedRelationshipOption, setSelectedRelationshipOption] =
     useState(null);
+
+    useEffect(() => {
+      const fetchAvailableInterests = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/api/v1/interests");
+          if (response.ok) {
+            const data = await response.json();
+            setInterests(data.data);
+            setAvailableInterests(data.data);
+          }
+        } catch (error) {
+          console.error("Error fetching available interests:", error);
+        }
+      };
+  
+      fetchAvailableInterests();
+    }, []);
+
+    const  handleToggleInterest = (interest) => {
+        console.log("Interest toggled:", interest);
+        const isInterestSelected = selectedInterests.some(
+          (selectedInterest) =>
+            selectedInterest.interest_id === interest.interest_id
+        );
+    
+        if (isInterestSelected) {
+          const updatedInterests = selectedInterests.filter(
+            (selectedInterest) =>
+              selectedInterest.interest_id !== interest.interest_id
+          );
+          setSelectedInterests(updatedInterests);
+          console.log("Selected interests erased:", updatedInterests);
+        } else {
+          setSelectedInterests([...selectedInterests, interest]);
+          console.log("Selected interests updated:", [...selectedInterests, interest]);
+        }
+      };
+    
 
     useEffect(() => {
       const fetchData = async () => {
@@ -213,7 +253,7 @@ function ModalCreateProfile({
               recomendaciones.
             </p>
             <div className={styles.scrollable_div}>
-              {interests.map((interest) => (
+              {interests?.map((interest) => (
                 <Button
                   key={interest.interest_id}
                   label={interest.interest}

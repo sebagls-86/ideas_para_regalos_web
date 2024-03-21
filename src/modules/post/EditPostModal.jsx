@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { getCookie } from "../api/api";
 
 function EditPostModal({
   show,

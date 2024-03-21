@@ -5,10 +5,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import AddProductsModal from "./AddProductsModal";
 import ModalCreateList from "./ModalCreateList";
 import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
-import jwtDecode from "jwt-decode";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { getCookie } from "../api/api";
 
 function getRandomPastelColor() {
   const hue = Math.floor(Math.random() * 360);
@@ -47,9 +47,8 @@ function WishList() {
   const userId = parseInt(user_id);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const tokenUserId = decoded.user_id;
-
+  const tokenUserId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
