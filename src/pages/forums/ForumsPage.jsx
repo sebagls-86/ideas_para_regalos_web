@@ -437,7 +437,7 @@ function ForumsPage() {
                           Editar
                         </Button>
                       </div>
-                    ))}
+                    )}
                 </div>
                 <p className={styles.forum_description}>
                   {forumData.data.description}

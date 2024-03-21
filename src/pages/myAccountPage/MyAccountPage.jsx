@@ -50,6 +50,11 @@ function MyAccountPage({ userInfo }) {
           headers["Authorization"] = `Bearer ${token}`;
         }
 
+        const headers = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(url, {
           method: "GET",
           headers: {
@@ -398,7 +403,12 @@ function MyAccountPage({ userInfo }) {
         <Modal.Body>
           <form>
             <div className="form-group">
-              <label htmlFor="avatar">Seleccionar nueva imagen:</label>
+              <label
+                htmlFor="
+avatar"
+              >
+                Seleccionar nueva imagen:
+              </label>
               <input
                 type="file"
                 accept="image/*"
