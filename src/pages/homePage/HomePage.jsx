@@ -163,6 +163,7 @@ function HomePage() {
 
   const verifyUser = async (token) => {
     try {
+      console.log("verifyUser");
       const verifyResponse = await fetch(
         `${API_URL}/users/verify`,
         {
