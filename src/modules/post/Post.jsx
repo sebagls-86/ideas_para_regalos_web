@@ -52,6 +52,7 @@ function Post() {
         setLikesData(likesData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        
       }
     };
 

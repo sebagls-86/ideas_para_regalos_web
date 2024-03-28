@@ -15,10 +15,17 @@ function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-  const { isAuthenticated, isLoading, getAccessTokenWithPopup, loginWithRedirect } = useAuth0();
+  const {
+    isAuthenticated,
+    isLoading,
+    getAccessTokenWithPopup,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+  const [loading, setLoading] = useState(null);
   const audience = configJson.audience;
   const storedToken = localStorage.getItem("token");
-    const storedUserInfo = localStorage.getItem("userInfo");
+  const storedUserInfo = localStorage.getItem("userInfo");
 
   useEffect(() => {
     if (storedToken) {
@@ -42,25 +49,64 @@ function HomePage() {
             },
           });
 
-          console.log("access token", newAccessToken)
-  
+          console.log("access token", newAccessToken);
+
           setAccessToken(newAccessToken);
           localStorage.setItem("token", newAccessToken);
-          await verifyUser(newAccessToken);
-          setTokenExists(true);
+          setLoading(true); // Set loading to true here
+
+          let verifyUserCompleted = false; // Variable to track if verifyUser completed successfully
+
+          console.log("useEffect")
+
+          // Start a timeout of 5 seconds
+          const timeoutId = setTimeout(() => {
+            if (!verifyUserCompleted) {
+              localStorage.removeItem("token"); // Remove token from localStorage
+              const userInfoFromStorage = localStorage.getItem("userInfo");
+              if (!userInfoFromStorage) {
+                setLoading(false); // Set loading to false
+                logout(); // Logout if userInfo is not present in localStorage
+                console.log(
+                  "userInfo not present in localStorage, logging out..."
+                );
+              }
+            }
+          }, 5000);
+
+          try {
+            // Call verifyUser and wait for it to complete
+            const verifyResponse = await verifyUser(newAccessToken);
+            if (!verifyResponse.ok) {
+              throw new Error("Failed to verify user");
+            }
+            console.log("verifyUser completed")
+            setTokenExists(true);
+            setLoading(false); // Set loading to false
+            verifyUserCompleted = true; // Mark verifyUser as completed
+            clearTimeout(timeoutId); // Clear the timeout if verification succeeds
+          } catch (error) {
+            console.error("Error verifying user:", error.message);
+            setLoading(false); // Set loading to false on error
+            logout(); // Logout on error
+          }
         }
       } catch (error) {
         console.error("Error during login or registration:", error.message);
+        setLoading(false); // Set loading to false on error
+        logout(); // Logout on error
       }
     };
-  
+
     if (!tokenExists) {
       fetchTokenAndVerifyUser();
     }
-  }, [tokenExists, storedToken, getAccessTokenWithPopup, audience]);
-  
+
+  }, [tokenExists, storedToken, getAccessTokenWithPopup, audience, logout]);
+
   const verifyUser = async (token) => {
     try {
+      console.log("verifyUser");
       const verifyResponse = await fetch(
         `http://localhost:8080/api/v1/users/verify`,
         {
@@ -71,22 +117,22 @@ function HomePage() {
           },
         }
       );
-  
+
       if (!verifyResponse.ok) {
         throw new Error("Failed to verify user");
       }
-  
+
       const verifyData = await verifyResponse.json();
       console.log("verifyData", verifyData);
-  
       localStorage.setItem("userInfo", JSON.stringify(verifyData));
       setUserInfo(verifyData);
     } catch (error) {
       console.error("Error verifying user:", error.message);
+      throw error; // Re-throw the error to be caught by the timeout
     }
   };
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return <div>Loading ...</div>;
   }
 
@@ -95,7 +141,9 @@ function HomePage() {
       <NavBar />
       <div className="contenedor">
         <div className="left__aside">
-          {(tokenExists || isAuthenticated) && <Nav userInfo={userInfo?.data} />}
+          {(tokenExists || isAuthenticated) && (
+            <Nav userInfo={userInfo?.data} />
+          )}
         </div>
         <div className="content">
           <PageTitle title="Inicio" />
