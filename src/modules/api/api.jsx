@@ -17,7 +17,7 @@ export async function fetchAvailableInterests() {
 
 export async function fetchAgeRanges() {
     try {
-      const response = await fetch(`${BASE_URL}/ageRanges`);
+      const response = await fetch(`${BASE_URL}/age-ranges`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

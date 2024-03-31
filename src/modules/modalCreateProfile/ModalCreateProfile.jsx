@@ -80,7 +80,7 @@ function ModalCreateProfile({
           const ageRanges = await fetchAgeRanges();
           setAgeRanges(ageRanges);
         } catch (error) {
-          console.error("Error fetching age ranges and relationships:", error);
+          console.error("Error fetching age ranges:", error);
         }
       };
     
@@ -93,7 +93,7 @@ function ModalCreateProfile({
           const relationships = await fetchRelationships();
           setRelationships(relationships);
         } catch (error) {
-          console.error("Error fetching age ranges and relationships:", error);
+          console.error("Error fetching age ranges:", error);
         }
       };
   

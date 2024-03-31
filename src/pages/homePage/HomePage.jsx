@@ -19,13 +19,15 @@ function HomePage() {
     isAuthenticated,
     isLoading,
     getAccessTokenWithPopup,
-    loginWithRedirect,
+    getAccessTokenSilently,
     logout,
   } = useAuth0();
   const [loading, setLoading] = useState(null);
   const audience = configJson.audience;
   const storedToken = localStorage.getItem("token");
   const storedUserInfo = localStorage.getItem("userInfo");
+
+  console.log("home isAuthenticated", isAuthenticated);
 
   useEffect(() => {
     if (storedToken) {
@@ -41,7 +43,8 @@ function HomePage() {
   useEffect(() => {
     const fetchTokenAndVerifyUser = async () => {
       try {
-        if (storedToken === undefined || storedToken === null) {
+        if ((storedToken === undefined || storedToken === null) && isAuthenticated) {
+          setLoading(true); // Set loading to true heres
           const newAccessToken = await getAccessTokenWithPopup({
             authorizationParams: {
               audience: audience,
@@ -49,15 +52,11 @@ function HomePage() {
             },
           });
 
-          console.log("access token", newAccessToken);
-
           setAccessToken(newAccessToken);
           localStorage.setItem("token", newAccessToken);
           setLoading(true); // Set loading to true here
 
           let verifyUserCompleted = false; // Variable to track if verifyUser completed successfully
-
-          console.log("useEffect")
 
           // Start a timeout of 5 seconds
           const timeoutId = setTimeout(() => {
@@ -76,10 +75,8 @@ function HomePage() {
 
           try {
             // Call verifyUser and wait for it to complete
-            const verifyResponse = await verifyUser(newAccessToken);
-            if (!verifyResponse.ok) {
-              throw new Error("Failed to verify user");
-            }
+            await verifyUser(newAccessToken);
+            
             console.log("verifyUser completed")
             setTokenExists(true);
             setLoading(false); // Set loading to false
@@ -102,7 +99,7 @@ function HomePage() {
       fetchTokenAndVerifyUser();
     }
 
-  }, [tokenExists, storedToken, getAccessTokenWithPopup, audience, logout]);
+  }, [tokenExists, storedToken, getAccessTokenWithPopup, audience, logout, isAuthenticated]);
 
   const verifyUser = async (token) => {
     try {
