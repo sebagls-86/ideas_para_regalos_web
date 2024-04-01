@@ -58,7 +58,7 @@ function Post() {
     };
 
     fetchData();
-  }, [10, navigate]);
+  }, [userId, navigate]);
 
   const handleLike = async (postId) => {
     if (isLoggedIn) {

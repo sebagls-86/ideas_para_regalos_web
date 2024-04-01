@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./productCard.module.css";
-import { getCookie } from "../../modules/api/api";
 
 export default function ProductCard({ image, name, userId, productId }) {
   const [isSaved, setIsSaved] = useState(false);

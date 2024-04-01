@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import ResponseModal from "../../components/modal/ResponseModal";
-import { getCookie } from "../api/api";
 
 function AddProductsModal({
   show,

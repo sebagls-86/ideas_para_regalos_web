@@ -3,9 +3,6 @@ import Button from "../../components/button/Button";
 import Modal from "../../components/modal/Modal";
 import styles from "./css/profiles.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
-import {
-  getCookie,
-} from "../api/api";
 
 function InterestsModal({
   show,

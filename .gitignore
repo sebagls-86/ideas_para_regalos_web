@@ -39,5 +39,3 @@ packages/react-devtools-timeline/dist
 
 *.env
 .env.local
-
-auth_config.json

@@ -403,12 +403,7 @@ function MyAccountPage({ userInfo }) {
         <Modal.Body>
           <form>
             <div className="form-group">
-              <label
-                htmlFor="
-avatar"
-              >
-                Seleccionar nueva imagen:
-              </label>
+              <label htmlFor="avatar">Seleccionar nueva imagen:</label>
               <input
                 type="file"
                 accept="image/*"

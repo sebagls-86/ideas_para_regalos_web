@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { useAuth0 } from "@auth0/auth0-react";
+import config from "../../auth_config.json";
 
 function AsideLogin() {
   const { user, loginWithRedirect } = useAuth0();
