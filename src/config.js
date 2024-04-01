@@ -1,5 +1,4 @@
-import configJson from "./auth_config.json";
-
+import config from "./auth_config.json";
 export function getConfig() {
   // Configure the audience here. By default, it will take whatever is in the config
   // (specified by the `audience` key) unless it's the default value of "YOUR_API_IDENTIFIER" (which
@@ -8,14 +7,14 @@ export function getConfig() {
   // If this resolves to `null`, the API page changes to show some helpful info about what to do
   // with the audience.
   const audience =
-    configJson.audience &&
-    configJson.audience !== "http://localhost:8080/api/v1"
-      ? configJson.audience
+    config.audience &&
+    config.audience !== "http://localhost:8080/api/v1"
+      ? config.audience
       : null;
 
   return {
-    domain: configJson.domain,
-    clientId: configJson.clientId,
+    domain: config.domain,
+    clientId: config.clientId,
     ...(audience ? { audience } : null),
   };
 }

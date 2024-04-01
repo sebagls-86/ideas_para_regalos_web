@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import ResponseModal from "../../components/modal/ResponseModal";
-import { getCookie } from "../api/api";
 
 function AddProductsModal({
   show,
@@ -17,8 +16,8 @@ function AddProductsModal({
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const token = localStorage.getItem("token");
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSaveProductsToList = async () => {
     try {
@@ -28,7 +27,7 @@ function AddProductsModal({
         product_catalog_id: selectedProducts.map(product => product.product_catalog_id),
       };
   
-      const response = await fetch(`http://localhost:8080/api/v1/lists/${listId}/listProducts`, {
+      const response = await fetch(`${API_URL}/lists/${listId}/listProducts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -27,7 +27,7 @@ function MyAccountPage({ userInfo }) {
   const [isHovered, setIsHovered] = useState(false);
   const { user_id } = useParams();
   const user__id = parseInt(user_id);
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
   const token = localStorage.getItem("token");
   const userId =
     (localStorage.getItem("userInfo") &&
@@ -35,13 +35,14 @@ function MyAccountPage({ userInfo }) {
     null;
 
   const [followingUsers, setFollowingUsers] = useState([]);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = `http://localhost:8080/api/v1/users/${user__id}`;
+        let url = `${API_URL}/users/${user__id}`;
         if (!token || userId !== user__id) {
-          url = `http://localhost:8080/api/v1/users/public/${user__id}`;
+          url = `${API_URL}/users/public/${user__id}`;
         }
 
         const headers = {};
@@ -76,7 +77,7 @@ function MyAccountPage({ userInfo }) {
     const fetchFollowingUsers = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/relations/following/${userId}`,
+          `${API_URL}/v1/relations/following/${userId}`,
           {
             method: "GET",
             headers: {
@@ -113,7 +114,7 @@ function MyAccountPage({ userInfo }) {
     try {
       if (isUserFollowing()) {
         const response = await fetch(
-          `http://localhost:8080/api/v1/relations/${user__id}`,
+          `${API_URL}/relations/${user__id}`,
           {
             method: "DELETE",
             headers: {
@@ -124,7 +125,6 @@ function MyAccountPage({ userInfo }) {
         );
 
         if (response.ok) {
-          console.log("Solicitud DELETE exitosa");
           const updatedFollowingUsers = followingUsers.filter(
             (user) => user.user_id !== user__id
           );
@@ -137,7 +137,7 @@ function MyAccountPage({ userInfo }) {
         }
       } else {
         const response = await fetch(
-          `http://localhost:8080/api/v1/relations/${user__id}`,
+          `${API_URL}/relations/${user__id}`,
           {
             method: "POST",
             headers: {
@@ -148,7 +148,6 @@ function MyAccountPage({ userInfo }) {
         );
 
         if (response.ok) {
-          console.log("Solicitud POST exitosa");
           const updatedFollowingUsers = [
             ...followingUsers,
             { user_id: user__id },
@@ -188,7 +187,7 @@ function MyAccountPage({ userInfo }) {
       }
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/users/${userId}`,
+        `${API_URL}/users/${userId}`,
         {
           method: "PATCH",
           headers: {
@@ -267,7 +266,9 @@ function MyAccountPage({ userInfo }) {
                 className={styles.perfil_banner}
                 width={"60px"}
                 height={"250px"}
-                onClick={handleBannerModalOpen}
+                onClick={
+                  userId === user__id ? handleBannerModalOpen : undefined
+                }
               />
             </Col>
             <img
@@ -276,7 +277,7 @@ function MyAccountPage({ userInfo }) {
               width={"100px"}
               height={"100px"}
               className={styles.profile_picture}
-              onClick={handleImageModalOpen}
+              onClick={userId === user__id ? handleImageModalOpen : undefined}
             />
             <div
               style={{
@@ -320,7 +321,6 @@ function MyAccountPage({ userInfo }) {
                 </Button>
               )}
             </div>
-
             <ProfileNav userInfo={userInfo}></ProfileNav>
           </div>
           <aside className="right__aside">
@@ -398,12 +398,7 @@ function MyAccountPage({ userInfo }) {
         <Modal.Body>
           <form>
             <div className="form-group">
-              <label
-                htmlFor="
-avatar"
-              >
-                Seleccionar nueva imagen:
-              </label>
+              <label htmlFor="avatar">Seleccionar nueva imagen:</label>
               <input
                 type="file"
                 accept="image/*"

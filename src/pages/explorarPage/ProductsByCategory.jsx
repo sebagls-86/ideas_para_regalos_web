@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Col } from "react-bootstrap";
 import NavBar from "../../modules/navBar/NavBar";
 import Nav from "../../modules/nav/Nav";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
@@ -20,15 +18,22 @@ function ProductsByCategory() {
   const [loading, setLoading] = useState(true);
   const [tokenExists, setTokenExists] = useState(false);
   const { isAuthenticated } = useAuth0();
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
-  const userInfo = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data) || null;
-  
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
+  const userInfo =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data) ||
+    null;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/productsCatalogAssociations/categories/${categoryId}`
+          `${API_URL}/productsCatalogAssociations/categories/${categoryId}`
         );
         if (response.ok) {
           const responseData = await response.json();
@@ -60,41 +65,37 @@ function ProductsByCategory() {
     }
   }, []);
 
-
   return (
     <>
-      {!isAuthenticated && <NavBar />}
+      {isAuthenticated && <NavBar />}
       <div className="contenedor">
         <div className="left__aside">
           {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
           <PageTitle title={categoryName} />
-          <Col>
-            <LoginMobile />
-          </Col>
-          <div className="mt-3">
+          <div className={styles.card_container}>
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <ul>
+              <>
                 {products.map((product, index) => (
                   <ProductCard
                     key={index}
-                    image={`http://localhost:8080/imagenes/product-catalog/${product.image_name}`}
+                    image={`${URL_IMAGES}/imagenes/product-catalog/${product.image_name}`}
                     name={product.product_name}
                     userId={userId}
                     productId={product.product_catalog_id}
-                    />
+                  />
                 ))}
-              </ul>
+              </>
             )}
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
             {isAuthenticated || tokenExists ? (
-              <div>
+              <div className="container pt-2">
                 <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-5 d-flex justify-content-center ">

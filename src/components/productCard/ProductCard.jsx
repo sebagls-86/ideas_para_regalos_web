@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./productCard.module.css";
-import { getCookie } from "../../modules/api/api";
 
 export default function ProductCard({ image, name, userId, productId }) {
   const [isSaved, setIsSaved] = useState(false);
@@ -8,14 +7,17 @@ export default function ProductCard({ image, name, userId, productId }) {
   const [showPopover, setShowPopover] = useState(false);
   const [clickedInside, setClickedInside] = useState(false);
   const popoverRef = useRef(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const lists = await getUsersLists();
         setUserLists(lists.data);
-        const productExistsInLists = lists.data.some(list =>
-          list.products?.some(product => product.product_catalog_id === productId)
+        const productExistsInLists = lists.data.some((list) =>
+          list.products?.some(
+            (product) => product.product_catalog_id === productId
+          )
         );
         setIsSaved(productExistsInLists);
       } catch (error) {
@@ -41,19 +43,24 @@ export default function ProductCard({ image, name, userId, productId }) {
 
   const handleSaveClick = async () => {
     if (isSaved) {
-      const listId = userLists.find(list =>
-        list.products?.some(product => product.product_catalog_id === productId)
+      const listId = userLists.find((list) =>
+        list.products?.some(
+          (product) => product.product_catalog_id === productId
+        )
       )?.list_id;
-      
+
       if (listId) {
         try {
-          const response = await fetch(`http://localhost:8080/api/v1/lists/${listId}/listProducts/${productId}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
+          const response = await fetch(
+            `${API_URL}/lists/${listId}/listProducts/${productId}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
           if (response.ok) {
             setIsSaved(false);
           } else {
@@ -69,15 +76,10 @@ export default function ProductCard({ image, name, userId, productId }) {
     }
   };
 
-  const handlePopoverToggle = () => {
-    setShowPopover(!showPopover);
-    setClickedInside(true);
-  };
-
   const handleListClick = async (listId) => {
     const productCatalogId = productId;
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/lists/${listId}/listProducts`, {
+      const response = await fetch(`${API_URL}/lists/${listId}/listProducts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +101,7 @@ export default function ProductCard({ image, name, userId, productId }) {
 
   const getUsersLists = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:8080/api/v1/lists/user/${userId}`, {
+    const response = await fetch(`${API_URL}/lists/user/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -122,16 +124,23 @@ export default function ProductCard({ image, name, userId, productId }) {
       </h3>
       {showPopover && (
         <div className={styles.popover} ref={popoverRef}>
-          <span className={styles.closeButton} onClick={() => setShowPopover(false)}>×</span>
+          <span
+            className={styles.closeButton}
+            onClick={() => setShowPopover(false)}
+          >
+            ×
+          </span>
           <ul>
-            {userLists.map((list) => (
-              <li
-                key={list.user_id}
-                onClick={() => handleListClick(list.list_id)}
-              >
-                {list.list_name}
-              </li>
-            ))}
+            {userLists
+              .filter((list) => list.list_name !== "MercadoLibre")
+              .map((list) => (
+                <li
+                  key={list.user_id}
+                  onClick={() => handleListClick(list.list_id)}
+                >
+                  {list.list_name}
+                </li>
+              ))}
           </ul>
         </div>
       )}

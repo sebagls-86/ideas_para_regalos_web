@@ -16,17 +16,19 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function ExplorarPage() {
-  const {isAuthenticated} = useAuth0();
-  const userInfo = (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) || null;
-
-  console.log(isAuthenticated)
+  const { isAuthenticated } = useAuth0();
+  const userInfo =
+    (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
+    null;
 
   return (
     <>
       {isAuthenticated}
       <NavBar />
       <div className="contenedor">
-      <div className="left__aside">{(isAuthenticated) && <Nav userInfo={userInfo} />}</div>
+        <div className="left__aside">
+          {isAuthenticated && <Nav userInfo={userInfo} />}
+        </div>
         <div className="content">
           <PageTitle title="Explorar" />
           <Col className="d-flex justify-content-center">
@@ -45,9 +47,9 @@ function ExplorarPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(isAuthenticated)}
-            {(!isAuthenticated) && <AsideLogin />}
-            {(isAuthenticated) && (
+            {isAuthenticated}
+            {!isAuthenticated && <AsideLogin />}
+            {isAuthenticated && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

@@ -3,17 +3,19 @@ import { createRoot } from 'react-dom/client';
 import { Auth0Provider } from '@auth0/auth0-react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from './App';
-import { getConfig } from "./config";
 
-const root = createRoot(document.getElementById('root'));
-const config = getConfig();
+ const root = createRoot(document.getElementById('root'));
+
+ const dom = "dev-oraf1nl35nag2oxd.us.auth0.com";
+ const clientID = "WTy5RLUirpCMGFljN9YsxVOvzCF6XT4m";
+ const aud = "https://dev-oraf1nl35nag2oxd.us.auth0.com/api/v2/";
 
 root.render(
 <Auth0Provider
-            domain={config.domain}
-            clientId={config.clientId}
+            domain={dom}
+            clientId={clientID}
             redirectUri={window.location.origin}
-            audience={config.audience}   
+            audience={aud}   
             scope= "read:current_user update:current_user_metadata"
   >
     <App />

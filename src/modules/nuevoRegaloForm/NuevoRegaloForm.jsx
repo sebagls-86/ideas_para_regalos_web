@@ -35,6 +35,7 @@ function NuevoRegaloForm({ selectedProfile }) {
   const navigate = useNavigate();
 
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchEventTypesData = async () => {
@@ -99,7 +100,7 @@ function NuevoRegaloForm({ selectedProfile }) {
 
       try {
         const eventResponse = await fetch(
-          "http://localhost:8080/api/v1/events",
+          `${API_URL}/events`,
           {
             method: "POST",
             headers: {
@@ -129,7 +130,7 @@ function NuevoRegaloForm({ selectedProfile }) {
         };
 
         const forumResponse = await fetch(
-          "http://localhost:8080/api/v1/forums",
+          `${API_URL}/forums`,
           {
             method: "POST",
             headers: {

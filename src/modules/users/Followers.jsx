@@ -7,9 +7,10 @@ function Followers() {
   const [followers, setFollowers] = useState([]); // Estado para almacenar los seguidores
   const [searchTerm, setSearchTerm] = useState("");
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
   
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/relations/followers/${userId}`)
+    fetch(`${API_URL}/relations/followers/${userId}`)
       .then(response => response.json())
       .then(data => setFollowers(data.data || [])) // Manejar la posibilidad de que llegue un array vacío
       .catch(error => console.error("Error fetching followers:", error));

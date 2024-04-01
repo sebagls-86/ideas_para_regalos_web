@@ -8,7 +8,7 @@ import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
 import ResponseModal from "../../components/modal/ResponseModal";
-import { getCookie } from "../api/api";
+import config from "../../auth_config.json";
 
 function getRandomPastelColor() {
   const hue = Math.floor(Math.random() * 360);
@@ -18,6 +18,7 @@ function getRandomPastelColor() {
 
 function WishList() {
   const [listData, setListData] = useState(null);
+  const [meliFavoritesData, setMeliFavoritesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editedListName, setEditedListName] = useState("");
@@ -47,13 +48,19 @@ function WishList() {
   const userId = parseInt(user_id);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const tokenUserId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
-  
+  const tokenUserId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
+
+    const API_URL = process.env.REACT_APP_API_URL;
+    const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/lists/user/${userId}`
+          `${API_URL}/lists/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -80,6 +87,61 @@ function WishList() {
   }, [userId, navigate]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Verificar si la carpeta seleccionada es "MercadoLibre"
+        if (selectedListId) {
+          const selectedList = listData.find(
+            (list) => list.list_id === selectedListId
+          );
+          if (selectedList && selectedList.list_name === "MercadoLibre") {
+            const meliFavoritesResponse = await fetch(
+              `${API_URL}/integration/meli/favorites`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (!meliFavoritesResponse.ok) {
+              throw new Error("Network response was not ok");
+            }
+            const meliFavoritesresponse = await meliFavoritesResponse.json();
+            setMeliFavoritesData(meliFavoritesresponse);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Si la carpeta seleccionada no es "MercadoLibre", realizar la solicitud habitual
+        const response = await fetch(
+          `${API_URL}/lists/user/${userId}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+
+        if (response.ok && data.data === null) {
+          setLoading(false);
+        }
+        const processedData = data.data.map((list) => ({ ...list }));
+        setListData(processedData);
+        setLoading(false);
+
+        if (response.status === 400) {
+          navigate("/");
+          setLoading(false);
+          console.log("Error 400");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [userId, navigate, selectedListId, token]);
+
+  useEffect(() => {
     if (listData) {
       const colors = {};
       listData.forEach((list) => {
@@ -93,7 +155,7 @@ function WishList() {
     const fetchProductsCatalog = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/productsCatalog"
+          `${API_URL}/products-catalog`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -112,13 +174,12 @@ function WishList() {
   const handleEdit = async (list) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/lists/${list.list_id}`
+        `${API_URL}/lists/${list.list_id}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const listData = await response.json();
-      console.log("listData:", listData);
       setSelectedList(listData);
     } catch (error) {
       console.error("Error fetching post data:", error);
@@ -133,7 +194,7 @@ function WishList() {
   const handleDelete = async (listId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/lists/${listId}`,
+        `${API_URL}/lists/${listId}`,
         {
           method: "DELETE",
           headers: {
@@ -183,11 +244,16 @@ function WishList() {
     try {
       const { list, productId } = productToRemove;
       const listId = list.list_id;
-  
-      console.log("Deleting product with ID:", productId, "from list with ID:", listId);
-  
+
+      console.log(
+        "Deleting product with ID:",
+        productId,
+        "from list with ID:",
+        listId
+      );
+
       const response = await fetch(
-        `http://localhost:8080/api/v1/lists/${listId}/listProducts/${productId}`,
+        `${API_URL}/lists/${listId}/listProducts/${productId}`,
         {
           method: "DELETE",
           headers: {
@@ -196,15 +262,15 @@ function WishList() {
           },
         }
       );
-  
-      console.log("Response status:", response.status);
-  
+
+      
       if (response.ok) {
-        console.log("Product deleted successfully");
         setSuccessMessage("Producto eliminado correctamente");
         const updatedListData = listData.map((listItem) => {
           if (listItem.list_id === listId) {
-            const updatedProducts = listItem.products.filter((p) => p.product !== productToRemove?.productName);
+            const updatedProducts = listItem.products.filter(
+              (p) => p.product !== productToRemove?.productName
+            );
             return {
               ...listItem,
               products: updatedProducts,
@@ -270,9 +336,7 @@ function WishList() {
 
   const updateListsWithNewProducts = (listId, newProducts) => {
     const updatedListData = listData.map((list) => {
-      console.log("list.list_id:", list.list_id);
-      console.log("listId:", listId);
-
+      
       if (list.list_id === listId) {
         const updatedProducts = [
           ...list.products,
@@ -300,7 +364,7 @@ function WishList() {
   const handleSaveEditListName = async (list) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/lists/${list.list_id}`,
+        `${API_URL}/lists/${list.list_id}`,
         {
           method: "PATCH",
           headers: {
@@ -346,7 +410,7 @@ function WishList() {
         list_type_id: 2,
       };
 
-      const response = await fetch(`http://localhost:8080/api/v1/lists`, {
+      const response = await fetch(`${API_URL}/lists`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -444,118 +508,150 @@ function WishList() {
 
       {selectedListId ? (
         <div>
-          <div className={styles.edit_buttons}>
-            <Button
-              onClick={() => setSelectedListId(null)}
-              className={styles.go_back_button}
-            ></Button>{" "}
-            <Button
-              className={styles.create_new_button}
-              onClick={() =>
-                handleEditListName(
-                  listData.find((list) => list.list_id === selectedListId)
-                )
-              }
-            >
-              Editar
-            </Button>
-          </div>
-          <div className={styles.list__content}>
-            <div className={styles.user__container}>
-              <div className={styles.content__user}>
-                {editMode ? (
-                  <div>
-                    <input
-                      type="text"
-                      value={editedListName}
-                      onChange={handleInputChange}
-                    />
-                    <Button
-                      className={styles.create_new_button}
-                      onClick={() =>
-                        handleSaveEditListName(
-                          listData.find(
-                            (list) => list.list_id === selectedListId
-                          )
-                        )
-                      }
-                    >
-                      Guardar
-                    </Button>
-                    <Button
-                      className={styles.create_new_button}
-                      onClick={() => {
-                        setEditMode(false);
-                        setEditedListName(
+          {listData &&
+          listData.find((list) => list.list_id === selectedListId)
+            ?.list_name === "MercadoLibre" ? (
+            <div>
+              <div className={styles.back_button}>
+                <Button
+                  onClick={() => setSelectedListId(null)}
+                  className={styles.go_back_button}
+                ></Button>{" "}
+              </div>
+              <p className={styles.user__username_product}>
+                         MercadoLibre
+                        </p>
+              {/* Renderizar los favoritos de MercadoLibre */}
+              <div className={styles.meli_cards_container}>
+              {meliFavoritesData.map((favorite, index) => (
+                <div key={index} className={styles.meli_card}>
+                  <img
+                    src={favorite.picture}
+                    alt={favorite.name}
+                    className={styles.product_image}
+                  />
+                  <p className={styles.product_name}>{favorite.name}</p>
+                </div>
+                ))}
+                </div>
+            </div>
+           ) : (
+            <div>
+              <div className={styles.edit_buttons}>
+                <Button
+                  onClick={() => setSelectedListId(null)}
+                  className={styles.go_back_button}
+                ></Button>{" "}
+                <Button
+                  className={styles.create_new_button}
+                  onClick={() =>
+                    handleEditListName(
+                      listData.find((list) => list.list_id === selectedListId)
+                    )
+                  }
+                >
+                  Editar
+                </Button>
+              </div>
+              <div className={styles.list__content}>
+                <div className={styles.user__container}>
+                  <div className={styles.content__user}>
+                    {editMode ? (
+                      <div>
+                        <input
+                          type="text"
+                          value={editedListName}
+                          onChange={handleInputChange}
+                        />
+                        <Button
+                          className={styles.create_new_button}
+                          onClick={() =>
+                            handleSaveEditListName(
+                              listData.find(
+                                (list) => list.list_id === selectedListId
+                              )
+                            )
+                          }
+                        >
+                          Guardar
+                        </Button>
+                        <Button
+                          className={styles.create_new_button}
+                          onClick={() => {
+                            setEditMode(false);
+                            setEditedListName(
+                              listData.find(
+                                (list) => list.list_id === selectedListId
+                              ).list_name
+                            );
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      </div>
+                    ) : (
+                      <p className={styles.user__username_product}>
+                        {
                           listData.find(
                             (list) => list.list_id === selectedListId
                           ).list_name
-                        );
-                      }}
-                    >
-                      Cancelar
-                    </Button>
+                        }
+                      </p>
+                    )}
                   </div>
-                ) : (
-                  <p className={styles.user__username_product}>
-                    {
-                      listData.find((list) => list.list_id === selectedListId)
-                        .list_name
-                    }
-                  </p>
-                )}
+                </div>
+                <div className={styles.product_container}>
+                  {listData.find((list) => list.list_id === selectedListId)
+                    .products !== null &&
+                  listData.find((list) => list.list_id === selectedListId)
+                    .products.length > 0 ? (
+                    listData
+                      .find((list) => list.list_id === selectedListId)
+                      .products.map((product, index) => {
+                        const productInfo = productsCatalog.data.find(
+                          (item) => item.name === product.product
+                        );
+                        return (
+                          <div key={index} className={styles.product_item}>
+                            {productInfo && (
+                              <div
+                                key={index}
+                                className={styles.product_card}
+                                onClick={() =>
+                                  handleRemoveProduct(
+                                    listData.find(
+                                      (list) => list.list_id === selectedListId
+                                    ),
+                                    product
+                                  )
+                                }
+                              >
+                                <img
+                                  src={`${URL_IMAGES}${productInfo.images}`}
+                                  alt={productInfo.name}
+                                  className={styles.product_image}
+                                />
+                                <p className={styles.product_name}>
+                                  {productInfo.name}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                  ) : (
+                    <p>No hay productos todavía</p>
+                  )}
+                </div>
+                <Button
+                  className={styles.create_new_button}
+                  onClick={() => navigate("/explorar")}
+                >
+                  Agregar
+                </Button>
               </div>
             </div>
-            <div className={styles.product_container}>
-              {listData.find((list) => list.list_id === selectedListId)
-                .products !== null &&
-              listData.find((list) => list.list_id === selectedListId).products
-                .length > 0 ? (
-                listData
-                  .find((list) => list.list_id === selectedListId)
-                  .products.map((product, index) => {
-                    const productInfo = productsCatalog.data.find(
-                      (item) => item.name === product.product
-                    );
-                    return (
-                      <div key={index} className={styles.product_item}>
-                        {productInfo && (
-                          <div
-                            key={index}
-                            className={styles.product_card}
-                            onClick={() =>
-                              handleRemoveProduct(
-                                listData.find(
-                                  (list) => list.list_id === selectedListId
-                                ),
-                                product
-                              )
-                            }
-                          >
-                            <img
-                              src={`http://localhost:8080${productInfo.images}`}
-                              alt={productInfo.name}
-                              className={styles.product_image}
-                            />
-                            <p className={styles.product_name}>
-                              {productInfo.name}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })
-              ) : (
-                <p>No hay productos todavía</p>
-              )}
-            </div>
-            <Button
-              className={styles.create_new_button}
-              onClick={() => navigate("/explorar")}
-            >
-              Agregar
-            </Button>
-          </div>
+          )}
         </div>
       ) : (
         <div>
@@ -590,6 +686,17 @@ function WishList() {
               <AiOutlinePlus />
               Nueva lista
             </Button>
+            {!listData?.some((list) => list.list_name === "MercadoLibre") && (
+              <Button
+                onClick={() => {
+                  window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
+                }}
+                className={styles.create_new_button}
+              >
+                <AiOutlinePlus />
+                Favoritos de MercadoLibre
+              </Button>
+            )}
           </div>
           <div className={styles.whole_list}>
             {loading && <Spinner />}

@@ -1,7 +1,5 @@
 import React from "react";
 import Nav from "../../modules/nav/Nav";
-import { Col } from "react-bootstrap";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
@@ -18,7 +16,8 @@ import Actividad from "../../modules/users/Actividad";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function UsersPage() {
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+  const user = localStorage.getItem("userInfo");
 
   return (
     <>
@@ -29,10 +28,6 @@ function UsersPage() {
         <div className="left__aside">{(isAuthenticated) && <Nav />}</div>
         <div className="content">
         <PageTitle title="Usuarios" />
-          <Col>
-            <LoginMobile />
-          </Col>
-
           <div className="mt-3 p-3">
             <Tabs
               defaultActiveKey="todos"

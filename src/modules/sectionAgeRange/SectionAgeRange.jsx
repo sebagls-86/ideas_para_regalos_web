@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 export default function SectionAgeRange() {
   const [ageRanges, setAgeRanges] = useState([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
   useEffect(() => {
     fetchCategories();
@@ -13,11 +15,12 @@ export default function SectionAgeRange() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/age-ranges");
+      const response = await fetch(`${API_URL}/age-ranges`);
       if (response.ok) {
         const responseData = await response.json();
         const data = responseData.data || [];
         setAgeRanges(data);
+        console.log("ageRanges", data);
       } else {
         console.error("Error fetching categories:", response.statusText);
       }
@@ -59,7 +62,7 @@ export default function SectionAgeRange() {
               >
                 {ageRange.image ? (
                   <img
-                    src={`http://localhost:8080${ageRange.image}`}
+                    src={`${URL_IMAGES}${ageRange.image}`}
                     alt="banner"
                     className={styles.categoryImage}
                   />

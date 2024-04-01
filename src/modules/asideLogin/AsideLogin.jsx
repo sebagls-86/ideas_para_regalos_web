@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { useAuth0 } from "@auth0/auth0-react";
+import config from "../../auth_config.json";
 
 function AsideLogin() {
   const [registerModal, setOpenRegisterModal] = useState(false);
   const { user, loginWithRedirect, getAccessTokenWithPopup } = useAuth0();
-
-  const domain = "dev-oraf1nl35nag2oxd.us.auth0.com";
+  const domain = config.domain;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (user) {
@@ -41,7 +42,7 @@ function AsideLogin() {
       };
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/verify",
+        `${API_URL}/verify`,
         requestOptions
       );
 

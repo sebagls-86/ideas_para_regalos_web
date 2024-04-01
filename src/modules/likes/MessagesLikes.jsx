@@ -4,11 +4,11 @@ import styles from './css/likes.module.css';
 
 function MessagesLikes() {
   const [messages, setMessages] = useState([]);
-
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(` http://localhost:8080/api/v1/messages/likes/${userId}`)
+    fetch(` ${API_URL}/messages/likes/${userId}`)
       .then(response => response.json())
       .then(data => {
         if (Array.isArray(data.data)) {

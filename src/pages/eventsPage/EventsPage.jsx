@@ -15,17 +15,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function EventsPage() {
   const [tokenExists, setTokenExists] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
   const [scheduledEvents, setScheduledEvents] = useState([]);
   const { user, isAuthenticated } = useAuth0();
   const userInfo = (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setTokenExists(token !== null && token !== undefined);
   
     // Fetch upcoming events with robust error handling
-    fetch("http://localhost:8080/api/v1/scheduledEvents/upcoming")
+    fetch(`${API_URL}/scheduledEvents/upcoming`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`API request failed with status: ${response.status}`);
@@ -41,7 +42,7 @@ function EventsPage() {
   
         const eventsWithImageURLs = data.data.map((event) => ({
           ...event,
-          image: `http://localhost:8080/images/eventTypes/${event.image}`,
+          image: `${URL_IMAGES}/images/eventTypes/${event.image}`,
         }));
         setScheduledEvents(eventsWithImageURLs);
       })
@@ -74,7 +75,7 @@ function EventsPage() {
               className={`${styles.singleColumn} ${styles.singleColumn_signed_in}`}
             >
               {scheduledEvents.map((event) => (
-                <Link to={`/explorar/${event.event_type_name}`} key={event.scheduled_event_id}>
+                <Link to={`/explorar/eventos/${event.event_type_id}`} key={event.scheduled_event_id}>
                   <div className={`${styles.row} ${styles.row_signed_in}`}>
                     <div>
                       <img

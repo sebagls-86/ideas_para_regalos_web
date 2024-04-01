@@ -20,8 +20,6 @@ function ModalCreateProfile({
     selectedRelationship: "",
   });
 
-  //console.log("selectedInterests:", selectedInterests);
-
   const [currentStep, setCurrentStep] = useState(1);
   const [ageRanges, setAgeRanges] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
@@ -35,11 +33,12 @@ function ModalCreateProfile({
   const [selectedAgeOption, setSelectedAgeOption] = useState(null);
   const [selectedRelationshipOption, setSelectedRelationshipOption] =
     useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
       const fetchAvailableInterests = async () => {
         try {
-          const response = await fetch("http://localhost:8080/api/v1/interests");
+          const response = await fetch(`${API_URL}/interests`);
           if (response.ok) {
             const data = await response.json();
             setInterests(data.data);
@@ -54,7 +53,6 @@ function ModalCreateProfile({
     }, []);
 
     const  handleToggleInterest = (interest) => {
-        console.log("Interest toggled:", interest);
         const isInterestSelected = selectedInterests.some(
           (selectedInterest) =>
             selectedInterest.interest_id === interest.interest_id
@@ -66,10 +64,8 @@ function ModalCreateProfile({
               selectedInterest.interest_id !== interest.interest_id
           );
           setSelectedInterests(updatedInterests);
-          console.log("Selected interests erased:", updatedInterests);
         } else {
           setSelectedInterests([...selectedInterests, interest]);
-          console.log("Selected interests updated:", [...selectedInterests, interest]);
         }
       };
     
@@ -114,7 +110,6 @@ function ModalCreateProfile({
     }, []);
 
   useEffect(() => {
-    console.log("Form state:", form);
     setIsGuardarDisabled(
       !(
         form.name &&

@@ -5,11 +5,12 @@ import Post from "../../modules/post/Post";
 import NavBar from "../../modules/navBar/NavBar";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
+import ModalSurvey from "../../modules/modalSurvey/ModalSurvey";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 import { useAuth0 } from "@auth0/auth0-react";
-import configJson from "../../auth_config.json";
+import config from "../../auth_config.json";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -23,11 +24,53 @@ function HomePage() {
     logout,
   } = useAuth0();
   const [loading, setLoading] = useState(null);
-  const audience = configJson.audience;
+  const [pendingSurveysResponse, setPendingSurveysResponse] = useState(null);
+  const audience = config.audience;
   const storedToken = localStorage.getItem("token");
   const storedUserInfo = localStorage.getItem("userInfo");
+  const API_URL = process.env.REACT_APP_API_URL;
+  const FRONT_URL = process.env.REACT_APP_FRONT_URL;
 
-  console.log("home isAuthenticated", isAuthenticated);
+
+  console.log("token", storedToken);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    console.log('code', code);
+
+    if (code) {
+      setLoading(true);
+
+      window.location.href = `${FRONT_URL}/perfil/${userInfo?.data?.user_id}`;
+      fetchBackend(code);
+    }
+  }
+  }, []);
+
+  const fetchBackend = async (code) => {
+    try {
+      const response = await fetch(`${API_URL}/integration/meli/code=${code}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el código al backend');
+      }
+
+      console.log('Código enviado al backend correctamente');
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (storedToken) {
@@ -43,69 +86,88 @@ function HomePage() {
   useEffect(() => {
     const fetchTokenAndVerifyUser = async () => {
       try {
-        if ((storedToken === undefined || storedToken === null) && isAuthenticated) {
-          setLoading(true); // Set loading to true heres
-          const newAccessToken = await getAccessTokenWithPopup({
-            authorizationParams: {
+        if (
+          (storedToken === undefined || storedToken === null) &&
+          isAuthenticated
+        ) {
+          setLoading(true);
+
+          // const newAccessToken = await getAccessTokenWithPopup({
+          //       authorizationParams: {
+          //         audience: audience,
+          //         scope: "read:current_user",
+          //       },
+          //     });
+
+          let newAccessToken;
+          if (process.env.NODE_ENV === "development") {
+            newAccessToken = await getAccessTokenWithPopup({
+              authorizationParams: {
+                audience: audience,
+                scope: "read:current_user",
+              },
+            });
+          } else {
+            newAccessToken = await getAccessTokenSilently({
               audience: audience,
               scope: "read:current_user",
-            },
-          });
+            });
+          }
+
+          console.log("newAccessToken", newAccessToken);
 
           setAccessToken(newAccessToken);
           localStorage.setItem("token", newAccessToken);
-          setLoading(true); // Set loading to true here
+          setLoading(true);
 
-          let verifyUserCompleted = false; // Variable to track if verifyUser completed successfully
+          let verifyUserCompleted = false;
 
           // Start a timeout of 5 seconds
           const timeoutId = setTimeout(() => {
             if (!verifyUserCompleted) {
-              localStorage.removeItem("token"); // Remove token from localStorage
+              localStorage.removeItem("token");
               const userInfoFromStorage = localStorage.getItem("userInfo");
               if (!userInfoFromStorage) {
-                setLoading(false); // Set loading to false
-                logout(); // Logout if userInfo is not present in localStorage
-                console.log(
-                  "userInfo not present in localStorage, logging out..."
-                );
-              }
+                setLoading(false);
+                logout();
+                }
             }
           }, 5000);
 
           try {
-            // Call verifyUser and wait for it to complete
             await verifyUser(newAccessToken);
-            
-            console.log("verifyUser completed")
             setTokenExists(true);
-            setLoading(false); // Set loading to false
-            verifyUserCompleted = true; // Mark verifyUser as completed
-            clearTimeout(timeoutId); // Clear the timeout if verification succeeds
+            setLoading(false);
+            verifyUserCompleted = true;
+            clearTimeout(timeoutId);
           } catch (error) {
-            console.error("Error verifying user:", error.message);
-            setLoading(false); // Set loading to false on error
-            logout(); // Logout on error
+            setLoading(false);
+            logout();
           }
         }
       } catch (error) {
-        console.error("Error during login or registration:", error.message);
-        setLoading(false); // Set loading to false on error
-        logout(); // Logout on error
+        setLoading(false);
+        logout();
       }
     };
 
     if (!tokenExists) {
       fetchTokenAndVerifyUser();
     }
-
-  }, [tokenExists, storedToken, getAccessTokenWithPopup, audience, logout, isAuthenticated]);
+  }, [
+    tokenExists,
+    storedToken,
+    getAccessTokenWithPopup,
+    getAccessTokenSilently,
+    audience,
+    logout,
+    isAuthenticated,
+  ]);
 
   const verifyUser = async (token) => {
     try {
-      console.log("verifyUser");
       const verifyResponse = await fetch(
-        `http://localhost:8080/api/v1/users/verify`,
+        `${API_URL}/users/verify`,
         {
           method: "GET",
           headers: {
@@ -125,8 +187,54 @@ function HomePage() {
       setUserInfo(verifyData);
     } catch (error) {
       console.error("Error verifying user:", error.message);
-      throw error; // Re-throw the error to be caught by the timeout
+      throw error;
     }
+  };
+
+  useEffect(() => {
+    if (userInfo) {
+      verifyPendingSurveys(userInfo);
+    }
+  }, [userInfo]);
+
+  const verifyPendingSurveys = async (token) => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+      if (!userInfo || !userInfo.data || !userInfo.data.user_id) {
+        throw new Error("User info not found in localStorage");
+      }
+
+      const pendingSurveys = await fetch(
+        `${API_URL}/forums-survey/pending/${userInfo.data.user_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      );
+
+      if (!pendingSurveys.ok) {
+        throw new Error("Failed to get pending surveys");
+      }
+
+      const pendingSurveysResponse = await pendingSurveys.json();
+      setPendingSurveysResponse(pendingSurveysResponse);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleCloseSurveyModal = (survey) => {
+    const updatedSurveys = pendingSurveysResponse.data.filter(
+      (item) => item.forum_id !== survey.forum_id
+    );
+    setPendingSurveysResponse({
+      ...pendingSurveysResponse,
+      data: updatedSurveys,
+    });
   };
 
   if (isLoading || loading) {
@@ -168,6 +276,14 @@ function HomePage() {
           </div>
         </aside>
       </div>
+      {pendingSurveysResponse &&
+        pendingSurveysResponse.data?.map((survey, index) => (
+          <ModalSurvey
+            key={index}
+            closeModal={() => handleCloseSurveyModal(survey)}
+            forumInfo={survey}
+          />
+        ))}
     </>
   );
 }

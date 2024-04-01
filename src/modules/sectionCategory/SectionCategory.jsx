@@ -6,6 +6,13 @@ import { Link } from "react-router-dom";
 export default function SectionCategory() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
+
+  console.log("API URL", API_URL);
+  console.log("IMAGES URL", URL_IMAGES);
+
+
 
   useEffect(() => {
     fetchCategories();
@@ -13,11 +20,12 @@ export default function SectionCategory() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/categories");
+      const response = await fetch(`${API_URL}/categories`);
       if (response.ok) {
         const responseData = await response.json();
         const data = responseData.data || [];
         setCategories(data);
+        console.log(URL_IMAGES, data.data.image)
       } else {
         console.error("Error fetching categories:", response.statusText);
       }
@@ -59,7 +67,7 @@ export default function SectionCategory() {
               >
                 {category.image ? (
                   <img
-                    src={`http://localhost:8080${category.image}`}
+                    src={`${URL_IMAGES}${category.image}`}
                     alt="banner"
                     className={styles.categoryImage}
                   />

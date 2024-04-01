@@ -1,8 +1,6 @@
 import React from "react";
 import Nav from "../../modules/nav/Nav";
-import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
 import banner from "../../assets/sv-banner.jpg";
 import styles from "./ageRangePage.module.css";
@@ -17,7 +15,7 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 
 function AgeRangeyPage() {
-  const [user] = useAuthState(auth);
+  const userInfo = localStorage.getItem("userInfo");
   const productos = [
     {
       id: 1,
@@ -84,10 +82,10 @@ function AgeRangeyPage() {
   ];
   return (
     <>
-      {!user}
+      {!userInfo}
       <NavBar />
       <div className="contenedor">
-        <div className="left__aside">{user && <Nav />}</div>
+        <div className="left__aside">{userInfo && <Nav />}</div>
         <div className="content">
           <Col>
             <LoginMobile />
@@ -108,9 +106,9 @@ function AgeRangeyPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {user && <Search />}
+            {userInfo && <Search />}
             <AsideLogin />
-            {user && (
+            {userInfo && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

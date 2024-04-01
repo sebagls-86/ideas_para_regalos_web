@@ -18,11 +18,12 @@ function Post() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/forums");
+        const response = await fetch(`${API_URL}/forums`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -43,7 +44,7 @@ function Post() {
 
         // Fetch de los likes del usuario
         const likesResponse = await fetch(
-          `http://localhost:8080/api/v1/forums/likes/${userId}`
+          `${API_URL}/forums/likes/${userId}`
         );
         if (!likesResponse.ok) {
           throw new Error("Network response was not ok");
@@ -57,13 +58,13 @@ function Post() {
     };
 
     fetchData();
-  }, [10, navigate]);
+  }, [userId, navigate]);
 
   const handleLike = async (postId) => {
     if (isLoggedIn) {
       try {
         const updatedLikesData = await fetch(
-          `http://localhost:8080/api/v1/forums/${postId}/like`,
+          `${API_URL}/forums/${postId}/like`,
           {
             method: "POST",
             headers: {
@@ -74,16 +75,14 @@ function Post() {
         );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
-          console.log("updatedLikesResponse", updatedLikesResponse);
           const updatedUserLikesResponse = await fetch(
-            `http://localhost:8080/api/v1/forums/likes/${userId}`
+            `${API_URL}/forums/likes/${userId}`
           );
           if (!updatedUserLikesResponse.ok) {
             throw new Error("Network response was not ok");
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
-          console.log("updatedUserLikesData", updatedUserLikesData);
-
+          
           setLikesData(updatedUserLikesData);
 
           setPostData((prevPostData) =>
@@ -144,7 +143,7 @@ function Post() {
             <div className={styles.post__container} key={post.forum_id}>
             <div className={styles.container__image}>
               <img
-                src={`http://localhost:8080${post.avatar}`}
+                src={post.avatar}
                 alt="imagen perfil usuario"
                 width={"54px"}
                 height={"54px"}

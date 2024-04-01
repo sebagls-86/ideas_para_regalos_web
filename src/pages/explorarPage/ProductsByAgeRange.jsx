@@ -9,6 +9,7 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
 import { useAuth0 } from "@auth0/auth0-react";
+import styles from "./explorarPage.module.css";
 
 function ProductsByAgeRange() {
   const { ageRangeId } = useParams();
@@ -19,13 +20,15 @@ function ProductsByAgeRange() {
   const { isAuthenticated } = useAuth0();
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
   const userInfo = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/productsCatalogAssociations/age-ranges/${ageRangeId}`
+          `${API_URL}/productsCatalogAssociations/age-ranges/${ageRangeId}`
         );
         if (response.ok) {
           const responseData = await response.json();
@@ -60,35 +63,35 @@ function ProductsByAgeRange() {
 
   return (
     <>
-      {!isAuthenticated && <NavBar />}
+      {isAuthenticated && <NavBar />}
       <div className="contenedor">
         <div className="left__aside">
           {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
           <PageTitle title={categoryName} />
-          <div className="mt-3">
+          <div className={styles.card_container}>
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <ul>
+              <>
                 {products.map((product, index) => (
                   <ProductCard
                     key={index}
-                    image={`http://localhost:8080/imagenes/products-catalog/${product.image_name}`}
+                    image={`${URL_IMAGES}/imagenes/products-catalog/${product.image_name}`}
                     name={product.product_name}
                     userId={userId}
                     productId={product.product_catalog_id}
                     />
                 ))}
-              </ul>
+              </>
             )}
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
             {isAuthenticated || tokenExists ? (
-              <div>
+              <div className="container pt-2">
                 <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-5 d-flex justify-content-center ">

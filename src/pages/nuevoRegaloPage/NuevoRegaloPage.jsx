@@ -32,10 +32,8 @@ function NuevoRegaloPage() {
   const {isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const location = useLocation();
-
-
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
-  
+  const API_URL = process.env.REACT_APP_API_URL;  
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -63,7 +61,7 @@ function NuevoRegaloPage() {
           return;
         }
 
-        let url = `http://localhost:8080/api/v1/profiles/user/${userId}`;
+        let url = `${API_URL}/profiles/user/${userId}`;
 
         const response = await fetch(url, {
           method: "GET",
@@ -118,7 +116,7 @@ function NuevoRegaloPage() {
 
   const handleOptionSelect = (option) => {
     if (option.value === "Open Modal") {
-      setShowNewProfileModal(true); // Abre el modal para 'Crear nuevo'
+      setShowNewProfileModal(true);
     } else {
       setSelectedOption(option);
       setIsOpen(false);
@@ -145,7 +143,7 @@ function NuevoRegaloPage() {
     try {
       // Crear el perfil
       const profileResponse = await fetch(
-        "http://localhost:8080/api/v1/profiles",
+        `${API_URL}/profiles`,
         {
           method: "POST",
           headers: {
@@ -172,7 +170,7 @@ function NuevoRegaloPage() {
       } = await profileResponse.json();
 
       const interestsResponse = await fetch(
-        "http://localhost:8080/api/v1/profileInterests",
+        `${API_URL}/profileInterests`,
         {
           method: "POST",
           headers: {
@@ -188,7 +186,7 @@ function NuevoRegaloPage() {
 
       if (!interestsResponse.ok) {
         const deleteProfileResponse = await fetch(
-          `http://localhost:8080/api/v1/profiles/${profile_id}`,
+          `${API_URL}/profiles/${profile_id}`,
           {
             method: "DELETE",
             headers: {
@@ -252,15 +250,14 @@ function NuevoRegaloPage() {
               viewBox="0 0 54 54"
               fill="none"
             >
-              {/* SVG paths */}
-            </svg>
+              </svg>
             <p>¿Para quién es el regalo?</p>
           </div>
           {showInput && !isAuthenticated && (
             <input
               type="text"
               placeholder="Ingrese el nombre de la persona"
-              // Agrega cualquier otra lógica necesaria
+              
             />
           )}
           {(isAuthenticated) && (

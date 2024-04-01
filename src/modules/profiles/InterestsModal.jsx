@@ -3,9 +3,6 @@ import Button from "../../components/button/Button";
 import Modal from "../../components/modal/Modal";
 import styles from "./css/profiles.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
-import {
-  getCookie,
-} from "../api/api";
 
 function InterestsModal({
   show,
@@ -20,7 +17,7 @@ function InterestsModal({
   const [isLoading, setIsLoading] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
   const handleSaveInterests = async () => {
@@ -33,7 +30,7 @@ function InterestsModal({
       };
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/profileInterests",
+        `${API_URL}/profileInterests`,
         {
           method: "POST",
           headers: {

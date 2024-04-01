@@ -106,19 +106,6 @@
   font-size: var(--fz-11);
   font-weight: 600;
 }
-.list__images {
-  margin-top: var(--fz-15);
-  display: flex;
-  /* flex-wrap: wrap; */
-  flex-direction: column;
-  width: 200px;
-  gap: var(--fz-11);
-}
-.list__images img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--fz-15);
-}
 .list__text {
   margin-top: var(--fz-15);
   font-size: var(--fz-17);
@@ -240,14 +227,18 @@
 .modal__button:is(:active, :focus) {
   outline: none;
 }
-
-
-
-
 .create_new_container,
 .edit_buttons {
   display: flex;
   justify-content: space-between;
+  max-width: 70%;
+  margin: 0 auto;
+  width: 100%;
+  padding: 25px 0px;
+}
+
+.back_button {
+  display: flex;
   max-width: 70%;
   margin: 0 auto;
   width: 100%;
@@ -276,6 +267,10 @@
   transform: translateY(-50%);
   
 }
+
+.create_new_button {
+  margin-right: 10px;
+}
 .create_new_button,
 .create_new_button:hover {
   background-color: var(--primary-dark);
@@ -288,6 +283,7 @@
   width: 22px;
   height: 22px;
   position: relative !important;
+
 }
 .whole_list{
   display: grid;
@@ -351,6 +347,16 @@
   border-radius: 0;
   height: 100%;
 }
+
+.go_back_button {
+  background-image: url(/src/assets/go-back-icon.svg);
+  background-color: transparent !important;
+  border: none !important;
+  width: 40px; /* Ajusta el ancho del botón según sea necesario */
+  height: 40px; /* Ajusta la altura del botón según sea necesario */
+  background-size: cover; /* Ajusta el tamaño de la imagen de fondo */
+}
+
 .modal__confirm,
 .modal__confirm:hover{
   color: green !important;
@@ -388,6 +394,30 @@
 }
 .list_delete_icon:hover {
   background-image: url("/src/assets/buttons/delete-icon-hover.svg");
+}
+
+
+
+.meli_card {
+  width: 200px; /* Establece un ancho fijo para cada tarjeta */
+  height: 300px; /* Establece una altura fija para cada tarjeta */
+  display: flex; /* Utiliza flexbox para distribuir las tarjetas */
+  flex-direction: column; /* Coloca los elementos de manera vertical */
+  justify-content: space-between; /* Distribuye los elementos verticalmente */
+  border: 1px solid #ccc; /* Agrega un borde a cada tarjeta */
+  border-radius: 8px; /* Redondea las esquinas de cada tarjeta */
+  overflow: hidden; /* Oculta cualquier contenido que se desborde de la tarjeta */
+}
+
+.meli_cards_container {
+  display: flex; /* Utiliza flexbox para colocar las tarjetas en una fila */
+  flex-wrap: wrap; /* Permite que las tarjetas se envuelvan cuando no haya suficiente espacio */
+  gap: 20px; /* Agrega espacio entre las tarjetas */
+}
+
+.product_name {
+  text-align: center; /* Centra el texto dentro de la tarjeta */
+  margin: 10px 0; /* Añade un margen alrededor del texto */
 }
 
 @media only screen and (min-width: 768px) {

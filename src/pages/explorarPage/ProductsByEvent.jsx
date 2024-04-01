@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../../modules/nav/Nav";
 import { useParams } from "react-router-dom";
-import { auth } from "../../utils/firebase";
-import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./explorarPage.module.css";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
@@ -13,7 +9,6 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
-import { getCookie } from "../../modules/api/api";
 
 function ProductsByEvent() {
   const [tokenExists, setTokenExists] = React.useState(false);
@@ -21,14 +16,16 @@ function ProductsByEvent() {
   const [products, setProducts] = useState([]);
   const [eventName, setEventName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [user] = useAuthState(auth);
+  const userInfo = localStorage.getItem("userInfo");
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   
   useEffect(() => {
     const fetchProductsByEvent = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/productsCatalogAssociations/events/${eventId}`
+          `${API_URL}/productsCatalogAssociations/events/${eventId}`
         );
         if (response.ok) {
           const responseData = await response.json();
@@ -60,45 +57,40 @@ function ProductsByEvent() {
     }
   }, []);
 
-  console.log(products, "products")
-
   return (
     <>
-      {!user}
+      {!userInfo}
       <NavBar />
       <div className="contenedor">
         <div className="left__aside">
-          {(user || tokenExists) && <Nav user={user?.displayName} />}
+          {(userInfo || tokenExists) && <Nav user={userInfo?.displayName} />}
         </div>
         <div className="content">
           <PageTitle title={eventName} />
-          <Col>
-            <LoginMobile />
-          </Col>
-          <div className="mt-3">
+          <div className={styles.card_container}>
             <div>
               {loading ? (
                 <p>Loading...</p>
               ) : (
-                <ul>
+                <>
                   {products.map((product, index) => (
                     <ProductCard
-                    image={`http://localhost:8080/imagenes/product-catalog/${product.image_name}`}
+                    image={`${URL_IMAGES}/imagenes/product-catalog/${product.image_name}`}
                     name={product.product_name}
                     userId={userId}
                     productId={product.product_catalog_id}
                   />
                   ))}
-                </ul>
+                </>
               )}
             </div>
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {user || tokenExists}
-            {!user && !tokenExists && <AsideLogin />}
-            {(user || tokenExists) && (
+            {userInfo || tokenExists}
+            {!userInfo && !tokenExists && <AsideLogin />}
+            {(userInfo || tokenExists) && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

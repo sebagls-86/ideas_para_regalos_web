@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
   const token = localStorage.getItem("token");
@@ -42,12 +41,11 @@ function ForumsPage() {
   const { forum_id } = useParams();
   const [forumData, setForumData] = useState(null);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const userId =
-    (localStorage.getItem("userInfo") &&
-      userInfo.data.user_id) ||
-    null;
+    (localStorage.getItem("userInfo") && userInfo.data.user_id) || null;
 
   useEffect(() => {
     setIsLoggedIn(!!token);
@@ -56,9 +54,7 @@ function ForumsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const forumResponse = await fetch(
-          `http://localhost:8080/api/v1/forums/${forum_id}`
-        );
+        const forumResponse = await fetch(`${API_URL}/forums/${forum_id}`);
         if (forumResponse.ok) {
           const forumData = await forumResponse.json();
           setForumData(forumData);
@@ -73,7 +69,7 @@ function ForumsPage() {
         }
 
         const messageLikesResponse = await fetch(
-          `http://localhost:8080/api/v1/messages/likes/${userId}`
+          `${API_URL}/messages/likes/${userId}`
         );
         if (messageLikesResponse.ok) {
           const messageLikesData = await messageLikesResponse.json();
@@ -81,7 +77,7 @@ function ForumsPage() {
         }
 
         const forumLikesResponse = await fetch(
-          `http://localhost:8080/api/v1/forums/likes/${userId}`
+          `${API_URL}/forums/likes/${userId}`
         );
         if (forumLikesResponse.ok) {
           const forumLikesData = await forumLikesResponse.json();
@@ -98,7 +94,7 @@ function ForumsPage() {
   useEffect(() => {
     const fetchEventTypes = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/eventTypes");
+        const response = await fetch(`${API_URL}/eventTypes`);
         if (response.ok) {
           const eventData = await response.json();
           setEventTypes(eventData.data);
@@ -126,7 +122,7 @@ function ForumsPage() {
         });
       }
 
-      const response = await fetch("http://localhost:8080/api/v1/messages", {
+      const response = await fetch(`${API_URL}/messages`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -160,15 +156,12 @@ function ForumsPage() {
 
   const handleDeleteMessage = async (messageId) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/messages/${messageId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/messages/${messageId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.ok) {
         const updatedMessages = forumData.data.messages.filter(
@@ -193,8 +186,7 @@ function ForumsPage() {
   const confirmDeleteMessage = (message) => {
     setMessageToDelete(message);
     setShowDeleteModal(true);
-    console.log("setShowDeleteModalStatus", showDeleteModal);
-  };
+    };
 
   const cancelDeleteMessage = () => {
     setShowDeleteModal(false);
@@ -206,7 +198,6 @@ function ForumsPage() {
     const selectedFiles = files.slice(0, 2);
     setImageFiles((prevImageFiles) => {
       const updatedFiles = [...prevImageFiles, ...selectedFiles];
-      console.log("Imagenes seleccionadas:", updatedFiles);
       return updatedFiles;
     });
   };
@@ -234,7 +225,7 @@ function ForumsPage() {
       }
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/messages/${messageEditing.message_id}`,
+        `${API_URL}/messages/${messageEditing.message_id}`,
         {
           method: "PATCH",
           headers: {
@@ -257,9 +248,7 @@ function ForumsPage() {
 
   const handleEdit = async (post) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/forums/${post.forum_id}`
-      );
+      const response = await fetch(`${API_URL}/forums/${post.forum_id}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -282,7 +271,7 @@ function ForumsPage() {
     if (isLoggedIn) {
       try {
         const updatedLikesData = await fetch(
-          `http://localhost:8080/api/v1/forums/${postId}/like`,
+          `${API_URL}/forums/${postId}/like`,
           {
             method: "POST",
             headers: {
@@ -302,7 +291,7 @@ function ForumsPage() {
           setForumData(updatedForumData);
 
           const updatedUserLikesResponse = await fetch(
-            `http://localhost:8080/api/v1/forums/likes/${userId}`
+            `${API_URL}/forums/likes/${userId}`
           );
           if (!updatedUserLikesResponse.ok) {
             throw new Error("Network response was not ok");
@@ -326,7 +315,7 @@ function ForumsPage() {
     if (isLoggedIn) {
       try {
         const updatedLikesData = await fetch(
-          `http://localhost:8080/api/v1/messages/${messageId}/like`,
+          `${API_URL}/messages/${messageId}/like`,
           {
             method: "POST",
             headers: {
@@ -358,13 +347,12 @@ function ForumsPage() {
 
           // Actualizar los datos de los likes del usuario
           const updatedUserLikesResponse = await fetch(
-            `http://localhost:8080/api/v1/messages/likes/${userId}`
+            `${API_URL}/messages/likes/${userId}`
           );
           if (!updatedUserLikesResponse.ok) {
             throw new Error("Network response was not ok");
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
-          console.log("updatedUserLikesData", updatedUserLikesData);
 
           setMessageLikesData(updatedUserLikesData);
         } else {
@@ -416,24 +404,20 @@ function ForumsPage() {
       <NavBar />
       <div className="contenedor">
         <div className="left__aside">
-          {(isAuthenticated) && <Nav userInfo={userInfo} />}
+          {isAuthenticated && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
           <div>
             <PageTitle title="Foros" />
           </div>
-          {!user && !tokenExists && (
-            <Col>
-              <LoginMobile />
-            </Col>
-          )}
+
           {forumData && forumData.data && (
             <>
               <div>
                 <div className={styles.forum_title_container}>
                   <div className={styles.user_info}>
                     <img
-                      src={`http://localhost:8080/images/users/${forumData.data.avatar}`}
+                      src={forumData.data.avatar}
                       alt="avatar"
                       width={"100px"}
                       height={"100px"}
@@ -447,7 +431,7 @@ function ForumsPage() {
                   <p className={styles.forum_title}>{forumData.data.title}</p>
                   {userId &&
                     userId === forumData.data.user_id &&
-                    forumData.status === 1 && (
+                    forumData.data.status === 1 && (
                       <div className={styles.edit_button_container}>
                         <Button onClick={() => handleEdit(forumData.data)}>
                           Editar
@@ -699,7 +683,7 @@ function ForumsPage() {
           originalPost={originalPost}
           handleCloseModal={handleCloseModal}
         />
-       </div>
+      </div>
     </>
   );
 }

@@ -4,23 +4,23 @@ import Search from "../../components/search/Search";
 import styles from './users.module.css'
 
 function Users() {
-  const [users, setUsers] = useState([]); // Estado para almacenar los datos de los usuarios
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
   
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/users/public")
+    fetch(`${API_URL}/users/public`)
       .then(response => response.json())
       .then(data => setUsers(data.data
-        .filter(user => user.user_id !== userId) // Filtrar los usuarios para excluir aquellos cuyo user_id coincide con el userId
+        .filter(user => user.user_id !== userId)
         .map(user => ({
           ...user,
-          avatar: `http://localhost:8080${user.avatar}` // Agregar http://localhost:8080 a las rutas de los avatares
-        }))
+         }))
       ))
       .catch(error => console.error("Error fetching users:", error));
-  }, [userId]); // Agregar userId como dependencia para que el efecto se ejecute cada vez que userId cambie
+  }, [userId]);
 
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

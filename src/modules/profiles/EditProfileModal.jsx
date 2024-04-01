@@ -16,7 +16,6 @@ function EditProfileModal({
   const [isGuardarDisabled, setIsGuardarDisabled] = useState(false);
 
   useEffect(() => {
-    console.log("Form state:", selectedProfile);
     if (selectedProfile) {
       setIsGuardarDisabled(
         !(

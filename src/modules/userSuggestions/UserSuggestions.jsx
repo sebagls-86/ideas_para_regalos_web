@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import styles from "./userSuggestions.module.css";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Button from "../../components/button/Button";
-import { getCookie } from "../api/api";
 
-function UserSuggestions({userInfo}) {
+function UserSuggestions({ userInfo }) {
   const [users, setUsers] = useState(null);
   const [following, setFollowing] = useState({});
-
-  const userId = userInfo?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    userInfo?.user_id ||
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
-      let url = `http://localhost:8080/api/v1/relations/suggestions/${userId}`;
+      let url = `${API_URL}/relations/suggestions/${userId}`;
       const response = await fetch(url);
       const responseData = await response.json();
       if (responseData && responseData.data && responseData.data.length > 0) {
-        const usersWithFixedAvatarURL = responseData.data.map(user => ({
+        const usersWithFixedAvatarURL = responseData.data.map((user) => ({
           ...user,
         }));
         setUsers(usersWithFixedAvatarURL);
       } else {
-        setUsers([]); 
+        setUsers([]);
       }
     };
 
@@ -31,14 +34,17 @@ function UserSuggestions({userInfo}) {
   const handleFollow = async (relationId) => {
     const token = localStorage.getItem("token");
     if (token) {
-      const url = "http://localhost:8080/api/v1/relations";
+      const url = `${API_URL}/relations`;
       const requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ user_id: userInfo.user_id, relation_id: relationId }),
+        body: JSON.stringify({
+          user_id: userInfo.user_id,
+          relation_id: relationId,
+        }),
       };
       const response = await fetch(url, requestOptions);
       if (response.ok) {
@@ -61,17 +67,21 @@ function UserSuggestions({userInfo}) {
         ) : (
           users.map((user) => (
             <div className={styles.content_element} key={user.id}>
-              <UserLogoName
-                name={user.name}
-                logo={user.avatar}
-                to={`/perfil/${user.user_id}`}
-              />
-              <Button
-                label={following[user.user_id] ? "Siguiendo" : "Seguir"}
-                className="btn primary__button-outline"
-                disabled={following[user.user_id]}
-                onClick={() => handleFollow(user.user_id)}
-              />
+              <div className={styles.user_info}>
+                <UserLogoName
+                  name={user.name}
+                  logo={user.avatar}
+                  to={`/perfil/${user.user_id}`}
+                />
+              </div>
+              <div className={styles.button_container}>
+                <Button
+                  label={following[user.user_id] ? "Siguiendo" : "Seguir"}
+                  className={styles.custom__button}
+                  disabled={following[user.user_id]}
+                  onClick={() => handleFollow(user.user_id)}
+                />
+              </div>
             </div>
           ))
         )}
