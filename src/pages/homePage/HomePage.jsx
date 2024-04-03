@@ -13,6 +13,10 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 
+const prueba = process.env.REACT_APP_PRUEBA
+
+console.log(prueba)
+
 function HomePage() {
   const [user] = useAuthState(auth);
   const [tokenExists, setTokenExists] = useState(false);
