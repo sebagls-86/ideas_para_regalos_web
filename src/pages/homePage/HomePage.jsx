@@ -27,6 +27,7 @@ function HomePage() {
 
 
 console.log(process.env.REACT_APP_PRUEBA)
+console.log(process.env.NODE_ENV)
 
 
   
