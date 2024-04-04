@@ -32,7 +32,7 @@ function HomePage() {
   const FRONT_URL = process.env.REACT_APP_FRONT_URL;
 
 
-  console.log("token", storedToken);
+
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
@@ -239,6 +239,10 @@ function HomePage() {
 
   if (isLoading || loading) {
     return <div>Loading ...</div>;
+  }
+  
+  if (process.env.NODE_ENV === "development") {
+      console.log("token", storedToken);
   }
 
   return (
