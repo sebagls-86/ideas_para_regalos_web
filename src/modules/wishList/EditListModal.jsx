@@ -14,8 +14,8 @@ function EditListModal({
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const token = localStorage.getItem("token");
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSaveInterests = async () => {
     try {
@@ -27,7 +27,7 @@ function EditListModal({
       };
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/profileInterests",
+        `${API_URL}/profileInterests`,
         {
           method: "POST",
           headers: {

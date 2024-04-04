@@ -1,14 +1,11 @@
 import React from "react";
 import Nav from "../../modules/nav/Nav";
-import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Search from "../../components/search/Search";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
 import SectionCategory from "../../modules/sectionCategory/SectionCategory";
+import SectionAgeRange from "../../modules/sectionAgeRange/SectionAgeRange";
 import SectionEvents from "../../modules/sectionEvents/SectionEvents";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
@@ -16,31 +13,24 @@ import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ExplorarPage() {
-  const [tokenExists, setTokenExists] = React.useState(false);
+  const { isAuthenticated } = useAuth0();
+  const userInfo =
+    (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
+    null;
 
-  React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setTokenExists(true);
-    } else {
-      setTokenExists(false);
-    }
-  }, []);
-
-  const [user] = useAuthState(auth);
   return (
     <>
-      {!user}
+      {isAuthenticated}
       <NavBar />
       <div className="contenedor">
-      <div className="left__aside">{(user || tokenExists) && <Nav user={user?.displayName} />}</div>
+        <div className="left__aside">
+          {isAuthenticated && <Nav userInfo={userInfo} />}
+        </div>
         <div className="content">
           <PageTitle title="Explorar" />
-          <Col>
-            <LoginMobile />
-          </Col>
           <Col className="d-flex justify-content-center">
             <img
               src={banner}
@@ -51,14 +41,15 @@ function ExplorarPage() {
           <div className="mt-3">
             <SectionCategory title={"Categorías"} />
             <SectionEvents title={"Eventos"} />
+            <SectionAgeRange title={"Rango de Edad"} />
             <SectionFeatured title={"Productos Destacados"} />
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(user || tokenExists)}
-            {(!user && !tokenExists) && <AsideLogin />}
-            {(user || tokenExists) && (
+            {isAuthenticated}
+            {!isAuthenticated && <AsideLogin />}
+            {isAuthenticated && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />

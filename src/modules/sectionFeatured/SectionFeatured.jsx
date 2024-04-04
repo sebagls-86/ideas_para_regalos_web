@@ -12,18 +12,14 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
-import jwtDecode from "jwt-decode";
 
 export default function SectionFeatured() {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
-
-  let userId = null;
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    userId = decodedToken.user_id;
-  }
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
+  
 
   useEffect(() => {
     fetchEvents();
@@ -32,7 +28,7 @@ export default function SectionFeatured() {
   const fetchEvents = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/productsCatalogAssociations/featured"
+        `${API_URL}/productsCatalogAssociations/featured`
       );
       if (response.ok) {
         const responseData = await response.json();
@@ -75,7 +71,7 @@ export default function SectionFeatured() {
               <Link to="" key={index}>
                 <SwiperSlide>
                   <ProductCard
-                    image={`http://localhost:8080/images/products-catalog/${featured.image_name}`}
+                    image={`${URL_IMAGES}/images/products-catalog/${featured.image_name}`}
                     name={featured.product_name}
                     userId={userId}
                     productId={featured.product_catalog_id}

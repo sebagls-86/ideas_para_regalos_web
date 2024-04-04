@@ -1,7 +1,8 @@
 {
-  "domain": "dev-oraf1nl35nag2oxd.us.auth0.com",
-  "clientId": "WTy5RLUirpCMGFljN9YsxVOvzCF6XT4m",
-  "audience": "http://localhost:8080/api/v1/",
-  "meli_client_id": "378864368076800",
-  "meli_redirect_uri": "https://localhost:3000"
+    "domain": "dev-oraf1nl35nag2oxd.us.auth0.com",
+    "clientId": "WTy5RLUirpCMGFljN9YsxVOvzCF6XT4m",
+    "audience": "http://localhost:8080/api/v1/",
+    "meli_client_id": 378864368076800,
+    "meli_redirect_uri": "https://localhost:3000"
 }
+

@@ -3,10 +3,9 @@ import styles from "./css/post.module.css";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import ModalLogin from "../modalLogin/ModalLogin";
 import { useNavigate } from "react-router-dom";
 import Search from "../../components/search/Search";
-import jwtDecode from "jwt-decode";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Post() {
   const [postData, setPostData] = useState(null);
@@ -15,15 +14,16 @@ function Post() {
   const [searchTerm, setSearchTerm] = useState("");
   const [likesData, setLikesData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const decoded = token ? jwtDecode(token) : null;
-  const userId = decoded ? decoded.user_id : null;
-
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/forums");
+        const response = await fetch(`${API_URL}/forums`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -44,7 +44,7 @@ function Post() {
 
         // Fetch de los likes del usuario
         const likesResponse = await fetch(
-          `http://localhost:8080/api/v1/forums/likes/${userId}`
+          `${API_URL}/forums/likes/${userId}`
         );
         if (!likesResponse.ok) {
           throw new Error("Network response was not ok");
@@ -53,6 +53,7 @@ function Post() {
         setLikesData(likesData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        
       }
     };
 
@@ -63,7 +64,7 @@ function Post() {
     if (isLoggedIn) {
       try {
         const updatedLikesData = await fetch(
-          `http://localhost:8080/api/v1/forums/${postId}/like`,
+          `${API_URL}/forums/${postId}/like`,
           {
             method: "POST",
             headers: {
@@ -74,16 +75,14 @@ function Post() {
         );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
-          console.log("updatedLikesResponse", updatedLikesResponse);
           const updatedUserLikesResponse = await fetch(
-            `http://localhost:8080/api/v1/forums/likes/${userId}`
+            `${API_URL}/forums/likes/${userId}`
           );
           if (!updatedUserLikesResponse.ok) {
             throw new Error("Network response was not ok");
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
-          console.log("updatedUserLikesData", updatedUserLikesData);
-
+          
           setLikesData(updatedUserLikesData);
 
           setPostData((prevPostData) =>
@@ -144,7 +143,7 @@ function Post() {
             <div className={styles.post__container} key={post.forum_id}>
             <div className={styles.container__image}>
               <img
-                src={`http://localhost:8080${post.avatar}`}
+                src={post.avatar}
                 alt="imagen perfil usuario"
                 width={"54px"}
                 height={"54px"}
@@ -154,12 +153,22 @@ function Post() {
               <div className={styles.user__container}>
                 <div className={styles.content__user}>
                   <p className={styles.user__username}>{post.name}</p>
-                  <Link
-                    to={`/perfil/${parseInt(post.user_id)}`}
-                    className={styles.user__tagname}
-                  >
-                    {post.user_name}
-                  </Link>
+                  {isAuthenticated ? (
+        <Link
+          to={`/perfil/${parseInt(post.user_id)}`}
+          className={styles.user__tagname}
+        >
+          {post.user_name}
+        </Link>
+      ) : (
+        <Link
+          to="/"
+          className={styles.user__tagname}
+          onClick={() => loginWithRedirect()}
+        >
+          {post.user_name}
+        </Link>
+      )}
                   <p className={styles.user__timepost}>5h</p>
                 </div>
               </div>
@@ -201,8 +210,7 @@ function Post() {
           </div>
         ))
       )}
-      {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-    </div>
+      </div>
   );
 }
 

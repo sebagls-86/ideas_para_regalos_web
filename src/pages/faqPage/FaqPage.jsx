@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 import NavBar from "../../modules/navBar/NavBar";
 import styles from "./faqPage.module.css";
 import { Col } from "react-bootstrap";
 
 function FaqPage() {
-  const [user] = useAuthState(auth);
+  const userInfo = localStorage.getItem("userInfo");
   const [tokenExists, setTokenExists] = useState(false);
 
   useEffect(() => {
@@ -18,7 +16,7 @@ function FaqPage() {
 
   return (
     <>
-      {!user && !tokenExists}
+      {!userInfo && !tokenExists}
       <NavBar />
       <div className={styles.container}>
         <div className="">

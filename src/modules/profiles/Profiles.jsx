@@ -43,13 +43,13 @@ function Profiles() {
   const userId = parseInt(user_id);
   const navigate = useNavigate();
   const inputRef = useRef(null);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = `http://localhost:8080/api/v1/profiles/user/${userId}`;
+        let url = `${API_URL}/profiles/user/${userId}`;
 
         const response = await fetch(url, {
           method: "GET",
@@ -93,7 +93,7 @@ function Profiles() {
   useEffect(() => {
     const fetchAvailableInterests = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/interests");
+        const response = await fetch(`${API_URL}/interests`);
         if (response.ok) {
           const data = await response.json();
           setInterests(data.data);
@@ -215,7 +215,7 @@ function Profiles() {
       }
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/profiles/${selectedProfile.profile_id}`,
+        `${API_URL}/profiles/${selectedProfile.profile_id}`,
         {
           method: "PATCH",
           headers: {
@@ -337,7 +337,7 @@ function Profiles() {
       const interestId = interest.interest_id;
 
       const deleteResponse = await fetch(
-        `http://localhost:8080/api/v1/profileInterests/${profile.profile_id}`,
+        `${API_URL}/profileInterests/${profile.profile_id}`,
         {
           method: "DELETE",
           headers: {
@@ -394,7 +394,7 @@ function Profiles() {
   const handleConfirmDeleteProfile = async (profile) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/profiles/${profile.profile_id}`,
+        `${API_URL}/profiles/${profile.profile_id}`,
         {
           method: "DELETE",
           headers: {
@@ -433,7 +433,7 @@ function Profiles() {
     try {
       // Crear el perfil
       const profileResponse = await fetch(
-        "http://localhost:8080/api/v1/profiles",
+        `${API_URL}/profiles`,
         {
           method: "POST",
           headers: {
@@ -460,7 +460,7 @@ function Profiles() {
       } = await profileResponse.json();
 
       const interestsResponse = await fetch(
-        "http://localhost:8080/api/v1/profileInterests",
+        `${API_URL}/profileInterests`,
         {
           method: "POST",
           headers: {
@@ -476,7 +476,7 @@ function Profiles() {
 
       if (!interestsResponse.ok) {
         const deleteProfileResponse = await fetch(
-          `http://localhost:8080/api/v1/profiles/${profile_id}`,
+          `${API_URL}/profiles/${profile_id}`,
           {
             method: "DELETE",
             headers: {
@@ -566,12 +566,6 @@ function Profiles() {
       <NewProfile
         show={showNewProfileModal}
         onHide={() => handleShowNewProfileModal(false)}
-        ageRanges={ageRanges}
-        relationships={relationships}
-        interests={interests}
-        selectedInterests={selectedInterests}
-        setSelectedInterests={setSelectedInterests}
-        handleToggleInterest={handleToggleInterest}
         handleCloseNewProfileModal={handleCloseNewProfileModal}
         handleSaveNewProfile={handleSaveNewProfile}
       />

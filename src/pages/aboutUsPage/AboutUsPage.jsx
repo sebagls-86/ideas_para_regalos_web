@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 import NavBar from "../../modules/navBar/NavBar";
 import styles from "./aboutUsPage.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { Col } from "react-bootstrap";
 
 function AboutUsPage() {
-  const [user] = useAuthState(auth);
   const [tokenExists, setTokenExists] = useState(false);
-
+  const { isAuthenticated } = useAuth0();
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null && token !== undefined) {
@@ -19,7 +18,7 @@ function AboutUsPage() {
 
   return (
     <>
-      {!user && !tokenExists}
+      {!isAuthenticated && !tokenExists}
       <NavBar />
       <div className={styles.banner}></div>
       <Col className={styles.col_content}>

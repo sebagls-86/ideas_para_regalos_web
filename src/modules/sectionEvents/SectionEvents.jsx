@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 export default function SectionEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
   useEffect(() => {
     fetchEvents();
@@ -13,7 +15,7 @@ export default function SectionEvents() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/eventTypes");
+      const response = await fetch(`${API_URL}/eventTypes`);
       if (response.ok) {
         const responseData = await response.json();
         const data = responseData.data || [];
@@ -57,7 +59,7 @@ export default function SectionEvents() {
                 
                 <Link to={`/explorar/eventos/${event.event_type_id}`}>
                   <img
-                    src={`http://localhost:8080${event.image}`}
+                    src={`${URL_IMAGES}${event.image}`}
                     alt="banner"
                     className={styles.eventImage}
                   />

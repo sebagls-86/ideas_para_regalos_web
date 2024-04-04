@@ -1,10 +1,23 @@
 // api.js
 
-const BASE_URL = 'http://localhost:8080/api/v1';
+const API_URL = process.env.REACT_APP_API_URL;
+
+export async function fetchProductsCatalog() {
+  try {
+    const response = await fetch(`${API_URL}/products-catalog`);
+    if (response.ok) {
+      const data = await response.json();
+      return data.data;
+    }
+  } catch (error) {
+    console.error('Error fetching products catalog:', error);
+    throw error;
+  }
+}
 
 export async function fetchAvailableInterests() {
   try {
-    const response = await fetch(`${BASE_URL}/interests`);
+    const response = await fetch(`${API_URL}/interests`);
     if (response.ok) {
       const data = await response.json();
       return data.data;
@@ -17,7 +30,7 @@ export async function fetchAvailableInterests() {
 
 export async function fetchAgeRanges() {
     try {
-      const response = await fetch(`${BASE_URL}/ageRanges`);
+      const response = await fetch(`${API_URL}/age-ranges`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -31,7 +44,7 @@ export async function fetchAgeRanges() {
   
   export async function fetchRelationships() {
     try {
-      const response = await fetch(`${BASE_URL}/relationships`);
+      const response = await fetch(`${API_URL}/relationships`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -45,7 +58,7 @@ export async function fetchAgeRanges() {
 
   export async function fetchEventTypes() {
     try {
-      const response = await fetch(`${BASE_URL}/eventTypes`);
+      const response = await fetch(`${API_URL}/eventTypes`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -59,7 +72,7 @@ export async function fetchAgeRanges() {
 
   export async function fetchGiftsRateSuggestions(ageRangeId, interests) {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/giftsRates/suggestions", {
+      const response = await fetch(`${API_URL}/giftsRates/suggestions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,3 +96,8 @@ export async function fetchAgeRanges() {
   }
   
   
+export function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}

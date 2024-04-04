@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../../modules/nav/Nav";
-import { auth } from "../../utils/firebase";
 import { Col } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Search from "../../components/search/Search";
 import styles from "./nuevoRegaloPage.module.css";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
@@ -15,35 +13,27 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 import SelectButton from "../../components/selectButton/SelectButton";
 import NuevoRegaloForm from "../../modules/nuevoRegaloForm/NuevoRegaloForm";
 import ModalCreateProfile from "../../modules/modalCreateProfile/ModalCreateProfile";
-import jwtDecode from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
-import ModalLogin from "../../modules/modalLogin/ModalLogin";
+import ResponseModal from "../../components/modal/ResponseModal";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function NuevoRegaloPage() {
-  const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
   const [profilesData, setProfilesData] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showNewProfileModal, setShowNewProfileModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [tokenExists, setTokenExists] = useState(false);
-  const [showInput, setShowInput] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showInput] = useState(false);
   const token = localStorage.getItem("token");
-  const decoded = token ? jwtDecode(token) : null;
-  const userId = decoded ? decoded.user_id : null;
+  const {isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    if (decoded === null || decoded === undefined) {
-      setTokenExists(false);
-      setShowInput(true);
-    } else {
-      setTokenExists(true);
-      setShowInput(false);
-    }
-  }, [decoded]);
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;  
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -66,12 +56,12 @@ function NuevoRegaloPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!token) {
-          setShowLoginModal(true); // Abre el modal de inicio de sesión si no hay token
+        if (!isAuthenticated) {
+          handleLogin();
           return;
         }
 
-        let url = `http://localhost:8080/api/v1/profiles/user/${userId}`;
+        let url = `${API_URL}/profiles/user/${userId}`;
 
         const response = await fetch(url, {
           method: "GET",
@@ -110,7 +100,15 @@ function NuevoRegaloPage() {
       }
     };
     fetchData();
-  }, [userId, navigate, token]);
+  }, [userId, navigate, token, isAuthenticated]);
+
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+     } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -118,7 +116,7 @@ function NuevoRegaloPage() {
 
   const handleOptionSelect = (option) => {
     if (option.value === "Open Modal") {
-      setShowNewProfileModal(true); // Abre el modal para 'Crear nuevo'
+      setShowNewProfileModal(true);
     } else {
       setSelectedOption(option);
       setIsOpen(false);
@@ -141,17 +139,108 @@ function NuevoRegaloPage() {
     })),
   ];
 
+  const handleSaveNewProfile = async (newProfile) => {
+    try {
+      // Crear el perfil
+      const profileResponse = await fetch(
+        `${API_URL}/profiles`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            age_range_id: newProfile.age_range_id,
+            last_name: newProfile.last_name,
+            name: newProfile.name,
+            relationship_id: newProfile.relationship_id,
+          }),
+        }
+      );
+
+      if (!profileResponse.ok) {
+        setErrorMessage("Error al crear nuevo perfil");
+        setShowResponseModal(true);
+        throw new Error("Failed to save new profile");
+      }
+
+      const {
+        data: { profile_id },
+      } = await profileResponse.json();
+
+      const interestsResponse = await fetch(
+        `${API_URL}/profileInterests`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            profile_id,
+            interest_id: newProfile.selectedInterests,
+          }),
+        }
+      );
+
+      if (!interestsResponse.ok) {
+        const deleteProfileResponse = await fetch(
+          `${API_URL}/profiles/${profile_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!deleteProfileResponse.ok) {
+          throw new Error("Failed to delete profile");
+        }
+
+        setShowNewProfileModal(false);
+        throw new Error("Failed to save profile interests");
+      }
+
+      setShowNewProfileModal(false);
+      setSuccessMessage("Nuevo perfil guardado con éxito");
+      setShowResponseModal(true);
+      setProfilesData((prevProfilesData) => [
+        ...prevProfilesData,
+        { ...newProfile, profile_id },
+      ]);
+    } catch (error) {
+      setShowNewProfileModal(false);
+      setErrorMessage("Algo falló. Intenta nuevamente más tarde");
+      setShowResponseModal(true);
+    }
+  };
+
  return (
   <>
-    {!user && !tokenExists }
+   <ResponseModal
+        show={showResponseModal}
+        onHide={() => setShowResponseModal(false)}
+        message={successMessage || errorMessage}
+        onConfirm={() => {
+          setShowResponseModal(false);
+          setSuccessMessage(null);
+          setErrorMessage(null);
+        }}
+        confirmButtonText="Aceptar"
+      />
+    {!isAuthenticated && (
+  <Col>
+    <LoginMobile />
+  </Col>
+)}
     <NavBar />
     <div className="contenedor">
-      <div className="left__aside">{(user || tokenExists) && <Nav />}</div>
+      <div className="left__aside">{(isAuthenticated) && <Nav />}</div>
       <div className="content">
         <PageTitle title="Nuevo regalo" />
-        <Col>
-          <LoginMobile />
-        </Col>
         <div className={styles.content}>
           <div className="d-flex gap-5">
             <svg
@@ -161,18 +250,17 @@ function NuevoRegaloPage() {
               viewBox="0 0 54 54"
               fill="none"
             >
-              {/* SVG paths */}
-            </svg>
+              </svg>
             <p>¿Para quién es el regalo?</p>
           </div>
-          {showInput && !tokenExists && (
+          {showInput && !isAuthenticated && (
             <input
               type="text"
               placeholder="Ingrese el nombre de la persona"
-              // Agrega cualquier otra lógica necesaria
+              
             />
           )}
-          {(user || tokenExists) && (
+          {(isAuthenticated) && (
             <div className={styles.select_user_container}>
               <SelectButton
                 label="Elegir persona"
@@ -190,21 +278,18 @@ function NuevoRegaloPage() {
               show={showNewProfileModal}
               onHide={handleCloseModal}
               handleCloseNewProfileModal={handleCloseModal}
+              handleSaveNewProfile={handleSaveNewProfile}
             />
           )}
-          {showLoginModal && (
-            <ModalLogin
-              closeModal={() => setShowLoginModal(false)}
-            />
-          )}
+          
         </div>
         
       </div>
       <aside className="right__aside">
         <div className="container pt-2">
-          {(user || tokenExists) && <Search />}
-          {!(user || tokenExists) && <AsideLogin />}{" "}
-          {(user || tokenExists) && (
+          {(isAuthenticated) && <Search />}
+          {!(isAuthenticated) && <AsideLogin />}{" "}
+          {(isAuthenticated) && (
             <div>
               <EventSnipet />
               <UserSuggestions />

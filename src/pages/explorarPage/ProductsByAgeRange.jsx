@@ -1,54 +1,57 @@
 import React, { useEffect, useState } from "react";
-import Nav from "../../modules/nav/Nav";
 import { useParams } from "react-router-dom";
-import styles from "./explorarPage.module.css";
 import NavBar from "../../modules/navBar/NavBar";
+import Nav from "../../modules/nav/Nav";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
+import { useAuth0 } from "@auth0/auth0-react";
+import styles from "./explorarPage.module.css";
 
-function ProductsByEvent() {
-  const [tokenExists, setTokenExists] = React.useState(false);
-  const { eventId } = useParams();
+function ProductsByAgeRange() {
+  const { ageRangeId } = useParams();
   const [products, setProducts] = useState([]);
-  const [eventName, setEventName] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [loading, setLoading] = useState(true);
-  const userInfo = localStorage.getItem("userInfo");
+  const [tokenExists, setTokenExists] = useState(false);
+  const { isAuthenticated } = useAuth0();
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userInfo = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data) || null;
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   
+
   useEffect(() => {
-    const fetchProductsByEvent = async () => {
+    const fetchProductsByCategory = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/productsCatalogAssociations/events/${eventId}`
+          `${API_URL}/productsCatalogAssociations/age-ranges/${ageRangeId}`
         );
         if (response.ok) {
           const responseData = await response.json();
           const data = responseData.data || [];
           setProducts(data);
-          setEventName(data.length > 0 ? data[0].name : "");
+          setCategoryName(data.length > 0 ? data[0].name : "");
         } else {
           console.error(
-            "Error fetching products by Event:",
+            "Error fetching products by age range:",
             response.statusText
           );
         }
       } catch (error) {
-        console.error("Error fetching products by Event:", error);
+        console.error("Error fetching products by age range:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProductsByEvent();
-  }, [eventId]);
+    fetchProductsByCategory();
+  }, [ageRangeId]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setTokenExists(true);
@@ -57,41 +60,38 @@ function ProductsByEvent() {
     }
   }, []);
 
+
   return (
     <>
-      {!userInfo}
-      <NavBar />
+      {isAuthenticated && <NavBar />}
       <div className="contenedor">
         <div className="left__aside">
-          {(userInfo || tokenExists) && <Nav user={userInfo?.displayName} />}
+          {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
-          <PageTitle title={eventName} />
+          <PageTitle title={categoryName} />
           <div className={styles.card_container}>
-            <div>
-              {loading ? (
-                <p>Loading...</p>
-              ) : (
-                <>
-                  {products.map((product, index) => (
-                    <ProductCard
-                    image={`${URL_IMAGES}/imagenes/product-catalog/${product.image_name}`}
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {products.map((product, index) => (
+                  <ProductCard
+                    key={index}
+                    image={`${URL_IMAGES}/imagenes/products-catalog/${product.image_name}`}
                     name={product.product_name}
                     userId={userId}
                     productId={product.product_catalog_id}
-                  />
-                  ))}
-                </>
-              )}
-            </div>
+                    />
+                ))}
+              </>
+            )}
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {userInfo || tokenExists}
-            {!userInfo && !tokenExists && <AsideLogin />}
-            {(userInfo || tokenExists) && (
-              <div>
+            {isAuthenticated || tokenExists ? (
+              <div className="container pt-2">
                 <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-5 d-flex justify-content-center ">
@@ -102,6 +102,8 @@ function ProductsByEvent() {
                   />
                 </div>
               </div>
+            ) : (
+              <AsideLogin />
             )}
           </div>
         </aside>
@@ -110,4 +112,4 @@ function ProductsByEvent() {
   );
 }
 
-export default ProductsByEvent;
+export default ProductsByAgeRange;

@@ -3,7 +3,7 @@ import Nav from "../../modules/nav/Nav";
 import { Col } from "react-bootstrap";
 import Search from "../../components/search/Search";
 import banner from "../../assets/sv-banner.jpg";
-import styles from "./categoryPage.module.css";
+import styles from "./ageRangePage.module.css";
 import SectionEvents from "../../modules/sectionEvents/SectionEvents";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import NavBar from "../../modules/navBar/NavBar";
@@ -14,7 +14,7 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 
-function CategoryPage() {
+function AgeRangeyPage() {
   const userInfo = localStorage.getItem("userInfo");
   const productos = [
     {
@@ -128,4 +128,4 @@ function CategoryPage() {
   );
 }
 
-export default CategoryPage;
+export default AgeRangeyPage;

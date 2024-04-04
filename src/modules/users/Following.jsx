@@ -2,25 +2,23 @@ import React, { useState, useEffect } from "react";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Search from "../../components/search/Search";
 import styles from './users.module.css'
-import jwtDecode from "jwt-decode";
 
 function Following() {
-  const [following, setFollowing] = useState([]); // Estado para almacenar los usuarios seguidos
-  const [suggestions, setSuggestions] = useState([]); // Estado para almacenar sugerencias de usuarios a seguir
+  const [following, setFollowing] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const userId = decoded.user_id;
+  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;  
 
   useEffect(() => {
     // Obtener usuarios seguidos
-    fetch(`http://localhost:8080/api/v1/relations/following/${userId}`)
+    fetch(`${API_URL}/relations/following/${userId}`)
       .then(response => response.json())
       .then(data => setFollowing(data.data || []))
       .catch(error => console.error("Error fetching following:", error));
 
     // Obtener sugerencias de usuarios a seguir
-    fetch(`http://localhost:8080/api/v1/relations/suggestions/${userId}`)
+    fetch(`${API_URL}/relations/suggestions/${userId}`)
       .then(response => response.json())
       .then(data => setSuggestions(data.data || []))
       .catch(error => console.error("Error fetching suggestions:", error));

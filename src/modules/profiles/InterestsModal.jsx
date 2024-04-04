@@ -17,7 +17,7 @@ function InterestsModal({
   const [isLoading, setIsLoading] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
   const handleSaveInterests = async () => {
@@ -30,7 +30,7 @@ function InterestsModal({
       };
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/profileInterests",
+        `${API_URL}/profileInterests`,
         {
           method: "POST",
           headers: {

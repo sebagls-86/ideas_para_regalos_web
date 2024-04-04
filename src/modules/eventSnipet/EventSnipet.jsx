@@ -5,9 +5,10 @@ import styles from "./eventSnipet.module.css";
 function EventSnipet() {
   const [eventosProximos, setEventosProximos] = useState([]);
   const [error, setError] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/scheduledEvents/upcoming")
+    fetch(`${API_URL}/scheduledEvents/upcoming`)
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -39,7 +40,7 @@ function EventSnipet() {
           <p>No hay eventos disponibles</p>
         ) : (
           eventosProximos.map(event => (
-            <WordsEdges key={event.scheduled_event_id} label={event.event_type_name} to={`/explorar/${event.event_type_name}`} />
+            <WordsEdges key={event.scheduled_event_id} label={event.event_type_name} to={`/explorar/eventos/${event.event_type_id}`} />
           ))
         )}
       </div>

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import logoimg from "../../assets/logoIdeasParaRegalos.png";
 import crearPost from "../../assets/crear__post__nav.svg";
 import NavLinks from "../../components/navLinks/NavLinks";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   AiOutlineCompass,
   AiOutlineUsergroupAdd,
@@ -13,27 +14,21 @@ import {
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import styles from "./nav.module.css";
-import jwtDecode from "jwt-decode";
 
-function Nav() {
-  const [userData, setUserData] = useState(null);
+function Nav({ userData}) {
+
   const navigate = useNavigate();
+  const { logout } = useAuth0();
+  const user_id = userData?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userInfo")
     navigate("/");
     window.location.reload();
   };
   
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUserData(decoded);
-    }
-  }, []);
-
   return (
     <nav className={styles.nav__container}>
       <Link to="/" className={styles.nav__logo}>
@@ -54,7 +49,7 @@ function Nav() {
           icon={<AiOutlineCalendar className=" fw-700 fs-3" />}
         />
         <NavLinks
-          url={`/perfil/${userData?.user_id}`}
+          url={`/perfil/${user_id}`}
           icon={<AiOutlineUser className="fw-700 fs-3" />}
         />
       </ul>
@@ -62,7 +57,10 @@ function Nav() {
         <img src={crearPost} alt="Crear publicación" />
       </Link>
       <div className={styles.logout_icon}>
-        <icon onClick={handleLogout} className="fw-700 fs-3" cursor="pointer">
+        <icon onClick={() => {
+          handleLogout();
+          logout({ logoutParams: { returnTo: window.location.origin } });
+        }} className="fw-700 fs-3" cursor="pointer">
           <AiOutlineLogout className="fw-700 fs-3" />
         </icon>
       </div>

@@ -3,12 +3,12 @@ import styles from "./navBar.module.css";
 import { Link } from "react-router-dom";
 import logoimg from "../../assets/logo_mascota_ipr.svg";
 import logotext from "../../assets/logo_letras_ipr.svg";
-import LoginMobile from "../loginMobile/LoginMobile";
-import ModalLogin from "../modalLogin/ModalLogin";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function NavBar() {
-  const [openModal, setOpenModal] = React.useState(false);
   const [tokenExists, setTokenExists] = React.useState(false);
+  const { isAuthenticated } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,9 +19,7 @@ function NavBar() {
     }
   }, []);
 
-  const openModalHandler = () => {
-    setOpenModal(true);
-  };
+ 
 
   return (
     <nav className={styles.nav}>
@@ -49,9 +47,9 @@ function NavBar() {
                 Nosotros
               </Link>
             </li>
-            {!tokenExists && (
+             {!tokenExists && !isAuthenticated &&(
               <li>
-                <Link onClick={openModalHandler} className={styles.links}>
+                <Link onClick={() => loginWithRedirect({appState: {returnTo: "/"}})} className={styles.links}>
                   Iniciar sesión
                 </Link>
               </li>
@@ -59,12 +57,11 @@ function NavBar() {
 
           </ul>
           <div className={styles.login__container}>
-            {!tokenExists && <LoginMobile setOpenModal={setOpenModal} />}
+          
           </div>
         </div>
       </div>
-      {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-    </nav>
+     </nav>
   );
 }
 

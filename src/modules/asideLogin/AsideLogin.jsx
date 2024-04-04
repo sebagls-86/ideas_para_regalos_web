@@ -1,39 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
-import ModalLogin from "../../modules/modalLogin/ModalLogin";
-import ModalRegister from "../modalRegister/ModalRegister"
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
+import { useAuth0 } from "@auth0/auth0-react";
+import config from "../../auth_config.json";
 
 function AsideLogin() {
-  const [openModal, setOpenModal] = useState(false);
-  const [registerModal, setOpenRegisterModal] = useState(false)
-  const [user] = useAuthState(auth);
+  const [registerModal, setOpenRegisterModal] = useState(false);
+  const { user, loginWithRedirect, getAccessTokenWithPopup } = useAuth0();
+  const domain = config.domain;
+  const API_URL = process.env.REACT_APP_API_URL;
 
-  console.log("registerModal", registerModal)
+  useEffect(() => {
+    if (user) {
+      console.log("Realizando verificación...");
+      verifyToken();
+    }
+  }, [user]);
+
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+     } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
+  const verifyToken = async () => {
+    try {
+      const accessToken = await getAccessTokenWithPopup({
+        audience: `https://${domain}/api/v2/`,
+        scope: "read:current_user",
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({}),
+      };
+
+      const response = await fetch(
+        `${API_URL}/verify`,
+        requestOptions
+      );
+
+      if (response.ok) {
+        console.log("Verificación exitosa");
+      } else {
+        console.error(
+          "Error al realizar la verificación:",
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error al realizar la verificación:", error);
+    }
+  };
+
   if (!user)
     return (
       <>
         <div className="d-flex flex-column gap-3 mt-3">
-         <Button
+          <Button
             label="Registrarse"
             className="btn primary__button"
-            onClick={() => {
-              setOpenRegisterModal(true);
-            }}
+            onClick={() => setOpenRegisterModal(true)}
           />
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
-            onClick={() => {
-              console.log("Abriendo modal...");
-              setOpenModal(true);
-            }}
+            onClick={() => handleLogin()}
           />
-          {openModal && <ModalLogin closeModal={() => setOpenModal(false)} />}
-          {registerModal && <ModalRegister closeModal={() => setOpenRegisterModal(false)} />}
-        </div>
+         </div>
         <div className="d-flex justify-content-center align-items-center gap-5 flex-column flex-xl-row mt-5">
           <Link to="/ayuda" className="fz-17">
             Ayuda

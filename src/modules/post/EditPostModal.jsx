@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { getCookie } from "../api/api";
 
 function EditPostModal({
   show,
@@ -24,6 +25,7 @@ function EditPostModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectToHome, setRedirectToHome] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const token = localStorage.getItem("token");
 
@@ -31,7 +33,7 @@ function EditPostModal({
     const fetchEventTypes = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/eventTypes",
+          `${API_URL}/eventTypes`,
           {
             method: "GET",
             headers: {
@@ -65,7 +67,7 @@ function EditPostModal({
     const fetchProfiles = async () => {
       try {
         if (!selectedPost) return;
-        let url = `http://localhost:8080/api/v1/profiles/user/${selectedPost.data.user_id}`;
+        let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
 
         const response = await fetch(url, {
           method: "GET",
@@ -131,7 +133,7 @@ function EditPostModal({
           event_type_id: selectedEventType.event_type_id,
         });
         const eventResponse = await fetch(
-          `http://localhost:8080/api/v1/events/${selectedPost.data.event_id}`,
+          `${API_URL}/events/${selectedPost.data.event_id}`,
           {
             method: "PATCH",
             headers: {
@@ -167,7 +169,7 @@ function EditPostModal({
         }
 
         const forumResponse = await fetch(
-          `http://localhost:8080/api/v1/forums/${selectedPost.data.forum_id}`,
+          `${API_URL}/forums/${selectedPost.data.forum_id}`,
           {
             method: "PATCH",
             headers: {

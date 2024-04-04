@@ -10,9 +10,6 @@ import { fetchAvailableInterests, fetchAgeRanges, fetchRelationships } from "../
 function ModalCreateProfile({
   show,
   onHide,
-  selectedInterests,
-  setSelectedInterests,
-  handleToggleInterest,
   handleCloseNewProfileModal,
   handleSaveNewProfile,
 }) {
@@ -22,10 +19,13 @@ function ModalCreateProfile({
     selectedAgeRange: "",
     selectedRelationship: "",
   });
+
   const [currentStep, setCurrentStep] = useState(1);
   const [ageRanges, setAgeRanges] = useState([]);
+  const [selectedInterests, setSelectedInterests] = useState([]);
   const [interests, setInterests] = useState([]);
   const [relationships, setRelationships] = useState([]);
+  const [availableInterests, setAvailableInterests] = useState([]);
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [isRelationshipDropdownOpen, setIsRelationshipDropdownOpen] =
     useState(false);
@@ -33,6 +33,42 @@ function ModalCreateProfile({
   const [selectedAgeOption, setSelectedAgeOption] = useState(null);
   const [selectedRelationshipOption, setSelectedRelationshipOption] =
     useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
+
+    useEffect(() => {
+      const fetchAvailableInterests = async () => {
+        try {
+          const response = await fetch(`${API_URL}/interests`);
+          if (response.ok) {
+            const data = await response.json();
+            setInterests(data.data);
+            setAvailableInterests(data.data);
+          }
+        } catch (error) {
+          console.error("Error fetching available interests:", error);
+        }
+      };
+  
+      fetchAvailableInterests();
+    }, []);
+
+    const  handleToggleInterest = (interest) => {
+        const isInterestSelected = selectedInterests.some(
+          (selectedInterest) =>
+            selectedInterest.interest_id === interest.interest_id
+        );
+    
+        if (isInterestSelected) {
+          const updatedInterests = selectedInterests.filter(
+            (selectedInterest) =>
+              selectedInterest.interest_id !== interest.interest_id
+          );
+          setSelectedInterests(updatedInterests);
+        } else {
+          setSelectedInterests([...selectedInterests, interest]);
+        }
+      };
+    
 
     useEffect(() => {
       const fetchData = async () => {
@@ -40,7 +76,7 @@ function ModalCreateProfile({
           const ageRanges = await fetchAgeRanges();
           setAgeRanges(ageRanges);
         } catch (error) {
-          console.error("Error fetching age ranges and relationships:", error);
+          console.error("Error fetching age ranges:", error);
         }
       };
     
@@ -53,7 +89,7 @@ function ModalCreateProfile({
           const relationships = await fetchRelationships();
           setRelationships(relationships);
         } catch (error) {
-          console.error("Error fetching age ranges and relationships:", error);
+          console.error("Error fetching age ranges:", error);
         }
       };
   
@@ -74,7 +110,6 @@ function ModalCreateProfile({
     }, []);
 
   useEffect(() => {
-    console.log("Form state:", form);
     setIsGuardarDisabled(
       !(
         form.name &&
@@ -213,7 +248,7 @@ function ModalCreateProfile({
               recomendaciones.
             </p>
             <div className={styles.scrollable_div}>
-              {interests.map((interest) => (
+              {interests?.map((interest) => (
                 <Button
                   key={interest.interest_id}
                   label={interest.interest}

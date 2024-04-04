@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import styles from "./SectionCategory.module.css";
+import styles from "./SectionAgeRange.module.css";
 import { Link } from "react-router-dom";
 
-export default function SectionCategory() {
-  const [categories, setCategories] = useState([]);
+export default function SectionAgeRange() {
+  const [ageRanges, setAgeRanges] = useState([]);
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-
-  console.log("API URL", API_URL);
-  console.log("IMAGES URL", URL_IMAGES);
-
-
 
   useEffect(() => {
     fetchCategories();
@@ -20,12 +15,12 @@ export default function SectionCategory() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${API_URL}/categories`);
+      const response = await fetch(`${API_URL}/age-ranges`);
       if (response.ok) {
         const responseData = await response.json();
         const data = responseData.data || [];
-        setCategories(data);
-        console.log(URL_IMAGES, data.data.image)
+        setAgeRanges(data);
+        console.log("ageRanges", data);
       } else {
         console.error("Error fetching categories:", response.statusText);
       }
@@ -38,7 +33,7 @@ export default function SectionCategory() {
 
   return (
     <div className={styles.categoryContainer}>
-      <h2 className={styles.title}>Categorías</h2>
+      <h2 className={styles.title}>Rango de edad</h2>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -59,22 +54,22 @@ export default function SectionCategory() {
           loop={true}
           autoplay={{ delay: 3000 }}
         >
-          {categories.map((category, index) => (
+          {ageRanges.map((ageRange, index) => (
             <SwiperSlide key={index}>
               <Link
-                to={`/explorar/categorias/${category.category_id}`}
+                to={`/explorar/rango-edad/${ageRange.age_range_id}`}
                 className={styles.categoryLink}
               >
-                {category.image ? (
+                {ageRange.image ? (
                   <img
-                    src={`${URL_IMAGES}${category.image}`}
+                    src={`${URL_IMAGES}${ageRange.image}`}
                     alt="banner"
                     className={styles.categoryImage}
                   />
                 ) : (
                   <div className={styles.placeholder}></div>
                 )}
-                <h3>{category.name}</h3>
+                <h3>{ageRange.name}</h3>
               </Link>
             </SwiperSlide>
           ))}

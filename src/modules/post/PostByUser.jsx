@@ -6,7 +6,6 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
-import jwtDecode from "jwt-decode";
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -19,14 +18,14 @@ function PostByUser() {
   const userId = parseInt(user_id);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const tokenUserId = decoded.user_id;
+  const tokenUserId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/forums/user/${userId}`
+          `${API_URL}/forums/user/${userId}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -59,10 +58,10 @@ function PostByUser() {
     setShowDeleteOption(!showDeleteOption);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (post) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/forums/${postData.forumId}`,
+        `${API_URL}/forums/${post.forum_id}`,
         {
           method: "DELETE",
           headers: {
@@ -73,8 +72,7 @@ function PostByUser() {
       );
       if (response.ok) {
         window.location.reload();
-        console.log("Eliminado correctamente");
-      } else {
+        } else {
         console.error("Error al eliminar");
       }
     } catch (error) {
@@ -85,7 +83,7 @@ function PostByUser() {
   const handleEdit = async (post) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/forums/${post.forum_id}`
+        `${API_URL}/forums/${post.forum_id}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -125,7 +123,7 @@ function PostByUser() {
           <div key={post.forum_id} className={styles.post__container}>
             <div className={styles.container__image}>
               <img
-                src={`http://localhost:8080/images/users/${post.avatar}`}
+                src={post.avatar}
                 alt="imagen perfil usuario"
                 width={"54px"}
                 height={"54px"}
@@ -158,7 +156,7 @@ function PostByUser() {
                         <Button variant="link" onClick={() => handleEdit(post)}>
                           Editar
                         </Button>
-                        <Button variant="link" onClick={handleDelete}>
+                        <Button variant="link" onClick={() => handleDelete(post)}>
                           Borrar
                         </Button>
                       </>

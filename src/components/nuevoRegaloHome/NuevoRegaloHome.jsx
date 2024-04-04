@@ -1,15 +1,11 @@
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 import Form from "react-bootstrap/Form";
 import styles from "./nuevoRegaloHome.module.css";
 import MyIcon from "../myIcon/MyIcon";
 import { Link } from "react-router-dom";
-import Button from "../button/Button";
 import Links from "../link/Links";
 
 function NuevoRegaloHome() {
-  const [user] = useAuthState(auth);
   return (
     <>
       <div className={styles.nuevoRegaloContainer}>

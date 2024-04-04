@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./css/componentesPage.module.css";
 import { Col, Container, Row } from "react-bootstrap";
-import ModalLogin from "../../modules/modalLogin/ModalLogin";
 import Button from "../../components/button/Button";
 import NavBar from "../../modules/navBar/NavBar";
 function ComponentesPage() {
@@ -50,8 +49,7 @@ function ComponentesPage() {
               className="btn primary__button"
               onClick={() => setOpenModal(true)}
             />
-            {openModal && <ModalLogin closeModal={setOpenModal} />}
-          </Col>
+            </Col>
         </Row>
       </Container>
 
