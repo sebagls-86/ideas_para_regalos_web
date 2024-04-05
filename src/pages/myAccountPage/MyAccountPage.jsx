@@ -293,7 +293,7 @@ function MyAccountPage({ userInfo }) {
             >
               <div className={styles.profile_info_container}>
                 <h4>{userData.name}</h4>
-                <p>{userData.user_name}</p>
+                <p>@{userData.user_name}</p>
                 <p>{userData.birth_date}</p>
               </div>
               {userId !== user__id ? (

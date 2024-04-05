@@ -29,7 +29,7 @@ function ProfileNav({ userData}) {
           className={styles.profileNav}
         >
           <Tab eventKey="publicaciones" title="Publicaciones">
-            <div className="p-3">
+            <div>
               <PostByUser user_id={user__id} />
             </div>
           </Tab>

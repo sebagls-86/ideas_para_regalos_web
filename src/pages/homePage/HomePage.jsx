@@ -258,7 +258,7 @@ function HomePage() {
         <div className="content">
           <PageTitle title="Inicio" />
           <NuevoRegaloHome />
-          <div className="mt-3 p-3 bordes-y">
+          <div className="mt-3 bordes-y">
             <Post userInfo={userInfo?.data} />
           </div>
         </div>

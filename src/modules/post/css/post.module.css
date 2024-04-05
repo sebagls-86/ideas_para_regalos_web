@@ -1,6 +1,5 @@
 .post__container{
-    padding-top: var(--fz-30);
-    padding-bottom: var(--fz-25);
+   padding: 2rem;
     display: flex;
 
 }
