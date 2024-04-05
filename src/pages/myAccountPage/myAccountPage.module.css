@@ -15,6 +15,9 @@
   transform: translateX(-0%) translateY(-0%);
   cursor: pointer;
 }
+.name{
+  font-weight: 800;
+}
 
 .button__container {
   display: flex;

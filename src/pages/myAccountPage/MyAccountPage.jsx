@@ -292,7 +292,7 @@ function MyAccountPage({ userInfo }) {
               }}
             >
               <div className={styles.profile_info_container}>
-                <h4>{userData.name}</h4>
+                <h4 className={styles.name}>{userData.name}</h4>
                 <p>@{userData.user_name}</p>
                 <p>{userData.birth_date}</p>
               </div>

@@ -142,7 +142,7 @@ function PostByUser() {
                     to={`/perfil/${parseInt(post.user_id)}`}
                     className={styles.user__tagname}
                   >
-                    {post.user_name}
+                    @{post.user_name}
                   </Link>
                   <p className={styles.user__timepost}>5h</p>
                 </div>
