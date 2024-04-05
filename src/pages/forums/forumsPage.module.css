@@ -2,17 +2,27 @@
   width: 100%;
   cursor: pointer;
 }
+.user_info{
+  display: flex;
+  gap: 10px;
+  margin-top: 90px;
+  
+}
+.forum_content{
+  margin-left: 5.65625rem;
+}
+
+.name{
+  font-weight: 800;
+}
 
 .profile_picture {
-  width: 165px;
-  height: 165px;
-  margin-top: -8%;
+  width: 60px;
+  height: 60px;
   margin-left: 3%;
-  border: 8px solid white;
+  /*border: 8px solid white;*/
   border-radius: 100px;
-  background-color: green;
   margin-bottom: 12px;
-  transform: translateX(-0%) translateY(-0%);
   cursor: pointer;
 }
 
@@ -40,29 +50,45 @@
   border-radius: 8px;
   padding: 20px;
   }
+  .message{
+    display: flex;
+    gap: 1rem;
+  }
+  .comment_action{
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid  #ccc;
+    border-bottom: 1px solid  #ccc;
+    position: relative;
+  }
 
   .text_area{
-    width: "100%";
-    padding: "10px";
-    border-radius: "8px";
-    border: "1px solid #ccc";
-    margin-bottom: "10px";
-    resize: "none";
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 10px;
+    resize: none;
+   
+    
     }
 
   .send_button{
-    border: "none";
-    border-radius: "20px";
-    background-color: "green";
-    color: "white";
-    padding: "10px 20px";
-    cursor: "pointer";
-    font-weight: "bold";
+    border: none;
+    border-radius: 20px;
+    background-color: var(--primary-dark);
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .forum_title {
     font-size: 24px;
-    margin-top: 6rem;
     margin-bottom: 10px;
   }
   
@@ -75,6 +101,11 @@
     font-size: 16px;
     margin-bottom: 10px;
   }
+  .forum_interests{
+    display: flex;
+    gap: 10px;
+    font-size: var(--fz-12);
+  }
   
   .forum_message {
     font-size: 14px;
@@ -82,10 +113,8 @@
   }
 
   .forum_message_item {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 20px;
+    border-top: 1px solid #ccc;
+  padding: 1rem 0;
   }
   
   .forum_username,
@@ -115,11 +144,11 @@
   
   }
 
-  .forum_title_container,
+  .forum_container,
 .forum_description_container {
   position: relative;
   margin-bottom: 20px; 
-  margin-top: 10rem;
+  margin-top: 90px;
 }
 
 .edit_button_container {

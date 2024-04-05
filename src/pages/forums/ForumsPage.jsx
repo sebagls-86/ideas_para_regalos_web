@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import { Col, Button, Modal } from "react-bootstrap";
+import { Row, Button, Modal } from "react-bootstrap";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
@@ -186,7 +186,7 @@ function ForumsPage() {
   const confirmDeleteMessage = (message) => {
     setMessageToDelete(message);
     setShowDeleteModal(true);
-    };
+  };
 
   const cancelDeleteMessage = () => {
     setShowDeleteModal(false);
@@ -413,46 +413,43 @@ function ForumsPage() {
 
           {forumData && forumData.data && (
             <>
-              <div>
-                <div className={styles.forum_title_container}>
-                  <div className={styles.user_info}>
-                    <img
-                      src={forumData.data.avatar}
-                      alt="avatar"
-                      width={"100px"}
-                      height={"100px"}
-                      className={styles.profile_picture}
-                    />
-                    <Col>
-                      <p> nombre: {forumData.data.name}</p>
-                      <p> username: {forumData.data.user_name}</p>
-                    </Col>
-                  </div>
-                  <p className={styles.forum_title}>{forumData.data.title}</p>
-                  {userId &&
-                    userId === forumData.data.user_id &&
-                    forumData.data.status === 1 && (
-                      <div className={styles.edit_button_container}>
-                        <Button onClick={() => handleEdit(forumData.data)}>
-                          Editar
-                        </Button>
-                      </div>
-                    )}
+              <div className={styles.user_info}>
+                <img
+                  src={forumData.data.avatar}
+                  alt="avatar"
+                  className={styles.profile_picture}
+                />
+
+                <div>
+                  <p className={styles.name}>{forumData.data.name}</p>
+                  <p>@{forumData.data.user_name}</p>
                 </div>
+              </div>
+              <div className={styles.forum_content}>
+                <p className={styles.forum_title}>{forumData.data.title}</p>
+
+                <ul className={styles.forum_interests}>
+                  {forumData.data.profile.interests.map((interest) => (
+                    <li key={interest.interest_id}>{interest.interest}</li>
+                  ))}
+                </ul>
+                {userId &&
+                  userId === forumData.data.user_id &&
+                  forumData.data.status === 1 && (
+                    <div className={styles.edit_button_container}>
+                      <Button onClick={() => handleEdit(forumData.data)}>
+                        Editar
+                      </Button>
+                    </div>
+                  )}
+
                 <p className={styles.forum_description}>
                   {forumData.data.description}
                 </p>
-                <div>
-                  <p> Regalo para: {forumData.data.profile.name}</p>
-                  <p> Rango de Edad: {forumData.data.profile.age_range} </p>
-                  <p> Relacion: {forumData.data.profile.relationship} </p>
-                  <p>Intereses:</p>
-                  <ul>
-                    {forumData.data.profile.interests.map((interest) => (
-                      <li key={interest.interest_id}>{interest.interest}</li>
-                    ))}
-                  </ul>
-                </div>
+
+                <p> Regalo para: {forumData.data.profile.name}</p>
+                <p> Rango de Edad: {forumData.data.profile.age_range} </p>
+                <p> Relacion: {forumData.data.profile.relationship} </p>
 
                 <div
                   className={styles.actions__content}
@@ -472,6 +469,7 @@ function ForumsPage() {
                   </span>
                 </div>
               </div>
+
               {forumData &&
                 forumData.data &&
                 forumData.data.messages &&
@@ -534,13 +532,24 @@ function ForumsPage() {
                           </div>
                         ) : (
                           <>
+                          <div className={styles.message}>
+                            <img
+                              src={message.avatar}
+                              alt="avatar"
+                              className={styles.profile_picture}
+                            />
+                            <div>
+                            <p className={styles.name}>
+                              {message.name}
+                            </p>
+                            <p className={styles.forum_username}>
+                              @{message.user_name}
+                            </p>
                             <p className={styles.forum_message}>
                               {message.message}
                             </p>
-                            <p className={styles.forum_username}>
-                              {message.user_name}
-                            </p>
                             <p className={styles.forum_date}>{message.date}</p>
+                            </div>
                             {message.image &&
                               Array.isArray(message.image) &&
                               message.image.length > 0 && (
@@ -556,8 +565,11 @@ function ForumsPage() {
                                       }}
                                     />
                                   ))}
+                                  
                                 </div>
+                                
                               )}
+                              </div>
                             {userData &&
                               message.user_id === userData.user_id && (
                                 <div>
@@ -610,15 +622,28 @@ function ForumsPage() {
             forumData.data &&
             forumData.data.status === 1 && (
               <div style={{ marginTop: "20px" }}>
-                <textarea
-                  className={styles.text_area}
-                  rows="4"
-                  cols="50"
-                  placeholder="Escribe tu mensaje..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                ></textarea>
-                <br />
+                <div className={styles.comment_action}>
+                  <img
+                    src={forumData.data.avatar}
+                    alt="avatar"
+                    className={styles.profile_picture}
+                  />
+                  <textarea
+                    className={styles.text_area}
+                    rows="4"
+                    cols="50"
+                    placeholder="Comentar"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  ></textarea>
+                      <Button
+                  className={styles.send_button}
+                  onClick={handleSendMessage}
+                >
+                  Enviar
+                </Button>
+                </div>
+
                 <input
                   type="file"
                   accept="image/*"
@@ -627,7 +652,7 @@ function ForumsPage() {
                   onChange={handleImageChange}
                 />
                 <div>
-                  <Button className={styles.send_button} onClick={addImage}>
+                  <Button className={styles} onClick={addImage}>
                     Agregar Imagen
                   </Button>
                   {imageFiles.map((file, index) => (
@@ -647,12 +672,7 @@ function ForumsPage() {
                     </div>
                   ))}
                 </div>
-                <Button
-                  className={styles.send_button}
-                  onClick={handleSendMessage}
-                >
-                  Enviar
-                </Button>
+              
               </div>
             )}
         </div>
