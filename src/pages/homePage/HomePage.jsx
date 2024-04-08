@@ -99,10 +99,15 @@ function HomePage() {
               },
             });
           } else {
-            newAccessToken = await getAccessTokenSilently();
-          }
+            newAccessToken = await getAccessTokenSilently({
+              authorizationParams: {
+                audience: audience,
+                scope: "read:current_user",
+              },
+            });
 
           console.log("newAccessToken", newAccessToken);
+          }
 
           setAccessToken(newAccessToken);
           localStorage.setItem("token", newAccessToken);
