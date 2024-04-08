@@ -56,6 +56,8 @@ function WishList() {
     const API_URL = process.env.REACT_APP_API_URL;
     const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
+    console.log(config.meli_redirect_uri)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
