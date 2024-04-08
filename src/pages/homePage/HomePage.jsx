@@ -91,16 +91,16 @@ function HomePage() {
           setLoading(true);
 
           let newAccessToken;
-          if (process.env.NODE_ENV === "development") {
+          // if (process.env.NODE_ENV === "development") {
             newAccessToken = await getAccessTokenWithPopup({
               authorizationParams: {
                 audience: audience,
                 scope: "read:current_user",
               },
             });
-          } else {
-            newAccessToken = await getAccessTokenSilently();
-          }
+          // } else {
+          //   newAccessToken = await getAccessTokenSilently();
+          // }
 
           console.log("newAccessToken", newAccessToken);
 
