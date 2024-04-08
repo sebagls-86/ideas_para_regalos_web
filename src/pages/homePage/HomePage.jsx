@@ -34,18 +34,18 @@ function HomePage() {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-
-    console.log('code', code);
-
-    if (code) {
-      setLoading(true);
-
-      window.location.href = `/perfil/${userInfo?.data?.user_id}`;
-      fetchBackend(code);
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+  
+      console.log('code', code);
+  
+      if (code && code.startsWith('TG')) {
+        setLoading(true);
+  
+        window.location.href = `/perfil/${userInfo?.data?.user_id}`;
+        fetchBackend(code);
+      }
     }
-  }
   }, []);
 
   const fetchBackend = async (code) => {
