@@ -32,8 +32,6 @@ function HomePage() {
   const FRONT_URL = process.env.REACT_APP_FRONT_URL;
 
 
-
-
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
     const urlParams = new URLSearchParams(window.location.search);
@@ -44,7 +42,7 @@ function HomePage() {
     if (code) {
       setLoading(true);
 
-      window.location.href = `${FRONT_URL}/perfil/${userInfo?.data?.user_id}`;
+      window.location.href = `/perfil/${userInfo?.data?.user_id}`;
       fetchBackend(code);
     }
   }
