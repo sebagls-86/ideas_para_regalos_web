@@ -1,21 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { useAuth0 } from "@auth0/auth0-react";
-import config from "../../auth_config.json";
 
 function AsideLogin() {
-  const [registerModal, setOpenRegisterModal] = useState(false);
-  const { user, loginWithRedirect, getAccessTokenWithPopup } = useAuth0();
-  const domain = config.domain;
-  const API_URL = process.env.REACT_APP_API_URL;
-
-  useEffect(() => {
-    if (user) {
-      console.log("Realizando verificación...");
-      verifyToken();
-    }
-  }, [user]);
+  const { user, loginWithRedirect } = useAuth0();
 
   const handleLogin = async () => {
     try {
@@ -25,37 +14,11 @@ function AsideLogin() {
     }
   };
 
-  const verifyToken = async () => {
+  const handleRegister = async () => {
     try {
-      const accessToken = await getAccessTokenWithPopup({
-        audience: `https://${domain}/api/v2/`,
-        scope: "read:current_user",
-      });
-
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({}),
-      };
-
-      const response = await fetch(
-        `${API_URL}/verify`,
-        requestOptions
-      );
-
-      if (response.ok) {
-        console.log("Verificación exitosa");
-      } else {
-        console.error(
-          "Error al realizar la verificación:",
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Error al realizar la verificación:", error);
+      await loginWithRedirect({ appState: { returnTo: "/" }, authorizationParams:{screen_hint: "signup"} });
+     } catch (error) {
+      console.error("Error al iniciar sesión:", error);
     }
   };
 
@@ -66,7 +29,7 @@ function AsideLogin() {
           <Button
             label="Registrarse"
             className="btn primary__button"
-            onClick={() => setOpenRegisterModal(true)}
+            onClick={() => handleRegister()}
           />
           <Button
             label="Iniciar sesión"
