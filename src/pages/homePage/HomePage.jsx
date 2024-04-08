@@ -90,16 +90,8 @@ function HomePage() {
         ) {
           setLoading(true);
 
-          // const newAccessToken = await getAccessTokenWithPopup({
-          //       authorizationParams: {
-          //         audience: audience,
-          //         scope: "read:current_user",
-          //       },
-          //     });
-
           let newAccessToken;
           if (process.env.NODE_ENV === "development") {
-            console.log("audience", audience)
             newAccessToken = await getAccessTokenWithPopup({
               authorizationParams: {
                 audience: audience,
@@ -107,10 +99,9 @@ function HomePage() {
               },
             });
           } else {
-            console.log("audience silently", audience)
             newAccessToken = await getAccessTokenSilently({
               audience: audience,
-              scope: "read:current_user",
+              scope: "openid profile email",
             });
           }
 
