@@ -54,7 +54,8 @@ function HomePage() {
       const response = await fetch(`${API_URL}/integration/meli/code=${code}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${storedToken}`,
         },
         body: JSON.stringify({ code })
       });
