@@ -99,10 +99,7 @@ function HomePage() {
               },
             });
           } else {
-            newAccessToken = await getAccessTokenSilently({
-              audience: "http://localhost:8080/api/v1/",
-              scope: "read:current_user",
-            });
+            newAccessToken = await getAccessTokenSilently();
           }
 
           console.log("newAccessToken", newAccessToken);
