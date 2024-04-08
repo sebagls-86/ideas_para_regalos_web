@@ -136,12 +136,14 @@ function HomePage() {
             verifyUserCompleted = true;
             clearTimeout(timeoutId);
           } catch (error) {
+            localStorage.removeItem("token")
             setLoading(false);
             logout();
           }
         }
       } catch (error) {
         setLoading(false);
+        localStorage.removeItem("token")
         logout();
       }
     };
