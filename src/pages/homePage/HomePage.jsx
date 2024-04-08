@@ -28,6 +28,7 @@ function HomePage() {
   const audience = config.audience;
   const storedToken = localStorage.getItem("token");
   const storedUserInfo = localStorage.getItem("userInfo");
+  const userId = storedUserInfo?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
   const API_URL = process.env.REACT_APP_API_URL;
   const FRONT_URL = process.env.REACT_APP_FRONT_URL;
 
@@ -42,7 +43,7 @@ function HomePage() {
       if (code && code.startsWith('TG')) {
         setLoading(true);
   
-        window.location.href = `/perfil/${userInfo?.data?.user_id}`;
+        window.location.href = `/perfil/${userId}`;
         fetchBackend(code);
       }
     }
