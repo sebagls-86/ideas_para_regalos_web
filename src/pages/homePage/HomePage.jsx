@@ -168,6 +168,10 @@ function HomePage() {
         }
       );
 
+      if (verifyResponse.status === 401) {
+        throw new Error("unauthorized user")
+      }
+
       if (!verifyResponse.ok) {
         throw new Error("Failed to verify user");
       }
