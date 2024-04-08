@@ -8,7 +8,7 @@ export function getConfig() {
   // with the audience.
   const audience =
     config.audience &&
-    config.audience !== "http://localhost:8080/api/v1"
+    config.audience !== "http://localhost:8080/api/v1/"
       ? config.audience
       : null;
 
