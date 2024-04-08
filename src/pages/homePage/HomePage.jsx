@@ -100,8 +100,8 @@ function HomePage() {
             });
           } else {
             newAccessToken = await getAccessTokenSilently({
-              audience: audience,
-              scope: "openid profile email",
+              audience: "http://localhost:8080/api/v1/",
+              scope: "read:current_user",
             });
           }
 
