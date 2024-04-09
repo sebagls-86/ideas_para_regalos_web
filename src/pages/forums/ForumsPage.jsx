@@ -436,7 +436,7 @@ function ForumsPage() {
                 {userId &&
                   userId === forumData.data.user_id &&
                   forumData.data.status === 1 && (
-                    <div className={styles.edit_button_container}>
+                    <div className={styles.edit_post_button}>
                       <Button onClick={() => handleEdit(forumData.data)}>
                         Editar
                       </Button>
@@ -532,44 +532,42 @@ function ForumsPage() {
                           </div>
                         ) : (
                           <>
-                          <div className={styles.message}>
-                            <img
-                              src={message.avatar}
-                              alt="avatar"
-                              className={styles.profile_picture}
-                            />
-                            <div>
-                            <p className={styles.name}>
-                              {message.name}
-                            </p>
-                            <p className={styles.forum_username}>
-                              @{message.user_name}
-                            </p>
-                            <p className={styles.forum_message}>
-                              {message.message}
-                            </p>
-                            <p className={styles.forum_date}>{message.date}</p>
-                            </div>
-                            {message.image &&
-                              Array.isArray(message.image) &&
-                              message.image.length > 0 && (
-                                <div>
-                                  {message.image.map((img, index) => (
-                                    <img
-                                      key={index}
-                                      src={`http://localhost:8080/images/messages/${img}`}
-                                      alt={`Imagen ${index}`}
-                                      style={{
-                                        maxWidth: "100px",
-                                        maxHeight: "100px",
-                                      }}
-                                    />
-                                  ))}
-                                  
-                                </div>
-                                
-                              )}
+                            <div className={styles.message}>
+                              <img
+                                src={message.avatar}
+                                alt="avatar"
+                                className={styles.profile_picture}
+                              />
+                              <div>
+                                <p className={styles.name}>{message.name}</p>
+                                <p className={styles.forum_username}>
+                                  @{message.user_name}
+                                </p>
+                                <p className={styles.forum_message}>
+                                  {message.message}
+                                </p>
+                                <p className={styles.forum_date}>
+                                  {message.date}
+                                </p>
                               </div>
+                              {message.image &&
+                                Array.isArray(message.image) &&
+                                message.image.length > 0 && (
+                                  <div>
+                                    {message.image.map((img, index) => (
+                                      <img
+                                        key={index}
+                                        src={`http://localhost:8080/images/messages/${img}`}
+                                        alt={`Imagen ${index}`}
+                                        style={{
+                                          maxWidth: "100px",
+                                          maxHeight: "100px",
+                                        }}
+                                      />
+                                    ))}
+                                  </div>
+                                )}
+                            </div>
                             {userData &&
                               message.user_id === userData.user_id && (
                                 <div>
@@ -624,7 +622,7 @@ function ForumsPage() {
               <div style={{ marginTop: "20px" }}>
                 <div className={styles.comment_action}>
                   <img
-                    src={forumData.data.avatar}
+                    src={userInfo.data.avatar}
                     alt="avatar"
                     className={styles.profile_picture}
                   />
@@ -636,15 +634,7 @@ function ForumsPage() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   ></textarea>
-                      <Button
-                  className={styles.send_button}
-                  onClick={handleSendMessage}
-                >
-                  Enviar
-                </Button>
-                </div>
-
-                <input
+                    <input
                   type="file"
                   accept="image/*"
                   style={{ display: "none" }}
@@ -652,7 +642,7 @@ function ForumsPage() {
                   onChange={handleImageChange}
                 />
                 <div>
-                  <Button className={styles} onClick={addImage}>
+                  <Button className={styles.attach_img} onClick={addImage}>
                     Agregar Imagen
                   </Button>
                   {imageFiles.map((file, index) => (
@@ -672,6 +662,14 @@ function ForumsPage() {
                     </div>
                   ))}
                 </div>
+                  <Button
+                    className={styles.send_button}
+                    onClick={handleSendMessage}
+                  >
+                    Enviar
+                  </Button>
+                </div>
+
               
               </div>
             )}

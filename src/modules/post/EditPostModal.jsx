@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
-import { getCookie } from "../api/api";
 
 function EditPostModal({
   show,
@@ -63,51 +62,53 @@ function EditPostModal({
     }
   }, [selectedPost, eventTypes]);
 
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        if (!selectedPost) return;
-        let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
-
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          const responseBody = await response.text();
-          if (responseBody.includes("invalid token")) {
-            setErrorMessage(
-              "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
-            );
-            localStorage.removeItem("token");
-            setShowResponseModal(true);
-            setRedirectToHome(true);
-            return;
-          } else {
-            setErrorMessage("Error al obtener perfiles");
-            setShowResponseModal(true);
-            return;
-          }
+  const fetchProfiles = async (selectedPost) => {
+    try {
+      if (!selectedPost) return;
+  
+      let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
+  
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        const responseBody = await response.text();
+        if (responseBody.includes("invalid token")) {
+          setErrorMessage(
+            "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
+          );
+          localStorage.removeItem("token");
+          setShowResponseModal(true);
+          setRedirectToHome(true);
+          return;
+        } else {
+          setErrorMessage("Error al obtener perfiles");
+          setShowResponseModal(true);
+          return;
         }
-
-        const data = await response.json();
-        setProfiles(data.data);
-        setIsLoading(false);
-
-        if (selectedPost.data.profile.profile_id) {
-          setSelectedProfileId(selectedPost.data.profile.profile_id);
-        }
-      } catch (error) {
-        setIsLoading(false);
       }
-    };
-
-    fetchProfiles();
-  }, [selectedPost, token, navigate]);
+  
+      const data = await response.json();
+      setProfiles(data.data);
+      setIsLoading(false);
+  
+      if (selectedPost.data.profile.profile_id) {
+        setSelectedProfileId(selectedPost.data.profile.profile_id);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error fetching profiles:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchProfiles(selectedPost);
+  }, []);
 
   const handleEventTypeChange = (eventTypeId) => {
     const selectedEventType = eventTypes.find(
