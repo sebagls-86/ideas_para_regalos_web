@@ -53,17 +53,15 @@ function WishList() {
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
 
-    const API_URL = process.env.REACT_APP_API_URL;
-    const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
-    console.log(config.meli_redirect_uri)
+  console.log(config.meli_redirect_uri);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/lists/user/${userId}`
-        );
+        const response = await fetch(`${API_URL}/lists/user/${userId}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -116,9 +114,7 @@ function WishList() {
         }
 
         // Si la carpeta seleccionada no es "MercadoLibre", realizar la solicitud habitual
-        const response = await fetch(
-          `${API_URL}/lists/user/${userId}`
-        );
+        const response = await fetch(`${API_URL}/lists/user/${userId}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -156,9 +152,7 @@ function WishList() {
   useEffect(() => {
     const fetchProductsCatalog = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/products-catalog`
-        );
+        const response = await fetch(`${API_URL}/products-catalog`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -175,9 +169,7 @@ function WishList() {
 
   const handleEdit = async (list) => {
     try {
-      const response = await fetch(
-        `${API_URL}/lists/${list.list_id}`
-      );
+      const response = await fetch(`${API_URL}/lists/${list.list_id}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -189,22 +181,32 @@ function WishList() {
   };
 
   const handleDeleteList = (list) => {
-    setListToRemove(list);
-    setShowDeleteListConfirmationModal(true);
+    // Verificar si el nombre de la lista es "favorites" o "MercadoLibre"
+    if (list.list_name === "favorites" || list.list_name === "MercadoLibre") {
+      setErrorMessage("No se puede eliminar esta lista");
+      setShowResponseModal(true);
+    } else {
+      setListToRemove(list);
+      setShowDeleteListConfirmationModal(true);
+    }
   };
 
-  const handleDelete = async (listId) => {
+  const handleDelete = async (listId, listName) => {
     try {
-      const response = await fetch(
-        `${API_URL}/lists/${listId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      // Verificar si el nombre de la lista es "favorites" o "MercadoLibre"
+      if (listName === "favorites" || listName === "MercadoLibre") {
+        setErrorMessage("No se puede eliminar esta lista");
+        setShowResponseModal(true);
+        return; // Salir de la función sin realizar la eliminación
+      }
+
+      const response = await fetch(`${API_URL}/lists/${listId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.ok) {
         setSuccessMessage("Lista eliminada correctamente");
         const updatedListData = listData.filter(
@@ -265,7 +267,6 @@ function WishList() {
         }
       );
 
-      
       if (response.ok) {
         setSuccessMessage("Producto eliminado correctamente");
         const updatedListData = listData.map((listItem) => {
@@ -338,7 +339,6 @@ function WishList() {
 
   const updateListsWithNewProducts = (listId, newProducts) => {
     const updatedListData = listData.map((list) => {
-      
       if (list.list_id === listId) {
         const updatedProducts = [
           ...list.products,
@@ -365,17 +365,14 @@ function WishList() {
 
   const handleSaveEditListName = async (list) => {
     try {
-      const response = await fetch(
-        `${API_URL}/lists/${list.list_id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ list_name: editedListName }),
-        }
-      );
+      const response = await fetch(`${API_URL}/lists/${list.list_id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ list_name: editedListName }),
+      });
       if (response.ok) {
         alert("Nombre de lista actualizado correctamente");
         const updatedListData = listData.map((listItem) => {
@@ -520,24 +517,22 @@ function WishList() {
                   className={styles.go_back_button}
                 ></Button>{" "}
               </div>
-              <p className={styles.user__username_product}>
-                         MercadoLibre
-                        </p>
+              <p className={styles.user__username_product}>MercadoLibre</p>
               {/* Renderizar los favoritos de MercadoLibre */}
               <div className={styles.meli_cards_container}>
-              {meliFavoritesData.map((favorite, index) => (
-                <div key={index} className={styles.meli_card}>
-                  <img
-                    src={favorite.picture}
-                    alt={favorite.name}
-                    className={styles.product_image}
-                  />
-                  <p className={styles.product_name}>{favorite.name}</p>
-                </div>
+                {meliFavoritesData.map((favorite, index) => (
+                  <div key={index} className={styles.meli_card}>
+                    <img
+                      src={favorite.picture}
+                      alt={favorite.name}
+                      className={styles.product_image}
+                    />
+                    <p className={styles.product_name}>{favorite.name}</p>
+                  </div>
                 ))}
-                </div>
+              </div>
             </div>
-           ) : (
+          ) : (
             <div>
               <div className={styles.edit_buttons}>
                 <Button
