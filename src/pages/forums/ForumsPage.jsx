@@ -16,6 +16,9 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Widgets } from "@mui/icons-material";
+import { IoClose } from "react-icons/io5";
+import { RiImageAddFill } from "react-icons/ri";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -428,7 +431,10 @@ function ForumsPage() {
               <div className={styles.forum_content}>
                 <p className={styles.forum_title}>{forumData.data.title}</p>
 
-                <ul className={styles.forum_interests}>
+                <ul className={styles.forum_tags}>
+                  <li>{forumData.data.profile.name}</li>
+                  <li> {forumData.data.profile.relationship} </li>
+                  <li> {forumData.data.profile.age_range} </li>
                   {forumData.data.profile.interests.map((interest) => (
                     <li key={interest.interest_id}>{interest.interest}</li>
                   ))}
@@ -446,10 +452,6 @@ function ForumsPage() {
                 <p className={styles.forum_description}>
                   {forumData.data.description}
                 </p>
-
-                <p> Regalo para: {forumData.data.profile.name}</p>
-                <p> Rango de Edad: {forumData.data.profile.age_range} </p>
-                <p> Relacion: {forumData.data.profile.relationship} </p>
 
                 <div
                   className={styles.actions__content}
@@ -474,7 +476,7 @@ function ForumsPage() {
                 forumData.data &&
                 forumData.data.messages &&
                 forumData.data.status === 1 && (
-                  <ul>
+                  <ul style={{ marginBottom: '0'}}>
                     {forumData.data.messages.map((message) => (
                       <li
                         className={styles.forum_message_item}
@@ -546,27 +548,24 @@ function ForumsPage() {
                                 <p className={styles.forum_message}>
                                   {message.message}
                                 </p>
+                                {message.image &&
+                                  Array.isArray(message.image) &&
+                                  message.image.length > 0 && (
+                                    <div  className={styles.message_img_container}>
+                                      {message.image.map((img, index) => (
+                                        <img
+                                          className={styles.message_img}
+                                          key={index}
+                                          src={`http://localhost:8080/images/messages/${img}`}
+                                          alt={`Imagen ${index}`} 
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
                                 <p className={styles.forum_date}>
                                   {message.date}
                                 </p>
                               </div>
-                              {message.image &&
-                                Array.isArray(message.image) &&
-                                message.image.length > 0 && (
-                                  <div>
-                                    {message.image.map((img, index) => (
-                                      <img
-                                        key={index}
-                                        src={`http://localhost:8080/images/messages/${img}`}
-                                        alt={`Imagen ${index}`}
-                                        style={{
-                                          maxWidth: "100px",
-                                          maxHeight: "100px",
-                                        }}
-                                      />
-                                    ))}
-                                  </div>
-                                )}
                             </div>
                             {userData &&
                               message.user_id === userData.user_id && (
@@ -626,51 +625,55 @@ function ForumsPage() {
                     alt="avatar"
                     className={styles.profile_picture}
                   />
-                  <textarea
-                    className={styles.text_area}
-                    rows="4"
-                    cols="50"
-                    placeholder="Comentar"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  ></textarea>
+                  <div style={{ width: "100%", paddingRight: "2rem" }}>
+                    <textarea
+                      className={styles.text_area}
+                      rows="4"
+                      cols="50"
+                      placeholder="Comentar"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    ></textarea>
+                    {imageFiles.map((file, index) => (
+                      <div key={index} style={{ position: 'relative' }}>
+                        <img
+                          className={styles.attach_img}
+                          src={file ? URL.createObjectURL(file) : ""}
+                          alt={`Imagen ${index + 1}`}
+                        />
+                        <Button
+                          className={styles.remove_img_btn}
+                          onClick={() => removeImage(index)}
+                        >      
+                          <IoClose/>
+                        </Button>
+                      </div>
+                    ))}
                     <input
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  id="fileInput"
-                  onChange={handleImageChange}
-                />
-                <div>
-                  <Button className={styles.attach_img} onClick={addImage}>
-                    Agregar Imagen
-                  </Button>
-                  {imageFiles.map((file, index) => (
-                    <div key={index}>
-                      <img
-                        src={file ? URL.createObjectURL(file) : ""}
-                        alt={`Imagen ${index + 1}`}
-                        width="50"
-                        height="50"
-                      />
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="fileInput"
+                      onChange={handleImageChange}
+                    />
+                    <div className={styles.comment_buttons}>
                       <Button
-                        className={styles.remove_button}
-                        onClick={() => removeImage(index)}
+                        className={styles.attach_img_btn}
+                        onClick={addImage}
                       >
-                        Quitar
+                        {/*Agregar Imagen*/}
+                        <RiImageAddFill/>
+                      </Button>
+
+                      <Button
+                        className={styles.send_button}
+                        onClick={handleSendMessage}
+                      >
+                        Enviar
                       </Button>
                     </div>
-                  ))}
+                  </div>
                 </div>
-                  <Button
-                    className={styles.send_button}
-                    onClick={handleSendMessage}
-                  >
-                    Enviar
-                  </Button>
-                </div>
-
-              
               </div>
             )}
         </div>
