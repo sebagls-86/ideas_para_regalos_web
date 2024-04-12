@@ -19,6 +19,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Widgets } from "@mui/icons-material";
 import { IoClose } from "react-icons/io5";
 import { RiImageAddFill } from "react-icons/ri";
+import { FiMessageSquare } from "react-icons/fi";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -469,6 +470,11 @@ function ForumsPage() {
                   <span className={styles.post_tags}>
                     {forumData.data.likes}
                   </span>
+                  <FiMessageSquare />
+                  <span className={styles.post_tags}>
+                  {forumData.data.messages ? forumData.data.messages.length : 0}
+                  
+                  </span>
                 </div>
               </div>
 
@@ -481,6 +487,7 @@ function ForumsPage() {
                       <li
                         className={styles.forum_message_item}
                         key={message.message_id}
+                        
                       >
                         {messageEditing &&
                         messageEditing.message_id === message.message_id ? (
@@ -519,6 +526,7 @@ function ForumsPage() {
                                 </div>
                               ))}
                             </div>
+                            
                             <Button
                               className={styles.send_button}
                               onClick={handleSaveEditMessage}
@@ -558,6 +566,7 @@ function ForumsPage() {
                                           key={index}
                                           src={`http://localhost:8080/images/messages/${img}`}
                                           alt={`Imagen ${index}`} 
+                                          
                                         />
                                       ))}
                                     </div>
@@ -565,26 +574,7 @@ function ForumsPage() {
                                 <p className={styles.forum_date}>
                                   {message.date}
                                 </p>
-                              </div>
-                            </div>
-                            {userData &&
-                              message.user_id === userData.user_id && (
-                                <div>
-                                  <button
-                                    onClick={() => handleEditMessage(message)}
-                                  >
-                                    Editar
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      confirmDeleteMessage(message)
-                                    }
-                                  >
-                                    Eliminar
-                                  </button>
-                                </div>
-                              )}
-                            <div
+                                <div
                               className={styles.actions__content}
                               onClick={() =>
                                 handleLikeMessage(message.message_id)
@@ -606,6 +596,26 @@ function ForumsPage() {
                                 {message.likes}
                               </span>
                             </div>
+                              </div>
+                            </div>
+                            {userId &&
+                              message.user_id === userId && (
+                                <div>
+                                  <button
+                                    onClick={() => handleEditMessage(message)}
+                                  >
+                                    Editar
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      confirmDeleteMessage(message)
+                                    }
+                                  >
+                                    Eliminar
+                                  </button>
+                                </div>
+                              )}
+                            
                           </>
                         )}
                       </li>
