@@ -77,7 +77,7 @@ function MyAccountPage({ userInfo }) {
     const fetchFollowingUsers = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/v1/relations/following/${userId}`,
+          `${API_URL}/relations/following/${userId}`,
           {
             method: "GET",
             headers: {
