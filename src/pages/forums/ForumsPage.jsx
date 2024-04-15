@@ -20,6 +20,7 @@ import { Widgets } from "@mui/icons-material";
 import { IoClose } from "react-icons/io5";
 import { RiImageAddFill } from "react-icons/ri";
 import { FiMessageSquare } from "react-icons/fi";
+import { SlOptions } from "react-icons/sl";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -417,81 +418,147 @@ function ForumsPage() {
 
           {forumData && forumData.data && (
             <>
-              <div className={styles.user_info}>
-                <img
-                  src={forumData.data.avatar}
-                  alt="avatar"
-                  className={styles.profile_picture}
-                />
+              <div style={{ position: "relative" }}>
+                <div className={styles.user_info}>
+                  <img
+                    src={forumData.data.avatar}
+                    alt="avatar"
+                    className={styles.profile_picture}
+                  />
 
-                <div>
-                  <p className={styles.name}>{forumData.data.name}</p>
-                  <p>@{forumData.data.user_name}</p>
+                  <div>
+                    <p className={styles.name}>{forumData.data.name}</p>
+                    <p>@{forumData.data.user_name}</p>
+                  </div>
+                  {userId &&
+                    userId === forumData.data.user_id &&
+                    forumData.data.status === 1 && (
+                      <div className={styles.edit_post_button}>
+                        <SlOptions onClick={() => handleEdit(forumData.data)} />
+                      </div>
+                    )}
+                </div>
+                <div className={styles.forum_content}>
+                  <p className={styles.forum_title}>{forumData.data.title}</p>
+
+                  <ul className={styles.forum_tags}>
+                    <li>{forumData.data.profile.name}</li>
+                    <li> {forumData.data.profile.relationship} </li>
+                    <li> {forumData.data.profile.age_range} </li>
+                    {forumData.data.profile.interests.map((interest) => (
+                      <li key={interest.interest_id}>{interest.interest}</li>
+                    ))}
+                  </ul>
+
+                  <p className={styles.forum_description}>
+                    {forumData.data.description}
+                  </p>
+
+                  <div
+                    className={styles.actions__content}
+                    onClick={() => handleLikePost(forumData.data.forum_id)}
+                  >
+                    {forumLikesData &&
+                    forumLikesData.data &&
+                    forumLikesData.data.some(
+                      (like) => like.forum_id === forumData.data.forum_id
+                    ) ? (
+                      <AiFillHeart fill="red" className={styles.heart_icon} />
+                    ) : (
+                      <AiOutlineHeart className={styles.heart_icon} />
+                    )}
+                    <span className={styles.post_tags}>
+                      {forumData.data.likes}
+                    </span>
+                    <FiMessageSquare />
+                    <span className={styles.post_tags}>
+                      {forumData.data.messages
+                        ? forumData.data.messages.length
+                        : 0}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div className={styles.forum_content}>
-                <p className={styles.forum_title}>{forumData.data.title}</p>
+              {tokenExists &&
+            forumData &&
+            forumData.data &&
+            forumData.data.status === 1 && (
+              <div style={{ marginTop: "20px" }}>
+                <div className={styles.comment_action}>
+                  <img
+                    src={userInfo.data.avatar}
+                    alt="avatar"
+                    className={styles.profile_picture}
+                  />
+                  <div style={{ width: "100%", paddingRight: "2rem" }}>
+                    <textarea
+                      className={styles.text_area}
+                      rows="4"
+                      cols="50"
+                      placeholder="Comentar"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    ></textarea>
+                    {imageFiles.map((file, index) => (
+                      <div key={index} style={{ position: "relative" }}>
+                        <img
+                          className={styles.attach_img}
+                          src={file ? URL.createObjectURL(file) : ""}
+                          alt={`Imagen ${index + 1}`}
+                        />
+                        <Button
+                          className={styles.remove_img_btn}
+                          onClick={() => removeImage(index)}
+                        >
+                          <IoClose />
+                        </Button>
+                      </div>
+                    ))}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="fileInput"
+                      onChange={handleImageChange}
+                    />
+                    <div className={styles.comment_buttons}>
+                      <Button
+                        className={styles.attach_img_btn}
+                        onClick={addImage}
+                      >
+                        {/*Agregar Imagen*/}
+                        <RiImageAddFill />
+                      </Button>
 
-                <ul className={styles.forum_tags}>
-                  <li>{forumData.data.profile.name}</li>
-                  <li> {forumData.data.profile.relationship} </li>
-                  <li> {forumData.data.profile.age_range} </li>
-                  {forumData.data.profile.interests.map((interest) => (
-                    <li key={interest.interest_id}>{interest.interest}</li>
-                  ))}
-                </ul>
-                {userId &&
-                  userId === forumData.data.user_id &&
-                  forumData.data.status === 1 && (
-                    <div className={styles.edit_post_button}>
-                      <Button onClick={() => handleEdit(forumData.data)}>
-                        Editar
+                      <Button
+                        className={styles.send_button}
+                        onClick={handleSendMessage}
+                      >
+                        Enviar
                       </Button>
                     </div>
-                  )}
-
-                <p className={styles.forum_description}>
-                  {forumData.data.description}
-                </p>
-
-                <div
-                  className={styles.actions__content}
-                  onClick={() => handleLikePost(forumData.data.forum_id)}
-                >
-                  {forumLikesData &&
-                  forumLikesData.data &&
-                  forumLikesData.data.some(
-                    (like) => like.forum_id === forumData.data.forum_id
-                  ) ? (
-                    <AiFillHeart fill="red" className={styles.heart_icon} />
-                  ) : (
-                    <AiOutlineHeart className={styles.heart_icon} />
-                  )}
-                  <span className={styles.post_tags}>
-                    {forumData.data.likes}
-                  </span>
-                  <FiMessageSquare />
-                  <span className={styles.post_tags}>
-                  {forumData.data.messages ? forumData.data.messages.length : 0}
-                  
-                  </span>
+                  </div>
                 </div>
               </div>
-
+            )}
               {forumData &&
                 forumData.data &&
                 forumData.data.messages &&
                 forumData.data.status === 1 && (
-                  <ul style={{ marginBottom: '0'}}>
+                  <ul style={{ marginBottom: "0" }}>
                     {forumData.data.messages.map((message) => (
                       <li
                         className={styles.forum_message_item}
                         key={message.message_id}
-                        
                       >
                         {messageEditing &&
                         messageEditing.message_id === message.message_id ? (
                           <div className={styles.edit_message_panel}>
+                            <img
+                              src={message.avatar}
+                              alt="avatar"
+                              className={styles.profile_picture}
+                            />
                             <textarea
                               className={styles.text_area}
                               rows="4"
@@ -526,7 +593,11 @@ function ForumsPage() {
                                 </div>
                               ))}
                             </div>
-                            
+                            <button
+                              onClick={() => confirmDeleteMessage(message)}
+                            >
+                              Eliminar
+                            </button>
                             <Button
                               className={styles.send_button}
                               onClick={handleSaveEditMessage}
@@ -539,6 +610,7 @@ function ForumsPage() {
                             >
                               Cancelar
                             </Button>
+                            
                           </div>
                         ) : (
                           <>
@@ -559,15 +631,18 @@ function ForumsPage() {
                                 {message.image &&
                                   Array.isArray(message.image) &&
                                   message.image.length > 0 && (
-                                    <div  className={styles.message_img_container}>
+                                    <div
+                                      className={styles.message_img_container}
+                                    >
                                       {message.image.map((img, index) => (
+                                        <div className={styles.message_img_wrapper}>
                                         <img
                                           className={styles.message_img}
                                           key={index}
                                           src={`http://localhost:8080/images/messages/${img}`}
-                                          alt={`Imagen ${index}`} 
-                                          
+                                          alt={`Imagen ${index}`}
                                         />
+                                        </div>
                                       ))}
                                     </div>
                                   )}
@@ -575,47 +650,38 @@ function ForumsPage() {
                                   {message.date}
                                 </p>
                                 <div
-                              className={styles.actions__content}
-                              onClick={() =>
-                                handleLikeMessage(message.message_id)
-                              }
-                            >
-                              {messageLikesData &&
-                              messageLikesData.data &&
-                              messageLikesData.data.some(
-                                (like) => like.message_id === message.message_id
-                              ) ? (
-                                <AiFillHeart
-                                  fill="red"
-                                  className={styles.heart_icon}
-                                />
-                              ) : (
-                                <AiOutlineHeart className={styles.heart_icon} />
-                              )}
-                              <span className={styles.post_tags}>
-                                {message.likes}
-                              </span>
-                            </div>
+                                  className={styles.actions__content}
+                                  onClick={() =>
+                                    handleLikeMessage(message.message_id)
+                                  }
+                                >
+                                  {messageLikesData &&
+                                  messageLikesData.data &&
+                                  messageLikesData.data.some(
+                                    (like) =>
+                                      like.message_id === message.message_id
+                                  ) ? (
+                                    <AiFillHeart
+                                      fill="red"
+                                      className={styles.heart_icon}
+                                    />
+                                  ) : (
+                                    <AiOutlineHeart
+                                      className={styles.heart_icon}
+                                    />
+                                  )}
+                                  <span className={styles.post_tags}>
+                                    {message.likes}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                            {userId &&
-                              message.user_id === userId && (
-                                <div>
-                                  <button
-                                    onClick={() => handleEditMessage(message)}
-                                  >
-                                    Editar
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      confirmDeleteMessage(message)
-                                    }
-                                  >
-                                    Eliminar
-                                  </button>
-                                </div>
-                              )}
-                            
+                            {userId && message.user_id === userId && (
+                              <SlOptions
+                                onClick={() => handleEditMessage(message)}
+                                className={styles.edit_message_button}
+                              />
+                            )}
                           </>
                         )}
                       </li>
@@ -624,68 +690,7 @@ function ForumsPage() {
                 )}
             </>
           )}
-          {tokenExists &&
-            forumData &&
-            forumData.data &&
-            forumData.data.status === 1 && (
-              <div style={{ marginTop: "20px" }}>
-                <div className={styles.comment_action}>
-                  <img
-                    src={userInfo.data.avatar}
-                    alt="avatar"
-                    className={styles.profile_picture}
-                  />
-                  <div style={{ width: "100%", paddingRight: "2rem" }}>
-                    <textarea
-                      className={styles.text_area}
-                      rows="4"
-                      cols="50"
-                      placeholder="Comentar"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                    ></textarea>
-                    {imageFiles.map((file, index) => (
-                      <div key={index} style={{ position: 'relative' }}>
-                        <img
-                          className={styles.attach_img}
-                          src={file ? URL.createObjectURL(file) : ""}
-                          alt={`Imagen ${index + 1}`}
-                        />
-                        <Button
-                          className={styles.remove_img_btn}
-                          onClick={() => removeImage(index)}
-                        >      
-                          <IoClose/>
-                        </Button>
-                      </div>
-                    ))}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={{ display: "none" }}
-                      id="fileInput"
-                      onChange={handleImageChange}
-                    />
-                    <div className={styles.comment_buttons}>
-                      <Button
-                        className={styles.attach_img_btn}
-                        onClick={addImage}
-                      >
-                        {/*Agregar Imagen*/}
-                        <RiImageAddFill/>
-                      </Button>
-
-                      <Button
-                        className={styles.send_button}
-                        onClick={handleSendMessage}
-                      >
-                        Enviar
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+          
         </div>
         <aside className="right__aside">
           <div className="container pt-2">

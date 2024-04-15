@@ -9,11 +9,15 @@
   align-items: center;
 }
 .forum_content {
-  margin: 2rem 3rem;
+  margin: 1rem 3rem 2rem;
 }
 
 .name {
   font-weight: 800;
+}
+.message .name{
+
+  margin-top: 0.5rem;
 }
 
 .profile_picture {
@@ -49,29 +53,36 @@
   border-radius: 8px;
   padding: 20px;
 }
+
 .message {
   display: flex;
   gap: 1rem;
+  margin-top: 0.5rem;
 }
-.message_img_container {
-  
-  display: flex;
 
-  width: 100%;
+.message_img_container {
+  display: flex;
+  overflow: hidden;
+  margin: 0.5rem 0 0.7rem;
+  gap: 5px;
  
 }
-.message_img {
-  border-radius: 10px;
-   width: 50%; 
-    height: auto; 
-    max-width: 100%;
-    box-sizing: border-box;
+.message_img_wrapper {
+  width: 50%;
+  height: 100%;
 }
+
+.message_img {
+border-radius: 10px;
+width: 100%;
+object-fit: contain;
+}
+
 .comment_action {
   display: flex;
   gap: 1rem;
   border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  /*border-bottom: 1px solid #ccc;*/
   position: relative;
   padding-top: 1rem;
 }
@@ -81,9 +92,8 @@
   padding: 10px;
   border-radius: 8px;
   border: none;
-  margin-bottom: 10px;
   resize: none;
-  height: 5rem;
+  height: 3rem;
 }
 
 .send_button,
@@ -167,11 +177,12 @@
 .forum_message_item {
   border-top: 1px solid #ccc;
   padding: 1rem 0;
- /* background-color: pink;*/
+  /* background-color: pink;*/
   padding-right: 2rem;
+  position: relative;
 }
 .forum_message_item > div > div {
- /* background-color: yellow;*/
+  /* background-color: yellow;*/
   width: 100%;
 }
 
@@ -179,6 +190,10 @@
 .forum_date {
   font-size: 12px;
   margin-bottom: 5px;
+  
+}
+.forum_date {
+  opacity: 60%;
 }
 
 .forum_images {
@@ -210,7 +225,21 @@
 
 .edit_post_button {
   position: absolute;
-  right: 10px;
+  right: 2rem;
+  top: 0;
+  cursor: pointer;
+}
+
+.edit_post_button svg,
+.edit_message_button {
+  fill: rgb(83, 100, 113);
+}
+.edit_message_button {
+  position: absolute;
+  right: 2rem;
+  top: 1.5rem;
+  background-color: transparent;
+  border: none;
 }
 
 /* Estilos adicionales según sea necesario */
@@ -263,6 +292,12 @@
 .post__actions {
   display: flex;
   align-items: center;
+}
+
+.edit_message_panel {
+  display: flex;
+  background-color: pink;
+  gap: 1rem;
 }
 
 @media only screen and (max-width: 768px) {
