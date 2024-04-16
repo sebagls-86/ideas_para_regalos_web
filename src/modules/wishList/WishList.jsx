@@ -9,6 +9,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
 import ResponseModal from "../../components/modal/ResponseModal";
 import config from "../../auth_config.json";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function getRandomPastelColor() {
   const hue = Math.floor(Math.random() * 360);
@@ -43,7 +44,7 @@ function WishList() {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
   const [listColors, setListColors] = useState({});
-
+const {logout} = useAuth0()
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
@@ -279,6 +280,8 @@ function WishList() {
             "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
           );
           localStorage.removeItem("token");
+          localStorage.removeItem("userInfo")
+          logout()
           navigate("/");
           setShowResponseModal(true);
         } else if (!response.ok) {

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
-import { getCookie } from "../api/api";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function EditPostModal({
   show,
@@ -24,6 +24,7 @@ function EditPostModal({
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectToHome, setRedirectToHome] = useState(false);
+  const {logout} = useAuth0()
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
 
@@ -84,6 +85,8 @@ function EditPostModal({
               "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
             );
             localStorage.removeItem("token");
+            localStorage.removeItem("userInfo")
+            logout()
             setShowResponseModal(true);
             setRedirectToHome(true);
             return;
