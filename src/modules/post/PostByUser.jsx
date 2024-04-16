@@ -21,6 +21,9 @@ function PostByUser() {
   const tokenUserId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
   const API_URL = process.env.REACT_APP_API_URL;
 
+  console.log(userId)
+  console.log(tokenUserId)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,8 +44,7 @@ function PostByUser() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -102,8 +104,6 @@ function PostByUser() {
     setSelectedPost(null);
     setOriginalPost(null);
   };
-
-  console.log("postdata", postData)
 
   return (
     <div>

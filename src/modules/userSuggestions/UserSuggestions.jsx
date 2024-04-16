@@ -34,17 +34,13 @@ function UserSuggestions({ userInfo }) {
   const handleFollow = async (relationId) => {
     const token = localStorage.getItem("token");
     if (token) {
-      const url = `${API_URL}/relations`;
+      const url = `${API_URL}/relations/${relationId}`;
       const requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          user_id: userInfo.user_id,
-          relation_id: relationId,
-        }),
       };
       const response = await fetch(url, requestOptions);
       if (response.ok) {

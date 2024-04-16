@@ -71,7 +71,7 @@ export default function SectionFeatured() {
               <Link to="" key={index}>
                 <SwiperSlide>
                   <ProductCard
-                    image={`${URL_IMAGES}/images/products-catalog/${featured.image_name}`}
+                    image={`${URL_IMAGES}${featured.image_name}`}
                     name={featured.product_name}
                     userId={userId}
                     productId={featured.product_catalog_id}

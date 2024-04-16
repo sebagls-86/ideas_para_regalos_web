@@ -56,8 +56,6 @@ function WishList() {
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
-  console.log(config.meli_redirect_uri);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,8 +75,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -130,8 +127,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -249,14 +245,7 @@ function WishList() {
       const { list, productId } = productToRemove;
       const listId = list.list_id;
 
-      console.log(
-        "Deleting product with ID:",
-        productId,
-        "from list with ID:",
-        listId
-      );
-
-      const response = await fetch(
+          const response = await fetch(
         `${API_URL}/lists/${listId}/listProducts/${productId}`,
         {
           method: "DELETE",

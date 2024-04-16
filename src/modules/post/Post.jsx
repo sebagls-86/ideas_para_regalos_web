@@ -39,10 +39,8 @@ function Post() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
 
-        // Fetch de los likes del usuario
         const likesResponse = await fetch(
           `${API_URL}/forums/likes/${userId}`
         );

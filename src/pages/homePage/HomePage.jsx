@@ -28,21 +28,22 @@ function HomePage() {
   const audience = config.audience;
   const storedToken = localStorage.getItem("token");
   const storedUserInfo = localStorage.getItem("userInfo");
-  const userId = storedUserInfo?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    storedUserInfo?.user_id ||
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
   const FRONT_URL = process.env.REACT_APP_FRONT_URL;
-
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-  
-      console.log('code', code);
-  
-      if (code && code.startsWith('TG')) {
+      const code = urlParams.get("code");
+
+      if (code && code.startsWith("TG")) {
         setLoading(true);
-  
+
         window.location.href = `/perfil/${userId}`;
         fetchBackend(code);
       }
@@ -52,21 +53,20 @@ function HomePage() {
   const fetchBackend = async (code) => {
     try {
       const response = await fetch(`${API_URL}/integration/meli/code=${code}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Bearer ${storedToken}`,
         },
-        body: JSON.stringify({ code })
+        body: JSON.stringify({ code }),
       });
 
       if (!response.ok) {
-        throw new Error('Error al enviar el código al backend');
+        throw new Error("Error al enviar el código al backend");
       }
 
-      console.log('Código enviado al backend correctamente');
-    } catch (error) {
-      console.error('Error:', error);
+     } catch (error) {
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ function HomePage() {
           setLoading(true);
 
           let newAccessToken;
-           if (process.env.NODE_ENV === "development") {
+          if (process.env.NODE_ENV === "development") {
             newAccessToken = await getAccessTokenWithPopup({
               authorizationParams: {
                 audience: audience,
@@ -107,8 +107,6 @@ function HomePage() {
                 scope: "read:current_user",
               },
             });
-
-          console.log("newAccessToken", newAccessToken);
           }
 
           setAccessToken(newAccessToken);
@@ -125,7 +123,7 @@ function HomePage() {
               if (!userInfoFromStorage) {
                 setLoading(false);
                 logout();
-                }
+              }
             }
           }, 5000);
 
@@ -136,14 +134,14 @@ function HomePage() {
             verifyUserCompleted = true;
             clearTimeout(timeoutId);
           } catch (error) {
-            localStorage.removeItem("token")
+            localStorage.removeItem("token");
             setLoading(false);
             logout();
           }
         }
       } catch (error) {
         setLoading(false);
-        localStorage.removeItem("token")
+        localStorage.removeItem("token");
         logout();
       }
     };
@@ -163,19 +161,16 @@ function HomePage() {
 
   const verifyUser = async (token) => {
     try {
-      const verifyResponse = await fetch(
-        `${API_URL}/users/verify`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const verifyResponse = await fetch(`${API_URL}/users/verify`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (verifyResponse.status === 401) {
-        throw new Error("unauthorized user")
+        throw new Error("unauthorized user");
       }
 
       if (!verifyResponse.ok) {
@@ -183,7 +178,6 @@ function HomePage() {
       }
 
       const verifyData = await verifyResponse.json();
-      console.log("verifyData", verifyData);
       localStorage.setItem("userInfo", JSON.stringify(verifyData));
       setUserInfo(verifyData);
     } catch (error) {
@@ -241,9 +235,9 @@ function HomePage() {
   if (isLoading || loading) {
     return <div>Loading ...</div>;
   }
-  
+
   if (process.env.NODE_ENV === "development") {
-      console.log("token", storedToken);
+    console.log("token", storedToken);
   }
 
   return (

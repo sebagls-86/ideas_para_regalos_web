@@ -22,7 +22,6 @@ function ForumsPage() {
   const token = localStorage.getItem("token");
   const tokenExists = token !== null && token !== undefined;
   const [message, setMessage] = useState("");
-  const [userData, setUserData] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
@@ -186,7 +185,7 @@ function ForumsPage() {
   const confirmDeleteMessage = (message) => {
     setMessageToDelete(message);
     setShowDeleteModal(true);
-    };
+  };
 
   const cancelDeleteMessage = () => {
     setShowDeleteModal(false);
@@ -282,8 +281,6 @@ function ForumsPage() {
         );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
-          console.log("updatedLikesResponse", updatedLikesResponse);
-
           const updatedForumData = { ...forumData };
           const likesCount = updatedLikesResponse.data.likes || 0;
           updatedForumData.data.likes = likesCount;
@@ -297,8 +294,6 @@ function ForumsPage() {
             throw new Error("Network response was not ok");
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
-          console.log("updatedUserLikesData", updatedUserLikesData);
-
           setForumLikesData(updatedUserLikesData);
         } else {
           console.error("Failed to like post");
@@ -326,9 +321,6 @@ function ForumsPage() {
         );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
-          console.log("updatedLikesResponse", updatedLikesResponse);
-
-          // Actualizar los datos del mensaje con la nueva cantidad de likes
           const updatedForumData = { ...forumData };
           const updatedMessages = updatedForumData.data.messages.map(
             (message) => {
@@ -558,23 +550,20 @@ function ForumsPage() {
                                   ))}
                                 </div>
                               )}
-                            {userData &&
-                              message.user_id === userData.user_id && (
-                                <div>
-                                  <button
-                                    onClick={() => handleEditMessage(message)}
-                                  >
-                                    Editar
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      confirmDeleteMessage(message)
-                                    }
-                                  >
-                                    Eliminar
-                                  </button>
-                                </div>
-                              )}
+                            {userId && message.user_id === userId && (
+                              <div>
+                                <button
+                                  onClick={() => handleEditMessage(message)}
+                                >
+                                  Editar
+                                </button>
+                                <button
+                                  onClick={() => confirmDeleteMessage(message)}
+                                >
+                                  Eliminar
+                                </button>
+                              </div>
+                            )}
                             <div
                               className={styles.actions__content}
                               onClick={() =>
