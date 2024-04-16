@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
+import SelectButton from "../../components/selectButton/SelectButton";
 
 function EditPostModal({
   show,
@@ -25,6 +26,7 @@ function EditPostModal({
   const [redirectToHome, setRedirectToHome] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
+  const [isEventTypeDropdownOpen, setIsEventTypeDropdownOpen] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -50,6 +52,17 @@ function EditPostModal({
       }
     };
 
+    const handleOptionSelect = (option, type) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [type]: option.value,
+    }));
+
+    if (type === "selectedAgeRange") {
+      setEventTypeOption(option);
+      setEventTypeDropdownOpen(false);
+    } 
+  };
     fetchEventTypes();
   }, [token]);
 
@@ -220,13 +233,15 @@ function EditPostModal({
         show={show}
         closeModal={onHide}
         title="Editar Foro"
-        contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}
+        /*contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}*/
       >
         <Col>
           <div className={styles.buttons__container}>
-            <form>
+            <form className={styles.edit_form}>
+              <div>
+            <label>Título:</label>
               <div className={`${styles.form__floating} form-floating`}>
-                <label>Titulo:</label>
+               
                 <input
                   type="text"
                   className={`${styles.form__control} form-control`}
@@ -242,10 +257,13 @@ function EditPostModal({
                   }
                 />
               </div>
+              </div>
+              <div>
+              <label>Descripción:</label>
               <div className={`${styles.form__floating} form-floating`}>
-                <label>Descripción:</label>
+               
                 <textarea
-                  className={`${styles.form__control} form-control`}
+                  className={`${styles.form__control, styles.edit_description} form-control`}
                   value={selectedPost?.data.description || ""}
                   onChange={(e) =>
                     setSelectedPost({
@@ -258,9 +276,26 @@ function EditPostModal({
                   }
                 />
               </div>
+              </div>
+              <div>
+              <label className={styles.input__label}>Tipo de Evento:</label>
               <div className={`${styles.form__floating} form-floating`}>
-                <label className={styles.input__label}>Tipo de Evento:</label>
-                <select
+                    <SelectButton
+              label="Edad"
+              isOpen={isEventTypeDropdownOpen}
+              options={(ageRanges || []).map((ageRange) => ({
+                label: ageRange.name,
+                value: ageRange.age_range_id,
+              }))}
+              handleOptionSelect={(option) =>
+                handleEventTypeChange(option, "selectedEventTypeRange")
+              }
+              selectedOption={selectedEventTypeOption}
+              toggleDropdown={() => setIsEventTypeDropdownOpen(!isEventTypeDropdownOpen)}
+            />
+                <SelectButton
+                 label="Edad"
+              isOpen={isEventTypeDropdownOpen}
                   className={`${styles.form__control} form-control`}
                   onChange={(e) => handleEventTypeChange(e.target.value)}
                 >
@@ -280,10 +315,14 @@ function EditPostModal({
                       </option>
                     ))
                   )}
-                </select>
+                </SelectButton>
               </div>
+              </div>
+
+              <div>
+              <label>Perfil:</label>
               <div className={`${styles.form__floating} form-floating`}>
-                <label>Perfil:</label>
+              
                 <select
                   className={`${styles.form__control} form-control`}
                   value={selectedProfileId}
@@ -300,8 +339,9 @@ function EditPostModal({
                     ))}
                 </select>
               </div>
+              </div>
             </form>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ marginTop: "1rem" }}>
               <Button
                 label="Guardar"
                 className="btn primary__button"
