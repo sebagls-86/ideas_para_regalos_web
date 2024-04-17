@@ -31,10 +31,14 @@ function NuevoRegaloForm({ selectedProfile }) {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectToProfile, setRedirectToProfile] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -52,7 +56,6 @@ function NuevoRegaloForm({ selectedProfile }) {
 
   const handleCreateForum = async () => {
     try {
-      // Realizar la solicitud de sugerencias de tarifas de regalo
       const ageRange = selectedProfile.age_range;
       const interests = selectedProfile.interests.map(
         (interest) => interest.interest
@@ -61,7 +64,6 @@ function NuevoRegaloForm({ selectedProfile }) {
       const suggestions = await fetchGiftsRateSuggestions(ageRange, interests);
 
       if (suggestions && suggestions.length > 0) {
-        // Si hay sugerencias, mostrar un modal con la información
         setGiftsRateSuggestions(suggestions);
         setShowSuggestionsModal(true);
       } else {
@@ -90,26 +92,26 @@ function NuevoRegaloForm({ selectedProfile }) {
     }
 
     if (selectedOption && selectedProfile) {
+      let eventName = "";
+      if (selectedOption.label === "Otros") {
+        eventName = inputValue;
+      }
       const eventPostData = {
         event_type_id: selectedOption.value,
         user_id: userId,
-        name: titulo,
+        name: eventName,
         date: formattedDate,
-        end_date: endFormattedDate,
       };
 
       try {
-        const eventResponse = await fetch(
-          `${API_URL}/events`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(eventPostData),
-          }
-        );
+        const eventResponse = await fetch(`${API_URL}/events`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(eventPostData),
+        });
 
         if (!eventResponse.ok) {
           setErrorMessage("Error al crear el evento.");
@@ -129,17 +131,14 @@ function NuevoRegaloForm({ selectedProfile }) {
           end_date: endFormattedDate,
         };
 
-        const forumResponse = await fetch(
-          `${API_URL}/forums`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(forumPostData),
-          }
-        );
+        const forumResponse = await fetch(`${API_URL}/forums`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(forumPostData),
+        });
 
         if (!forumResponse.ok) {
           setErrorMessage("Error al crear el foro.");
@@ -153,7 +152,6 @@ function NuevoRegaloForm({ selectedProfile }) {
         setTitulo("");
         setDescripcion("");
       } catch (error) {
-        // Si hay algún error en alguna de las llamadas fetch, muestra un mensaje de error correspondiente
         if (error.message === "Error al crear el evento") {
           setErrorMessage("Error al crear el foro.");
         } else if (error.message === "Error al crear el foro") {
@@ -192,21 +190,26 @@ function NuevoRegaloForm({ selectedProfile }) {
   };
 
   const isDisabled =
-    !selectedProfile ||
-    !selectedDate ||
-    titulo.trim() === "" ||
-    descripcion.trim() === "" ||
-    !selectedOption;
+  !selectedProfile ||
+  !selectedDate ||
+  titulo.trim() === "" ||
+  descripcion.trim() === "" ||
+  !selectedOption ||
+  (selectedOption?.label === "Otros" && !inputValue.trim());
 
-  const options = eventTypes.map((eventType) => ({
-    label: eventType.name,
-    value: eventType.event_type_id,
-    profileId: eventType.profileId, // Agregar el profileId al objeto de opciones
-  }));
+const options = eventTypes.map((eventType) => ({
+  label: eventType.name,
+  value: eventType.event_type_id,
+  profileId: eventType.profileId,
+}));
 
   const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
   return (
     <>
@@ -325,6 +328,18 @@ function NuevoRegaloForm({ selectedProfile }) {
                 selectedOption={selectedOption}
                 handleOptionSelect={handleOptionSelect}
               />
+
+              {console.log(selectedOption)}
+              {selectedOption?.label === "Otros" && (
+                <div>
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese otro evento"
+                  />
+                </div>
+              )}
             </div>
           </Tab>
         </Tabs>

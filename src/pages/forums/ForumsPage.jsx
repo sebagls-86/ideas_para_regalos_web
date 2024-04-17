@@ -435,6 +435,13 @@ function ForumsPage() {
                   {forumData.data.description}
                 </p>
                 <div>
+                  <p>Evento: {forumData.data.event_name}</p>
+                  <p>Fecha: {forumData.data.event_date}</p>
+                  {forumData.data.end_date !== 0 && (
+                    <p>Fecha de cierre del foro: {forumData.data.end_date}</p>
+                  )}
+                </div>
+                <div>
                   <p> Regalo para: {forumData.data.profile.name}</p>
                   <p> Rango de Edad: {forumData.data.profile.age_range} </p>
                   <p> Relacion: {forumData.data.profile.relationship} </p>
