@@ -6,6 +6,8 @@ import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
 import SelectButton from "../../components/selectButton/SelectButton";
+import expandDown from "../../assets/expand-icon.svg";
+
 
 function EditPostModal({
   show,
@@ -33,16 +35,13 @@ function EditPostModal({
   useEffect(() => {
     const fetchEventTypes = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/eventTypes`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/eventTypes`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setEventTypes(data.data);
         setIsLoading(false);
@@ -52,7 +51,6 @@ function EditPostModal({
       }
     };
 
-   
     fetchEventTypes();
   }, [token]);
 
@@ -68,9 +66,9 @@ function EditPostModal({
   const fetchProfiles = async (selectedPost) => {
     try {
       if (!selectedPost) return;
-  
+
       let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
-  
+
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -78,7 +76,7 @@ function EditPostModal({
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!response.ok) {
         const responseBody = await response.text();
         if (responseBody.includes("invalid token")) {
@@ -95,11 +93,11 @@ function EditPostModal({
           return;
         }
       }
-  
+
       const data = await response.json();
       setProfiles(data.data);
       setIsLoading(false);
-  
+
       if (selectedPost.data.profile.profile_id) {
         setSelectedProfileId(selectedPost.data.profile.profile_id);
       }
@@ -108,7 +106,7 @@ function EditPostModal({
       console.error("Error fetching profiles:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchProfiles(selectedPost);
   }, []);
@@ -185,15 +183,13 @@ function EditPostModal({
         );
 
         if (!forumResponse.ok) {
-          setErrorMessage(
-            "Error al los datos del foro"
-          );
+          setErrorMessage("Error al los datos del foro");
           setShowResponseModal(true);
           console.error("Error al los datos del foro");
         }
       }
-     handleCloseModal();
-     window.location.reload();
+      handleCloseModal();
+      window.location.reload();
     } catch (error) {
       setErrorMessage("Error al enviar la solicitud de edición");
       console.error("Error al enviar la solicitud de edición:", error);
@@ -229,97 +225,102 @@ function EditPostModal({
           <div className={styles.buttons__container}>
             <form className={styles.edit_form}>
               <div>
-            <label>Título:</label>
-              <div className={`${styles.form__floating} form-floating`}>
-               
-                <input
-                  type="text"
-                  className={`${styles.form__control} form-control`}
-                  value={selectedPost?.data.title || ""}
-                  onChange={(e) =>
-                    setSelectedPost({
-                      ...selectedPost,
-                      data: {
-                        ...selectedPost.data,
-                        title: e.target.value,
-                      },
-                    })
-                  }
-                />
-              </div>
-              </div>
-              <div>
-              <label>Descripción:</label>
-              <div className={`${styles.form__floating} form-floating`}>
-               
-                <textarea
-                  className={`${styles.form__control, styles.edit_description} form-control`}
-                  value={selectedPost?.data.description || ""}
-                  onChange={(e) =>
-                    setSelectedPost({
-                      ...selectedPost,
-                      data: {
-                        ...selectedPost.data,
-                        description: e.target.value,
-                      },
-                    })
-                  }
-                />
-              </div>
+                <label>Título:</label>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <input
+                    type="text"
+                    className={`${styles.form__control} form-control`}
+                    value={selectedPost?.data.title || ""}
+                    onChange={(e) =>
+                      setSelectedPost({
+                        ...selectedPost,
+                        data: {
+                          ...selectedPost.data,
+                          title: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </div>
               </div>
               <div>
-              <label className={styles.input__label}>Tipo de Evento:</label>
-              <div className={`${styles.form__floating} form-floating`}>
-                   
-                <select
-                 label="Edad"
-              isOpen={isEventTypeDropdownOpen}
-                  className={`${styles.form__control} form-control`}
-                  onChange={(e) => handleEventTypeChange(e.target.value)}
-                >
-                  {isLoading ? (
-                    <option value="">Cargando...</option>
-                  ) : (
-                    eventTypes.map((eventType) => (
-                      <option
-                        key={eventType.event_type_id}
-                        value={eventType.event_type_id}
-                        selected={
-                          selectedPost &&
-                          selectedPost.data.event === eventType.name
-                        }
-                      >
-                        {eventType.name}
-                      </option>
-                    ))
-                  )}
-                </select>
-              </div>
+                <label>Descripción:</label>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <textarea
+                    className={`${
+                      (styles.form__control, styles.edit_description)
+                    } form-control`}
+                    value={selectedPost?.data.description || ""}
+                    onChange={(e) =>
+                      setSelectedPost({
+                        ...selectedPost,
+                        data: {
+                          ...selectedPost.data,
+                          description: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </div>
               </div>
 
               <div>
-              <label>Perfil:</label>
-              <div className={`${styles.form__floating} form-floating`}>
-              
-                <select
-                  className={`${styles.form__control} form-control`}
-                  value={selectedProfileId}
-                  onChange={handleEventChange}
-                >
-                  {profiles &&
-                    profiles.map((profile) => (
-                      <option
-                        key={profile.profile_id}
-                        value={profile.profile_id}
-                      >
-                        {profile.name} {profile.last_name}
-                      </option>
-                    ))}
-                </select>
+                <label className={styles.input__label}>Tipo de Evento:</label>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <select
+                    label="Evento"
+                    isOpen={isEventTypeDropdownOpen}
+                    className={`${styles.form__control} form-control`}
+                    onChange={(e) => handleEventTypeChange(e.target.value)}
+                  >
+                    {isLoading ? (
+                      <option value="">Cargando...</option>
+                    ) : (
+                      eventTypes.map((eventType) => (
+                        <option
+                          key={eventType.event_type_id}
+                          value={eventType.event_type_id}
+                          selected={
+                            selectedPost &&
+                            selectedPost.data.event === eventType.name
+                          }
+                        >
+                          {eventType.name}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                  <div className={styles.selectIcon}>
+                    <img src={expandDown} alt="Expand Icon" />
+                  </div>
+                </div>
               </div>
+
+              <div>
+                <label>Perfil:</label>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <select
+                    className={`${styles.form__control} form-control`}
+                    value={selectedProfileId}
+                    onChange={handleEventChange}
+                  >
+                    {profiles &&
+                      profiles.map((profile) => (
+                        <option
+                          key={profile.profile_id}
+                          value={profile.profile_id}
+                        >
+                          {profile.name} {profile.last_name}
+                        </option>
+                      ))}
+                  </select>
+                  <div className={styles.selectIcon}>
+                    <img src={expandDown} alt="Expand Icon" />
+                  </div>
+                </div>
               </div>
             </form>
-            <div style={{ marginTop: "1rem" }}>
+            <div style={{ marginTop: "2rem" }}>
               <Button
                 label="Guardar"
                 className="btn primary__button"

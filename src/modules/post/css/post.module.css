@@ -203,3 +203,23 @@
     
     height: 150px !important;
   }
+  label{
+    font-weight: 700;
+    margin-bottom: .3rem;
+  }
+
+  .form__floating .form__control{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    position: relative;
+  }
+  .form__floating .edit_description{
+    padding-top: .7rem !important;
+  }
+  .selectIcon{
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust this value as needed */
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
