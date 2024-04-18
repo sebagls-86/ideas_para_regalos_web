@@ -453,11 +453,13 @@ function ForumsPage() {
                   <p className={styles.forum_description}>
                     {forumData.data.description}
                   </p>
-
-                  <div
+                  <div className={styles.forum_date}>{forumData.data.created_at}</div>
+                  
+                 <div
                     className={styles.actions__content}
                     onClick={() => handleLikePost(forumData.data.forum_id)}
                   >
+                     <div>
                     {forumLikesData &&
                     forumLikesData.data &&
                     forumLikesData.data.some(
@@ -470,13 +472,19 @@ function ForumsPage() {
                     <span className={styles.post_tags}>
                       {forumData.data.likes}
                     </span>
+                    </div>
+
+                    <div>
                     <FiMessageSquare />
                     <span className={styles.post_tags}>
                       {forumData.data.messages
                         ? forumData.data.messages.length
                         : 0}
                     </span>
+                    </div>
                   </div>
+
+                 
                 </div>
               </div>
               {tokenExists &&
@@ -655,6 +663,7 @@ function ForumsPage() {
                                     handleLikeMessage(message.message_id)
                                   }
                                 >
+                                  <div>
                                   {messageLikesData &&
                                   messageLikesData.data &&
                                   messageLikesData.data.some(
@@ -673,6 +682,7 @@ function ForumsPage() {
                                   <span className={styles.post_tags}>
                                     {message.likes}
                                   </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>

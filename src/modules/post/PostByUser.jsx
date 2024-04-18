@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
+import { SlOptions } from "react-icons/sl";
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -18,15 +19,16 @@ function PostByUser() {
   const userId = parseInt(user_id);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const tokenUserId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const tokenUserId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/forums/user/${userId}`
-        );
+        const response = await fetch(`${API_URL}/forums/user/${userId}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -60,19 +62,16 @@ function PostByUser() {
 
   const handleDelete = async (post) => {
     try {
-      const response = await fetch(
-        `${API_URL}/forums/${post.forum_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/forums/${post.forum_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.ok) {
         window.location.reload();
-        } else {
+      } else {
         console.error("Error al eliminar");
       }
     } catch (error) {
@@ -82,9 +81,7 @@ function PostByUser() {
 
   const handleEdit = async (post) => {
     try {
-      const response = await fetch(
-        `${API_URL}/forums/${post.forum_id}`
-      );
+      const response = await fetch(`${API_URL}/forums/${post.forum_id}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -103,7 +100,7 @@ function PostByUser() {
     setOriginalPost(null);
   };
 
-  console.log("postdata", postData)
+  console.log("postdata", postData);
 
   return (
     <div>
@@ -116,9 +113,9 @@ function PostByUser() {
         handleCloseModal={handleCloseModal}
       />
 
-{!postData || postData.length === 0 ? (
-  <p>Todavía no hay publicaciones</p>
-) : (
+      {!postData || postData.length === 0 ? (
+        <p>Todavía no hay publicaciones</p>
+      ) : (
         postData.map((post) => (
           <div key={post.forum_id} className={styles.post__container}>
             <div className={styles.container__image}>
@@ -144,21 +141,26 @@ function PostByUser() {
                   >
                     @{post.user_name}
                   </Link>
-                  <p className={styles.user__timepost}>5h</p>
+                 
                 </div>
                 {userId === tokenUserId && (
                   <div className={styles.more__actions}>
                     <Button variant="link" onClick={handleButtonClick}>
-                      <AiOutlineEllipsis />
+                      <SlOptions />
                     </Button>
                     {showDeleteOption && (
                       <>
+                      <div className={styles.post__actions_options}>
                         <Button variant="link" onClick={() => handleEdit(post)}>
                           Editar
                         </Button>
-                        <Button variant="link" onClick={() => handleDelete(post)}>
+                        <Button
+                          variant="link"
+                          onClick={() => handleDelete(post)}
+                        >
                           Borrar
                         </Button>
+                        </div>
                       </>
                     )}
                   </div>
@@ -168,26 +170,32 @@ function PostByUser() {
                 to={`/forums/${parseInt(post.forum_id)}`}
                 className={styles.post__title}
               >
-                <h2>{post.title}</h2>
+                <p>{post.title}</p>
+                {/*
                 <div className={styles.content__tags}>
                   {post.event && (
                     <span className={styles.post_tags}>{post.event}</span>
                   )}
-                </div>
+                </div>*/}
                 <div>
                   <p className={styles.post__text}>{post.description}</p>
                 </div>
               </Link>
               <div className={styles.post__actions}>
+                <div>
                 <div className={styles.actions__content}>
                   <AiOutlineHeart />
                   <span className={styles.post_tags}>{post.likes}</span>
                 </div>
+                </div>
+
+                <div>
                 <div className={styles.actions__content}>
                   <FiMessageSquare />
                   <span className={styles.post_tags}>
                     {post.messages ? post.messages.length : 0}
                   </span>
+                </div>
                 </div>
               </div>
             </div>

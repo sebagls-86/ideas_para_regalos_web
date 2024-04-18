@@ -285,8 +285,14 @@ object-fit: contain;
 }
 .actions__content {
   display: flex;
-  gap: var(--fz-11);
+  gap: 1.5rem;
   align-items: center;
+}
+.actions__content >div{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
 }
 
 .post__actions {
