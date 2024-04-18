@@ -215,5 +215,38 @@ label {
   cursor: pointer;
 }
 .post__actions_options{
-    background-color: pink;
+    background-color: #FFFF;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 150px;
+    position: absolute;
+    right: 0;
+}
+.post__actions_options > button{
+    text-decoration: none;
+    display: flex;
+    gap:   1rem;
+    color: #333333;
+ 
+}
+.post__actions_options > button:hover{
+    background-color: #EFF1F1;
+    color: #333333;
+    border-radius: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+.delete_post_btn, .delete_post_btn:hover{
+    color: red !important;
+    border-radius: 0px !important;
+   
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}  
+.post__actions_options > button svg{
+    height: 22px;
+    width: 22px;
 }

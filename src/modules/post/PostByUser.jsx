@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
 import { SlOptions } from "react-icons/sl";
+import DeleteIcon from "../../assets/buttons/delete-icon.svg"
+import { CgTrash } from "react-icons/cg";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -152,13 +155,14 @@ function PostByUser() {
                       <>
                       <div className={styles.post__actions_options}>
                         <Button variant="link" onClick={() => handleEdit(post)}>
-                          Editar
+                        <MdOutlineModeEditOutline />Editar
                         </Button>
                         <Button
                           variant="link"
                           onClick={() => handleDelete(post)}
+                          className={styles.delete_post_btn}
                         >
-                          Borrar
+                        <CgTrash/>Eliminar
                         </Button>
                         </div>
                       </>
