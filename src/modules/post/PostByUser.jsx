@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/post.module.css";
-import { AiOutlineHeart, AiOutlineEllipsis } from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
 import { FiMessageSquare } from "react-icons/fi";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
 import { SlOptions } from "react-icons/sl";
+import DeleteIcon from "../../assets/buttons/delete-icon.svg"
+import { CgTrash } from "react-icons/cg";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -14,6 +17,7 @@ function PostByUser() {
   const [showDeleteOption, setShowDeleteOption] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const [originalPost, setOriginalPost] = useState(null);
   const { user_id } = useParams();
   const userId = parseInt(user_id);
@@ -56,7 +60,8 @@ function PostByUser() {
     return <div>Loading...</div>;
   }
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (postId) => {
+    setSelectedPostId(postId);
     setShowDeleteOption(!showDeleteOption);
   };
 
@@ -145,20 +150,21 @@ function PostByUser() {
                 </div>
                 {userId === tokenUserId && (
                   <div className={styles.more__actions}>
-                    <Button variant="link" onClick={handleButtonClick}>
+                  <Button variant="link" onClick={() => handleButtonClick(post.forum_id)}>
                       <SlOptions />
                     </Button>
-                    {showDeleteOption && (
+                    {showDeleteOption && selectedPostId === post.forum_id && ( 
                       <>
                       <div className={styles.post__actions_options}>
                         <Button variant="link" onClick={() => handleEdit(post)}>
-                          Editar
+                        <MdOutlineModeEditOutline />Editar
                         </Button>
                         <Button
                           variant="link"
                           onClick={() => handleDelete(post)}
+                          className={styles.delete_post_btn}
                         >
-                          Borrar
+                        <CgTrash/>Eliminar
                         </Button>
                         </div>
                       </>
