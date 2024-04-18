@@ -52,17 +52,7 @@ function EditPostModal({
       }
     };
 
-    const handleOptionSelect = (option, type) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [type]: option.value,
-    }));
-
-    if (type === "selectedAgeRange") {
-      setEventTypeOption(option);
-      setEventTypeDropdownOpen(false);
-    } 
-  };
+   
     fetchEventTypes();
   }, [token]);
 
@@ -280,20 +270,8 @@ function EditPostModal({
               <div>
               <label className={styles.input__label}>Tipo de Evento:</label>
               <div className={`${styles.form__floating} form-floating`}>
-                    <SelectButton
-              label="Edad"
-              isOpen={isEventTypeDropdownOpen}
-              options={(ageRanges || []).map((ageRange) => ({
-                label: ageRange.name,
-                value: ageRange.age_range_id,
-              }))}
-              handleOptionSelect={(option) =>
-                handleEventTypeChange(option, "selectedEventTypeRange")
-              }
-              selectedOption={selectedEventTypeOption}
-              toggleDropdown={() => setIsEventTypeDropdownOpen(!isEventTypeDropdownOpen)}
-            />
-                <SelectButton
+                   
+                <select
                  label="Edad"
               isOpen={isEventTypeDropdownOpen}
                   className={`${styles.form__control} form-control`}
@@ -315,7 +293,7 @@ function EditPostModal({
                       </option>
                     ))
                   )}
-                </SelectButton>
+                </select>
               </div>
               </div>
 
