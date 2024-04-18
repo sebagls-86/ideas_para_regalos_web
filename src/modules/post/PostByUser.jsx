@@ -13,6 +13,7 @@ function PostByUser() {
   const [showDeleteOption, setShowDeleteOption] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const [originalPost, setOriginalPost] = useState(null);
   const { user_id } = useParams();
   const userId = parseInt(user_id);
@@ -56,7 +57,8 @@ function PostByUser() {
     return <div>Loading...</div>;
   }
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (postId) => { // Updated handleButtonClick to accept post ID
+    setSelectedPostId(postId);
     setShowDeleteOption(!showDeleteOption);
   };
 
@@ -148,10 +150,11 @@ function PostByUser() {
                 </div>
                 {userId === tokenUserId && (
                   <div className={styles.more__actions}>
-                    <Button variant="link" onClick={handleButtonClick}>
+                    <Button variant="link" onClick={() => handleButtonClick(post.forum_id)}>
                       <AiOutlineEllipsis />
                     </Button>
-                    {showDeleteOption && (
+                    {showDeleteOption && selectedPostId === post.forum_id && ( // Only show delete options for selected post
+                    
                       <>
                         <Button variant="link" onClick={() => handleEdit(post)}>
                           Editar
