@@ -145,11 +145,14 @@ function EditPostModal({
     const selectedEventType = eventTypes.find(
       (type) => type.event_type_id === parseInt(eventTypeId)
     );
-
+  
     setSelectedPost({
       ...selectedPost,
-      event: selectedEventType.name,
-      event_type_id: selectedEventType.event_type_id,
+      data: {
+        ...selectedPost.data,
+        event_name: selectedEventType.name,
+        event_type_id: selectedEventType.event_type_id,
+      }
     });
   };
 
@@ -278,8 +281,12 @@ function EditPostModal({
   };
 
   useEffect(() => {
-    setOtherEventName(originalPost?.event_name || "");
-  }, [originalPost]);
+    const isOriginalEventNamePresent = eventTypes.some(
+      (type) => type.name === originalPost?.event_name
+    );
+  
+    setOtherEventName(isOriginalEventNamePresent ? "" : originalPost?.event_name);
+  }, [originalPost, eventTypes]);
 
   return (
     <>
@@ -363,9 +370,9 @@ function EditPostModal({
                 </select>
               </div>
               {selectedPost &&
-                (selectedPost.event === "Otros" ||
+                (selectedPost.data?.event_name === "Otros" ||
                   !eventTypes.some(
-                    (eventType) => eventType.name === selectedPost.event
+                    (eventType) => eventType.name === selectedPost.data?.event_name
                   )) && (
                   <div className={`${styles.form__floating} form-floating`}>
                     <label>Otro tipo de evento:</label>
