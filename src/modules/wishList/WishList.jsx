@@ -247,7 +247,7 @@ const {logout} = useAuth0()
       const listId = list.list_id;
 
           const response = await fetch(
-        `${API_URL}/lists/${listId}/listProducts/${productId}`,
+        `${API_URL}/lists/${listId}/list-products/${productId}`,
         {
           method: "DELETE",
           headers: {

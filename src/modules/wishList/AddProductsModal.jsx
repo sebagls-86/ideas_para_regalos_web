@@ -27,7 +27,7 @@ function AddProductsModal({
         product_catalog_id: selectedProducts.map(product => product.product_catalog_id),
       };
   
-      const response = await fetch(`${API_URL}/lists/${listId}/listProducts`, {
+      const response = await fetch(`${API_URL}/lists/${listId}/list-products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

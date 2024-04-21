@@ -52,7 +52,7 @@ export default function ProductCard({ image, name, userId, productId }) {
       if (listId) {
         try {
           const response = await fetch(
-            `${API_URL}/lists/${listId}/listProducts/${productId}`,
+            `${API_URL}/lists/${listId}/list-products/${productId}`,
             {
               method: "DELETE",
               headers: {
@@ -79,7 +79,7 @@ export default function ProductCard({ image, name, userId, productId }) {
   const handleListClick = async (listId) => {
     const productCatalogId = productId;
     try {
-      const response = await fetch(`${API_URL}/lists/${listId}/listProducts`, {
+      const response = await fetch(`${API_URL}/lists/${listId}/list-products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
