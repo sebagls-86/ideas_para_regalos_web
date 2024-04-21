@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
+import expandDown from "../../assets/expand-icon.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
@@ -36,6 +37,7 @@ function EditPostModal({
   const { logout } = useAuth0();
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
+  const [isEventTypeDropdownOpen, setIsEventTypeDropdownOpen] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -73,19 +75,11 @@ function EditPostModal({
     }
   }, [selectedPost, eventTypes]);
 
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        if (!selectedPost) return;
-        let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
+  const fetchProfiles = async (selectedPost) => {
+    try {
+      if (!selectedPost) return;
 
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
 
         if (!response.ok) {
           const responseBody = await response.text();
@@ -105,21 +99,24 @@ function EditPostModal({
             return;
           }
         }
-
-        const data = await response.json();
-        setProfiles(data.data);
-        setIsLoading(false);
-
-        if (selectedPost.data.profile.profile_id) {
-          setSelectedProfileId(selectedPost.data.profile.profile_id);
-        }
-      } catch (error) {
-        setIsLoading(false);
       }
-    };
 
-    fetchProfiles();
-  }, [selectedPost, token, navigate]);
+      const data = await response.json();
+      setProfiles(data.data);
+      setIsLoading(false);
+
+      if (selectedPost.data.profile.profile_id) {
+        setSelectedProfileId(selectedPost.data.profile.profile_id);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error fetching profiles:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfiles(selectedPost);
+  }, []);
 
   useEffect(() => {
     if (originalPost && originalPost.event_date) {
@@ -307,45 +304,52 @@ function EditPostModal({
         show={show}
         closeModal={onHide}
         title="Editar Foro"
-        contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}
+        /*contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}*/
       >
         <Col>
           <div className={styles.buttons__container}>
-            <form>
-              <div className={`${styles.form__floating} form-floating`}>
-                <label>Titulo:</label>
-                <input
-                  type="text"
-                  className={`${styles.form__control} form-control`}
-                  value={selectedPost?.data.title || ""}
-                  onChange={(e) =>
-                    setSelectedPost({
-                      ...selectedPost,
-                      data: {
-                        ...selectedPost.data,
-                        title: e.target.value,
-                      },
-                    })
-                  }
-                />
+            <form className={styles.edit_form}>
+              <div>
+                <label>Título:</label>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <input
+                    type="text"
+                    className={`${styles.form__control} form-control`}
+                    value={selectedPost?.data.title || ""}
+                    onChange={(e) =>
+                      setSelectedPost({
+                        ...selectedPost,
+                        data: {
+                          ...selectedPost.data,
+                          title: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </div>
               </div>
-              <div className={`${styles.form__floating} form-floating`}>
+              <div>
                 <label>Descripción:</label>
-                <textarea
-                  className={`${styles.form__control} form-control`}
-                  value={selectedPost?.data.description || ""}
-                  onChange={(e) =>
-                    setSelectedPost({
-                      ...selectedPost,
-                      data: {
-                        ...selectedPost.data,
-                        description: e.target.value,
-                      },
-                    })
-                  }
-                />
+                <div className={`${styles.form__floating} form-floating`}>
+                  <textarea
+                    className={`${
+                      (styles.form__control, styles.edit_description)
+                    } form-control`}
+                    value={selectedPost?.data.description || ""}
+                    onChange={(e) =>
+                      setSelectedPost({
+                        ...selectedPost,
+                        data: {
+                          ...selectedPost.data,
+                          description: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </div>
               </div>
-              <div className={`${styles.form__floating} form-floating`}>
+
+              <div>
                 <label className={styles.input__label}>Tipo de Evento:</label>
                 <select
                   className={`${styles.form__control} form-control`}
@@ -368,6 +372,9 @@ function EditPostModal({
                     ))
                   )}
                 </select>
+                  <div className={styles.selectIcon}>
+                    <img src={expandDown} alt="Expand Icon" />
+                  </div>
               </div>
               {selectedPost &&
                 (selectedPost.data?.event_name === "Otros" ||
@@ -407,21 +414,26 @@ function EditPostModal({
 
               <div className={`${styles.form__floating} form-floating`}>
                 <label>Perfil:</label>
-                <select
-                  className={`${styles.form__control} form-control`}
-                  value={selectedProfileId}
-                  onChange={handleEventChange}
-                >
-                  {profiles &&
-                    profiles.map((profile) => (
-                      <option
-                        key={profile.profile_id}
-                        value={profile.profile_id}
-                      >
-                        {profile.name} {profile.last_name}
-                      </option>
-                    ))}
-                </select>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <select
+                    className={`${styles.form__control} form-control`}
+                    value={selectedProfileId}
+                    onChange={handleEventChange}
+                  >
+                    {profiles &&
+                      profiles.map((profile) => (
+                        <option
+                          key={profile.profile_id}
+                          value={profile.profile_id}
+                        >
+                          {profile.name} {profile.last_name}
+                        </option>
+                      ))}
+                  </select>
+                  <div className={styles.selectIcon}>
+                    <img src={expandDown} alt="Expand Icon" />
+                  </div>
+                </div>
               </div>
               <div className={`${styles.form__floating} form-floating`}>
                 <label>Fecha del Evento:</label>
@@ -463,7 +475,7 @@ function EditPostModal({
                 </div>
               )}
             </form>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ marginTop: "2rem" }}>
               <Button
                 label="Guardar"
                 className="btn primary__button"

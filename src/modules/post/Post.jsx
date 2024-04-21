@@ -156,7 +156,7 @@ function Post() {
           to={`/perfil/${parseInt(post.user_id)}`}
           className={styles.user__tagname}
         >
-          {post.user_name}
+          @{post.user_name}
         </Link>
       ) : (
         <Link

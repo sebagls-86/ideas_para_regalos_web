@@ -2,17 +2,30 @@
   width: 100%;
   cursor: pointer;
 }
+.user_info {
+  display: flex;
+  gap: 10px;
+  margin-top: 90px;
+  align-items: center;
+}
+.forum_content {
+  margin: 1rem 3rem 2rem;
+}
+
+.name {
+  font-weight: 800;
+}
+.message .name{
+
+  margin-top: 0.5rem;
+}
 
 .profile_picture {
-  width: 165px;
-  height: 165px;
-  margin-top: -8%;
+  width: 60px;
+  height: 60px;
   margin-left: 3%;
-  border: 8px solid white;
+  /*border: 8px solid white;*/
   border-radius: 100px;
-  background-color: green;
-  margin-bottom: 12px;
-  transform: translateX(-0%) translateY(-0%);
   cursor: pointer;
 }
 
@@ -39,93 +52,194 @@
 .profile_info_container {
   border-radius: 8px;
   padding: 20px;
-  }
-
-  .text_area{
-    width: "100%";
-    padding: "10px";
-    border-radius: "8px";
-    border: "1px solid #ccc";
-    margin-bottom: "10px";
-    resize: "none";
-    }
-
-  .send_button{
-    border: "none";
-    border-radius: "20px";
-    background-color: "green";
-    color: "white";
-    padding: "10px 20px";
-    cursor: "pointer";
-    font-weight: "bold";
-  }
-
-  .forum_title {
-    font-size: 24px;
-    margin-top: 6rem;
-    margin-bottom: 10px;
-  }
-  
-  .forum_description {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .forum_event {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .forum_message {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-
-  .forum_message_item {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .forum_username,
-  .forum_date {
-    font-size: 12px;
-    margin-bottom: 5px;
-  }
-  
-  .forum_images {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .forum_image {
-    max-width: 100px;
-    max-height: 100px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .modal_content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  
-  }
-
-  .forum_title_container,
-.forum_description_container {
-  position: relative;
-  margin-bottom: 20px; 
-  margin-top: 10rem;
 }
 
-.edit_button_container {
+.message {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.message_img_container {
+  display: flex;
+  overflow: hidden;
+  margin: 0.5rem 0 0.7rem;
+  gap: 5px;
+ 
+}
+.message_img_wrapper {
+  width: 50%;
+  height: 100%;
+}
+
+.message_img {
+border-radius: 10px;
+width: 100%;
+object-fit: contain;
+}
+
+.comment_action {
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid #ccc;
+  /*border-bottom: 1px solid #ccc;*/
+  position: relative;
+  padding-top: 1rem;
+}
+
+.text_area {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  resize: none;
+  height: 3rem;
+}
+
+.send_button,
+.send_button:hover {
+  border: none;
+  border-radius: 20px;
+  background-color: var(--primary-dark);
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  /* position: absolute;*/
+  right: 0;
+  /*transform: translate(-50%, 0%);*/
+}
+
+.attach_img_btn,
+.attach_img_btn:hover {
+  color: var(--primary-dark);
+  background-color: transparent !important;
+  border: none;
+}
+.attach_img_btn > svg {
+  width: 30px;
+  height: 30px;
+}
+
+.attach_img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.remove_img_btn {
   position: absolute;
-  top: 0rem; /* Ajusta la posición vertical según sea necesario */
-  right: 10px; /* Ajusta la posición horizontal según sea necesario */
+  right: 10px;
+  top: 10px;
+  background-color: rgba(15, 20, 25, 0.75);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.comment_buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.forum_title {
+  font-size: var(--fz-17);
+  margin-bottom: 10px;
+}
+
+.forum_description {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.forum_event {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.forum_tags {
+  display: flex;
+  gap: 10px;
+  font-size: var(--fz-14);
+}
+.forum_tags > li {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 0 10px;
+}
+
+.forum_message {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.forum_message_item {
+  border-top: 1px solid #ccc;
+  padding: 1rem 0;
+  /* background-color: pink;*/
+  padding-right: 2rem;
+  position: relative;
+}
+.forum_message_item > div > div {
+  /* background-color: yellow;*/
+  width: 100%;
+}
+
+.forum_username,
+.forum_date {
+  font-size: 12px;
+  margin-bottom: 5px;
+  
+}
+.forum_date {
+  opacity: 60%;
+}
+
+.forum_images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.forum_image {
+  max-width: 100px;
+  max-height: 100px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.forum_container,
+.forum_description_container {
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 90px;
+}
+
+.edit_post_button {
+  position: absolute;
+  right: 2rem;
+  top: 0;
+  cursor: pointer;
+}
+
+.edit_post_button svg,
+.edit_message_button {
+  fill: rgb(83, 100, 113);
+}
+.edit_message_button {
+  position: absolute;
+  right: 2rem;
+  top: 1.5rem;
+  background-color: transparent;
+  border: none;
 }
 
 /* Estilos adicionales según sea necesario */
@@ -144,14 +258,13 @@
   fill: red; /* Color del corazón al hacer hover */
 }
 
-
 .heart_icon {
   cursor: pointer; /* Cambia el cursor a un puntero */
   position: relative;
 }
 
 .heart-icon::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -165,14 +278,21 @@
   fill: red; /* Color de relleno rojo al hacer hover */
 }
 
-.post__actions{
+.post__actions {
   display: flex;
   gap: 1.43rem;
   margin-top: 1.85rem;
 }
-.actions__content{
+.actions__content {
   display: flex;
-  gap: var(--fz-11);
+  gap: 1.5rem;
+  align-items: center;
+}
+.actions__content >div{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
 }
 
 .post__actions {
@@ -180,6 +300,11 @@
   align-items: center;
 }
 
+.edit_message_panel {
+  display: flex;
+  background-color: pink;
+  gap: 1rem;
+}
 
 @media only screen and (max-width: 768px) {
   .profile_picture {
@@ -188,4 +313,3 @@
     border: 5px solid white;
   }
 }
-
