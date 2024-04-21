@@ -37,8 +37,7 @@ function EditPostModal({
   const { logout } = useAuth0();
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
-  const [isEventTypeDropdownOpen, setIsEventTypeDropdownOpen] = useState(false);
-
+  
   const token = localStorage.getItem("token");
 
   console.log(originalPost);
@@ -75,11 +74,19 @@ function EditPostModal({
     }
   }, [selectedPost, eventTypes]);
 
-  const fetchProfiles = async (selectedPost) => {
-    try {
-      if (!selectedPost) return;
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        if (!selectedPost) return;
+        let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
 
-      let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           const responseBody = await response.text();
@@ -99,24 +106,21 @@ function EditPostModal({
             return;
           }
         }
+
+        const data = await response.json();
+        setProfiles(data.data);
+        setIsLoading(false);
+
+        if (selectedPost.data.profile.profile_id) {
+          setSelectedProfileId(selectedPost.data.profile.profile_id);
+        }
+      } catch (error) {
+        setIsLoading(false);
       }
+    };
 
-      const data = await response.json();
-      setProfiles(data.data);
-      setIsLoading(false);
-
-      if (selectedPost.data.profile.profile_id) {
-        setSelectedProfileId(selectedPost.data.profile.profile_id);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error fetching profiles:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProfiles(selectedPost);
-  }, []);
+    fetchProfiles();
+  }, [selectedPost, token, navigate]);
 
   useEffect(() => {
     if (originalPost && originalPost.event_date) {
