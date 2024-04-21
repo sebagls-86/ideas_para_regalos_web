@@ -21,6 +21,7 @@ function EventsPage() {
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setTokenExists(token !== null && token !== undefined);
@@ -42,14 +43,16 @@ function EventsPage() {
   
         const eventsWithImageURLs = data.data.map((event) => ({
           ...event,
-          image: `${URL_IMAGES}/images/eventTypes/${event.image}`,
+          image: `${URL_IMAGES}${event.image}`,
         }));
+     
         setScheduledEvents(eventsWithImageURLs);
       })
       .catch((error) => {
         console.error("Error fetching scheduled events:", error);
       });
   }, []);
+
 
   return (
     <>

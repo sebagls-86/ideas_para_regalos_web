@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import styles from "./css/post.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
-import SelectButton from "../../components/selectButton/SelectButton";
 import expandDown from "../../assets/expand-icon.svg";
-
+import { useAuth0 } from "@auth0/auth0-react";
+import Calendar from "react-calendar";
+import { format } from "date-fns";
 
 function EditPostModal({
   show,
@@ -24,13 +25,24 @@ function EditPostModal({
   const [selectedEventType, setSelectedEventType] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectToHome, setRedirectToHome] = useState(false);
+  const [otherEventName, setOtherEventName] = useState(
+    originalPost?.event_name || ""
+  );
+  const { logout } = useAuth0();
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
   const [isEventTypeDropdownOpen, setIsEventTypeDropdownOpen] = useState(false);
 
   const token = localStorage.getItem("token");
+
+  console.log(originalPost);
+  console.log("selected post", selectedPost);
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -55,9 +67,9 @@ function EditPostModal({
   }, [token]);
 
   useEffect(() => {
-    if (selectedPost && selectedPost.event) {
+    if (selectedPost && selectedPost.data.event_name) {
       const initialEventType = eventTypes.find(
-        (eventType) => eventType.name === selectedPost.event
+        (eventType) => eventType.name === selectedPost.data.event_name
       );
       setSelectedEventType(initialEventType);
     }
@@ -69,28 +81,23 @@ function EditPostModal({
 
       let url = `${API_URL}/profiles/user/${selectedPost.data.user_id}`;
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const responseBody = await response.text();
-        if (responseBody.includes("invalid token")) {
-          setErrorMessage(
-            "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
-          );
-          localStorage.removeItem("token");
-          setShowResponseModal(true);
-          setRedirectToHome(true);
-          return;
-        } else {
-          setErrorMessage("Error al obtener perfiles");
-          setShowResponseModal(true);
-          return;
+        if (!response.ok) {
+          const responseBody = await response.text();
+          if (responseBody.includes("invalid token")) {
+            setErrorMessage(
+              "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
+            );
+            localStorage.removeItem("token");
+            localStorage.removeItem("userInfo");
+            logout();
+            setShowResponseModal(true);
+            setRedirectToHome(true);
+            return;
+          } else {
+            setErrorMessage("Error al obtener perfiles");
+            setShowResponseModal(true);
+            return;
+          }
         }
       }
 
@@ -111,48 +118,67 @@ function EditPostModal({
     fetchProfiles(selectedPost);
   }, []);
 
+  useEffect(() => {
+    if (originalPost && originalPost.event_date) {
+      const eventDateParts = originalPost.event_date.split("/");
+      const year = parseInt(eventDateParts[2]);
+      const month = parseInt(eventDateParts[1]) - 1;
+      const day = parseInt(eventDateParts[0]);
+      setSelectedDate(new Date(year, month, day));
+    }
+  }, [originalPost]);
+
+  useEffect(() => {
+    if (originalPost && originalPost.end_date) {
+      const eventDateParts = originalPost.end_date.split("/");
+      const year = parseInt(eventDateParts[2]);
+      const month = parseInt(eventDateParts[1]) - 1;
+      const day = parseInt(eventDateParts[0]);
+      setSelectedEndDate(new Date(year, month, day));
+    }
+  }, [originalPost]);
+
   const handleEventTypeChange = (eventTypeId) => {
     const selectedEventType = eventTypes.find(
       (type) => type.event_type_id === parseInt(eventTypeId)
     );
-
+  
     setSelectedPost({
       ...selectedPost,
-      event: selectedEventType.name,
-      event_type_id: selectedEventType.event_type_id,
+      data: {
+        ...selectedPost.data,
+        event_name: selectedEventType.name,
+        event_type_id: selectedEventType.event_type_id,
+      }
     });
   };
 
   const handleSaveChanges = async () => {
     try {
       const updatedFields = {};
+
+      // Verificar si la fecha del evento ha sido modificada
+      if (selectedDate) {
+        const formattedDate = format(selectedDate, "dd/MM/yyyy");
+        if (formattedDate !== originalPost.event_date) {
+          updatedFields.date = formattedDate;
+        }
+      }
+
       if (
         selectedEventType &&
-        selectedPost.data.event !== selectedEventType.name
+        selectedPost.data.event_name !== selectedPost.event
       ) {
         setSelectedPost({
           ...selectedPost,
           event_type_id: selectedEventType.event_type_id,
         });
-        const eventResponse = await fetch(
-          `${API_URL}/events/${selectedPost.data.event_id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              event_type_id: selectedEventType.event_type_id,
-            }),
-          }
-        );
+        updatedFields.event_type_id = selectedPost.event_type_id;
+        updatedFields.name = otherEventName || selectedPost.data.event;
+      }
 
-        if (!eventResponse.ok) {
-          setErrorMessage("Error al actualizar el evento");
-          setShowResponseModal(true);
-          return;
-        }
+      if (originalPost.event_name !== otherEventName) {
+        updatedFields.name = otherEventName;
       }
 
       if (
@@ -169,7 +195,49 @@ function EditPostModal({
         if (selectedPost.data.description !== originalPost.description) {
           updatedFields.description = selectedPost.data.description;
         }
+      }
 
+      if (originalPost.end_date !== "0" && selectedEndDate) {
+        const formattedEndDate = format(selectedEndDate, "dd/MM/yyyy");
+        if (formattedEndDate !== originalPost.end_date) {
+          updatedFields.end_date = formattedEndDate;
+        }
+      }
+
+      // Realizar el llamado a events solo si hay cambios en el tipo de evento o la fecha del evento
+      if (
+        Object.keys(updatedFields).length > 0 &&
+        (updatedFields.event_type_id ||
+          updatedFields.date ||
+          updatedFields.name)
+      ) {
+        const eventResponse = await fetch(
+          `${API_URL}/events/${selectedPost.data.event_id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(updatedFields),
+          }
+        );
+
+        if (!eventResponse.ok) {
+          setErrorMessage("Error al actualizar el evento");
+          setShowResponseModal(true);
+          return;
+        }
+      }
+
+      // Realizar el llamado a forums si hay cambios en el perfil, el título, la descripción o la fecha de finalización
+      if (
+        Object.keys(updatedFields).length > 0 &&
+        (updatedFields.title ||
+          updatedFields.description ||
+          updatedFields.end_date ||
+          updatedFields.profile_id)
+      ) {
         const forumResponse = await fetch(
           `${API_URL}/forums/${selectedPost.data.forum_id}`,
           {
@@ -183,11 +251,12 @@ function EditPostModal({
         );
 
         if (!forumResponse.ok) {
-          setErrorMessage("Error al los datos del foro");
+          setErrorMessage("Error al actualizar los datos del foro");
           setShowResponseModal(true);
-          console.error("Error al los datos del foro");
+          console.error("Error al actualizar los datos del foro");
         }
       }
+
       handleCloseModal();
       window.location.reload();
     } catch (error) {
@@ -199,6 +268,22 @@ function EditPostModal({
   const handleEventChange = (e) => {
     setSelectedProfileId(parseInt(e.target.value));
   };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
+  };
+
+  useEffect(() => {
+    const isOriginalEventNamePresent = eventTypes.some(
+      (type) => type.name === originalPost?.event_name
+    );
+  
+    setOtherEventName(isOriginalEventNamePresent ? "" : originalPost?.event_name);
+  }, [originalPost, eventTypes]);
 
   return (
     <>
@@ -266,37 +351,68 @@ function EditPostModal({
 
               <div>
                 <label className={styles.input__label}>Tipo de Evento:</label>
-                <div className={`${styles.form__floating} form-floating`}>
-                  <select
-                    label="Evento"
-                    isOpen={isEventTypeDropdownOpen}
-                    className={`${styles.form__control} form-control`}
-                    onChange={(e) => handleEventTypeChange(e.target.value)}
-                  >
-                    {isLoading ? (
-                      <option value="">Cargando...</option>
-                    ) : (
-                      eventTypes.map((eventType) => (
-                        <option
-                          key={eventType.event_type_id}
-                          value={eventType.event_type_id}
-                          selected={
-                            selectedPost &&
-                            selectedPost.data.event === eventType.name
-                          }
-                        >
-                          {eventType.name}
-                        </option>
-                      ))
-                    )}
-                  </select>
+                <select
+                  className={`${styles.form__control} form-control`}
+                  onChange={(e) => handleEventTypeChange(e.target.value)}
+                >
+                  {isLoading ? (
+                    <option value="">Cargando...</option>
+                  ) : (
+                    eventTypes.map((eventType) => (
+                      <option
+                        key={eventType.event_type_id}
+                        value={eventType.event_type_id}
+                        selected={
+                          selectedPost &&
+                          selectedPost.data.event_name === eventType.name
+                        }
+                      >
+                        {eventType.name}
+                      </option>
+                    ))
+                  )}
+                </select>
                   <div className={styles.selectIcon}>
                     <img src={expandDown} alt="Expand Icon" />
                   </div>
-                </div>
               </div>
+              {selectedPost &&
+                (selectedPost.data?.event_name === "Otros" ||
+                  !eventTypes.some(
+                    (eventType) => eventType.name === selectedPost.data?.event_name
+                  )) && (
+                  <div className={`${styles.form__floating} form-floating`}>
+                    <label>Otro tipo de evento:</label>
+                    <input
+                      type="text"
+                      className={`${styles.form__control} form-control`}
+                      value={otherEventName || ""}
+                      onChange={(e) => setOtherEventName(e.target.value)}
+                    />
+                    {otherEventName && (
+                      <span
+                        className="text-danger"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setOtherEventName("")}
+                      >
+                        Borrar
+                      </span>
+                    )}
+                    {!otherEventName && (
+                      <span
+                        className="text-primary"
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          setOtherEventName(originalPost.event_name)
+                        }
+                      >
+                        Restaurar
+                      </span>
+                    )}
+                  </div>
+                )}
 
-              <div>
+              <div className={`${styles.form__floating} form-floating`}>
                 <label>Perfil:</label>
                 <div className={`${styles.form__floating} form-floating`}>
                   <select
@@ -319,6 +435,45 @@ function EditPostModal({
                   </div>
                 </div>
               </div>
+              <div className={`${styles.form__floating} form-floating`}>
+                <label>Fecha del Evento:</label>
+                <input
+                  type="text"
+                  className={`${styles.form__control} form-control`}
+                  value={selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""}
+                  onClick={() => setShowCalendar(true)}
+                />
+                {showCalendar && (
+                  <Calendar
+                    onChange={handleDateChange}
+                    value={selectedDate}
+                    onClickDay={() => setShowCalendar(false)}
+                  />
+                )}
+              </div>
+
+              {originalPost?.end_date !== "0" && (
+                <div className={`${styles.form__floating} form-floating`}>
+                  <label>Fecha de Finalización:</label>
+                  <input
+                    type="text"
+                    className={`${styles.form__control} form-control`}
+                    value={
+                      selectedEndDate
+                        ? format(selectedEndDate, "dd/MM/yyyy")
+                        : ""
+                    }
+                    onClick={() => setShowEndCalendar(true)}
+                  />
+                  {showEndCalendar && (
+                    <Calendar
+                      onChange={handleEndDateChange}
+                      value={selectedEndDate}
+                      onClickDay={() => setShowEndCalendar(false)}
+                    />
+                  )}
+                </div>
+              )}
             </form>
             <div style={{ marginTop: "2rem" }}>
               <Button

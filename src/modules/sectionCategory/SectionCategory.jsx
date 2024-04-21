@@ -9,11 +9,6 @@ export default function SectionCategory() {
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
-  console.log("API URL", API_URL);
-  console.log("IMAGES URL", URL_IMAGES);
-
-
-
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -25,8 +20,7 @@ export default function SectionCategory() {
         const responseData = await response.json();
         const data = responseData.data || [];
         setCategories(data);
-        console.log(URL_IMAGES, data.data.image)
-      } else {
+       } else {
         console.error("Error fetching categories:", response.statusText);
       }
     } catch (error) {

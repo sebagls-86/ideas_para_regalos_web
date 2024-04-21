@@ -82,7 +82,7 @@ function ProductsByCategory() {
                 {products.map((product, index) => (
                   <ProductCard
                     key={index}
-                    image={`${URL_IMAGES}/imagenes/product-catalog/${product.image_name}`}
+                    image={`${URL_IMAGES}${product.image_name}`}
                     name={product.product_name}
                     userId={userId}
                     productId={product.product_catalog_id}

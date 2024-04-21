@@ -20,13 +20,10 @@ export default function SectionAgeRange() {
         const responseData = await response.json();
         const data = responseData.data || [];
         setAgeRanges(data);
-        console.log("ageRanges", data);
-      } else {
-        console.error("Error fetching categories:", response.statusText);
-      }
+        } else {
+        }
     } catch (error) {
-      console.error("Error fetching categories:", error);
-    } finally {
+      } finally {
       setLoading(false);
     }
   };

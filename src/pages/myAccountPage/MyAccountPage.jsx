@@ -62,7 +62,6 @@ function MyAccountPage({ userInfo }) {
         setUserData(data.data);
 
         if (response.status === 400) {
-          console.log("Error 400");
           return;
         }
       } catch (error) {

@@ -29,6 +29,9 @@ function PostByUser() {
     null;
   const API_URL = process.env.REACT_APP_API_URL;
 
+  console.log(userId)
+  console.log(tokenUserId)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,8 +50,7 @@ function PostByUser() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -61,6 +63,7 @@ function PostByUser() {
   }
 
   const handleButtonClick = (postId) => {
+
     setSelectedPostId(postId);
     setShowDeleteOption(!showDeleteOption);
   };
@@ -105,7 +108,6 @@ function PostByUser() {
     setOriginalPost(null);
   };
 
-  console.log("postdata", postData);
 
   return (
     <div>

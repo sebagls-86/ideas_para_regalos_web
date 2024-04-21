@@ -9,6 +9,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdClose, IoIosSearch } from "react-icons/io";
 import ResponseModal from "../../components/modal/ResponseModal";
 import config from "../../auth_config.json";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function getRandomPastelColor() {
   const hue = Math.floor(Math.random() * 360);
@@ -43,7 +44,7 @@ function WishList() {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
   const [listColors, setListColors] = useState({});
-
+const {logout} = useAuth0()
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
@@ -55,8 +56,6 @@ function WishList() {
 
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-
-  console.log(config.meli_redirect_uri);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,8 +76,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -130,8 +128,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-          console.log("Error 400");
-        }
+         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -249,14 +246,7 @@ function WishList() {
       const { list, productId } = productToRemove;
       const listId = list.list_id;
 
-      console.log(
-        "Deleting product with ID:",
-        productId,
-        "from list with ID:",
-        listId
-      );
-
-      const response = await fetch(
+          const response = await fetch(
         `${API_URL}/lists/${listId}/listProducts/${productId}`,
         {
           method: "DELETE",
@@ -290,6 +280,8 @@ function WishList() {
             "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
           );
           localStorage.removeItem("token");
+          localStorage.removeItem("userInfo")
+          logout()
           navigate("/");
           setShowResponseModal(true);
         } else if (!response.ok) {

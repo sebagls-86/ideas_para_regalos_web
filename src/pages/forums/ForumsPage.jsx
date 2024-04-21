@@ -27,7 +27,6 @@ function ForumsPage() {
   const token = localStorage.getItem("token");
   const tokenExists = token !== null && token !== undefined;
   const [message, setMessage] = useState("");
-  const [userData, setUserData] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
@@ -287,8 +286,6 @@ function ForumsPage() {
         );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
-          console.log("updatedLikesResponse", updatedLikesResponse);
-
           const updatedForumData = { ...forumData };
           const likesCount = updatedLikesResponse.data.likes || 0;
           updatedForumData.data.likes = likesCount;
@@ -302,8 +299,6 @@ function ForumsPage() {
             throw new Error("Network response was not ok");
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
-          console.log("updatedUserLikesData", updatedUserLikesData);
-
           setForumLikesData(updatedUserLikesData);
         } else {
           console.error("Failed to like post");
@@ -331,9 +326,6 @@ function ForumsPage() {
         );
         if (updatedLikesData.ok) {
           const updatedLikesResponse = await updatedLikesData.json();
-          console.log("updatedLikesResponse", updatedLikesResponse);
-
-          // Actualizar los datos del mensaje con la nueva cantidad de likes
           const updatedForumData = { ...forumData };
           const updatedMessages = updatedForumData.data.messages.map(
             (message) => {
@@ -438,9 +430,9 @@ function ForumsPage() {
                       </div>
                     )}
                 </div>
+
                 <div className={styles.forum_content}>
                   <p className={styles.forum_title}>{forumData.data.title}</p>
-
                   <ul className={styles.forum_tags}>
                     <li>{forumData.data.profile.name}</li>
                     <li> {forumData.data.profile.relationship} </li>
@@ -685,6 +677,7 @@ function ForumsPage() {
                                   </div>
                                 </div>
                               </div>
+
                             </div>
                             {userId && message.user_id === userId && (
                               <SlOptions
