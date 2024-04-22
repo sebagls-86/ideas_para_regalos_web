@@ -10,6 +10,7 @@ function ModalCreateList({ show, onHide, handleSaveNewList }) {
     list_name: "",
   });
   const [isGuardarDisabled, setIsGuardarDisabled] = useState(true);
+  const [forceUpdate, setForceUpdate] = useState(false);
 
   useEffect(() => {
     setIsGuardarDisabled(!form.list_name);
@@ -27,6 +28,7 @@ function ModalCreateList({ show, onHide, handleSaveNewList }) {
     setForm({
       list_name: "",
     });
+    setForceUpdate(prevState => !prevState);
     onHide();
   };
 
@@ -35,6 +37,14 @@ function ModalCreateList({ show, onHide, handleSaveNewList }) {
       list_name: form.list_name,
     };
     handleSaveNewList(newList);
+    setForm({
+      list_name: "",
+    });
+    setForm({
+      list_name: "",
+    });
+    setForceUpdate(prevState => !prevState);
+    onHide();
   };
 
   return (
@@ -46,7 +56,9 @@ function ModalCreateList({ show, onHide, handleSaveNewList }) {
         <div className={styles.modal__body}>
           <h2 className={styles.modal__title}>Nueva lista</h2>
           <Col>
+          {console.log("form list name", form.list_name)}
             <Input
+            key={forceUpdate}
               type="text"
               name="list_name"
               placeholder="Nombre de la lista"

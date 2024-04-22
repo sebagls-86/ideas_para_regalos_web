@@ -40,11 +40,10 @@ function WishList() {
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
   const [listColors, setListColors] = useState({});
-const {logout} = useAuth0()
+  const {logout} = useAuth0()
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
@@ -176,7 +175,6 @@ const {logout} = useAuth0()
   };
 
   const handleDeleteList = (list) => {
-    // Verificar si el nombre de la lista es "favorites" o "MercadoLibre"
     if (list.list_name === "favorites" || list.list_name === "MercadoLibre") {
       setErrorMessage("No se puede eliminar esta lista");
       setShowResponseModal(true);
@@ -188,11 +186,10 @@ const {logout} = useAuth0()
 
   const handleDelete = async (listId, listName) => {
     try {
-      // Verificar si el nombre de la lista es "favorites" o "MercadoLibre"
       if (listName === "favorites" || listName === "MercadoLibre") {
         setErrorMessage("No se puede eliminar esta lista");
         setShowResponseModal(true);
-        return; // Salir de la función sin realizar la eliminación
+        return;
       }
 
       const response = await fetch(`${API_URL}/lists/${listId}`, {
@@ -409,17 +406,17 @@ const {logout} = useAuth0()
         body: JSON.stringify(dataToSend),
       });
       if (response.ok) {
-        successMessage("Lista creada correctamente")
+        setSuccessMessage("Lista creada correctamente")
         const data = await response.json();
         setListData([...listData, data.data]);
         setShowCreateListModal(false);
         setShowResponseModal(true);
       } else {
-        errorMessage("Error al crear lista")
+        setErrorMessage("Error al crear lista")
         setShowResponseModal(true);       
       }
     } catch (error) {
-      errorMessage("Error al enviar solicitud de creación de la lista")
+      setErrorMessage("Error al enviar solicitud de creación de la lista")
       setShowResponseModal(true);
     }
   };
