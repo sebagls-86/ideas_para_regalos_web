@@ -66,6 +66,7 @@ function UserSuggestions({ userInfo }) {
               <div className={styles.user_info}>
                 <UserLogoName
                   name={user.name}
+                  userName={user.user_name}
                   logo={user.avatar}
                   to={`/perfil/${user.user_id}`}
                 />

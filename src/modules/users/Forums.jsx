@@ -32,6 +32,7 @@ function Forums() {
               className={styles.forumLink}
             >
               <div className={styles.forum}>
+              <img src={forum.avatar} alt={"avatar"} width="300" height="200"/>
                 <p> {forum.name}</p>
                 <p> @{forum.user_name}</p>
                 <h3>{forum.title}</h3>

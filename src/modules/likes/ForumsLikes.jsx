@@ -30,9 +30,10 @@ function ForumsLikes() {
               className={styles.forumLink}
             >
               <div className={styles.forum}>
+              <img src={forum.avatar} alt={"avatar"} width="300" height="200"/>
                 <h3>{forum.title}</h3>
                 <p>{forum.description}</p>
-                <p>Creado por: {forum.user_name}</p>
+                <p>Creado por: {forum.user_owner}</p>
                 <p>Fecha de creación: {forum.created_at}</p>
               </div>
             </Link>

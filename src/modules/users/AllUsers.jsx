@@ -41,6 +41,7 @@ function Users() {
           <div className={styles.container} key={user.user_id}>
             <UserLogoName
               name={user.user_name}
+              userName={user.user_name}
               logo={user.avatar}
               to={`/perfil/${user.user_id}`}
             />

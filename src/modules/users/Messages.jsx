@@ -24,6 +24,7 @@ function Messages() {
           messages.map(message => (
             <Link to={`/forums/${message.forum_id}`} key={message.message_id} className={styles.messageLink}>
               <div className={styles.message}>
+              <img src={message.avatar} alt={"avatar"} width="300" height="200"/>
                 <p>{message.message}</p>
                 <p>Enviado por: {message.user_name}</p>
                 <p>Fecha de creación: {message.created_at}</p>
