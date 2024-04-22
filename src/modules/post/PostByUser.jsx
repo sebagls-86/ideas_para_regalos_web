@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./css/post.module.css";
-import { AiOutlineHeart } from "react-icons/ai";
-import { FiMessageSquare } from "react-icons/fi";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
 import { SlOptions } from "react-icons/sl";
-import DeleteIcon from "../../assets/buttons/delete-icon.svg"
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import { FaRegHeart } from "react-icons/fa";
+import  CommentIcon  from "../../assets/comment-icon.svg"
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -192,14 +191,14 @@ function PostByUser() {
               <div className={styles.post__actions}>
                 <div>
                 <div className={styles.actions__content}>
-                  <AiOutlineHeart />
+                  <FaRegHeart fill="#536571"/>
                   <span className={styles.post_tags}>{post.likes}</span>
                 </div>
                 </div>
 
                 <div>
                 <div className={styles.actions__content}>
-                  <FiMessageSquare />
+                <img src={CommentIcon} alt="Comment Icon" />
                   <span className={styles.post_tags}>
                     {post.messages ? post.messages.length : 0}
                   </span>
