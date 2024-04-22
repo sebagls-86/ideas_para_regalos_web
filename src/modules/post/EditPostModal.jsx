@@ -37,7 +37,7 @@ function EditPostModal({
   const { logout } = useAuth0();
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
-  
+
   const token = localStorage.getItem("token");
 
   console.log(originalPost);
@@ -146,14 +146,14 @@ function EditPostModal({
     const selectedEventType = eventTypes.find(
       (type) => type.event_type_id === parseInt(eventTypeId)
     );
-  
+
     setSelectedPost({
       ...selectedPost,
       data: {
         ...selectedPost.data,
         event_name: selectedEventType.name,
         event_type_id: selectedEventType.event_type_id,
-      }
+      },
     });
   };
 
@@ -285,8 +285,10 @@ function EditPostModal({
     const isOriginalEventNamePresent = eventTypes.some(
       (type) => type.name === originalPost?.event_name
     );
-  
-    setOtherEventName(isOriginalEventNamePresent ? "" : originalPost?.event_name);
+
+    setOtherEventName(
+      isOriginalEventNamePresent ? "" : originalPost?.event_name
+    );
   }, [originalPost, eventTypes]);
 
   return (
@@ -352,38 +354,88 @@ function EditPostModal({
                   />
                 </div>
               </div>
-
+              <div className={styles.event_date_form}>
+                <div>
+                  <label>Fecha del Evento:</label>
+                  <div >
+                    <input
+                      type="text"
+                      className={`${styles.form__control} ${styles.event_date_input} form-control`}
+                      value={
+                        selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""
+                      }
+                      onClick={() => setShowCalendar(true)}
+                    />
+                    {showCalendar && (
+                      <Calendar
+                        onChange={handleDateChange}
+                        value={selectedDate}
+                        onClickDay={() => setShowCalendar(false)}
+                        className={styles.event_date_calendar}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <label>Fecha de Finalización:</label>
+                  {originalPost?.end_date !== "0" && (
+                    <div >
+                      <input
+                        type="text"
+                        className={`${styles.form__control} form-control`}
+                        value={
+                          selectedEndDate
+                            ? format(selectedEndDate, "dd/MM/yyyy")
+                            : ""
+                        }
+                        onClick={() => setShowEndCalendar(true)}
+                      />
+                      {showEndCalendar && (
+                        <Calendar
+                          onChange={handleEndDateChange}
+                          value={selectedEndDate}
+                          onClickDay={() => setShowEndCalendar(false)}
+                          className={styles.event_date_calendar}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div>
                 <label className={styles.input__label}>Tipo de Evento:</label>
-                <select
-                  className={`${styles.form__control} form-control`}
-                  onChange={(e) => handleEventTypeChange(e.target.value)}
-                >
-                  {isLoading ? (
-                    <option value="">Cargando...</option>
-                  ) : (
-                    eventTypes.map((eventType) => (
-                      <option
-                        key={eventType.event_type_id}
-                        value={eventType.event_type_id}
-                        selected={
-                          selectedPost &&
-                          selectedPost.data.event_name === eventType.name
-                        }
-                      >
-                        {eventType.name}
-                      </option>
-                    ))
-                  )}
-                </select>
+                <div className={`${styles.form__floating} form-floating`}>
+                  <select
+                    className={`${styles.form__control} form-control`}
+                    onChange={(e) => handleEventTypeChange(e.target.value)}
+                  >
+                    {isLoading ? (
+                      <option value="">Cargando...</option>
+                    ) : (
+                      eventTypes.map((eventType) => (
+                        <option
+                          key={eventType.event_type_id}
+                          value={eventType.event_type_id}
+                          selected={
+                            selectedPost &&
+                            selectedPost.data.event_name === eventType.name
+                          }
+                        >
+                          {eventType.name}
+                        </option>
+                      ))
+                    )}
+                  </select>
                   <div className={styles.selectIcon}>
                     <img src={expandDown} alt="Expand Icon" />
                   </div>
+                </div>
               </div>
               {selectedPost &&
                 (selectedPost.data?.event_name === "Otros" ||
                   !eventTypes.some(
-                    (eventType) => eventType.name === selectedPost.data?.event_name
+                    (eventType) =>
+                      eventType.name === selectedPost.data?.event_name
                   )) && (
                   <div className={`${styles.form__floating} form-floating`}>
                     <label>Otro tipo de evento:</label>
@@ -416,68 +468,33 @@ function EditPostModal({
                   </div>
                 )}
 
-              <div className={`${styles.form__floating} form-floating`}>
+              <div>
                 <label>Perfil:</label>
                 <div className={`${styles.form__floating} form-floating`}>
-                  <select
-                    className={`${styles.form__control} form-control`}
-                    value={selectedProfileId}
-                    onChange={handleEventChange}
-                  >
-                    {profiles &&
-                      profiles.map((profile) => (
-                        <option
-                          key={profile.profile_id}
-                          value={profile.profile_id}
-                        >
-                          {profile.name} {profile.last_name}
-                        </option>
-                      ))}
-                  </select>
-                  <div className={styles.selectIcon}>
-                    <img src={expandDown} alt="Expand Icon" />
+                  <div className={`${styles.form__floating} form-floating`}>
+                    <select
+                      className={`${styles.form__control} form-control`}
+                      value={selectedProfileId}
+                      onChange={handleEventChange}
+                    >
+                      {profiles &&
+                        profiles.map((profile) => (
+                          <option
+                            key={profile.profile_id}
+                            value={profile.profile_id}
+                          >
+                            {profile.name} {profile.last_name}
+                          </option>
+                        ))}
+                    </select>
+                    <div className={styles.selectIcon}>
+                      <img src={expandDown} alt="Expand Icon" />
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={`${styles.form__floating} form-floating`}>
-                <label>Fecha del Evento:</label>
-                <input
-                  type="text"
-                  className={`${styles.form__control} form-control`}
-                  value={selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""}
-                  onClick={() => setShowCalendar(true)}
-                />
-                {showCalendar && (
-                  <Calendar
-                    onChange={handleDateChange}
-                    value={selectedDate}
-                    onClickDay={() => setShowCalendar(false)}
-                  />
-                )}
-              </div>
 
-              {originalPost?.end_date !== "0" && (
-                <div className={`${styles.form__floating} form-floating`}>
-                  <label>Fecha de Finalización:</label>
-                  <input
-                    type="text"
-                    className={`${styles.form__control} form-control`}
-                    value={
-                      selectedEndDate
-                        ? format(selectedEndDate, "dd/MM/yyyy")
-                        : ""
-                    }
-                    onClick={() => setShowEndCalendar(true)}
-                  />
-                  {showEndCalendar && (
-                    <Calendar
-                      onChange={handleEndDateChange}
-                      value={selectedEndDate}
-                      onClickDay={() => setShowEndCalendar(false)}
-                    />
-                  )}
-                </div>
-              )}
+          
             </form>
             <div style={{ marginTop: "2rem" }}>
               <Button

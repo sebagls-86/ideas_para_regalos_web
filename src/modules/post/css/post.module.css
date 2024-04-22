@@ -62,10 +62,7 @@
   gap: var(--fz-11);
   padding-top: 0.5rem;
 }
-.post_tags {
-  font-size: var(--fz-11);
-  font-weight: 600;
-}
+
 
 .post__images {
   margin-top: var(--fz-15);
@@ -86,8 +83,8 @@
 }
 .post__actions {
   display: flex;
-  gap: 1.43rem;
-  margin-top: 1.85rem;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 .actions__content {
   display: flex;
@@ -97,12 +94,13 @@
 .post__actions {
   display: flex;
   align-items: center;
+  gap: 1.5rem;
 }
 
 .actions__content {
   display: flex;
   align-items: center;
-  margin-right: 20px; /* Ajusta el espaciado entre los iconos según sea necesario */
+  gap: 5px;
 }
 
 .actions__content span {
@@ -160,6 +158,13 @@
   cursor: pointer;
   fill: red; /* Color de relleno rojo al hacer hover */
 }
+.actions__content span{
+  color: #536571;
+ }
+ 
+ .liked{
+  color: red !important;
+ }
 
 @media only screen and (min-width: 768px) {
   .post__images {
@@ -192,7 +197,8 @@
   gap: 1rem;
 }
 .edit_description {
-  height: 150px !important;
+  max-height: 150px !important;
+  height: auto;
 }
 label {
   font-weight: 700;
@@ -202,6 +208,9 @@ label {
 .form__floating .form__control {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  position: relative;
+}
+.form__control{
   position: relative;
 }
 .form__floating .edit_description {
@@ -249,4 +258,16 @@ label {
 .post__actions_options > button svg{
     height: 22px;
     width: 22px;
+}
+.event_date_form{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.event_date_input{
+  width: auto;
+}
+.event_date_calendar{
+  position: absolute;
+  z-index: 999;
 }

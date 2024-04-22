@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Search from "../../components/search/Search";
 import { useAuth0 } from "@auth0/auth0-react";
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
+import  CommentIcon  from "../../assets/comment-icon.svg"
 
 function Post() {
   const [postData, setPostData] = useState(null);
@@ -167,7 +170,7 @@ function Post() {
           {post.user_name}
         </Link>
       )}
-                  <p className={styles.user__timepost}>5h</p>
+            
                 </div>
               </div>
               <Link to={`/forums/${parseInt(post.forum_id)}`}>
@@ -191,14 +194,25 @@ function Post() {
                   likesData.data.some(
                     (like) => like.forum_id === post.forum_id
                   ) ? (
-                    <AiFillHeart fill="red" className={styles.heart_icon} />
+                    <FaHeart fill="red" className={styles.heart_icon} />
                   ) : (
-                    <AiOutlineHeart className={styles.heart_icon} />
+                    <FaRegHeart  fill="#536571" className={styles.heart_icon} />
                   )}
-                  <span className={styles.post_tags}>{post.likes}</span>
+               <span
+  className={`${styles.post_tags} ${
+    likesData &&
+    likesData.data &&
+    likesData.data.some(
+      (like) => like.forum_id === post.forum_id
+    ) &&
+    styles.liked
+  }`}
+>
+  {post.likes}
+</span>
                 </div>
                 <div className={styles.actions__content}>
-                  <FiMessageSquare />
+                <img src={CommentIcon} alt="Comment Icon" />
                   <span className={styles.post_tags}>
                     {post.messages ? post.messages.length : 0}
                   </span>

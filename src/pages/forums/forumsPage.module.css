@@ -162,6 +162,7 @@ object-fit: contain;
   display: flex;
   gap: 10px;
   font-size: var(--fz-14);
+  flex-wrap: wrap;
 }
 .forum_tags > li {
   border: 1px solid #ccc;
@@ -255,7 +256,7 @@ object-fit: contain;
 
 /* Estilo para el corazón al hacer hover */
 .heart_icon:hover path {
-  fill: red; /* Color del corazón al hacer hover */
+  fill: red !important; /* Color del corazón al hacer hover */
 }
 
 .heart_icon {
@@ -275,7 +276,10 @@ object-fit: contain;
 
 .heart-icon:hover::before {
   cursor: pointer;
-  fill: red; /* Color de relleno rojo al hacer hover */
+  fill: red !important; /* Color de relleno rojo al hacer hover */
+}
+.liked{
+  color: red !important;
 }
 
 .post__actions {
@@ -290,10 +294,19 @@ object-fit: contain;
 }
 .actions__content >div{
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
 
 }
+.actions__content svg{
+  width: 16px;
+  height: 16px;
+
+}
+.actions__content span{
+ color: #536571;
+}
+
 
 .post__actions {
   display: flex;
