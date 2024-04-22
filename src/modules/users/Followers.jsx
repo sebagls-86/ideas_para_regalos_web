@@ -27,7 +27,7 @@ function Followers() {
 
   return (
     <div>
-      <div>
+      <div className={styles.search_bar}>
         <Search onSearch={handleSearch} />
       </div>
       {filteredFollowers.length > 0 ? (
@@ -41,7 +41,7 @@ function Followers() {
           </div>
         ))
       ) : (
-        <p>Todavía no hay seguidores</p>
+        <p className={styles.alert_message}>Todavía no hay seguidores</p>
       )}
     </div>
   );

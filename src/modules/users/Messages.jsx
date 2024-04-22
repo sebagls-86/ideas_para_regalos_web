@@ -31,7 +31,7 @@ function Messages() {
             </Link>
           ))
         ) : (
-          <p>No hay mensajes disponibles.</p>
+          <p className={styles.alert_message} >No hay mensajes disponibles.</p>
         )}
       </div>
     </div>

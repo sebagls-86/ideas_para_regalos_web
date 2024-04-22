@@ -28,7 +28,7 @@ function UsersPage() {
         <div className="left__aside">{(isAuthenticated) && <Nav />}</div>
         <div className="content">
         <PageTitle title="Usuarios" />
-          <div className="mt-3 p-3">
+          <div  style={{marginTop: "5rem"}}>
             <Tabs
               defaultActiveKey="todos"
               id="uncontrolled-tab-example"

@@ -30,7 +30,7 @@ function Following() {
 
   return (
     <div>
-      <div>
+      <div className={styles.search_bar}>
         <Search onSearch={handleSearch} />
       </div>
       {following.length > 0 ? (
@@ -47,7 +47,7 @@ function Following() {
           </div>
         ))
       ) : (
-        <div>
+        <div className={styles.alert_message}>
           <p>Todavía no estás siguiendo a nadie.</p>
           <p>Aquí te damos algunas sugerencias:</p>
           {suggestions.map((user) => (
