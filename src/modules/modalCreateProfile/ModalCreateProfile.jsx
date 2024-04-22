@@ -122,10 +122,12 @@ function ModalCreateProfile({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
-    }));
+    const filteredValue = value.replace(/[^a-zA-Z]/g, '');
+    
+    setForm({
+      ...form,
+      [name]: filteredValue
+    });
   };
 
   const handleNextStep = () => {
@@ -148,12 +150,15 @@ function ModalCreateProfile({
   };
 
   const handleClose = () => {
+    console.log("Cerrando el modal");
     setForm({
       name: "",
       lastName: "",
       selectedAgeRange: "",
       selectedRelationship: "",
     });
+
+    console.log(form)
     setSelectedAgeOption(null);
     setSelectedRelationshipOption(null);
     onHide();
@@ -174,6 +179,20 @@ function ModalCreateProfile({
       ),
     };
     handleSaveNewProfile(newProfile);
+    setForm({
+      name: "",
+      lastName: "",
+      selectedAgeRange: "",
+      selectedRelationship: "",
+    });
+    setSelectedAgeOption(null);
+    setSelectedRelationshipOption(null);
+    onHide();
+    handleCloseNewProfileModal();
+    setCurrentStep(1);
+    setIsAgeDropdownOpen(false);
+    setIsRelationshipDropdownOpen(false);
+    setSelectedInterests([])
   };
 
   const getTitleForStep = () => {
@@ -280,7 +299,6 @@ function ModalCreateProfile({
       closeModal={handleClose}
       title={getTitleForStep()}
       show={show}
-      onHide={onHide}
     >
       <Col>
         <div className={styles.buttons__container}>

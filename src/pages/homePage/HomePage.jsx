@@ -212,7 +212,14 @@ function HomePage() {
       );
 
       if (!pendingSurveys.ok) {
-        throw new Error("Failed to get pending surveys");
+        const errorMessage = await pendingSurveys.text();
+        if (errorMessage.includes("Failed to validate JWT")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userInfo");
+          logout();
+        } else {
+          throw new Error("Failed to get pending surveys");
+        }
       }
 
       const pendingSurveysResponse = await pendingSurveys.json();

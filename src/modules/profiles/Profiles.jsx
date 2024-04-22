@@ -334,7 +334,15 @@ function Profiles() {
   const handleConfirmRemoveInterest = async () => {
     try {
       const { profile, interest } = interestToRemove;
+      console.log(profile)
       const interestId = interest.interest_id;
+
+      if (profile.interests.length === 1) {
+        setErrorMessage("No puedes eliminar este interés porque es el único que tiene el perfil.");
+        setShowConfirmationModal(false);
+        setShowResponseModal(true);
+        return
+      }
 
       const deleteResponse = await fetch(
         `${API_URL}/profileInterests/${profile.profile_id}`,
@@ -536,7 +544,6 @@ function Profiles() {
   };
 
   const handleGiftClick = (profile) => {
-    // Redirigir al usuario a la página de Nuevo Regalo con el perfil seleccionado
     window.location.href = `http://localhost:3000/nuevoRegalo?profileId=${profile.profile_id}`;
   };
 

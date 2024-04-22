@@ -178,8 +178,9 @@ function ForumsPage() {
         updatedForumData.data.messages = updatedMessages;
         setForumData(updatedForumData);
 
-        alert("El mensaje se ha eliminado correctamente.");
+        successMessage("El mensaje se ha eliminado correctamente.");
         setShowDeleteModal(false);
+        setShowResponseModal(true);
       } else {
         setErrorMessage("Error al intentar eliminar el mensaje.");
         setShowDeleteModal(false);
