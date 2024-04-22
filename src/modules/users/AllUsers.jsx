@@ -33,7 +33,7 @@ function Users() {
 
   return (
     <div>
-      <div>
+      <div className={styles.search_bar}>
         <Search onSearch={handleSearch} />
       </div>
       {filteredUsers.map((user) => {

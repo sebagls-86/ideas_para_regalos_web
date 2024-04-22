@@ -6,7 +6,7 @@ function UserLogoName({name, logo, to}) {
   return (
     <Link to={to} className={styles.container}>
         <img src={logo} alt={name} className={styles.image} width='54' height='54'/>
-        <p className={styles.text}>{name}</p>
+        <p className={styles.text}>@{name}</p>
     </Link>
   )
 }
