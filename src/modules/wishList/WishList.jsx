@@ -87,7 +87,6 @@ const {logout} = useAuth0()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Verificar si la carpeta seleccionada es "MercadoLibre"
         if (selectedListId) {
           const selectedList = listData.find(
             (list) => list.list_id === selectedListId
@@ -111,7 +110,6 @@ const {logout} = useAuth0()
           }
         }
 
-        // Si la carpeta seleccionada no es "MercadoLibre", realizar la solicitud habitual
         const response = await fetch(`${API_URL}/lists/user/${userId}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -366,7 +364,7 @@ const {logout} = useAuth0()
         body: JSON.stringify({ list_name: editedListName }),
       });
       if (response.ok) {
-        alert("Nombre de lista actualizado correctamente");
+        setSuccessMessage("Lista eliminada correctamente");
         const updatedListData = listData.map((listItem) => {
           if (listItem.list_id === list.list_id) {
             return {
@@ -378,6 +376,7 @@ const {logout} = useAuth0()
         });
         setEditMode(false);
         setListData(updatedListData);
+        setShowResponseModal(true);
       } else {
         setErrorMessage("Error al actualizar el nombre de la lista");
         setShowResponseModal(true);
@@ -410,20 +409,18 @@ const {logout} = useAuth0()
         body: JSON.stringify(dataToSend),
       });
       if (response.ok) {
-        alert("Lista creada correctamente");
+        successMessage("Lista creada correctamente")
         const data = await response.json();
         setListData([...listData, data.data]);
         setShowCreateListModal(false);
+        setShowResponseModal(true);
       } else {
-        alert("Error al crear la lista");
-        console.error("Error al crear la lista");
+        errorMessage("Error al crear lista")
+        setShowResponseModal(true);       
       }
     } catch (error) {
-      alert("Error al enviar solicitud de creación de la lista");
-      console.error(
-        "Error al enviar solicitud de creación de la lista:",
-        error
-      );
+      errorMessage("Error al enviar solicitud de creación de la lista")
+      setShowResponseModal(true);
     }
   };
 
