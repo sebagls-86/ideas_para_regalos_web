@@ -1,37 +1,40 @@
+
 .productCard h3 {
   font-size: 1.313rem;
   padding-top: 0 !important;
 }
 
 .productCard {
-  width: 15.25rem !important;
+  /*width: 15.25rem !important;*/
   height: 23.75rem;
   border: 1px solid #000;
   border-radius: 10px;
   position: relative;
-  margin-top: 6rem;
+  margin-top: 1rem;
   margin-right: 20px;
   display: flex;
   flex-direction: row;
+  
 }
 .productImage {
-  width: 15.1rem;
-  height: 15.375rem;
+  width: 100%;
+  max-height: 16.375rem;
   border-bottom: 0.3px solid #000;
   z-index: 1;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 .saveButton {
-  /*position: absolute;
-  right: 15px;
-  bottom: 80px;*/
+  position: absolute;
+  right: 10px;
+  bottom: 125px;
   border-radius: 25px;
   background: url(/src/assets/bookmark.svg) center no-repeat;
   background-color: rgba(217, 217, 217, 0.5);
   width: 30px;
   height: 30px;
   border: none;
+  z-index: 999;
 }
 
 .product_name {
@@ -48,25 +51,34 @@
 
 .closeButton {
   cursor: pointer;
+  margin: 10px
 }
 
 .popover {
   position: absolute;
-  top: 5rem; /* Posición inicial, ajustar según sea necesario */
-  left: 120%;
-  margin-top: 10px;
+  top: 6rem; /* Posición inicial, ajustar según sea necesario */
   transform: translateX(-50%);
   background-color: white; /* Fondo blanco */
-  border: 1px solid #888;
   border-radius: 5px;
-  padding: 10px;
-  width: fit-content; /* Ancho ajustado al contenido */
+  width: 100%;
   height: auto; /* Altura ajustada al contenido */
-  max-width: 80%; /* Ancho máximo para evitar que se extienda demasiado */
-  z-index: 999; /* Asegúrate de que el popover esté por encima de otros elementos */
+  max-width: 143px; /* Ancho máximo para evitar que se extienda demasiado */
+  z-index: 9999 !important;
+  left: 90%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
+.popover::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 20px 20px 0;
+  border-style: solid;
+  border-color: #ffff transparent transparent;
+  
+}
 .popoverContent {
   max-height: 200px; /* Altura máxima del contenido, añade desplazamiento si es necesario */
   overflow-y: auto;
@@ -79,14 +91,47 @@
 }
 
 .popover li {
-  padding: 15px 0;
+  padding: 3px 0;
   cursor: pointer;
 }
 
 .popover li:hover {
-  background-color: green; /* Cambia el color de fondo al pasar el ratón */
+  background-color: var(--gray); /* Cambia el color de fondo al pasar el ratón */
 }
-
+.saved_alert {
+background-color: white;
+  display: flex;
+  padding: 7px 1rem;
+ padding-right: 10px;
+  justify-content: space-between;
+  width: 100%;
+  position: absolute;
+  bottom: 117px;
+  left: 0;
+  z-index: 999;
+  color: var(--primary-dark);
+  align-items: center;
+}
+.saveButton_alert {
+  position: static !important;
+  margin-bottom: 1px;
+  background-image: url(/src/assets/bookmark-clicked.svg);
+}
+ul li:last-child{
+  margin-bottom: 4.4px;
+}
+.wishlist{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 3px 10px;
+}
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
 @media (max-width: 768px) {
 }
 .product_details {

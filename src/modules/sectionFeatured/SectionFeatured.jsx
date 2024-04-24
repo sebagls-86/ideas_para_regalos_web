@@ -54,7 +54,7 @@ export default function SectionFeatured() {
           <Swiper
             slidesPerView={3}
             navigation={true}
-            spaceBetween={30}
+            spaceBetween={10}
             modules={[Navigation]}
             autoplay={{ delay: 3000 }}
             breakpoints={{

@@ -1,17 +1,15 @@
 .productsContainer {
-    
-  margin-top: 3.375rem;
+  margin: 3.375rem 0 3rem 2rem;
 }
 .title {
-    margin-left: 2rem;
   font-weight: 700;
-  font-size: 20px;
+  font-size: var(--fz-25);
   margin-bottom: 0.875rem;
 }
-.swiperSlide{
-    margin-left: 2rem;
-    width: fit-content !important;
-    margin-right: 0 !important;
+.swiperSlide {
+  margin-left: 2rem;
+  width: fit-content !important;
+  margin-right: 0 !important;
 }
 @media (max-width: 768px) {
   .eventImage {

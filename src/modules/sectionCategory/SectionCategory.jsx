@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionCategory.module.css";
 import { Link } from "react-router-dom";
 
+
 export default function SectionCategory() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);

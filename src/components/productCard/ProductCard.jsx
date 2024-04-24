@@ -5,9 +5,21 @@ export default function ProductCard({ image, name, userId, productId }) {
   const [isSaved, setIsSaved] = useState(false);
   const [userLists, setUserLists] = useState([]);
   const [showPopover, setShowPopover] = useState(false);
+  const [showAlert, setShowAlert] = useState(false); 
   const [clickedInside, setClickedInside] = useState(false);
   const popoverRef = useRef(null);
   const API_URL = process.env.REACT_APP_API_URL;
+
+  function getRandomPastelColor() {
+    const hue = Math.floor(Math.random() * 360);
+    const pastel = "hsl(" + hue + ", 55%, 85%)";
+    return pastel;
+  }
+  
+
+  useEffect(() => {
+    setShowAlert(true);
+  }, [productId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +41,7 @@ export default function ProductCard({ image, name, userId, productId }) {
 
     const handleClickOutside = (event) => {
       if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-        setShowPopover(false);
+        setShowPopover(true);
         setClickedInside(false);
       }
     };
@@ -90,6 +102,8 @@ export default function ProductCard({ image, name, userId, productId }) {
       if (response.ok) {
         setIsSaved(true);
         setShowPopover(false);
+        setShowAlert(true); 
+        console.log(showAlert)
       } else {
         setIsSaved(false);
       }
@@ -115,36 +129,55 @@ export default function ProductCard({ image, name, userId, productId }) {
   return (
     <div className={styles.productCard}>
       <img src={image} alt="" className={styles.productImage} />
-      <div  className={styles.product_details}>
-      <h3 id="product" className={styles.productName}>
-        {name}
-      </h3>
+      <div className={styles.product_details}>
+        <h3 id="product" className={styles.productName}>
+          {name}
+        </h3>
+      </div>
       <button
         className={`${styles.saveButton} ${isSaved ? styles.clicked : ""}`}
         onClick={handleSaveClick}
       ></button>
-      </div>
-     
+
       {showPopover && (
-        <div className={styles.popover} ref={popoverRef}>
-          <span
-            className={styles.closeButton}
-            onClick={() => setShowPopover(false)}
-          >
-            ×
-          </span>
-          <ul>
-            {userLists
-              .filter((list) => list.list_name !== "MercadoLibre")
-              .map((list) => (
-                <li
-                  key={list.user_id}
-                  onClick={() => handleListClick(list.list_id)}
-                >
-                  {list.list_name}
-                </li>
-              ))}
-          </ul>
+        <div>
+          <div className={styles.popover} ref={popoverRef}>
+            <span
+              className={styles.closeButton}
+              onClick={() => setShowPopover(false)}
+            >
+              ×
+            </span>
+            <ul>
+              {userLists
+                .filter((list) => list.list_name !== "MercadoLibre")
+                .map((list) => (
+                  <li
+                    key={list.user_id}
+                    onClick={() => {
+                      handleListClick(list.list_id);
+                      setShowPopover(false);
+                      setShowAlert(true); 
+                    }}
+                  >
+                    <div className={styles.wishlist}>  <span class={styles.dot} style={{ backgroundColor: getRandomPastelColor() }}></span> {list.list_name}</div>
+                 
+                  </li>
+                ))}
+            </ul>
+          </div>
+
+          {showAlert && ( 
+          <div className={styles.saved_alert}>
+            <p>Se guardó tu producto</p>
+            <button
+              className={`${styles.saveButton} ${styles.saveButton_alert} ${
+                isSaved ? styles.clicked : ""
+              }`}
+              onClick={handleSaveClick}
+            ></button>
+          </div>
+            )}
         </div>
       )}
     </div>
