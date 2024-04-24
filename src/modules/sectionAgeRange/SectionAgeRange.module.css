@@ -9,6 +9,10 @@
 .categoryImage{
     width: 103%;
     border-radius: 10px;
+    width: 103%;
+    border-radius: 10px;
+    object-fit: cover;
+    max-height: 50%;
 }
 h3{
     font-size: 20px;

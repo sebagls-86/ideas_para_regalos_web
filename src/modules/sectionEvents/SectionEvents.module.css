@@ -11,6 +11,8 @@
 .eventImage{
     width: 103%;
     border-radius: 10px;
+    object-fit: cover;
+    max-height: 200px;
 }
 h3{
     font-size: 20px;

@@ -115,13 +115,16 @@ export default function ProductCard({ image, name, userId, productId }) {
   return (
     <div className={styles.productCard}>
       <img src={image} alt="" className={styles.productImage} />
+      <div  className={styles.product_details}>
+      <h3 id="product" className={styles.productName}>
+        {name}
+      </h3>
       <button
         className={`${styles.saveButton} ${isSaved ? styles.clicked : ""}`}
         onClick={handleSaveClick}
       ></button>
-      <h3 id="product" className={styles.productName}>
-        {name}
-      </h3>
+      </div>
+     
       {showPopover && (
         <div className={styles.popover} ref={popoverRef}>
           <span

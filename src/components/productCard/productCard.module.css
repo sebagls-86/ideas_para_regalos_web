@@ -1,97 +1,102 @@
+.productCard h3 {
+  font-size: 1.313rem;
+  padding-top: 0 !important;
+}
 
-  .productCard h3 {
-    font-size: 1.313rem;
-    padding: 1.5rem;
-  }
+.productCard {
+  width: 15.25rem !important;
+  height: 23.75rem;
+  border: 1px solid #000;
+  border-radius: 10px;
+  position: relative;
+  margin-top: 6rem;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+}
+.productImage {
+  width: 15.1rem;
+  height: 15.375rem;
+  border-bottom: 0.3px solid #000;
+  z-index: 1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.saveButton {
+  /*position: absolute;
+  right: 15px;
+  bottom: 80px;*/
+  border-radius: 25px;
+  background: url(/src/assets/bookmark.svg) center no-repeat;
+  background-color: rgba(217, 217, 217, 0.5);
+  width: 30px;
+  height: 30px;
+  border: none;
+}
 
-  .productCard {
-    width: 15.25rem !important;
-    height: 23.75rem;
-    border: 1px solid #000;
-    border-radius: 10px;
-    position: relative;
-    margin-top: 6rem;
-    margin-right: 20px;
-    display: flex;
-    flex-direction: row;
-  }
-  .productImage {
-    width: 15.1rem;
-    height: 15.375rem;
-    border-bottom: 0.3px solid #000;
-    z-index: 1;
-   
-  }
-  .saveButton {
-    position: absolute;
-    right: 15px;
-    bottom: 80px;
-    border-radius: 25px;
-    background: url(/src/assets/bookmark.svg) center no-repeat;
-    background-color: rgba(217, 217, 217, 0.5);
-    width: 30px;
-    height: 30px;
-    border: none;
-    
-  }
+.product_name {
+  font-size: 1.125rem;
+  padding: 0.5rem;
+}
+.saveButton:hover {
+  background-color: rgba(217, 217, 217, 0.5);
+  background-image: url(/src/assets/bookmark-clicked.svg);
+}
+.saveButton.clicked {
+  background-image: url(/src/assets/bookmark-clicked.svg);
+}
 
-  .product_name {
-    font-size: 1.125rem;
-    padding: 0.5rem;
-  }
-  .saveButton:hover{
-      background-color: rgba(217, 217, 217, 0.5);
-      background-image: url(/src/assets/bookmark-clicked.svg);
-  }
-  .saveButton.clicked {
-      background-image: url(/src/assets/bookmark-clicked.svg);
-    }
+.closeButton {
+  cursor: pointer;
+}
 
-    .closeButton {
-      cursor: pointer;
-    }
+.popover {
+  position: absolute;
+  top: 5rem; /* Posición inicial, ajustar según sea necesario */
+  left: 120%;
+  margin-top: 10px;
+  transform: translateX(-50%);
+  background-color: white; /* Fondo blanco */
+  border: 1px solid #888;
+  border-radius: 5px;
+  padding: 10px;
+  width: fit-content; /* Ancho ajustado al contenido */
+  height: auto; /* Altura ajustada al contenido */
+  max-width: 80%; /* Ancho máximo para evitar que se extienda demasiado */
+  z-index: 999; /* Asegúrate de que el popover esté por encima de otros elementos */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
 
+.popoverContent {
+  max-height: 200px; /* Altura máxima del contenido, añade desplazamiento si es necesario */
+  overflow-y: auto;
+}
 
-    .popover {
-      position: absolute;
-      top: 5rem; /* Posición inicial, ajustar según sea necesario */
-      left: 120%;
-      margin-top: 10px;
-      transform: translateX(-50%);
-      background-color:white; /* Fondo blanco */
-      border: 1px solid #888;
-      border-radius: 5px;
-      padding: 10px;
-      width: fit-content; /* Ancho ajustado al contenido */
-      height: auto; /* Altura ajustada al contenido */
-      max-width: 80%; /* Ancho máximo para evitar que se extienda demasiado */
-      z-index: 999; /* Asegúrate de que el popover esté por encima de otros elementos */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    }
-    
-    .popoverContent {
-      max-height: 200px; /* Altura máxima del contenido, añade desplazamiento si es necesario */
-      overflow-y: auto;
-    }
-    
-    .popover ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .popover li {
-      padding: 15px 0;
-      cursor: pointer;
-    }
-    
-    .popover li:hover {
-      background-color: green; /* Cambia el color de fondo al pasar el ratón */
-    }
-    
-    
-  
-  @media (max-width: 768px) {
+.popover ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  }
-  
+.popover li {
+  padding: 15px 0;
+  cursor: pointer;
+}
+
+.popover li:hover {
+  background-color: green; /* Cambia el color de fondo al pasar el ratón */
+}
+
+@media (max-width: 768px) {
+}
+.product_details {
+  position: absolute;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  bottom: 70px;
+  padding: 0 1rem;
+}
