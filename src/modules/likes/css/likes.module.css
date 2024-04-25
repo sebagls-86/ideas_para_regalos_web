@@ -5,6 +5,9 @@
   border-radius: 15px;
   
 }
+.notificacionNav{
+  justify-content: space-evenly;
+}
 
 .container__image img {
   border-radius: 50%;
@@ -242,21 +245,11 @@
   margin-top: 20px;
 }
 
-/* Estilos para los mensajes individuales */
-.message {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
 
-.forum {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+.forum, .message{
+  border-bottom: 1px solid #ddd;
   border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 1rem 5rem;
 }
 
 /* Estilos para el título del foro */
@@ -273,7 +266,6 @@
 .tabContainer {
   justify-content: space-evenly;
   font-size: var(--fz-17);
-margin: 1rem;
 }
 
 
@@ -449,3 +441,13 @@ margin: 1rem;
   }
 }
 
+.forum img, .message img{
+  border-radius: 50%;
+}
+.forum_user_info{
+  display: flex;
+  gap: 1rem;
+}
+.forum_text{
+  margin-left: 4.3rem;
+}

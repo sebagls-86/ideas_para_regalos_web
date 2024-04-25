@@ -28,15 +28,33 @@
   padding-inline: 5px;
 }
 
-.custom__button {
+.custom__button, .edit__button {
   border: none;
-  border-radius: 20px;
-  background-color: green;
+  border-radius: 30px;
+  background-color: var(--primary-dark);
   color: white;
   padding: 10px 20px;
   cursor: pointer;
   font-weight: bold;
   margin: 10px;
+  width: 150px;
+}
+
+.custom__button:hover{
+  background-color: #FF000030;
+  color: red;
+  border: 1px solid #FF000050;
+}
+.edit__button{
+  width: auto;
+  background-color: transparent;
+  border: 1px solid var(--primary-dark);
+  color: var(--primary-dark);
+}
+.edit__button:hover{
+  background-color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
+  color: white;
 }
 
 .profile_info_container {

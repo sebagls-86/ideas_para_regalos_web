@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Search from "../../components/search/Search";
-import styles from './users.module.css'
+import styles from "./users.module.css";
 
 function Followers() {
   const [followers, setFollowers] = useState([]); // Estado para almacenar los seguidores
   const [searchTerm, setSearchTerm] = useState("");
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
-  
+
   useEffect(() => {
     fetch(`${API_URL}/relations/followers/${userId}`)
-      .then(response => response.json())
-      .then(data => setFollowers(data.data || [])) // Manejar la posibilidad de que llegue un array vacío
-      .catch(error => console.error("Error fetching followers:", error));
+      .then((response) => response.json())
+      .then((data) => setFollowers(data.data || [])) // Manejar la posibilidad de que llegue un array vacío
+      .catch((error) => console.error("Error fetching followers:", error));
   }, [userId]); // Agregar userId como dependencia para que el efecto se ejecute cada vez que userId cambie
 
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
-  }
+  };
 
-  const filteredFollowers = followers.filter((follower) =>
-    follower.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    follower.user_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFollowers = followers.filter(
+    (follower) =>
+      follower.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      follower.user_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -34,7 +38,8 @@ function Followers() {
         filteredFollowers.map((follower) => (
           <div className={styles.container} key={follower.user_id}>
             <UserLogoName
-              name={follower.user_name}
+              name={follower.name}
+              userName={follower.user_name}
               logo={follower.avatar}
               to={`/perfil/${follower.user_id}`}
             />

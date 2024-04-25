@@ -32,13 +32,26 @@ function Forums() {
               className={styles.forumLink}
             >
               <div className={styles.forum}>
-              <img src={forum.avatar} alt={"avatar"} width="300" height="200"/>
-                <p> {forum.name}</p>
-                <p> @{forum.user_name}</p>
-                <h3>{forum.title}</h3>
-                <p>{forum.description}</p>
+                <div className={styles.forum_user_info}>
+                  <div>
+                    <img
+                      src={forum.avatar}
+                      alt={"avatar"}
+                      width="54"
+                      height="54"
+                    />
+                  </div>
+                  <div>
+                    <p className={styles.name}> {forum.name}</p>
+                    <p> @{forum.user_name}</p>
+                  </div>
+                </div>
+                <div  className={styles.forum_text }>
+                  <p>{forum.title}</p>
+                  <p>{forum.description}</p>
 
-                <p>Fecha de creación: {forum.created_at}</p>
+                  <p>Fecha de creación: {forum.created_at}</p>
+                </div>
               </div>
             </Link>
           ))
