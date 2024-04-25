@@ -5,12 +5,15 @@
 }
 .title{
     font-weight: 700;
-    font-size: 20px;
+    font-size: var(--fz-25);
     margin-bottom: 0.875rem;
 }
 .eventImage{
     width: 103%;
     border-radius: 10px;
+    /*object-fit: cover;*/
+    max-height: 190px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 h3{
     font-size: 20px;

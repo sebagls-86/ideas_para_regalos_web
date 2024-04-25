@@ -277,7 +277,7 @@ a:focus {
   }
 }
 .swiper-pagination-bullet-active {
-  background-color: #fff !important;
+  background-color:red !important;
 }
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
