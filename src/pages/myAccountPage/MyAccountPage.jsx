@@ -313,7 +313,7 @@ function MyAccountPage({ userInfo }) {
               ) : (
                 <Button
                   label="Editar"
-                  className={styles.custom__button}
+                  className={styles.edit__button}
                   onClick={handleEditClick}
                 >
                   Editar

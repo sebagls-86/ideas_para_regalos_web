@@ -655,6 +655,7 @@ function Profiles() {
                     {selectedProfile.interests &&
                     selectedProfile.interests.length > 0 ? (
                       <div className={styles.profile_interest_container}>
+                        <div className={styles.profile_all_interests}>
                         {selectedProfile.interests.map((interest, index) => (
                           <Button
                             key={index}
@@ -668,7 +669,9 @@ function Profiles() {
                               className={styles.profile_interest_remove_icon}
                             />
                           </Button>
+                          
                         ))}
+                        </div>
                         <Button
                           className={`${styles.profile_interest_buttons} ${styles.interest_add_button}`}
                           onClick={() =>

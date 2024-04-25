@@ -4,16 +4,20 @@ import styles from "./css/likes.module.css";
 
 function ForumsLikes() {
   const [forums, setForums] = useState([]);
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetch(`${API_URL}/forums/likes/${userId}`)
       .then((response) => response.json())
-      .then(data => {
+      .then((data) => {
         if (Array.isArray(data.data)) {
           setForums(data.data);
-        }})
+        }
+      })
       .catch((error) => console.error("Error fetching forums:", error));
   }, [userId]);
 
@@ -30,11 +34,24 @@ function ForumsLikes() {
               className={styles.forumLink}
             >
               <div className={styles.forum}>
-              <img src={forum.avatar} alt={"avatar"} width="300" height="200"/>
+                <div className={styles.forum_user_info}>
+                  <img
+                    src={forum.avatar}
+                    alt={"avatar"}
+                    width="54"
+                    height="54"
+                  />
+               
+                <div>
+                  <p>@{forum.user_owner}</p>
+                </div>
+                </div>
+                <div  className={styles.forum_text }>
                 <h3>{forum.title}</h3>
                 <p>{forum.description}</p>
-                <p>Creado por: {forum.user_owner}</p>
+
                 <p>Fecha de creación: {forum.created_at}</p>
+                </div>
               </div>
             </Link>
           ))

@@ -40,20 +40,22 @@ function Following() {
         ).map((user) => (
           <div className={styles.container} key={user.user_id}>
             <UserLogoName
-              name={user.user_name}
+              name={user.name}
+              userName={user.user_name}
               logo={user.avatar}
               to={`/perfil/${user.user_id}`}
             />
           </div>
         ))
       ) : (
-        <div className={styles.alert_message}>
-          <p>Todavía no estás siguiendo a nadie.</p>
-          <p>Aquí te damos algunas sugerencias:</p>
+        <div>
+          <p className={styles.alert_message}>Todavía no estás siguiendo a nadie.</p>
+          <p className={styles.alert_message}>Aquí te damos algunas sugerencias:</p>
           {suggestions.map((user) => (
             <div className={styles.container} key={user.user_id}>
               <UserLogoName
-                name={user.user_name}
+                name={user.name}
+                userName={user.user_name}
                 logo={user.avatar}
                 to={`/perfil/${user.user_id}`}
               />
