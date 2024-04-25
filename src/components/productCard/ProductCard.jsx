@@ -7,8 +7,8 @@ export default function ProductCard({ image, name, userId, productId }) {
   const [userLists, setUserLists] = useState([]);
   const [showPopover, setShowPopover] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [clickedInside, setClickedInside] = useState(false);
   const popoverRef = useRef(null);
@@ -21,17 +21,24 @@ export default function ProductCard({ image, name, userId, productId }) {
   }
 
   useEffect(() => {
-    fetchData();
-    const handleClickOutside = (event) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-        setShowPopover(true);
-        setClickedInside(false);
-      }
+    console.log("showAlert changed:", showAlert);
+  }, [showAlert]);
+
+  useEffect(() => {
+    const fetchDataAndSetClickOutside = async () => {
+      await fetchData();
+      const handleClickOutside = (event) => {
+        if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+          setShowPopover(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+  
+    fetchDataAndSetClickOutside();
   }, [productId]);
 
   const fetchData = async () => {
@@ -50,6 +57,8 @@ export default function ProductCard({ image, name, userId, productId }) {
   };
 
   const handleSaveClick = async () => {
+    setMessage("")
+    setShowAlert(false)
     setShowPopover(true);
     setClickedInside(true);
   };
@@ -79,8 +88,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(false);
           setShowPopover(false);
-          setSuccessMessage("Se eliminó el producto correctamente");
-          setShowResponseModal(true);
+          setMessage("Se elimino el producto");
           setShowAlert(true);
           fetchData();
         } else {
@@ -105,8 +113,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(true);
           setShowPopover(false);
-          setSuccessMessage("Producto guardado correctamente");
-          setShowResponseModal(true);
+          setMessage("Se agrego el producto de la lista");
           setShowAlert(true);
           fetchData();
         } else {
@@ -135,12 +142,19 @@ export default function ProductCard({ image, name, userId, productId }) {
     return data;
   };
 
+  useEffect(() => {
+    console.log(showAlert);
+    if (showAlert && message === "") {
+      setShowAlert(false);
+    }
+  }, [showAlert, message]);
+
   return (
     <>
       <ResponseModal
         show={showResponseModal}
         onHide={() => setShowResponseModal(false)}
-        message={successMessage || errorMessage}
+        message={errorMessage}
         onConfirm={() => {
           setShowResponseModal(false);
         }}
@@ -148,6 +162,11 @@ export default function ProductCard({ image, name, userId, productId }) {
       />
 
       <div className={styles.productCard}>
+      {showAlert && (
+          <div className={styles.saved_alert}>
+            <p>{message}</p>
+          </div>
+        )}
         <img src={image} alt="" className={styles.productImage} />
         <div className={styles.product_details}>
           <h3 id="product" className={styles.productName}>
@@ -158,6 +177,8 @@ export default function ProductCard({ image, name, userId, productId }) {
           className={`${styles.saveButton} ${isSaved ? styles.clicked : ""}`}
           onClick={handleSaveClick}
         ></button>
+
+      
 
         {showPopover && (
           <div>
@@ -198,17 +219,7 @@ export default function ProductCard({ image, name, userId, productId }) {
                   })}
               </ul>
             </div>
-
-            {showAlert && (
-              <div className={styles.saved_alert}>
-               <button
-                  className={`${styles.saveButton} ${styles.saveButton_alert} ${
-                    isSaved ? styles.clicked : ""
-                  }`}
-                  onClick={handleSaveClick}
-                ></button>
-              </div>
-            )}
+            {console.log("showAlert value:", showAlert)}
           </div>
         )}
       </div>
