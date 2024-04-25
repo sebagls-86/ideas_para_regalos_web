@@ -148,6 +148,10 @@
   object-fit: cover; /* Ajustar la imagen para que cubra todo el espacio disponible */
   border-top-left-radius: 8px; /* Redondear la esquina superior izquierda de la imagen */
   border-top-right-radius: 8px; /* Redondear la esquina superior derecha de la imagen */
+  border-bottom: 1px solid #ccc;
+}
+.product_image:hover{
+  border-bottom: 1px solid red;
 }
 
 .product_name {
@@ -161,17 +165,15 @@
   }
 
 .product_card:hover {
-  background-color: #f0f0f0;
+  background-color: #FF000030;
+  color: red;
+  border: 1px solid red;
 }
 
 .product_content {
   display: flex;
   align-items: center;
   width: 100%;
-}
-
-.product_card:hover {
-  background-color: red; /* Cambia el color de fondo al hacer hover */
 }
 
 .modal {
