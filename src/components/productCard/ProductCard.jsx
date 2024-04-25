@@ -68,15 +68,20 @@ export default function ProductCard({ image, name, userId, productId }) {
     try {
       const selectedList = userLists.find((list) => list.list_id === listId);
       if (!selectedList) {
-        console.error("La lista seleccionada no fue encontrada.");
-        return;
+          console.error("La lista seleccionada no fue encontrada.");
+          return;
       }
+
       const productExistsInList = selectedList.products?.some(
-        (product) => product.product_catalog_id === productCatalogId
+          (product) => product.product_catalog_id === productId
       );
+
       if (productExistsInList) {
+          const listProductId = selectedList.products.find(
+              (product) => product.product_catalog_id === productId
+          ).list_product_id;
         const response = await fetch(
-          `${API_URL}/lists/${listId}/list-products/${productCatalogId}`,
+          `${API_URL}/lists/${listId}/list-products/${listProductId}`,
           {
             method: "DELETE",
             headers: {
