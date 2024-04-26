@@ -8,7 +8,7 @@ import Search from "../../components/search/Search";
 import { useAuth0 } from "@auth0/auth0-react";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
-import  CommentIcon  from "../../assets/comment-icon.svg"
+import CommentIcon from "../../assets/comment-icon.svg";
 
 function Post() {
   const [postData, setPostData] = useState(null);
@@ -20,9 +20,12 @@ function Post() {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
- 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,11 +45,9 @@ function Post() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-         }
+        }
 
-        const likesResponse = await fetch(
-          `${API_URL}/forums/likes/${userId}`
-        );
+        const likesResponse = await fetch(`${API_URL}/forums/likes/${userId}`);
         if (!likesResponse.ok) {
           throw new Error("Network response was not ok");
         }
@@ -54,7 +55,6 @@ function Post() {
         setLikesData(likesData);
       } catch (error) {
         console.error("Error fetching data:", error);
-        
       }
     };
 
@@ -83,7 +83,7 @@ function Post() {
             throw new Error("Network response was not ok");
           }
           const updatedUserLikesData = await updatedUserLikesResponse.json();
-          
+
           setLikesData(updatedUserLikesData);
 
           setPostData((prevPostData) =>
@@ -115,13 +115,12 @@ function Post() {
   }
 
   const filteredData = searchTerm
-  ? postData.filter(
-      (post) =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.description.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  : postData;
-  
+    ? postData.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.description.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : postData;
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -130,99 +129,102 @@ function Post() {
   return (
     <div>
       <div>
-      <Search onSearch={handleSearch} />
+        <Search onSearch={handleSearch} />
       </div>
       {!filteredData || filteredData.length === 0 ? (
         <p>No se encontraron publicaciones con los términos de búsqueda.</p>
       ) : (
         postData
-          .filter((post) => 
-            post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            post.description.toLowerCase().includes(searchTerm.toLowerCase())
+          .filter(
+            (post) =>
+              post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              post.description.toLowerCase().includes(searchTerm.toLowerCase())
           )
           .map((post) => (
             <div className={styles.post__container} key={post.forum_id}>
-            <div className={styles.container__image}>
-              <img
-                src={post.avatar}
-                alt="imagen perfil usuario"
-                width={"54px"}
-                height={"54px"}
-              />
-            </div>
-            <div className={styles.post__content}>
-              <div className={styles.user__container}>
-                <div className={styles.content__user}>
-                  <p className={styles.user__username}>{post.name}</p>
-                  {isAuthenticated ? (
-        <Link
-          to={`/perfil/${parseInt(post.user_id)}`}
-          className={styles.user__tagname}
-        >
-          @{post.user_name}
-        </Link>
-      ) : (
-        <Link
-          to="/"
-          className={styles.user__tagname}
-          onClick={() => loginWithRedirect()}
-        >
-          {post.user_name}
-        </Link>
-      )}
-            
+              <div className={styles.container__image}>
+                <img
+                  src={post.avatar}
+                  alt="imagen perfil usuario"
+                  width={"54px"}
+                  height={"54px"}
+                />
+              </div>
+              <div className={styles.post__content}>
+                <div className={styles.user__container}>
+                  <div className={styles.content__user}>
+                    <p className={styles.user__username}>{post.name}</p>
+                    {isAuthenticated ? (
+                      <Link
+                        to={`/perfil/${parseInt(post.user_id)}`}
+                        className={styles.user__tagname}
+                      >
+                        @{post.user_name}
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/"
+                        className={styles.user__tagname}
+                        onClick={() => loginWithRedirect()}
+                      >
+                        {post.user_name}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+                <Link to={`/forums/${parseInt(post.forum_id)}`}>
+                  <h2 className={styles.post__title}>{post.title}</h2>
+                  <div className={styles.content__tags}>
+                    {post.event && (
+                      <span className={styles.post_tags}>{post.event}</span>
+                    )}
+                  </div>
+                  <div>
+                    <p className={styles.post__text}>{post.description}</p>
+                  </div>
+                </Link>
+                <div className={styles.post__actions}>
+                  <div
+                    className={styles.actions__content}
+                    onClick={() => handleLike(post.forum_id)}
+                  >
+                    {likesData &&
+                    likesData.data &&
+                    likesData.data.some(
+                      (like) => like.forum_id === post.forum_id
+                    ) ? (
+                      <FaHeart fill="red" className={styles.heart_icon} />
+                    ) : (
+                      <FaRegHeart
+                        fill="#536571"
+                        className={styles.heart_icon}
+                      />
+                    )}
+                    <span
+                      className={`${styles.post_tags} ${
+                        likesData &&
+                        likesData.data &&
+                        likesData.data.some(
+                          (like) => like.forum_id === post.forum_id
+                        ) &&
+                        styles.liked
+                      }`}
+                    >
+                      {post.likes}
+                    </span>
+                  </div>
+                  <div className={styles.actions__content}>
+                    <img src={CommentIcon} alt="Comment Icon" />
+                    <span className={styles.post_tags}>
+                      {post.messages ? post.messages.length : 0}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <Link to={`/forums/${parseInt(post.forum_id)}`}>
-                <h2 className={styles.post__title}>{post.title}</h2>
-                <div className={styles.content__tags}>
-                  {post.event && (
-                    <span className={styles.post_tags}>{post.event}</span>
-                  )}
-                </div>
-                <div>
-                  <p className={styles.post__text}>{post.description}</p>
-                </div>
-              </Link>
-              <div className={styles.post__actions}>
-                <div
-                  className={styles.actions__content}
-                  onClick={() => handleLike(post.forum_id)}
-                >
-                  {likesData &&
-                  likesData.data &&
-                  likesData.data.some(
-                    (like) => like.forum_id === post.forum_id
-                  ) ? (
-                    <FaHeart fill="red" className={styles.heart_icon} />
-                  ) : (
-                    <FaRegHeart  fill="#536571" className={styles.heart_icon} />
-                  )}
-               <span
-  className={`${styles.post_tags} ${
-    likesData &&
-    likesData.data &&
-    likesData.data.some(
-      (like) => like.forum_id === post.forum_id
-    ) &&
-    styles.liked
-  }`}
->
-  {post.likes}
-</span>
-                </div>
-                <div className={styles.actions__content}>
-                <img src={CommentIcon} alt="Comment Icon" />
-                  <span className={styles.post_tags}>
-                    {post.messages ? post.messages.length : 0}
-                  </span>
-                </div>
-              </div>
             </div>
-          </div>
-        ))
+          ))
       )}
-      </div>
+    </div>
   );
 }
 
