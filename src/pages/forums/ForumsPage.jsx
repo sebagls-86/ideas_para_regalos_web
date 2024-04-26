@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import { Row, Button, Modal } from "react-bootstrap";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { Button, Modal } from "react-bootstrap";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import NavBar from "../../modules/navBar/NavBar";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import EditPostModal from "../../modules/post/EditPostModal";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
@@ -16,7 +14,6 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Widgets } from "@mui/icons-material";
 import { IoClose } from "react-icons/io5";
 import { RiImageAddFill } from "react-icons/ri";
 import { SlOptions } from "react-icons/sl";
@@ -49,6 +46,8 @@ function ForumsPage() {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  console.log(userInfo)
 
   const userId =
     (localStorage.getItem("userInfo") && userInfo.data.user_id) || null;
@@ -582,7 +581,7 @@ function ForumsPage() {
                     <div className={styles.message_img_wrapper} key={index}>
                       <img
                         className={styles.message_img}
-                        src={`http://localhost:8080/images/messages/${img}`}
+                        src={img}
                         alt={`Imagen ${index}`}
                       />
                     </div>
