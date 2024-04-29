@@ -29,6 +29,7 @@ function ForumsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
+  const [editImageFiles, setEditImageFiles] = useState([]);
   const [messageEditing, setMessageEditing] = useState(null);
   const [forumLikesData, setForumLikesData] = useState(null);
   const [messageLikesData, setMessageLikesData] = useState(null);
@@ -46,9 +47,6 @@ function ForumsPage() {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-  console.log(userInfo)
-
   const userId =
     (localStorage.getItem("userInfo") && userInfo.data.user_id) || null;
 
@@ -151,12 +149,13 @@ function ForumsPage() {
   const handleEditMessage = (message) => {
     setMessageEditing(message);
     setMessage("");
+    setEditImageFiles(message.image?.image ? [...message.image?.image] : []);
   };
 
   const handleCancelEdit = () => {
     setMessageEditing(null);
     setMessage("");
-    setImageFiles([]);
+    setEditImageFiles([]);
   };
 
   const handleDeleteMessage = async (messageId) => {
@@ -213,10 +212,53 @@ function ForumsPage() {
     document.getElementById("fileInput").click();
   };
 
+  const handleEditImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const selectedImageFiles = files.slice(0, 2);
+    setEditImageFiles((prevImageFiles) => {
+      const updatedImageFiles = [...prevImageFiles, ...selectedImageFiles];
+      return updatedImageFiles;
+    });
+  };
+
+  const addEditImage = () => {
+    if (editImageFiles.length >= 2) return;
+    document.getElementById("editFileInput").click();
+  };
+
   const removeImage = (index) => {
     const updatedImages = [...imageFiles];
     updatedImages.splice(index, 1);
     setImageFiles(updatedImages);
+  };
+
+  const removeEditImage = (index) => {
+    const updatedEditImages = [...editImageFiles];
+    updatedEditImages.splice(index, 1);
+    setEditImageFiles(updatedEditImages);
+  };
+
+  const handleDeleteImage = async (index) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/messages/${messageEditing.message_id}/images/${messageEditing.image[index].image_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        setErrorMessage("Hubo un error al enviar el mensaje.");
+        setShowResponseModal(true);
+      }
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error.message);
+    }
   };
 
   const handleSaveEditMessage = async () => {
@@ -224,8 +266,8 @@ function ForumsPage() {
       const formData = new FormData();
       formData.append("message", messageEditing.message);
       formData.append("forum_id", forum_id);
-      if (Array.isArray(imageFiles)) {
-        imageFiles.forEach((file, index) => {
+      if (Array.isArray(editImageFiles)) {
+        editImageFiles.forEach((file, index) => {
           formData.append(`image`, file);
         });
       }
@@ -559,124 +601,176 @@ function ForumsPage() {
                     </div>
                   </div>
                 )}
-                {forumData && forumData.data && forumData.data.messages && (
-  <ul style={{ marginBottom: "0" }}>
-    {forumData.data.messages.map((message) => (
-      <li className={styles.forum_message_item} key={message.message_id}>
-        <div className={styles.message}>
-          <img
-            src={message.avatar}
-            alt="avatar"
-            className={styles.profile_picture}
-          />
-          <div>
-            <p className={styles.name}>{message.name}</p>
-            <p className={styles.forum_username}>@{message.user_name}</p>
-            <p className={styles.forum_message}>{message.message}</p>
-            {message.image &&
-              Array.isArray(message.image) &&
-              message.image.length > 0 && (
-                <div className={styles.message_img_container}>
-                  {message.image.map((img, index) => (
-                    <div className={styles.message_img_wrapper} key={index}>
-                      <img
-                        className={styles.message_img}
-                        src={img}
-                        alt={`Imagen ${index}`}
-                      />
-                    </div>
+              {forumData && forumData.data && forumData.data.messages && (
+                <ul style={{ marginBottom: "0" }}>
+                  {forumData.data.messages.map((message) => (
+                    <li
+                      className={styles.forum_message_item}
+                      key={message.message_id}
+                    >
+                      <div className={styles.message}>
+                        <img
+                          src={message.avatar}
+                          alt="avatar"
+                          className={styles.profile_picture}
+                        />
+                        <div>
+                          <p className={styles.name}>{message.name}</p>
+                          <p className={styles.forum_username}>
+                            @{message.user_name}
+                          </p>
+                          <p className={styles.forum_message}>
+                            {message.message}
+                          </p>
+                          {message.image &&
+                            Array.isArray(message.image) &&
+                            message.image.length > 0 && (
+                              <div className={styles.message_img_container}>
+                                {message.image.map((img, index) => (
+                                  <div
+                                    className={styles.message_img_wrapper}
+                                    key={index}
+                                  >
+                                    <img
+                                      className={styles.message_img}
+                                      src={img.image}
+                                      alt={`Imagen ${index}`}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          <p className={styles.forum_date}>{message.date}</p>
+                          <div className={styles.actions__content}>
+                            <div
+                              onClick={() =>
+                                handleLikeMessage(message.message_id)
+                              }
+                            >
+                              {messageLikesData &&
+                              messageLikesData.data &&
+                              messageLikesData.data.some(
+                                (like) => like.message_id === message.message_id
+                              ) ? (
+                                <FaHeart
+                                  fill="red"
+                                  className={styles.heart_icon}
+                                />
+                              ) : (
+                                <FaRegHeart className={styles.heart_icon} />
+                              )}
+                              <span className={styles.post_tags}>
+                                {message.likes}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {forumData.data.status === 1 && message.user_id === userId &&(
+                        <SlOptions
+                          onClick={() => handleEditMessage(message)}
+                          className={styles.edit_message_button}
+                        />
+                      )}
+                      {messageEditing &&
+                      messageEditing.message_id === message.message_id ? (
+                        <div className={styles.edit_message_panel}>
+                          <img
+                            src={message.avatar}
+                            alt="avatar"
+                            className={styles.profile_picture}
+                          />
+                          <textarea
+                            className={styles.text_area}
+                            rows="4"
+                            cols="50"
+                            value={messageEditing ? messageEditing.message : ""}
+                            onChange={(e) =>
+                              setMessageEditing({
+                                ...messageEditing,
+                                message: e.target.value,
+                              })
+                            }
+                          ></textarea>
+                          {messageEditing.image &&
+                            messageEditing.image.map((img, index) => (
+                              <div key={index} className={styles.image_preview}>
+                                <img
+                                  src={img.image}
+                                  alt={`Imagen ${index}`}
+                                  style={{
+                                    maxWidth: "100px",
+                                    maxHeight: "100px",
+                                  }}
+                                />
+                                <button
+                                  className={styles.remove_image_button}
+                                  onClick={() => handleDeleteImage(index)} // Función para eliminar la imagen asociada
+                                >
+                                  Eliminar
+                                </button>
+                              </div>
+                            ))}
+                          <div>
+                            {editImageFiles.map((file, index) => (
+                              <div key={index}>
+                                <img
+                                  src={URL.createObjectURL(file)}
+                                  alt={`Imagen ${index}`}
+                                  style={{
+                                    maxWidth: "100px",
+                                    maxHeight: "100px",
+                                  }}
+                                />
+                                <Button
+                                  className={styles.remove_button}
+                                  onClick={() => removeEditImage(index)}
+                                >
+                                  Quitar
+                                </Button>
+                              </div>
+                            ))}
+                           
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          id="editFileInput"
+                          onChange={handleEditImageChange}
+                        />
+                        <div className={styles.comment_buttons}>
+                          <Button
+                            className={styles.attach_img_btn}
+                            onClick={addEditImage}
+                          >
+                            {/*Agregar Imagen*/}
+                            <RiImageAddFill />
+                          </Button>
+                          </div>
+                          </div>
+                          <button onClick={() => confirmDeleteMessage(message)}>
+                            Eliminar
+                          </button>
+                          <Button
+                            className={styles.send_button}
+                            onClick={handleSaveEditMessage}
+                          >
+                            Guardar Cambios
+                          </Button>
+                          <Button
+                            className={styles.cancel_button}
+                            onClick={handleCancelEdit}
+                          >
+                            Cancelar
+                          </Button>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
-            <p className={styles.forum_date}>{message.date}</p>
-            <div className={styles.actions__content}>
-              <div
-                onClick={() => handleLikeMessage(message.message_id)}
-              >
-                {messageLikesData &&
-                messageLikesData.data &&
-                messageLikesData.data.some(
-                  (like) => like.message_id === message.message_id
-                ) ? (
-                  <FaHeart fill="red" className={styles.heart_icon} />
-                ) : (
-                  <FaRegHeart className={styles.heart_icon} />
-                )}
-                <span className={styles.post_tags}>{message.likes}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        {forumData.data.status === 1 && (
-          <SlOptions
-            onClick={() => handleEditMessage(message)}
-            className={styles.edit_message_button}
-          />
-        )}
-        {messageEditing &&
-        messageEditing.message_id === message.message_id ? (
-          <div className={styles.edit_message_panel}>
-            <img
-              src={message.avatar}
-              alt="avatar"
-              className={styles.profile_picture}
-            />
-            <textarea
-              className={styles.text_area}
-              rows="4"
-              cols="50"
-              value={messageEditing ? messageEditing.message : ""}
-              onChange={(e) =>
-                setMessageEditing({
-                  ...messageEditing,
-                  message: e.target.value,
-                })
-              }
-            ></textarea>
-            <div>
-              {imageFiles.map((file, index) => (
-                <div key={index}>
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Imagen ${index}`}
-                    style={{
-                      maxWidth: "100px",
-                      maxHeight: "100px",
-                    }}
-                  />
-                  <Button
-                    className={styles.remove_button}
-                    onClick={() => removeImage(index)}
-                  >
-                    Quitar
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <button onClick={() => confirmDeleteMessage(message)}>
-              Eliminar
-            </button>
-            <Button
-              className={styles.send_button}
-              onClick={handleSaveEditMessage}
-            >
-              Guardar Cambios
-            </Button>
-            <Button
-              className={styles.cancel_button}
-              onClick={handleCancelEdit}
-            >
-              Cancelar
-            </Button>
-          </div>
-        ) : (
-          <></>
-        )}
-      </li>
-    ))}
-  </ul>
-)}
-
             </>
           )}
         </div>
