@@ -330,7 +330,7 @@ const options = eventTypes.map((eventType) => ({
               />
 
               {console.log(selectedOption)}
-              {selectedOption?.label === "Otros" && (
+              {selectedOption?.label === "Otro" && (
                 <div>
                   <input
                     type="text"
