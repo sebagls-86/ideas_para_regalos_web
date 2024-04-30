@@ -136,13 +136,13 @@ function HomePage() {
           } catch (error) {
             localStorage.removeItem("token");
             setLoading(false);
-            //logout();
+            logout();
           }
         }
       } catch (error) {
         setLoading(false);
         localStorage.removeItem("token");
-        //logout();
+        logout();
       }
     };
 
@@ -216,7 +216,7 @@ function HomePage() {
         if (errorMessage.includes("Failed to validate JWT")) {
           localStorage.removeItem("token");
           localStorage.removeItem("userInfo");
-          //logout();
+          logout();
         } else {
           throw new Error("Failed to get pending surveys");
         }
