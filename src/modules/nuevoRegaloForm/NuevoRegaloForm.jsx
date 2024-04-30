@@ -244,7 +244,7 @@ const options = eventTypes.map((eventType) => ({
             }
           >
             <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group controlId="formBasicEmail">
                 <Form.Control
                   type="text"
                   id="titulo"
@@ -272,27 +272,22 @@ const options = eventTypes.map((eventType) => ({
               </span>
             }
           >
-            <div>
+            <div className={styles.date_container}>
               <p>¿Cuándo es el evento?</p>
-              <Calendar value={selectedDate} onChange={handleDateChange} />
+              <Calendar value={selectedDate} onChange={handleDateChange} className={styles.calendar} />
             </div>
           </Tab>
           <Tab
             eventKey="endDate"
             title={
               <span className={styles.span}>
-                <MyIcon name="calendar" /> Finalizacion
+                <MyIcon name="calendar" /> Finalización
               </span>
             }
+            className="form-tab"
           >
-            <div>
-              <p>¿Hasta cuándo recibis sugerencias?</p>
-              {showCalendar && (
-                <Calendar
-                  value={selectedEndDate}
-                  onChange={handleEndDateChange}
-                />
-              )}
+            <div className={styles.date_container}>
+              <p style={{marginBottom: "0rem"}}>¿Hasta cuándo recibís sugerencias?</p>
               <p>
                 <input
                   type="checkbox"
@@ -301,6 +296,14 @@ const options = eventTypes.map((eventType) => ({
                 />
                 Dejar el foro siempre abierto
               </p>
+              {showCalendar && (
+                <Calendar
+                  value={selectedEndDate}
+                  onChange={handleEndDateChange}
+                  className={styles.calendar}
+                />
+              )}
+             
             </div>
           </Tab>
           <Tab
@@ -311,7 +314,7 @@ const options = eventTypes.map((eventType) => ({
               </span>
             }
           >
-            <div>
+            <div className={styles.event_search}>
               <Form.Control
                 type="text"
                 placeholder="Buscar evento"
@@ -327,6 +330,7 @@ const options = eventTypes.map((eventType) => ({
                 options={filteredOptions}
                 selectedOption={selectedOption}
                 handleOptionSelect={handleOptionSelect}
+                className={styles.event_select}
               />
 
               {console.log(selectedOption)}
@@ -342,6 +346,7 @@ const options = eventTypes.map((eventType) => ({
               )}
             </div>
           </Tab>
+
         </Tabs>
         <>
           {token && (
@@ -349,7 +354,7 @@ const options = eventTypes.map((eventType) => ({
               <Button
                 label="Crear"
                 disabled={isDisabled}
-                className="btn primary__button"
+                className={`${styles.post_btn} btn primary__button`}
                 onClick={handleCreateForum}
               />
             </div>

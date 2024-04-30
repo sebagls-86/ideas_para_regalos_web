@@ -1,9 +1,12 @@
-.content{
-    margin-top: 60px;
-    padding: 40px
+.content {
+  margin-top: 60px;
+  padding: 40px;
+  display: flex;
+  gap: 2rem;
 }
-.select_user_container{
-    max-width: 733px;
-    width: 100%;
-    margin: 0 auto;
+.select_user_container {
+  width: 100%;
+}
+.select_user_container p {
+  margin-bottom: 0.5rem;
 }
