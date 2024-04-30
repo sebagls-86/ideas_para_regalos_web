@@ -13,6 +13,7 @@ export default function ProductCard({ image, name, userId, productId }) {
   const [clickedInside, setClickedInside] = useState(false);
   const popoverRef = useRef(null);
   const API_URL = process.env.REACT_APP_API_URL;
+  const token = localStorage.getItem("token");
 
   function getRandomPastelColor() {
     const hue = Math.floor(Math.random() * 360);
@@ -178,10 +179,13 @@ export default function ProductCard({ image, name, userId, productId }) {
             {name}
           </h3>
         </div>
-        <button
+{token && (
+  <button
           className={`${styles.saveButton} ${isSaved ? styles.clicked : ""}`}
           onClick={handleSaveClick}
         ></button>
+)}
+      
 
       
 
