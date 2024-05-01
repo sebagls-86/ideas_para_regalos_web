@@ -334,14 +334,16 @@ function Profiles() {
   const handleConfirmRemoveInterest = async () => {
     try {
       const { profile, interest } = interestToRemove;
-      console.log(profile)
+      console.log(profile);
       const interestId = interest.interest_id;
 
       if (profile.interests.length === 1) {
-        setErrorMessage("No puedes eliminar este interés porque es el único que tiene el perfil.");
+        setErrorMessage(
+          "No puedes eliminar este interés porque es el único que tiene el perfil."
+        );
         setShowConfirmationModal(false);
         setShowResponseModal(true);
-        return
+        return;
       }
 
       const deleteResponse = await fetch(
@@ -412,13 +414,25 @@ function Profiles() {
         }
       );
 
-      if (!response.ok) {
-        setErrorMessage("Algo falló. Intenta nuevamente más tarde");
-        setShowResponseModal(true);
-        throw new Error("Network response was not ok");
-      }
+      const data = await response.json();
 
-      const updatedProfilesData = profilesData.filter(
+      if (!data.ok) {
+        let errorMessage = "Algo falló. Intenta nuevamente más tarde";
+        if (data.message && typeof data.message === "string") {
+          const constraintErrorMessage = "foreign key constraint";
+          if (data.message.includes(constraintErrorMessage)) {
+            errorMessage =
+              "No puedes eliminar este perfil porque lo estás usando en una publicación";
+              setShowDeleteProfileConfirmationModal(false);
+            setErrorMessage(errorMessage);
+            setShowResponseModal(true);
+          }
+        }
+        setShowDeleteProfileConfirmationModal(false);
+        setErrorMessage(errorMessage);
+        setShowResponseModal(true);
+      } else {
+         const updatedProfilesData = profilesData.filter(
         (p) => p.profile_id !== profile.profile_id
       );
       setProfilesData(updatedProfilesData);
@@ -426,6 +440,7 @@ function Profiles() {
       setShowDeleteProfileConfirmationModal(false);
       setSuccessMessage("Perfil eliminado con éxito");
       setShowResponseModal(true);
+      }
     } catch (error) {
       setErrorMessage("Algo falló. Intenta nuevamente más tarde");
       setShowResponseModal(true);
@@ -440,22 +455,19 @@ function Profiles() {
   const handleSaveNewProfile = async (newProfile) => {
     try {
       // Crear el perfil
-      const profileResponse = await fetch(
-        `${API_URL}/profiles`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            age_range_id: newProfile.age_range_id,
-            last_name: newProfile.last_name,
-            name: newProfile.name,
-            relationship_id: newProfile.relationship_id,
-          }),
-        }
-      );
+      const profileResponse = await fetch(`${API_URL}/profiles`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          age_range_id: newProfile.age_range_id,
+          last_name: newProfile.last_name,
+          name: newProfile.name,
+          relationship_id: newProfile.relationship_id,
+        }),
+      });
 
       if (!profileResponse.ok) {
         setErrorMessage("Error al crear nuevo perfil");
@@ -467,20 +479,17 @@ function Profiles() {
         data: { profile_id },
       } = await profileResponse.json();
 
-      const interestsResponse = await fetch(
-        `${API_URL}/profileInterests`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            profile_id,
-            interest_id: newProfile.selectedInterests,
-          }),
-        }
-      );
+      const interestsResponse = await fetch(`${API_URL}/profileInterests`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          profile_id,
+          interest_id: newProfile.selectedInterests,
+        }),
+      });
 
       if (!interestsResponse.ok) {
         const deleteProfileResponse = await fetch(
@@ -656,21 +665,20 @@ function Profiles() {
                     selectedProfile.interests.length > 0 ? (
                       <div className={styles.profile_interest_container}>
                         <div className={styles.profile_all_interests}>
-                        {selectedProfile.interests.map((interest, index) => (
-                          <Button
-                            key={index}
-                            className={styles.profile_interest_button}
-                            onClick={() =>
-                              handleRemoveInterest(selectedProfile, interest)
-                            }
-                          >
-                            {interest.interest}
-                            <IoMdClose
-                              className={styles.profile_interest_remove_icon}
-                            />
-                          </Button>
-                          
-                        ))}
+                          {selectedProfile.interests.map((interest, index) => (
+                            <Button
+                              key={index}
+                              className={styles.profile_interest_button}
+                              onClick={() =>
+                                handleRemoveInterest(selectedProfile, interest)
+                              }
+                            >
+                              {interest.interest}
+                              <IoMdClose
+                                className={styles.profile_interest_remove_icon}
+                              />
+                            </Button>
+                          ))}
                         </div>
                         <Button
                           className={`${styles.profile_interest_buttons} ${styles.interest_add_button}`}
