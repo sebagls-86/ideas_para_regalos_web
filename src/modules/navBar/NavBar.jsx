@@ -38,6 +38,11 @@ function NavBar() {
               </Link>
             </li>
             <li>
+              <Link to="/explorar" className={styles.links}>
+                Explorar
+              </Link>
+            </li>
+            <li>
               <Link to="/preguntasFrecuentes" className={styles.links}>
                 FAQ
               </Link>

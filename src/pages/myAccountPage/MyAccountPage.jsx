@@ -197,6 +197,9 @@ function MyAccountPage({ userInfo }) {
       );
 
       if (response.ok) {
+        const updatedUserData = await response.json();
+        localStorage.setItem("userInfo", JSON.stringify(updatedUserData));
+        setUserData(updatedUserData.data);
         setSuccessMessage("Cambios guardados");
         setShowImageModal(false);
         setShowModal(false);

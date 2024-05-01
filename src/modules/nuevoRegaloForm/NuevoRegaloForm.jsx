@@ -93,7 +93,7 @@ function NuevoRegaloForm({ selectedProfile }) {
 
     if (selectedOption && selectedProfile) {
       let eventName = "";
-      if (selectedOption.label === "Otros") {
+      if (selectedOption.label === "Otro") {
         eventName = inputValue;
       }
       const eventPostData = {
@@ -195,7 +195,7 @@ function NuevoRegaloForm({ selectedProfile }) {
   titulo.trim() === "" ||
   descripcion.trim() === "" ||
   !selectedOption ||
-  (selectedOption?.label === "Otros" && !inputValue.trim());
+  (selectedOption?.label === "Otro" && !inputValue.trim());
 
 const options = eventTypes.map((eventType) => ({
   label: eventType.name,

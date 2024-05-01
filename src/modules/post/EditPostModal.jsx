@@ -432,7 +432,7 @@ function EditPostModal({
                 </div>
               </div>
               {selectedPost &&
-                (selectedPost.data?.event_name === "Otros" ||
+                (selectedPost.data?.event_name === "Otro" ||
                   !eventTypes.some(
                     (eventType) =>
                       eventType.name === selectedPost.data?.event_name
