@@ -6,7 +6,7 @@
   border: 0.4px solid hsl(0, 0%, 0%);
   position: relative;
 }
-.formContainer >div{
+.formContainer > div {
   padding: 0 2rem;
 }
 
@@ -53,7 +53,6 @@
 
 .nav-tabs > li:nth-child(1) .nav-link {
   border-top-left-radius: 10px;
-
 }
 @media only screen and (max-width: 1200px) {
   .nav-tabs {
@@ -98,20 +97,20 @@
   flex-wrap: wrap;
   gap: 20px;
 }
-.date_container{
+.date_container {
   margin-top: 1rem;
 }
-.date_container p{
+.date_container p {
   margin-bottom: 1rem;
 }
-.date_container input{
-  margin-right: .5rem;
+.date_container input {
+  margin-right: 0.5rem;
 }
 
-.calendar{
+.calendar {
   width: 100% !important;
   margin: 0 auto;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   border-radius: 10px;
 }
 
@@ -130,25 +129,27 @@
   font-size: 18px;
   color: #333333;
 }
-.event_search{
+.event_search {
   margin-top: 1.5rem;
 }
-.buttons__container{
+.buttons__container {
   display: flex;
   justify-content: flex-end;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
 }
-.post_btn{
-
+.post_btn {
   width: fit-content !important;
   padding: 15px 30px;
 }
 
-.selectButton .event_select{
-  background-color: pink !important;
+.input_new_event{
+  margin-top: 2rem;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.4px solid hsl(0, 0%, 0%);
 }
-
 
 /* Media query for responsiveness */
 @media (max-width: 768px) {
@@ -162,7 +163,6 @@
     width: 100%; /* 100% width */
   }
 }
-
 
 @media only screen and (max-width: 450px) {
   .span {

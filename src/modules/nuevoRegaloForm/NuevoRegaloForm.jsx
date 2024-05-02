@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../../components/modal/Modal";
 import ModalSuggestions from "./ModalSuggestions";
 import ResponseModal from "../../components/modal/ResponseModal";
+import SearchDropdown from "../../components/selectButton/SearchDropdown";
+
 
 function NuevoRegaloForm({ selectedProfile }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -190,18 +192,18 @@ function NuevoRegaloForm({ selectedProfile }) {
   };
 
   const isDisabled =
-  !selectedProfile ||
-  !selectedDate ||
-  titulo.trim() === "" ||
-  descripcion.trim() === "" ||
-  !selectedOption ||
-  (selectedOption?.label === "Otro" && !inputValue.trim());
+    !selectedProfile ||
+    !selectedDate ||
+    titulo.trim() === "" ||
+    descripcion.trim() === "" ||
+    !selectedOption ||
+    (selectedOption?.label === "Otro" && !inputValue.trim());
 
-const options = eventTypes.map((eventType) => ({
-  label: eventType.name,
-  value: eventType.event_type_id,
-  profileId: eventType.profileId,
-}));
+  const options = eventTypes.map((eventType) => ({
+    label: eventType.name,
+    value: eventType.event_type_id,
+    profileId: eventType.profileId,
+  }));
 
   const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
@@ -274,7 +276,11 @@ const options = eventTypes.map((eventType) => ({
           >
             <div className={styles.date_container}>
               <p>¿Cuándo es el evento?</p>
-              <Calendar value={selectedDate} onChange={handleDateChange} className={styles.calendar} />
+              <Calendar
+                value={selectedDate}
+                onChange={handleDateChange}
+                className={styles.calendar}
+              />
             </div>
           </Tab>
           <Tab
@@ -287,7 +293,9 @@ const options = eventTypes.map((eventType) => ({
             className="form-tab"
           >
             <div className={styles.date_container}>
-              <p style={{marginBottom: "0rem"}}>¿Hasta cuándo recibís sugerencias?</p>
+              <p style={{ marginBottom: "0rem" }}>
+                ¿Hasta cuándo recibís sugerencias?
+              </p>
               <p>
                 <input
                   type="checkbox"
@@ -303,7 +311,6 @@ const options = eventTypes.map((eventType) => ({
                   className={styles.calendar}
                 />
               )}
-             
             </div>
           </Tab>
           <Tab
@@ -314,6 +321,7 @@ const options = eventTypes.map((eventType) => ({
               </span>
             }
           >
+            {/*
             <div className={styles.event_search}>
               <Form.Control
                 type="text"
@@ -321,9 +329,10 @@ const options = eventTypes.map((eventType) => ({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-            </div>
+          </div>*/}
             <div className={styles.selectEvent}>
-              <SelectButton
+           
+                <SearchDropdown
                 label="Elegir evento"
                 isOpen={isOpen}
                 toggleDropdown={toggleDropdown}
@@ -332,6 +341,7 @@ const options = eventTypes.map((eventType) => ({
                 handleOptionSelect={handleOptionSelect}
                 className={styles.event_select}
               />
+             
 
               {console.log(selectedOption)}
               {selectedOption?.label === "Otro" && (
@@ -340,13 +350,13 @@ const options = eventTypes.map((eventType) => ({
                     type="text"
                     value={inputValue}
                     onChange={handleInputChange}
-                    placeholder="Ingrese otro evento"
+                    placeholder="Ingresá otro evento"
+                    className={styles.input_new_event}
                   />
                 </div>
               )}
             </div>
           </Tab>
-
         </Tabs>
         <>
           {token && (
