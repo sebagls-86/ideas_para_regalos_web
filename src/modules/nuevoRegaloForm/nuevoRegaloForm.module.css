@@ -1,13 +1,13 @@
 .formContainer {
   max-width: 733px;
   width: 100%;
-  height: calc(80% - 2rem); /* Corregir la coma que estaba causando un error */
-  max-height: 781px; /* Ajustar maxHeight para que sea una propiedad separada */
-  margin: 0 auto;
-  margin-top: 24px;
+  margin-top: 2rem;
   border-radius: 10px;
   border: 0.4px solid hsl(0, 0%, 0%);
   position: relative;
+}
+.formContainer > div {
+  padding: 0 2rem;
 }
 
 /* Estilos de los tabs */
@@ -33,6 +33,7 @@
   border-bottom: 0.4px solid;
 }
 
+.nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
   font-weight: bold;
   background: var(--grey, #f2f4f5);
@@ -53,7 +54,6 @@
 .nav-tabs > li:nth-child(1) .nav-link {
   border-top-left-radius: 10px;
 }
-
 @media only screen and (max-width: 1200px) {
   .nav-tabs {
     margin-left: -20px;
@@ -64,18 +64,16 @@
 
 /* Aquí continúan los estilos restantes */
 .inputTitulo {
-  max-width: 676px;
   width: 100%;
   height: 48px;
   border-radius: 5px;
   border: 0.4px solid #000;
   background: var(--grey, #f2f4f5);
   margin: 0 auto;
-  margin-top: 35px;
+  margin-top: 1.5rem;
   margin-bottom: 20px;
 }
 .inputTexto {
-  max-width: 676px;
   width: 100%;
   height: 201px;
   flex-shrink: 0;
@@ -89,41 +87,31 @@
   gap: 15px;
   align-items: center;
 }
-.btn_submit_cancel {
-  position: absolute;
-  display: flex;
-  bottom: 18px;
-  right: 29px;
-  gap: 25px;
-}
+
 .selectEvent {
   margin: 44px 48px;
-}
-.uploadImage {
-  margin: 50px;
-}
-.customFileInput {
-  background-image: url("/src/assets/upload-icon.svg");
-  height: 50px;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  background-position: center;
-}
-.customFileInput span {
-  padding-top: 50px;
-}
-.previewImage {
-  width: 40%;
-  position: absolute;
-  top: 200px;
 }
 
 .suggestionsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+.date_container {
+  margin-top: 1rem;
+}
+.date_container p {
+  margin-bottom: 1rem;
+}
+.date_container input {
+  margin-right: 0.5rem;
+}
+
+.calendar {
+  width: 100% !important;
+  margin: 0 auto;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
 }
 
 .suggestion {
@@ -141,6 +129,27 @@
   font-size: 18px;
   color: #333333;
 }
+.event_search {
+  margin-top: 1.5rem;
+}
+.buttons__container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+.post_btn {
+  width: fit-content !important;
+  padding: 15px 30px;
+}
+
+.input_new_event{
+  margin-top: 2rem;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.4px solid hsl(0, 0%, 0%);
+}
 
 /* Media query for responsiveness */
 @media (max-width: 768px) {
@@ -154,7 +163,6 @@
     width: 100%; /* 100% width */
   }
 }
-
 
 @media only screen and (max-width: 450px) {
   .span {

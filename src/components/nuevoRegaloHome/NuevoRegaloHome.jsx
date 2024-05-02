@@ -35,7 +35,7 @@ function NuevoRegaloHome() {
             <div className={styles.icons}>
               <MyIcon name="calendar" />
               <MyIcon name="heart" />
-              <MyIcon name="image" />
+              {/*<MyIcon name="image" />*/}
               <MyIcon name="list" />
             </div>
             <Links title="Regalar" url="/nuevoRegalo" type={"primary"} />

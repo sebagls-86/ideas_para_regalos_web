@@ -204,12 +204,30 @@ a:focus {
 .nav-link {
   color: var(--secondary);
 }
+
+
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
   font-weight: bold;
   border-color: var(--white);
   border-bottom: 2px solid var(--primary-dark);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: center;
+
 }
+.nav-tabs{
+  justify-content: space-evenly;
+  padding-top: 5px;
+ 
+}
+.nav-item{
+  width: calc(100%/4);
+  display: flex;
+  justify-content: center;
+}
+
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link:hover {
   border-color: var(--white);
@@ -304,3 +322,18 @@ a:focus {
   display: flex;
   padding: 0;
 }
+.react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus{
+  background-color: var(--gray);
+  border-radius: 10px;
+}
+.react-calendar__month-view__days__day--weekend {
+  color: black !important;
+}
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus, .react-calendar__tile--active {
+  background: var(--primary-dark) !important;
+}
+
+/*search dropdown styles*/
+
+
+
