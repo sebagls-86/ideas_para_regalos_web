@@ -20,6 +20,8 @@ import { SlOptions } from "react-icons/sl";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import CommentIcon from "../../assets/comment-icon.svg";
+import { CgTrash } from "react-icons/cg";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -407,6 +409,15 @@ function ForumsPage() {
     }
   };
 
+  const [editOptions, setEditOptions] = useState({});
+ 
+  const toggleEditOptions = (messageId) => {
+    setEditOptions((prevOptions) => ({
+      ...prevOptions,
+      [messageId]: !prevOptions[messageId],
+    }));
+  };
+
   return (
     <>
       <ResponseModal
@@ -559,21 +570,25 @@ function ForumsPage() {
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
                         ></textarea>
-                        {imageFiles.map((file, index) => (
-                          <div key={index} style={{ position: "relative" }}>
-                            <img
-                              className={styles.attach_img}
-                              src={file ? URL.createObjectURL(file) : ""}
-                              alt={`Imagen ${index + 1}`}
-                            />
-                            <Button
-                              className={styles.remove_img_btn}
-                              onClick={() => removeImage(index)}
-                            >
-                              <IoClose />
-                            </Button>
-                          </div>
-                        ))}
+
+                        <div className={styles.attach_image_container}>
+                          {imageFiles.map((file, index) => (
+                            <div key={index} style={{ position: "relative" }}>
+                              <img
+                                className={styles.attach_img}
+                                src={file ? URL.createObjectURL(file) : ""}
+                                alt={`Imagen ${index + 1}`}
+                              />
+                              <Button
+                                className={styles.remove_img_btn}
+                                onClick={() => removeImage(index)}
+                              >
+                                <IoClose />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+
                         <input
                           type="file"
                           accept="image/*"
@@ -659,27 +674,57 @@ function ForumsPage() {
                               ) : (
                                 <FaRegHeart className={styles.heart_icon} />
                               )}
-                              <span className={styles.post_tags}>
+                              <span
+                                className={`${styles.post_tags} ${
+                                  messageLikesData &&
+                                  messageLikesData.data &&
+                                  messageLikesData.data.some(
+                                    (like) =>
+                                      like.forum_id === forumData.data.forum_id
+                                  ) &&
+                                  styles.liked
+                                }`}
+                              >
                                 {message.likes}
                               </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                      {forumData.data.status === 1 && message.user_id === userId &&(
-                        <SlOptions
-                          onClick={() => handleEditMessage(message)}
-                          className={styles.edit_message_button}
-                        />
-                      )}
+                      {console.log("message", message)}
+                      {forumData.data.status === 1 &&
+                        message.user_id === userId && (
+                          <div className={styles.edit_message_container}>
+                            <SlOptions
+                              onClick={() => toggleEditOptions(message.message_id)}
+                              className={styles.edit_message_button}
+                            />
+
+                            {editOptions[message.message_id] && (
+                              
+                              <div className={styles.edit_message_options}>
+                                <Button
+                                  variant="link"
+                                  onClick={() => handleEditMessage(message)}
+                                >
+                                  <MdOutlineModeEditOutline />
+                                  Editar
+                                </Button>
+                                <Button
+                                  variant="link"
+                                  onClick={() => confirmDeleteMessage(message)}
+                                  className={styles.delete_message_btn}
+                                >
+                                  <CgTrash /> Eliminar
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
                       {messageEditing &&
                       messageEditing.message_id === message.message_id ? (
                         <div className={styles.edit_message_panel}>
-                          <img
-                            src={message.avatar}
-                            alt="avatar"
-                            className={styles.profile_picture}
-                          />
                           <textarea
                             className={styles.text_area}
                             rows="4"
@@ -692,6 +737,7 @@ function ForumsPage() {
                               })
                             }
                           ></textarea>
+
                           {messageEditing.image &&
                             messageEditing.image.map((img, index) => (
                               <div key={index} className={styles.image_preview}>
@@ -712,57 +758,63 @@ function ForumsPage() {
                               </div>
                             ))}
                           <div>
-                            {editImageFiles.map((file, index) => (
-                              <div key={index}>
-                                <img
-                                  src={URL.createObjectURL(file)}
-                                  alt={`Imagen ${index}`}
+                            <div className={styles.edit_images_container}>
+                              {editImageFiles.map((file, index) => (
+                                <div
+                                  key={index}
                                   style={{
-                                    maxWidth: "100px",
-                                    maxHeight: "100px",
+                                    position: "relative",
                                   }}
-                                />
-                                <Button
-                                  className={styles.remove_button}
-                                  onClick={() => removeEditImage(index)}
                                 >
-                                  Quitar
+                                  <img
+                                    src={URL.createObjectURL(file)}
+                                    alt={`Imagen ${index}`}
+                                    className={styles.edit_img}
+                                  />
+
+                                  <Button
+                                    className={styles.remove_img_btn}
+                                    onClick={() => removeEditImage(index)}
+                                  >
+                                    <IoClose />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              id="editFileInput"
+                              onChange={handleEditImageChange}
+                            />
+                            <div
+                              className={styles.edit_message_button_container}
+                            >
+                              <div className={styles.comment_buttons}>
+                                <Button
+                                  className={styles.attach_img_btn}
+                                  onClick={addEditImage}
+                                >
+                                  {/*Agregar Imagen*/}
+                                  <RiImageAddFill />
                                 </Button>
                               </div>
-                            ))}
-                           
-                        <input
-                          type="file"
-                          accept="image/*"
-                          style={{ display: "none" }}
-                          id="editFileInput"
-                          onChange={handleEditImageChange}
-                        />
-                        <div className={styles.comment_buttons}>
-                          <Button
-                            className={styles.attach_img_btn}
-                            onClick={addEditImage}
-                          >
-                            {/*Agregar Imagen*/}
-                            <RiImageAddFill />
-                          </Button>
+                              <Button
+                                className={styles.cancel_button}
+                                onClick={handleCancelEdit}
+                              >
+                                Cancelar
+                              </Button>
+                              <Button
+                                className={styles.send_button}
+                                onClick={handleSaveEditMessage}
+                              >
+                                Guardar
+                              </Button>
+                            </div>
                           </div>
-                          </div>
-                          <button onClick={() => confirmDeleteMessage(message)}>
-                            Eliminar
-                          </button>
-                          <Button
-                            className={styles.send_button}
-                            onClick={handleSaveEditMessage}
-                          >
-                            Guardar Cambios
-                          </Button>
-                          <Button
-                            className={styles.cancel_button}
-                            onClick={handleCancelEdit}
-                          >
-                            Cancelar
-                          </Button>
                         </div>
                       ) : (
                         <></>

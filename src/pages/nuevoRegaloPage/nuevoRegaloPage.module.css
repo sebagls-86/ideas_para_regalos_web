@@ -10,3 +10,7 @@
 .select_user_container p {
   margin-bottom: 0.5rem;
 }
+
+.avatarContainer {
+  border-radius: 50%;
+}
