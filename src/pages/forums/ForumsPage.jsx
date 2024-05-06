@@ -410,7 +410,7 @@ function ForumsPage() {
   };
 
   const [editOptions, setEditOptions] = useState({});
- 
+
   const toggleEditOptions = (messageId) => {
     setEditOptions((prevOptions) => ({
       ...prevOptions,
@@ -696,12 +696,13 @@ function ForumsPage() {
                         message.user_id === userId && (
                           <div className={styles.edit_message_container}>
                             <SlOptions
-                              onClick={() => toggleEditOptions(message.message_id)}
+                              onClick={() =>
+                                toggleEditOptions(message.message_id)
+                              }
                               className={styles.edit_message_button}
                             />
 
                             {editOptions[message.message_id] && (
-                              
                               <div className={styles.edit_message_options}>
                                 <Button
                                   variant="link"
@@ -737,26 +738,28 @@ function ForumsPage() {
                               })
                             }
                           ></textarea>
-
-                          {messageEditing.image &&
-                            messageEditing.image.map((img, index) => (
-                              <div key={index} className={styles.image_preview}>
-                                <img
-                                  src={img.image}
-                                  alt={`Imagen ${index}`}
-                                  style={{
-                                    maxWidth: "100px",
-                                    maxHeight: "100px",
-                                  }}
-                                />
-                                <button
-                                  className={styles.remove_image_button}
-                                  onClick={() => handleDeleteImage(index)} // Función para eliminar la imagen asociada
+                          <div className={styles.edit_images_container}>
+                            {messageEditing.image &&
+                              messageEditing.image.map((img, index) => (
+                                <div
+                                  key={index}
+                                  className={styles.image_preview}
                                 >
-                                  Eliminar
-                                </button>
-                              </div>
-                            ))}
+                                  <img
+                                    src={img.image}
+                                    alt={`Imagen ${index}`}
+                                    className={styles.edit_img}
+                                  />
+                                  <Button
+                                    className={styles.remove_img_btn}
+                                    onClick={() => handleDeleteImage(index)} // Función para eliminar la imagen asociada
+                                  >
+                                    <IoClose/>
+
+                                  </Button>
+                                </div>
+                              ))}
+                          </div>
                           <div>
                             <div className={styles.edit_images_container}>
                               {editImageFiles.map((file, index) => (

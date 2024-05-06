@@ -65,10 +65,11 @@
   margin: 0.5rem 0 0.7rem;
   gap: 5px;
 }
+/*
 .message_img_wrapper {
   width: 50%;
   height: 100%;
-}
+}*/
 
 .message_img {
   border-radius: 10px;
@@ -144,6 +145,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+  margin-top: 0.5rem;
 }
 .forum_title {
   font-size: var(--fz-17);
@@ -364,7 +366,7 @@
 }
 .attach_image_container, .edit_images_container{
   display: flex;
-  gap: .5rem;
+  gap: 5px;
 }
 .cancel_button{
   background-color: transparent !important;
@@ -378,6 +380,9 @@
 .cancel_button:hover{
   border: 1px solid red;
   color: red;
+}
+.image_preview{
+  position: relative;
 }
 
 @media only screen and (max-width: 768px) {
