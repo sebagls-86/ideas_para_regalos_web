@@ -253,6 +253,9 @@ function MyAccountPage({ userInfo }) {
     return <Spinner animation="border" />;
   }
 
+  console.log(userData.avatar)
+  console.log(userInfo)
+
   return (
     <>
       {isLoading && <Spinner />}
