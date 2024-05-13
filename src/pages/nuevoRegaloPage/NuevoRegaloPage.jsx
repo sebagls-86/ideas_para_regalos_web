@@ -287,6 +287,7 @@ function NuevoRegaloPage() {
                 options={options}
                 handleOptionSelect={handleOptionSelect}
                 selectedOption={selectedOption}
+                maxWidth="360px" 
               />
             </div>
           )}

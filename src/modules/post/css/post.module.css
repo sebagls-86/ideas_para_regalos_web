@@ -271,3 +271,10 @@ label {
   position: absolute;
   z-index: 999;
 }
+.event_type{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-column-gap: 10px;
+}
+
+

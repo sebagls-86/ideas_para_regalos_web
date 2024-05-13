@@ -310,7 +310,7 @@ function EditPostModal({
         show={show}
         closeModal={onHide}
         title="Editar Foro"
-        /*contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}*/
+        contentStyle={{ marginTop: "1.5rem" }}
       >
         <Col>
           <div className={styles.buttons__container}>
@@ -357,7 +357,7 @@ function EditPostModal({
               <div className={styles.event_date_form}>
                 <div>
                   <label>Fecha del Evento:</label>
-                  <div >
+                  <div>
                     <input
                       type="text"
                       className={`${styles.form__control} ${styles.event_date_input} form-control`}
@@ -379,7 +379,7 @@ function EditPostModal({
                 <div>
                   <label>Fecha de Finalización:</label>
                   {originalPost?.end_date !== "0" && (
-                    <div >
+                    <div>
                       <input
                         type="text"
                         className={`${styles.form__control} form-control`}
@@ -402,71 +402,81 @@ function EditPostModal({
                   )}
                 </div>
               </div>
-              <div>
-                <label className={styles.input__label}>Tipo de Evento:</label>
-                <div className={`${styles.form__floating} form-floating`}>
-                  <select
-                    className={`${styles.form__control} form-control`}
-                    onChange={(e) => handleEventTypeChange(e.target.value)}
-                  >
-                    {isLoading ? (
-                      <option value="">Cargando...</option>
-                    ) : (
-                      eventTypes.map((eventType) => (
-                        <option
-                          key={eventType.event_type_id}
-                          value={eventType.event_type_id}
-                          selected={
-                            selectedPost &&
-                            selectedPost.data.event_name === eventType.name
-                          }
-                        >
-                          {eventType.name}
-                        </option>
-                      ))
-                    )}
-                  </select>
-                  <div className={styles.selectIcon}>
-                    <img src={expandDown} alt="Expand Icon" />
-                  </div>
-                </div>
-              </div>
-              {selectedPost &&
-                (selectedPost.data?.event_name === "Otro" ||
-                  !eventTypes.some(
-                    (eventType) =>
-                      eventType.name === selectedPost.data?.event_name
-                  )) && (
+              <div className={styles.event_type}>
+                <div>
+                  <label className={styles.input__label}>Tipo de Evento:</label>
                   <div className={`${styles.form__floating} form-floating`}>
-                    <label>Otro tipo de evento:</label>
-                    <input
-                      type="text"
+                    <select
                       className={`${styles.form__control} form-control`}
-                      value={otherEventName || ""}
-                      onChange={(e) => setOtherEventName(e.target.value)}
-                    />
-                    {otherEventName && (
-                      <span
-                        className="text-danger"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setOtherEventName("")}
-                      >
-                        Borrar
-                      </span>
-                    )}
-                    {!otherEventName && (
-                      <span
-                        className="text-primary"
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          setOtherEventName(originalPost.event_name)
-                        }
-                      >
-                        Restaurar
-                      </span>
-                    )}
+                      onChange={(e) => handleEventTypeChange(e.target.value)}
+                    >
+                      {isLoading ? (
+                        <option value="">Cargando...</option>
+                      ) : (
+                        eventTypes.map((eventType) => (
+                          <option
+                            key={eventType.event_type_id}
+                            value={eventType.event_type_id}
+                            selected={
+                              selectedPost &&
+                              selectedPost.data.event_name === eventType.name
+                            }
+                          >
+                            {eventType.name}
+                          </option>
+                        ))
+                      )}
+                    </select>
+                    <div className={styles.selectIcon}>
+                      <img src={expandDown} alt="Expand Icon" />
+                    </div>
                   </div>
-                )}
+                  </div>
+                    <div className={styles.otherEventType}>
+                  {selectedPost &&
+                    (selectedPost.data?.event_name === "Otro" ||
+                      !eventTypes.some(
+                        (eventType) =>
+                          eventType.name === selectedPost.data?.event_name
+                      )) && (
+                        <div>
+                              {otherEventName && (
+                          <span
+                            className="text-danger"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => setOtherEventName("")}
+                          >
+                            Borrar
+                          </span>
+                        )}
+                        {!otherEventName && (
+                          <span
+                            className="text-primary"
+                            style={{ cursor: "pointer" }}
+
+                            onClick={() =>
+                              setOtherEventName(originalPost.event_name)
+                            }
+                          >
+                            Restaurar
+                          </span>
+                        )}
+                      <div className={`${styles.form__floating} form-floating`}>
+                       
+                        <input
+                          type="text"
+                          className={`${styles.form__control} form-control`}
+                          value={otherEventName || ""}
+                          onChange={(e) => setOtherEventName(e.target.value)}
+                          style={{marginTop: ".3rem"}}
+                        />
+                     
+                      </div>
+                      </div>
+                    )}
+                </div>
+                
+              </div>
 
               <div>
                 <label>Perfil:</label>
@@ -493,8 +503,6 @@ function EditPostModal({
                   </div>
                 </div>
               </div>
-
-          
             </form>
             <div style={{ marginTop: "2rem" }}>
               <Button

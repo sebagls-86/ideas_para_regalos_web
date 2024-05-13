@@ -10,6 +10,8 @@ function SelectButton({
   options,
   handleOptionSelect,
   selectedOption,
+  maxWidth,
+  optionWidth 
 }) {
   return (
     <div className={styles.selectButtonContainer}>
@@ -17,6 +19,7 @@ function SelectButton({
         className={styles.selectButton}
         onClick={toggleDropdown}
         aria-expanded={isOpen}
+        style={{ maxWidth: maxWidth }} 
       >
         {selectedOption ? selectedOption.label : label}
         {isOpen ? (
@@ -26,7 +29,7 @@ function SelectButton({
         )}
       </button>
       {isOpen && (
-        <ul className={styles.optionsList}>
+        <ul className={styles.optionsList} style={{ maxWidth: maxWidth }}>
           {options.map((option) => (
             <li
               className={styles.OptionItem}
@@ -35,6 +38,7 @@ function SelectButton({
                 handleOptionSelect(option);
                 toggleDropdown();
               }}
+          
             >
               {/* Conditional rendering based on option type */}
               {renderOption(option)}

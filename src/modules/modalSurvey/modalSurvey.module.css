@@ -1,53 +1,76 @@
 /* Ajusta el contenedor de botones */
 .buttons__container {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5em 1em; /* Ajusta el relleno según sea necesario */
-    margin: 0; /* Restablece los márgenes */
-  }
-  
-  /* Ajusta el espaciado entre los botones si es necesario */
-  .buttons__container .btn {
-    margin-right: 10px; /* Margen entre los botones */
-  }
-  
-  /* Ajusta los estilos para el contenedor de la valoración */
-  .rating__container {
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Estilos para las estrellas */
-  .star {
-    font-size: 24px; /* Tamaño de la estrella */
-    color: #ccc; /* Color de la estrella vacía */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-  }
-  
-  .filled {
-    color: #ffd427; /* Color de la estrella llena */
-  }
-  
-  .half {
-    position: relative;
-    color: #f8d64e; /* Color de la estrella llena */
-  }
-  
-  .half::before {
-    content: "\2605"; /* Código unicode de una estrella rellena */
-    position: absolute;
-    left: 0;
-    overflow: hidden;
-    width: 50%; /* Porcentaje de la estrella llena */
-  }
+  display: flex;
+  justify-content: space-between;
+  margin: 0; /* Restablece los márgenes */
+  gap: .7rem;
+  margin-top: 1rem;
+}
 
-  .Rating {
-    color:#f8d64e
-  }
-  
-  @media only screen and (min-width: 768px) {
-    .buttons__container {
-        padding-top: 1.31rem;
-    }
-  }
-  
+
+/* Ajusta los estilos para el contenedor de la valoración */
+.rating__container {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para las estrellas */
+.star {
+  font-size: 24px; /* Tamaño de la estrella */
+  color: #ccc; /* Color de la estrella vacía */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+.filled {
+  color: #ffd427; /* Color de la estrella llena */
+}
+
+.half {
+  position: relative;
+  color: #f8d64e; /* Color de la estrella llena */
+}
+
+.half::before {
+  content: "\2605"; /* Código unicode de una estrella rellena */
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+  width: 50%; /* Porcentaje de la estrella llena */
+}
+
+.Rating {
+  color: #f8d64e;
+}
+
+.error_message {
+  color: red;
+}
+
+.modal_body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: center;
+}
+
+.rating_stars {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+
+}
+
+.rating_stars svg {
+  width: 40px;
+  height: 40px;
+}
+.rating_comment {
+  text-align: center;
+}
+.no_response{
+  text-decoration: underline;
+}
+.no_response:hover{
+  color: var(--primary-dark);
+}

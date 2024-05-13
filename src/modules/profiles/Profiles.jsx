@@ -742,7 +742,7 @@ function Profiles() {
                       >
                         <td>
                           <div>
-                            <div>{profile.name}</div>
+                            <div><strong>{profile.name}</strong></div>
                             <div>{profile.relationship}</div>
                           </div>
                         </td>
