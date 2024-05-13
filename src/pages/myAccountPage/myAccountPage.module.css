@@ -71,3 +71,36 @@
   }
 }
 
+/* MODAL STYLES */
+.account_modal{
+  padding: 2rem;
+  position: relative;
+}
+.modal_header{
+text-align: center;
+}
+.account_modal h4{
+  font-weight: 800;
+}
+.modal_close, .modal_close:hover{
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  background-color: #fff;
+  padding-top: .5rem;
+  padding-left: 1rem;
+  padding-right: 0px;
+  border-radius: 15px;
+}
+.account_modal label{
+  margin-top: 1rem;
+}
+.edit_profile input{
+  height: 48px;
+}
+.modal_footer{
+  margin-top: 1.5rem;
+}
+
+

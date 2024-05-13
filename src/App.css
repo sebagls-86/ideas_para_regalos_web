@@ -131,11 +131,13 @@ a:focus {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  background-color: transparent;
 }
 
 .primary__button-outline:is(:hover, :active, :focus) {
-  background-color: var(--primary-dark);
+  background-color: var(--primary-dark) !important;
   color: var(--white);
+  border: var(--primary-dark) !important;
 }
 
 .secondary__button-outline {

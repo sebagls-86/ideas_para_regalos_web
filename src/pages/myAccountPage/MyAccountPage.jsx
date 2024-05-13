@@ -11,6 +11,7 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AiOutlineClose } from "react-icons/ai";
 
 function MyAccountPage({ userInfo }) {
   const navigate = useNavigate();
@@ -112,16 +113,13 @@ function MyAccountPage({ userInfo }) {
   const handleFollow = async () => {
     try {
       if (isUserFollowing()) {
-        const response = await fetch(
-          `${API_URL}/relations/${user__id}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/relations/${user__id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.ok) {
           const updatedFollowingUsers = followingUsers.filter(
@@ -135,16 +133,13 @@ function MyAccountPage({ userInfo }) {
           );
         }
       } else {
-        const response = await fetch(
-          `${API_URL}/relations/${user__id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/relations/${user__id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.ok) {
           const updatedFollowingUsers = [
@@ -185,16 +180,13 @@ function MyAccountPage({ userInfo }) {
         return;
       }
 
-      const response = await fetch(
-        `${API_URL}/users/${userId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       if (response.ok) {
         const updatedUserData = await response.json();
@@ -204,10 +196,12 @@ function MyAccountPage({ userInfo }) {
         setShowImageModal(false);
         setShowModal(false);
         setShowResponseModal(true);
+        closeModal(); 
       } else {
         setErrorMessage("Error al guardar los cambios");
         setShowImageModal(false);
         setShowModal(false);
+        setShowBannerModal(false);
         setShowResponseModal(true);
       }
     } catch (error) {
@@ -253,8 +247,14 @@ function MyAccountPage({ userInfo }) {
     return <Spinner animation="border" />;
   }
 
-  console.log(userData.avatar)
-  console.log(userInfo)
+  console.log(userData.avatar);
+  console.log(userInfo);
+
+  const closeModal = () => {
+    setShowImageModal(false);
+    setShowModal(false);
+    setShowBannerModal(false);
+  };
 
   return (
     <>
@@ -345,118 +345,133 @@ function MyAccountPage({ userInfo }) {
           </aside>
         </div>
       )}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Perfil</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label htmlFor="name">Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                id="name"
-                value={formChanges.name || userData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="lastName">Apellido</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName"
-                value={formChanges.last_name || userData.last_name}
-                onChange={(e) => handleInputChange("last_name", e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="userName">Nombre de usuario</label>
-              <input
-                type="text"
-                className="form-control"
-                id="userName"
-                value={formChanges.user_name || userData.user_name}
-                onChange={(e) => handleInputChange("user_name", e.target.value)}
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cerrar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSaveChanges}
-            disabled={isLoading}
-          >
-            {isLoading ? "Guardando..." : "Guardar"}
-          </Button>
-        </Modal.Footer>
+      <Modal show={showModal} centered>
+      <div className={`${styles.account_modal} ${styles.edit_profile}`}>
+          <div className={styles.modal_header}>
+            <button className={styles.modal_close} onClick={closeModal}>
+              <AiOutlineClose />
+            </button>
+            <h4>Editar perfil</h4>
+          </div>
+          <div className={styles.modal_body}>
+            <form>
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  value={formChanges.name || userData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="lastName">Apellido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastName"
+                  value={formChanges.last_name || userData.last_name}
+                  onChange={(e) =>
+                    handleInputChange("last_name", e.target.value)
+                  }
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="userName">Nombre de usuario</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="userName"
+                  value={formChanges.user_name || userData.user_name}
+                  onChange={(e) =>
+                    handleInputChange("user_name", e.target.value)
+                  }
+                />
+              </div>
+            </form>
+          </div>
+          <div className={styles.modal_footer}>
+           
+            <Button
+              variant="primary"
+              onClick={handleSaveChanges}
+              disabled={isLoading}
+              className="primary__button-outline"
+            >
+              {isLoading ? "Guardando..." : "Guardar"}
+            </Button>
+          </div>
+        </div>
       </Modal>
-      <Modal show={showImageModal} onHide={() => setShowImageModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Imagen de Perfil</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label htmlFor="avatar">Seleccionar nueva imagen:</label>
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                id="avatar"
-                onChange={handleAvatarChange}
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowImageModal(false)}>
-            Cerrar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSaveChanges}
-            disabled={isLoading}
-          >
-            {isLoading ? "Guardando..." : "Guardar"}
-          </Button>
-        </Modal.Footer>
+      <Modal show={showImageModal} centered>
+        <div className={styles.account_modal}>
+          <div className={styles.modal_header}>
+            <button className={styles.modal_close} onClick={closeModal}>
+              <AiOutlineClose />
+            </button>
+            <h4>Editar foto de perfil</h4>
+          </div>
+          <div className={styles.modal_body}>
+            <form>
+              <div className="form-group">
+                <label htmlFor="avatar">Seleccionar nueva imagen:</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  id="avatar"
+                  onChange={handleAvatarChange}
+                />
+              </div>
+            </form>
+          </div>
+          <div className={styles.modal_footer}>
+          
+            <Button
+              variant="primary"
+              onClick={handleSaveChanges}
+              disabled={isLoading}
+              className="primary__button-outline "
+            >
+              {isLoading ? "Guardando..." : "Guardar"}
+            </Button>
+          </div>
+        </div>
       </Modal>
-      <Modal show={showBannerModal} onHide={() => setShowBannerModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Banner</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label htmlFor="banner">Seleccionar nueva imagen:</label>
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                id="banner"
-                onChange={handleBannerChange}
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowBannerModal(false)}>
-            Cerrar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSaveChanges}
-            disabled={isLoading}
-          >
-            {isLoading ? "Guardando..." : "Guardar"}
-          </Button>
-        </Modal.Footer>
+      <Modal show={showBannerModal} centered>
+        <div className={styles.account_modal}>
+          <div className={styles.modal_header}>
+            <button className={styles.modal_close} onClick={closeModal}>
+              <AiOutlineClose />
+            </button>
+            <h4>Editar portada</h4>
+          </div>
+          <div className={styles.modal_body}>
+            <form>
+              <div className="form-group">
+                <label htmlFor="banner">Seleccionar nueva imagen:</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  id="banner"
+                  onChange={handleBannerChange}
+                />
+              </div>
+            </form>
+          </div>
+          <div className={styles.modal_footer}>
+            <Button
+              variant="primary"
+              onClick={handleSaveChanges}
+              disabled={isLoading}
+              className="primary__button-outline"
+            >
+              {isLoading ? "Guardando..." : "Guardar"}
+            </Button>
+          </div>
+        </div>
       </Modal>
       <ResponseModal
         show={showResponseModal}

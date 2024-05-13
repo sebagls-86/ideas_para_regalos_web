@@ -1,23 +1,24 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
+import styles from "./modal.module.css";
 
 function ResponseModal({ show, onHide, message, onConfirm, confirmButtonText }) {
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <button className="modal__button" onClick={onHide}>
+      <div>
+        <button className={styles.modal__button} onClick={onHide}>
           <AiOutlineClose />
         </button>
-      </Modal.Header>
-      <Modal.Body>
+      </div>
+      <div className={styles.modal__body}>
         <p>{message}</p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" onClick={onConfirm}>
+      </div>
+      <div>
+        <Button variant="primary" onClick={onConfirm} className= {`${styles.accept_btn} primary__button-outline`}>
           {confirmButtonText}
         </Button>
-      </Modal.Footer>
+      </div>
     </Modal>
   );
 }

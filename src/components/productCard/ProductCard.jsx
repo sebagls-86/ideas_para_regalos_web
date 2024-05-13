@@ -94,7 +94,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(false);
           setShowPopover(false);
-          setMessage("Se elimino el producto");
+          setMessage("Se eliminó el producto");
           setShowAlert(true);
           fetchData();
         } else {
@@ -119,7 +119,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(true);
           setShowPopover(false);
-          setMessage("Se agrego el producto de la lista");
+          setMessage("Se agregó el producto a la lista");
           setShowAlert(true);
           fetchData();
         } else {
@@ -149,11 +149,16 @@ export default function ProductCard({ image, name, userId, productId }) {
   };
 
   useEffect(() => {
-    console.log(showAlert);
-    if (showAlert && message === "") {
-      setShowAlert(false);
+    let timeout;
+    if (showAlert) {
+      timeout = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000); 
     }
-  }, [showAlert, message]);
+    return () => clearTimeout(timeout);
+  }, [showAlert]);
+  
+  
 
   return (
     <>
@@ -169,7 +174,7 @@ export default function ProductCard({ image, name, userId, productId }) {
 
       <div className={styles.productCard}>
       {showAlert && (
-          <div className={styles.saved_alert}>
+          <div className={`${styles.saved_alert} ${showAlert ? styles.show : ""}`}>
             <p>{message}</p>
           </div>
         )}

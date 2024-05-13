@@ -33,16 +33,17 @@ function MessagesLikes() {
             >
               <div className={styles.message}>
                 <div className={styles.forum_user_info}>
-                  <div>
-                    <img
-                      src={message.avatar}
-                      alt={"avatar"}
-                      width="54"
-                      height="54"
-                    />
-                  </div>
+                  <img
+                    src={message.avatar}
+                    alt={"avatar"}
+                    width="54"
+                    height="54"
+                  />
                   <p>@{message.user_owner}</p>
                 </div>
+                <div>
+                    <p>{message.name}</p>
+                  </div>
                 <div className={styles.forum_text}>
                   <p>{message.message}</p>
 

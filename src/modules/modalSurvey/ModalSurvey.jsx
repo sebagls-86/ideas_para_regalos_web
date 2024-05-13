@@ -161,13 +161,13 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
 
   const handleOptionSelect = (option) => {
     console.log("Option selected:", option);
-    setSelectedProduct(option.value);
+    setSelectedProduct(option);
     setIsOpen(false);
   };
 
-  const selectedOption = productsCatalog.find(
-    (product) => product.product_catalog_id === selectedProduct
-  );
+  // const selectedOption = productsCatalog.find(
+  //   (product) => product.product_catalog_id === selectedProduct
+  // );
 
   const style = {
     color: "#FFEBA5",
@@ -228,7 +228,8 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
               label: product.name,
             }))}
             handleOptionSelect={handleOptionSelect}
-            selectedOption={selectedOption} 
+            selectedOption={selectedProduct}
+            // selectedOption={selectedOption} 
       
           />
         </div>
