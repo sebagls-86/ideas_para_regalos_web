@@ -200,7 +200,7 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
   return (
     <Modal
       closeModal={closeModal}
-      title={"Ayudanos a mejorar"}
+      title={"Encuesta de regalo"}
       show={true}
       contentStyle={{
         height: "calc(80% - 2rem)",

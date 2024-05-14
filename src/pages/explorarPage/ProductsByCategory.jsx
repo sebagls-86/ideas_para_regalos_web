@@ -73,7 +73,7 @@ function ProductsByCategory() {
           {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
-          <PageTitle title={categoryName} />
+          <PageTitle title={categoryName}/>
           <div className={styles.card_container}>
             {loading ? (
               <p>Loading...</p>

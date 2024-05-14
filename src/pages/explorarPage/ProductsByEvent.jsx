@@ -68,7 +68,7 @@ function ProductsByEvent() {
         <div className="content">
           <PageTitle title={eventName} />
           <div className={styles.card_container}>
-            <div>
+            
               {loading ? (
                 <p>Loading...</p>
               ) : (
@@ -104,7 +104,7 @@ function ProductsByEvent() {
             )}
           </div>
         </aside>
-      </div>
+      
     </>
   );
 }
