@@ -137,13 +137,13 @@ function PostByUser() {
                 <div className={styles.content__user}>
                   <Link
                     to={`/forums/${parseInt(post.forum_id)}`}
-                    className={styles.user__username}
+                    className="user__name"
                   >
                     {post.name}
                   </Link>
                   <Link
                     to={`/perfil/${parseInt(post.user_id)}`}
-                    className={styles.user__tagname}
+                    className="user__tagname"
                   >
                     @{post.user_name}
                   </Link>

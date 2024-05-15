@@ -275,7 +275,8 @@ function HomePage() {
                 <Search onSearch={handleSearch} /> 
                 <EventSnipet />
                 <UserSuggestions userInfo={userInfo?.data} />
-                <div className="mt-5 d-flex justify-content-center ">
+           
+                <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
                     url="/nuevoRegalo"

@@ -138,18 +138,18 @@ function Post({ searchTerm }) {
             <div className={styles.post__content}>
               <div className={styles.user__container}>
                 <div className={styles.content__user}>
-                  <p className={styles.user__username}>{post.name}</p>
+                  <p className="user__name">{post.name}</p>
                   {isAuthenticated ? (
                     <Link
                       to={`/perfil/${parseInt(post.user_id)}`}
-                      className={styles.user__tagname}
+                      className="user__tagname"
                     >
                       @{post.user_name}
                     </Link>
                   ) : (
                     <Link
                       to="/"
-                      className={styles.user__tagname}
+                      className="user__tagname"
                       onClick={() => loginWithRedirect()}
                     >
                       {post.user_name}

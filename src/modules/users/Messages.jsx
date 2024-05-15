@@ -42,8 +42,8 @@ function Messages() {
                 />
                 </div>
                 <div>
-                <p className={styles.name}> {message.name}</p>
-                <p>{message.user_name}</p>
+                <p className="user__name"> {message.name}</p>
+                <p className="user__tagname">@{message.user_name}</p>
                 </div>
                 </div>
                 <div  className={styles.forum_text }>

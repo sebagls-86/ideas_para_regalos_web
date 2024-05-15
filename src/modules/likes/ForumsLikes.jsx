@@ -41,16 +41,17 @@ function ForumsLikes() {
                     width="54"
                     height="54"
                   />
-                  <p>@{forum.user_owner}</p>
+                  <div>
+                    <p className="user__name">{forum.name}</p>
+                    <p className="user__tagname">@{forum.user_owner}</p>
+                  </div>
                 </div>
-                <div>
-                  <p>{forum.name}</p>
-                </div>
+
                 <div className={styles.forum_text}>
-                  <h3>{forum.title}</h3>
+                  <p>{forum.title}</p>
                   <p>{forum.description}</p>
 
-                  <p>Fecha de creación: {forum.created_at}</p>
+                  <p className={styles.post_date}> {forum.created_at}</p>
                 </div>
               </div>
             </Link>

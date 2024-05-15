@@ -68,7 +68,9 @@ function InterestsModal({
       />
       {isLoading}
 
-      <Modal show={show} closeModal={onHide} title="Selecciona intereses">
+      <Modal show={show} closeModal={onHide} title="Seleccioná intereses">
+        <div className={styles.interest_modal} >
+        <p>Agregá más intereses a tu perfil</p>
         <div className={styles.modal_content}>
           {filteredAvailableInterests.map((interest) => (
             <Button
@@ -90,6 +92,7 @@ function InterestsModal({
             className="btn primary__button"
             onClick={handleSaveInterests}
           />
+        </div>
         </div>
       </Modal>
     </>

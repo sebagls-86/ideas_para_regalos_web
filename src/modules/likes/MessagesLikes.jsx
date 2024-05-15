@@ -39,15 +39,16 @@ function MessagesLikes() {
                     width="54"
                     height="54"
                   />
-                  <p>@{message.user_owner}</p>
-                </div>
-                <div>
-                    <p>{message.name}</p>
+                  <div>
+                    <p className="user__name">{message.name}</p>
+                    <p className="user__tagname">@{message.user_owner}</p>
                   </div>
+                </div>
+
                 <div className={styles.forum_text}>
                   <p>{message.message}</p>
 
-                  <p>Fecha de creación: {message.created_at}</p>
+                  <p className={styles.post_date}>{message.created_at}</p>
                 </div>
               </div>
             </Link>

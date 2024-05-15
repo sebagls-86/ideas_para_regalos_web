@@ -42,8 +42,8 @@ function Forums() {
                     />
                   </div>
                   <div>
-                    <p className={styles.name}> {forum.name}</p>
-                    <p> @{forum.user_name}</p>
+                    <p className="user__name"> {forum.name}</p>
+                    <p className="user__tagname"> @{forum.user_name}</p>
                   </div>
                 </div>
                 <div  className={styles.forum_text }>

@@ -503,7 +503,7 @@ function WishList() {
                   className={styles.go_back_button}
                 ></Button>{" "}
               </div>
-              <p className={styles.user__username_product}>MercadoLibre</p>
+              <p className={styles.list_name_more }>MercadoLibre</p>
               {/* Renderizar los favoritos de MercadoLibre */}
               <div className={styles.meli_cards_container}>
                 {meliFavoritesData.map((favorite, index) => (
@@ -537,29 +537,18 @@ function WishList() {
                 </Button>
               </div>
               <div className={styles.list__content}>
-                <div className={styles.user__container}>
-                  <div className={styles.content__user}>
+                <div>
+                  <div>
                     {editMode ? (
-                      <div>
+                      <div className={styles.list_edit_buttons}>
                         <input
                           type="text"
                           value={editedListName}
                           onChange={handleInputChange}
                         />
+                        <div>
                         <Button
-                          className={styles.create_new_button}
-                          onClick={() =>
-                            handleSaveEditListName(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
-                              )
-                            )
-                          }
-                        >
-                          Guardar
-                        </Button>
-                        <Button
-                          className={styles.create_new_button}
+                          className={styles.cancel_edit_button}
                           onClick={() => {
                             setEditMode(false);
                             setEditedListName(
@@ -571,9 +560,22 @@ function WishList() {
                         >
                           Cancelar
                         </Button>
+                        <Button
+                          className={styles.save_edit_button}
+                          onClick={() =>
+                            handleSaveEditListName(
+                              listData.find(
+                                (list) => list.list_id === selectedListId
+                              )
+                            )
+                          }
+                        >
+                          Guardar
+                        </Button>
+                        </div>
                       </div>
                     ) : (
-                      <p className={styles.user__username_product}>
+                      <p className={styles.list_name_more }>
                         {
                           listData.find(
                             (list) => list.list_id === selectedListId
@@ -696,9 +698,9 @@ function WishList() {
                   style={{ backgroundColor: listColors[list.list_id] }}
                 >
                   <div className={styles.list__content}>
-                    <div className={styles.user__container}>
-                      <div className={styles.content__user}>
-                        <p className={styles.user__username}>
+                    <div>
+                      <div>
+                        <p className={styles.list_name}>
                           {list.list_name}
                         </p>
                       </div>

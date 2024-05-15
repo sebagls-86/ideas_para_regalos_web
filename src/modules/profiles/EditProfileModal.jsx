@@ -3,6 +3,7 @@ import Button from "../../components/button/Button";
 import Modal from "../../components/modal/Modal";
 import styles from "./css/profiles.module.css";
 import { Col } from "react-bootstrap";
+import SelectButton from "../../components/selectButton/SelectButton";
 
 function EditProfileModal({
   show,
@@ -14,6 +15,12 @@ function EditProfileModal({
   handleSaveChanges,
 }) {
   const [isGuardarDisabled, setIsGuardarDisabled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedRelationship, setSelectedRelationship] = useState("");
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     if (selectedProfile) {
@@ -28,6 +35,12 @@ function EditProfileModal({
     }
   }, [selectedProfile]);
 
+  const handleRelationshipSelect = (option) => {
+    console.log("Option selected:", option);
+    setSelectedRelationship(option);
+    setIsOpen(false);
+  };
+
   return (
     <Modal
       show={show}
@@ -37,57 +50,56 @@ function EditProfileModal({
     >
       <Col>
         <div className={styles.buttons__container}>
-          <form>
-            <div className={`${styles.form__floating} form-floating`}>
-              <label>Nombre:</label>
-              <input
-                type="text"
-                className={`${styles.form__control} form-control`}
-                value={selectedProfile?.name || ""}
-                onChange={(e) =>
-                  setSelectedProfile({
-                    ...selectedProfile,
-                    name: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className={`${styles.form__floating} form-floating`}>
-              <label>Apellido:</label>
-              <input
-                type="text"
-                className={`${styles.form__control} form-control`}
-                value={selectedProfile?.last_name || ""}
-                onChange={(e) =>
-                  setSelectedProfile({
-                    ...selectedProfile,
-                    last_name: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className={`${styles.form__floating} form-floating`}>
-              <label className={styles.input__label}>Rango de edad</label>
-              <select
-                className={`${styles.form__control} form-control`}
-                value={selectedProfile?.age_range || ""}
-                onChange={(e) =>
-                  setSelectedProfile({
-                    ...selectedProfile,
-                    age_range: e.target.value,
-                  })
-                }
-              >
-                {ageRanges.map((ageRange) => (
-                  <option key={ageRange.age_range_id} value={ageRange.name}>
-                    {ageRange.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={`${styles.form__floating} form-floating`}>
-              <label>Relación:</label>
-              <select
+          <div className={`${styles.form__floating} form-floating`}>
+            <label>Nombre:</label>
+            <input
+              type="text"
+              className={`${styles.form__control} form-control`}
+              value={selectedProfile?.name || ""}
+              onChange={(e) =>
+                setSelectedProfile({
+                  ...selectedProfile,
+                  name: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className={`${styles.form__floating} form-floating`}>
+            <label>Apellido:</label>
+            <input
+              type="text"
+              className={`${styles.form__control} form-control`}
+              value={selectedProfile?.last_name || ""}
+              onChange={(e) =>
+                setSelectedProfile({
+                  ...selectedProfile,
+                  last_name: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className={`${styles.form__floating} form-floating`}>
+            <label className={styles.input__label}>Rango de edad</label>
+            <select
+              className={`${styles.form__control} form-control`}
+              value={selectedProfile?.age_range || ""}
+              onChange={(e) =>
+                setSelectedProfile({
+                  ...selectedProfile,
+                  age_range: e.target.value,
+                })
+              }
+            >
+              {ageRanges.map((ageRange) => (
+                <option key={ageRange.age_range_id} value={ageRange.name}>
+                  {ageRange.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={`${styles.form__floating} form-floating`}>
+            <label>Relación:</label>
+            {/* <select
                 className={`${styles.form__control} form-control`}
                 value={selectedProfile?.relationship || ""}
                 onChange={(e) =>
@@ -105,9 +117,20 @@ function EditProfileModal({
                     {relationship.relationship_name}
                   </option>
                 ))}
-              </select>
-            </div>
-          </form>
+              </select> */}
+            <SelectButton
+              label={selectedProfile?.relationship || ""}
+              isOpen={isOpen}
+              toggleDropdown={toggleDropdown}
+              options={relationships.map((relationship) => ({
+                value: relationship.relationship_id,
+                label: relationship.relationship_name,
+              }))}
+              handleOptionSelect={handleRelationshipSelect}
+              selectedOption={selectedRelationship}
+            />
+          </div>
+
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button
               label="Guardar"

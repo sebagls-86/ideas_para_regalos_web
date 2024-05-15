@@ -418,6 +418,24 @@ function ForumsPage() {
     }));
   };
 
+  const formatDate = (date) => {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return new Date(date).toLocaleDateString("es-ES", options);
+  };
+
+  const calculateTimeDifference = (created_at) => {
+    const createdDate = new Date(created_at);
+    const currentDate = new Date();
+    const timeDifference = (currentDate - createdDate) / (1000 * 60 * 60); // Diferencia en horas
+
+    if (timeDifference < 24) {
+      const hours = Math.round(timeDifference);
+      return `Creado hace ${hours} hora${hours !== 1 ? "s" : ""}`;
+    } else {
+      return `Fecha de creación: ${formatDate(created_at)}`;
+    }
+  };
+
   return (
     <>
       <ResponseModal
@@ -505,7 +523,7 @@ function ForumsPage() {
                     {forumData.data.description}
                   </p>
                   <div className={styles.forum_date}>
-                    {forumData.data.created_at}
+                    <p>{calculateTimeDifference(forumData.data.created_at)}</p>
                   </div>
 
                   <div
@@ -532,7 +550,9 @@ function ForumsPage() {
                           forumLikesData.data.some(
                             (like) => like.forum_id === forumData.data.forum_id
                           ) &&
-                          styles.liked
+                          forumData.data.likes > 0
+                            ? styles.liked
+                            : ""
                         }`}
                       >
                         {forumData.data.likes}
@@ -655,7 +675,9 @@ function ForumsPage() {
                                 ))}
                               </div>
                             )}
-                          <p className={styles.forum_date}>{message.date}</p>
+                          <p className={styles.forum_date}>
+                            {calculateTimeDifference(message.date)}
+                          </p>
                           <div className={styles.actions__content}>
                             <div
                               onClick={() =>
@@ -680,7 +702,7 @@ function ForumsPage() {
                                   messageLikesData.data &&
                                   messageLikesData.data.some(
                                     (like) =>
-                                      like.forum_id === forumData.data.forum_id
+                                      like.message_id === message.message_id
                                   ) &&
                                   styles.liked
                                 }`}
@@ -754,8 +776,7 @@ function ForumsPage() {
                                     className={styles.remove_img_btn}
                                     onClick={() => handleDeleteImage(index)} // Función para eliminar la imagen asociada
                                   >
-                                    <IoClose/>
-
+                                    <IoClose />
                                   </Button>
                                 </div>
                               ))}
@@ -837,7 +858,7 @@ function ForumsPage() {
               <div>
                 <EventSnipet />
                 <UserSuggestions />
-                <div className="mt-5 d-flex justify-content-center ">
+                <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
                     url="/nuevoRegalo"
