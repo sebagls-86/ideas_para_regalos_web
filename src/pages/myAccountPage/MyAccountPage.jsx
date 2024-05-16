@@ -270,6 +270,8 @@ function MyAccountPage({ userInfo }) {
                 src={userData.banner}
                 alt="banner"
                 className={styles.perfil_banner}
+                width={"60px"}
+                height={"250px"}
                 onClick={
                   userId === user__id ? handleBannerModalOpen : undefined
                 }
