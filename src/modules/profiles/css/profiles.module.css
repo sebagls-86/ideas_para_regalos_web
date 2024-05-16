@@ -317,16 +317,23 @@
 
 .form__floating {
   font-size: var(--fz-14);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .form__floating input {
-  margin-top: 5px;
+  font-size: 17px;
+    color: #525558;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px;
+    border-radius: 5px;
+    border: 0.4px solid #000;
+    background: var(--white);
 }
 
-.input__label {
-  color: #525558;
-}
 
 .icon_style {
   cursor: pointer;
@@ -403,7 +410,6 @@
 .buttons__container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
     padding-bottom: 2.125rem;
 }
 
@@ -457,9 +463,7 @@ border: 0.5px solid var(--Neutral-0, #525558);
   }
 
 @media only screen and (min-width: 768px) {
-    .buttons__container {
-        padding-top: 1.31rem;
-    }
+  
 
     .hr_container {
         padding-top: 1.81rem;
@@ -478,9 +482,6 @@ border: 0.5px solid var(--Neutral-0, #525558);
   .profiles__images img {
     width: 100%;
   }
-  .buttons-container {
-    padding-top: 1.31rem;
-}
 
 .registro-container {
     margin-top: 1.25rem;

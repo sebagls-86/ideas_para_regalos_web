@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Spinner, Modal, Button } from "react-bootstrap";
+import { Spinner, Button } from "react-bootstrap";
 import Nav from "../../modules/nav/Nav";
 import { Col } from "react-bootstrap";
 import PageTitle from "../../components/pageTitle/PageTitle";
@@ -12,6 +12,7 @@ import Links from "../../components/link/Links";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AiOutlineClose } from "react-icons/ai";
+import Modal from "../../components/modal/Modal";
 
 function MyAccountPage({ userInfo }) {
   const navigate = useNavigate();
@@ -196,7 +197,7 @@ function MyAccountPage({ userInfo }) {
         setShowImageModal(false);
         setShowModal(false);
         setShowResponseModal(true);
-        closeModal(); 
+        closeModal();
       } else {
         setErrorMessage("Error al guardar los cambios");
         setShowImageModal(false);
@@ -269,8 +270,6 @@ function MyAccountPage({ userInfo }) {
                 src={userData.banner}
                 alt="banner"
                 className={styles.perfil_banner}
-                width={"60px"}
-                height={"250px"}
                 onClick={
                   userId === user__id ? handleBannerModalOpen : undefined
                 }
@@ -345,132 +344,130 @@ function MyAccountPage({ userInfo }) {
           </aside>
         </div>
       )}
-      <Modal show={showModal} centered>
-      <div className={`${styles.account_modal} ${styles.edit_profile}`}>
-          <div className={styles.modal_header}>
-            <button className={styles.modal_close} onClick={closeModal}>
-              <AiOutlineClose />
-            </button>
-            <h4>Editar perfil</h4>
+
+      <Modal
+        closeModal={closeModal}
+        title={"Editar mi perfil"}
+        show={showModal}
+        contentStyle={{
+          height: "calc(80% - 2rem)",
+          marginTop: "5rem",
+        }}
+      >
+        <form>
+          <div className={styles.modal_edit_profile}>
+            <div className="form-group">
+              <label htmlFor="name">Nombre</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                value={formChanges.name || userData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="lastName">Apellido</label>
+              <input
+                type="text"
+                className="form-control"
+                id="lastName"
+                value={formChanges.last_name || userData.last_name}
+                onChange={(e) => handleInputChange("last_name", e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="userName">Nombre de usuario</label>
+              <input
+                type="text"
+                className="form-control"
+                id="userName"
+                value={formChanges.user_name || userData.user_name}
+                onChange={(e) => handleInputChange("user_name", e.target.value)}
+              />
+            </div>
           </div>
-          <div className={styles.modal_body}>
-            <form>
-              <div className="form-group">
-                <label htmlFor="name">Nombre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  value={formChanges.name || userData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="lastName">Apellido</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="lastName"
-                  value={formChanges.last_name || userData.last_name}
-                  onChange={(e) =>
-                    handleInputChange("last_name", e.target.value)
-                  }
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="userName">Nombre de usuario</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="userName"
-                  value={formChanges.user_name || userData.user_name}
-                  onChange={(e) =>
-                    handleInputChange("user_name", e.target.value)
-                  }
-                />
-              </div>
-            </form>
-          </div>
-          <div className={styles.modal_footer}>
-           
-            <Button
-              variant="primary"
-              onClick={handleSaveChanges}
-              disabled={isLoading}
-              className="primary__button-outline"
-            >
-              {isLoading ? "Guardando..." : "Guardar"}
-            </Button>
-          </div>
+        </form>
+
+        <div className={styles.modal_footer}>
+          <Button
+            variant="primary"
+            onClick={handleSaveChanges}
+            disabled={isLoading}
+            className="primary__button-outline"
+          >
+            {isLoading ? "Guardando..." : "Guardar"}
+          </Button>
         </div>
       </Modal>
-      <Modal show={showImageModal} centered>
-        <div className={styles.account_modal}>
-          <div className={styles.modal_header}>
-            <button className={styles.modal_close} onClick={closeModal}>
-              <AiOutlineClose />
-            </button>
-            <h4>Editar foto de perfil</h4>
-          </div>
-          <div className={styles.modal_body}>
-            <form>
-              <div className="form-group">
-                <label htmlFor="avatar">Seleccionar nueva imagen:</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="form-control"
-                  id="avatar"
-                  onChange={handleAvatarChange}
-                />
-              </div>
-            </form>
-          </div>
-          <div className={styles.modal_footer}>
-          
-            <Button
-              variant="primary"
-              onClick={handleSaveChanges}
-              disabled={isLoading}
-              className="primary__button-outline "
-            >
-              {isLoading ? "Guardando..." : "Guardar"}
-            </Button>
-          </div>
+
+      <Modal
+        closeModal={closeModal}
+        title={"Editar foto de perfil"}
+        show={showImageModal}
+        contentStyle={{
+          height: "calc(45% - 2rem)",
+          marginTop: "5rem",
+        }}
+      >
+        <div className={styles.modal_body}>
+          <form>
+            <div className="form-group">
+              <label htmlFor="avatar">Seleccionar nueva imagen:</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control"
+                id="avatar"
+                onChange={handleAvatarChange}
+              />
+            </div>
+          </form>
+        </div>
+        <div className={styles.modal_footer}>
+          <Button
+            variant="primary"
+            onClick={handleSaveChanges}
+            disabled={isLoading}
+            className="primary__button-outline "
+          >
+            {isLoading ? "Guardando..." : "Guardar"}
+          </Button>
         </div>
       </Modal>
-      <Modal show={showBannerModal} centered>
-        <div className={styles.account_modal}>
-          <div className={styles.modal_header}>
-            <button className={styles.modal_close} onClick={closeModal}>
-              <AiOutlineClose />
-            </button>
-            <h4>Editar portada</h4>
-          </div>
-          <div className={styles.modal_body}>
-            <form>
-              <div className="form-group">
-                <label htmlFor="banner">Seleccionar nueva imagen:</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="form-control"
-                  id="banner"
-                  onChange={handleBannerChange}
-                />
-              </div>
-            </form>
-          </div>
-          <div className={styles.modal_footer}>
-            <Button
-              variant="primary"
-              onClick={handleSaveChanges}
-              disabled={isLoading}
-              className="primary__button-outline"
-            >
-              {isLoading ? "Guardando..." : "Guardar"}
-            </Button>
-          </div>
+
+      <Modal
+        closeModal={closeModal}
+        title={"Editar portada"}
+        show={showBannerModal}
+        contentStyle={{
+          height: "calc(45% - 2rem)",
+          marginTop: "5rem",
+        }}
+      >
+        <div className={styles.modal_body}>
+          <form>
+            <div className="form-group">
+              <label htmlFor="banner">Seleccionar nueva imagen:</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control"
+                id="banner"
+                onChange={handleBannerChange}
+              />
+            </div>
+          </form>
+        </div>
+        <div className={styles.modal_footer}>
+          <Button
+            variant="primary"
+            onClick={handleSaveChanges}
+            disabled={isLoading}
+            className="primary__button-outline"
+          >
+            {isLoading ? "Guardando..." : "Guardar"}
+          </Button>
         </div>
       </Modal>
       <ResponseModal

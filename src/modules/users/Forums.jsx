@@ -50,7 +50,7 @@ function Forums() {
                   <p>{forum.title}</p>
                   <p>{forum.description}</p>
 
-                  <p>Fecha de creación: {forum.created_at}</p>
+                  <p>Creado el: {forum.created_at}</p>
                 </div>
               </div>
             </Link>

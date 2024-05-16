@@ -265,9 +265,9 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
         </div>
         <div>
           {" "}
-          <a className={styles.no_response} onClick={handleNoResponse}>
+          <button className={styles.no_response} onClick={handleNoResponse}>
             Prefiero no contestar
-          </a>
+          </button>
         </div>
       </div>
     </Modal>

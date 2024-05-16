@@ -48,7 +48,7 @@ function Messages() {
                 </div>
                 <div  className={styles.forum_text }>
                 <p>{message.message}</p>
-                <p>Fecha de creación: {message.created_at}</p>
+                <p>Creado el: {message.created_at}</p>
                 </div>
               </div>
             </Link>

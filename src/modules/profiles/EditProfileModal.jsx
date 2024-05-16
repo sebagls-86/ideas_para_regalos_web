@@ -16,11 +16,11 @@ function EditProfileModal({
 }) {
   const [isGuardarDisabled, setIsGuardarDisabled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedAgeRange, setSelectedAgeRange] = useState("");
   const [selectedRelationship, setSelectedRelationship] = useState("");
+  const [isOpenAgeRange, setIsOpenAgeRange] = useState(false); // Estado para controlar la visibilidad del selector de rango de edad
+  const [isOpenRelationship, setIsOpenRelationship] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
 
   useEffect(() => {
     if (selectedProfile) {
@@ -35,23 +35,39 @@ function EditProfileModal({
     }
   }, [selectedProfile]);
 
+  const handleAgeRangeSelect= (option) => {
+    console.log("Option selected:", option);
+    setSelectedAgeRange(option);
+    setIsOpenAgeRange(false);
+  };
+
   const handleRelationshipSelect = (option) => {
     console.log("Option selected:", option);
     setSelectedRelationship(option);
-    setIsOpen(false);
+    setIsOpenRelationship(false);
   };
+
+  const toggleAgeRangeDropdown = () => {
+    setIsOpenAgeRange(!isOpenAgeRange);
+  };
+  
+  const toggleRelationshipDropdown = () => {
+    setIsOpenRelationship(!isOpenRelationship);
+  };
+
 
   return (
     <Modal
       show={show}
       closeModal={onHide}
       title="Editar perfil"
-      contentStyle={{ height: "calc(80% - 2rem)", maxHeight: "781px" }}
+      contentStyle={{ height: "calc(90% - 2rem)", maxHeight: "781px" }}
     >
       <Col>
         <div className={styles.buttons__container}>
-          <div className={`${styles.form__floating} form-floating`}>
-            <label>Nombre:</label>
+
+        <label>Nombre</label>
+          <div className={`${styles.form__floating} `}>
             <input
               type="text"
               className={`${styles.form__control} form-control`}
@@ -64,8 +80,9 @@ function EditProfileModal({
               }
             />
           </div>
-          <div className={`${styles.form__floating} form-floating`}>
-            <label>Apellido:</label>
+
+          <label>Apellido</label>
+          <div className={`${styles.form__floating}`}>
             <input
               type="text"
               className={`${styles.form__control} form-control`}
@@ -78,8 +95,10 @@ function EditProfileModal({
               }
             />
           </div>
+          <label className={styles.input__label}>Rango de edad</label>
           <div className={`${styles.form__floating} form-floating`}>
-            <label className={styles.input__label}>Rango de edad</label>
+      
+             {/* 
             <select
               className={`${styles.form__control} form-control`}
               value={selectedProfile?.age_range || ""}
@@ -95,10 +114,24 @@ function EditProfileModal({
                   {ageRange.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <SelectButton
+              label={selectedProfile?.age_range || ""}
+              isOpen={isOpenAgeRange}
+              toggleDropdown={toggleAgeRangeDropdown}
+              options={ageRanges.map((ageRange) => ({
+                value: ageRange.age_range_id,
+                label: ageRange.name,
+              }))}
+              handleOptionSelect={handleAgeRangeSelect}
+              selectedOption={selectedAgeRange}
+            />
+         
           </div>
+
+          <label>Relación</label>
           <div className={`${styles.form__floating} form-floating`}>
-            <label>Relación:</label>
+           
             {/* <select
                 className={`${styles.form__control} form-control`}
                 value={selectedProfile?.relationship || ""}
@@ -120,8 +153,8 @@ function EditProfileModal({
               </select> */}
             <SelectButton
               label={selectedProfile?.relationship || ""}
-              isOpen={isOpen}
-              toggleDropdown={toggleDropdown}
+              isOpen={isOpenRelationship}
+              toggleDropdown={toggleRelationshipDropdown}
               options={relationships.map((relationship) => ({
                 value: relationship.relationship_id,
                 label: relationship.relationship_name,

@@ -432,7 +432,7 @@ function ForumsPage() {
       const hours = Math.round(timeDifference);
       return `Creado hace ${hours} hora${hours !== 1 ? "s" : ""}`;
     } else {
-      return `Fecha de creación: ${formatDate(created_at)}`;
+      return `Creado el: ${formatDate(created_at)}`;
     }
   };
 

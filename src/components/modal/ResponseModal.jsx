@@ -5,7 +5,7 @@ import styles from "./modal.module.css";
 
 function ResponseModal({ show, onHide, message, onConfirm, confirmButtonText }) {
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} >
       <div>
         <button className={styles.modal__button} onClick={onHide}>
           <AiOutlineClose />
