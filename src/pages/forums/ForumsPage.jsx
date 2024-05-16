@@ -22,6 +22,7 @@ import { FaHeart } from "react-icons/fa6";
 import CommentIcon from "../../assets/comment-icon.svg";
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import { AiOutlineClose } from "react-icons/ai";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -49,6 +50,7 @@ function ForumsPage() {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   const userId =
     (localStorage.getItem("userInfo") && userInfo.data.user_id) || null;
 
@@ -436,6 +438,19 @@ function ForumsPage() {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setShowModal(false);
+  };
+
   return (
     <>
       <ResponseModal
@@ -665,6 +680,7 @@ function ForumsPage() {
                                   <div
                                     className={styles.message_img_wrapper}
                                     key={index}
+                                    onClick={() => handleImageClick(img.image)}
                                   >
                                     <img
                                       className={styles.message_img}
@@ -675,6 +691,7 @@ function ForumsPage() {
                                 ))}
                               </div>
                             )}
+
                           <p className={styles.forum_date}>
                             {calculateTimeDifference(message.date)}
                           </p>
@@ -848,6 +865,22 @@ function ForumsPage() {
                 </ul>
               )}
             </>
+          )}
+          {/* Modal for expanding images */}
+          {showModal && (
+            <div className={styles.modal_overlay}>
+              <div>
+                <div className={styles.close_button} onClick={closeModal}>
+                  <AiOutlineClose />
+                </div>
+
+                <img
+                  src={selectedImage}
+                  alt="Expanded"
+                  className={styles.modal_expand_img}
+                />
+              </div>
+            </div>
           )}
         </div>
         <aside className="right__aside">
