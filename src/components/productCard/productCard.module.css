@@ -1,7 +1,8 @@
-
 .productCard h3 {
   font-size: 1.313rem;
   padding-top: 0 !important;
+  position: absolute;
+  top: 0;
 }
 
 .productCard {
@@ -14,20 +15,26 @@
   margin-right: 20px;
   display: flex;
   flex-direction: row;
-  
 }
 
 .plus::before {
   content: "+";
+  color: var(--primary-dark);
+ 
 }
 
 .minus::before {
-  content: "-";
+  content: "−";
+  color: var(--primary-dark);
+  width: 20px; 
+  display: inline-block;
+  text-align: center; 
+
 }
 
 .productImage {
   width: 100%;
-  max-height: 17.375rem;
+  max-height: 18.375rem;
   border-bottom: 0.3px solid #000;
   z-index: 1;
   border-top-left-radius: 10px;
@@ -36,7 +43,7 @@
 .saveButton {
   position: absolute;
   right: 10px;
-  bottom: 125px;
+  bottom: 95px;
   border-radius: 25px;
   background: url(/src/assets/bookmark.svg) center no-repeat;
   background-color: rgba(217, 217, 217, 0.5);
@@ -60,25 +67,25 @@
 
 .closeButton {
   cursor: pointer;
-  margin: 10px
+  margin: 10px;
 }
 
 .popover {
   position: absolute;
-  top: 6rem; /* Posición inicial, ajustar según sea necesario */
+  top: 8.3rem; /* Posición inicial, ajustar según sea necesario */
   transform: translateX(-50%);
   background-color: white; /* Fondo blanco */
   border-radius: 5px;
   width: 100%;
   height: auto; /* Altura ajustada al contenido */
-  max-width: 143px; /* Ancho máximo para evitar que se extienda demasiado */
+  max-width: 170px; /* Ancho máximo para evitar que se extienda demasiado */
   z-index: 9999 !important;
-  left: 90%;
+  left: 92%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .popover::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -15px;
   left: 50%;
@@ -86,7 +93,6 @@
   border-width: 20px 20px 0;
   border-style: solid;
   border-color: #ffff transparent transparent;
-  
 }
 .popoverContent {
   max-height: 200px; /* Altura máxima del contenido, añade desplazamiento si es necesario */
@@ -105,21 +111,31 @@
 }
 
 .popover li:hover {
-  background-color: var(--gray); /* Cambia el color de fondo al pasar el ratón */
+  background-color: var(
+    --gray
+  ); /* Cambia el color de fondo al pasar el ratón */
 }
 .saved_alert {
-background-color: white;
+  background-color: white;
   display: flex;
   padding: 7px 1rem;
- padding-right: 10px;
+  padding-right: 10px;
   justify-content: space-between;
   width: 100%;
   position: absolute;
-  bottom: 117px;
+  bottom: -50px; 
   left: 0;
   z-index: 999;
   color: var(--primary-dark);
   align-items: center;
+  height: 0px;
+  opacity: 0;
+  transition: bottom 1s ease-in-out, opacity 1s ease-in-out;
+}
+.saved_alert.show {
+  height: 50px;
+  opacity: 1;
+  bottom: 85px;
 }
 .saveButton_alert {
   position: static !important;
@@ -130,17 +146,20 @@ background-color: white;
 ul li:last-child{
   margin-bottom: 4.4px;
 }*/
-.wishlist{
+.wishlist {
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 3px 10px;
 }
 .dot {
-  height: 12px;
-  width: 12px;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
-  display: inline-block;
+  position: relative;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
 }
 @media (max-width: 768px) {
 }

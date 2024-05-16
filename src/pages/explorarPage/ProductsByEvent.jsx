@@ -68,7 +68,7 @@ function ProductsByEvent() {
         <div className="content">
           <PageTitle title={eventName} />
           <div className={styles.card_container}>
-            <div>
+            
               {loading ? (
                 <p>Loading...</p>
               ) : (
@@ -93,7 +93,7 @@ function ProductsByEvent() {
               <div>
                 <EventSnipet />
                 <UserSuggestions />
-                <div className="mt-5 d-flex justify-content-center ">
+                <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
                     url="/nuevoRegalo"
@@ -104,7 +104,7 @@ function ProductsByEvent() {
             )}
           </div>
         </aside>
-      </div>
+      
     </>
   );
 }

@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../../components/modal/Modal";
 import Button from "../../components/button/Button";
 import styles from "./modalSurvey.module.css";
-import {fetchProductsCatalog} from "../api/api";
-import Rating from '@mui/material/Rating';
+import { fetchProductsCatalog } from "../api/api";
+import Rating from "@mui/material/Rating";
+import SelectButton from "../../components/selectButton/SelectButton";
 
 const ModalRegister = ({ closeModal, forumInfo }) => {
   const userInfo =
@@ -13,13 +14,14 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
   const token = localStorage.getItem("token");
   const [productsCatalog, setProductsCatalog] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
-    const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(0);
   const [ratingLegend, setRatingLegend] = useState("");
   const [lastSelected, setLastSelected] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   const API_URL = process.env.REACT_APP_API_URL;
 
-  
   useEffect(() => {
     const fetchProductsCatalogData = async () => {
       try {
@@ -91,24 +93,27 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
 
   const handleSend = async () => {
     try {
-
       if (!selectedProduct) {
-        setErrorMessage("Por favor selecciona un producto antes de enviar la encuesta.");
-        return
+        setErrorMessage(
+          "Por favor seleccioná un producto antes de enviar la encuesta."
+        );
+        return;
       }
-  
+
       if (rating === 0 || rating === null) {
-        setErrorMessage("Por favor selecciona una calificación antes de enviar la encuesta.");
-        return
+        setErrorMessage(
+          "Por favor calificá el producto antes de enviar la encuesta."
+        );
+        return;
       }
 
       const productCatalogId = parseInt(selectedProduct);
 
       const requestBody = {
         product_catalog_id: productCatalogId,
-        gift_rate: rating
+        gift_rate: rating,
       };
-      
+
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
       if (!userInfo || !userInfo.data || !userInfo.data.user_id) {
@@ -150,9 +155,23 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
     }
   };
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (option) => {
+    console.log("Option selected:", option);
+    setSelectedProduct(option);
+    setIsOpen(false);
+  };
+
+  // const selectedOption = productsCatalog.find(
+  //   (product) => product.product_catalog_id === selectedProduct
+  // );
+
   const style = {
-    color: "#f8d64e",
-    };
+    color: "#FFEBA5",
+  };
 
   const updateRatingLegend = (newValue) => {
     switch (newValue) {
@@ -173,69 +192,83 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
         break;
       default:
         setRatingLegend("");
-        setLastSelected(lastSelected)
+        setLastSelected(lastSelected);
         break;
     }
   };
 
-
   return (
     <Modal
       closeModal={closeModal}
-      title={"Encuesta de Regalo"}
+      title={"Encuesta de regalo"}
       show={true}
       contentStyle={{
-        height: "calc(70% - 2rem)",
-        maxHeight: "500px",
-        marginTop: "7rem",
+        height: "calc(80% - 2rem)",
+        marginTop: "5rem",
       }}
     >
-    <div>{errorMessage}</div>
-      <div>
-        Hola {userInfo.name}! Recientemente se cerro tu foro {forumInfo.title}.
-        Nos podrias contar que regalaste?
-      </div>
-      <div>
-      <select
-          value={selectedProduct}
-          onChange={(e) => setSelectedProduct(e.target.value)}
-        >
-          <option value="">Selecciona un producto</option>
-          {productsCatalog.map((product) => (
-            <option key={product.product_catalog_id} value={product.product_catalog_id}>
-              {product.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        Cuanto crees que le gusto el regalo a la persona que lo recibio?
-      </div>
-      <Rating
-        name="rating"
-        value={rating}
-        onChange={handleRatingChange}
-        onChangeActive={handleRatingHover}
-        precision={1}
-        style={style}
-      />
-     <div>{ratingLegend !== "" ? ratingLegend : lastSelected}</div>
-      <div className={styles.buttons__container}>
-        <Button
-          label={"Recordar luego"}
-          onClick={handleRemindLater}
-          className="btn primary__button"
-        />
-        <Button
-          label={"No contestar"}
-          onClick={handleNoResponse}
-          className="btn primary__button"
-        />
-        <Button
-          label={"Enviar"}
-          onClick={handleSend}
-          className="btn primary__button"
-        />
+      <div className={styles.modal_body}>
+        <div className={styles.error_message}>{errorMessage}</div>
+        <div>
+          ¡Hola {userInfo.name}! Recientemente se cerró tu foro{" "}
+          <strong>{forumInfo.title}</strong>.
+          <br />
+          Nos encantaría conocer más sobre el regalo que diste.
+          <br />
+          ¿Cuál fue tu regalo?
+        </div>
+
+        <div>
+          <SelectButton
+            label="Seleccioná un producto"
+            isOpen={isOpen}
+            toggleDropdown={toggleDropdown}
+            options={productsCatalog.map((product) => ({
+              value: product.product_catalog_id,
+              label: product.name,
+            }))}
+            handleOptionSelect={handleOptionSelect}
+            selectedOption={selectedProduct}
+            // selectedOption={selectedOption} 
+      
+          />
+        </div>
+        <div>¿Qué tan satisfecho crees que estaba al recibir el regalo?</div>
+        <div>
+          <div>
+            <Rating
+              name="rating"
+              value={rating}
+              onChange={handleRatingChange}
+              onChangeActive={handleRatingHover}
+              precision={1}
+              style={style}
+              className={styles.rating_stars}
+            />
+          </div>
+          <div className={styles.rating_comment}>
+            {ratingLegend !== "" ? ratingLegend : lastSelected}
+          </div>
+        </div>
+        <div className={styles.buttons__container}>
+          <Button
+            label={"Recordar luego"}
+            onClick={handleRemindLater}
+            className="btn primary__button-outline"
+          />
+
+          <Button
+            label={"Enviar"}
+            onClick={handleSend}
+            className="btn primary__button-outline"
+          />
+        </div>
+        <div>
+          {" "}
+          <button className={styles.no_response} onClick={handleNoResponse}>
+            Prefiero no contestar
+          </button>
+        </div>
       </div>
     </Modal>
   );

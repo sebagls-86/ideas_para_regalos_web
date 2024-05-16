@@ -21,6 +21,24 @@ function ForumsLikes() {
       .catch((error) => console.error("Error fetching forums:", error));
   }, [userId]);
 
+  const formatDate = (date) => {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return new Date(date).toLocaleDateString("es-ES", options);
+  };
+
+  const calculateTimeDifference = (created_at) => {
+    const createdDate = new Date(created_at);
+    const currentDate = new Date();
+    const timeDifference = (currentDate - createdDate) / (1000 * 60 * 60); // Diferencia en horas
+
+    if (timeDifference < 24) {
+      const hours = Math.round(timeDifference);
+      return `Creado hace ${hours} hora${hours !== 1 ? "s" : ""}`;
+    } else {
+      return `Creado el: ${formatDate(created_at)}`;
+    }
+  };
+
   return (
     <div>
       <div className={styles.forumsContainer}>
@@ -41,16 +59,17 @@ function ForumsLikes() {
                     width="54"
                     height="54"
                   />
-               
-                <div>
-                  <p>@{forum.user_owner}</p>
+                  <div>
+                    <p className="user__name">{forum.name}</p>
+                    <p className="user__tagname">@{forum.user_owner}</p>
+                  </div>
                 </div>
-                </div>
-                <div  className={styles.forum_text }>
-                <h3>{forum.title}</h3>
-                <p>{forum.description}</p>
 
-                <p>Fecha de creación: {forum.created_at}</p>
+                <div className={styles.forum_text}>
+                  <p>{forum.title}</p>
+                  <p>{forum.description}</p>
+
+                  <p className={styles.post_date}>{calculateTimeDifference(forum.created_at)}</p>
                 </div>
               </div>
             </Link>

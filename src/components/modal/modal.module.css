@@ -98,4 +98,9 @@
     font-size: clamp(2rem, 10vw, 2.625rem);
     margin-top: 10px;
 }
+.accept_btn{
+  width: fit-content;
+  padding: 1rem 2rem;
+  margin: 1rem auto;
+}
 

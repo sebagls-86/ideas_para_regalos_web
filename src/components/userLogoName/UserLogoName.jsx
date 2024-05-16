@@ -7,8 +7,8 @@ function UserLogoName({name, userName, logo, to}) {
     <Link to={to} className={styles.container}>
         <img src={logo} alt={name} className={styles.image} width='54' height='54'/>
         <div>
-        <p className={styles.text}>{name}</p>
-        <p>@{userName}</p>
+        <p className="user__name">{name}</p>
+        <p className="user__tagname">@{userName}</p>
         </div>
        
     </Link>

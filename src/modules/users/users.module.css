@@ -65,6 +65,9 @@
 .forum_text{
   margin-left: 4.3rem;
 }
-.name{
-  font-weight: 700;
+
+.post_date{
+  font-size: var(--fz-12);
+  opacity: 60%;
+  margin-top: .5rem;
 }

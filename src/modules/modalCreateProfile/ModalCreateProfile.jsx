@@ -211,7 +211,8 @@ function ModalCreateProfile({
       case 1:
         return (
           <>
-            <Input
+          <div><p>Por favor, completá los datos de tu persona para que otros puedan ofrecer la mejor recomendación posible.</p></div>
+            <input
               type="text"
               name="name"
               placeholder="Nombre"
@@ -219,8 +220,9 @@ function ModalCreateProfile({
               label="Nombre"
               value={form.name}
               onChange={handleChange}
+              className={styles.input_modal}
             />
-            <Input
+            <input
               type="text"
               name="lastName"
               placeholder="Apellido"
@@ -228,6 +230,7 @@ function ModalCreateProfile({
               label="Apellido"
               value={form.lastName}
               onChange={handleChange}
+              className={styles.input_modal}
             />
               <SelectButton
               label="Edad"
@@ -299,6 +302,10 @@ function ModalCreateProfile({
       closeModal={handleClose}
       title={getTitleForStep()}
       show={show}
+      contentStyle={{
+        height: "calc(95% - 2rem)",
+        marginTop: "2rem",
+      }}
     >
       <Col>
         <div className={styles.buttons__container}>
@@ -307,7 +314,7 @@ function ModalCreateProfile({
             <Button
               label="Siguiente"
               disabled={isGuardarDisabled}
-              className="btn primary__button"
+              className={`${styles.next_btn} btn primary__button`}
               onClick={handleNextStep}
             />
           )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Spinner, Modal, Button } from "react-bootstrap";
+import { Spinner, Button } from "react-bootstrap";
 import Nav from "../../modules/nav/Nav";
 import { Col } from "react-bootstrap";
 import PageTitle from "../../components/pageTitle/PageTitle";
@@ -11,6 +11,8 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AiOutlineClose } from "react-icons/ai";
+import Modal from "../../components/modal/Modal";
 
 function MyAccountPage({ userInfo }) {
   const navigate = useNavigate();
@@ -112,16 +114,13 @@ function MyAccountPage({ userInfo }) {
   const handleFollow = async () => {
     try {
       if (isUserFollowing()) {
-        const response = await fetch(
-          `${API_URL}/relations/${user__id}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/relations/${user__id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.ok) {
           const updatedFollowingUsers = followingUsers.filter(
@@ -135,16 +134,13 @@ function MyAccountPage({ userInfo }) {
           );
         }
       } else {
-        const response = await fetch(
-          `${API_URL}/relations/${user__id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/relations/${user__id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.ok) {
           const updatedFollowingUsers = [
@@ -185,16 +181,13 @@ function MyAccountPage({ userInfo }) {
         return;
       }
 
-      const response = await fetch(
-        `${API_URL}/users/${userId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       if (response.ok) {
         const updatedUserData = await response.json();
@@ -204,10 +197,12 @@ function MyAccountPage({ userInfo }) {
         setShowImageModal(false);
         setShowModal(false);
         setShowResponseModal(true);
+        closeModal();
       } else {
         setErrorMessage("Error al guardar los cambios");
         setShowImageModal(false);
         setShowModal(false);
+        setShowBannerModal(false);
         setShowResponseModal(true);
       }
     } catch (error) {
@@ -253,8 +248,14 @@ function MyAccountPage({ userInfo }) {
     return <Spinner animation="border" />;
   }
 
-  console.log(userData.avatar)
-  console.log(userInfo)
+  console.log(userData.avatar);
+  console.log(userInfo);
+
+  const closeModal = () => {
+    setShowImageModal(false);
+    setShowModal(false);
+    setShowBannerModal(false);
+  };
 
   return (
     <>
@@ -333,7 +334,7 @@ function MyAccountPage({ userInfo }) {
               <div>
                 <EventSnipet />
                 <UserSuggestions />
-                <div className="mt-5 d-flex justify-content-center ">
+                <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
                     url="/nuevoRegalo"
@@ -345,12 +346,18 @@ function MyAccountPage({ userInfo }) {
           </aside>
         </div>
       )}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Perfil</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
+
+      <Modal
+        closeModal={closeModal}
+        title={"Editar mi perfil"}
+        show={showModal}
+        contentStyle={{
+          height: "calc(80% - 2rem)",
+          marginTop: "5rem",
+        }}
+      >
+        <form>
+          <div className={styles.modal_edit_profile}>
             <div className="form-group">
               <label htmlFor="name">Nombre</label>
               <input
@@ -381,26 +388,31 @@ function MyAccountPage({ userInfo }) {
                 onChange={(e) => handleInputChange("user_name", e.target.value)}
               />
             </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cerrar
-          </Button>
+          </div>
+        </form>
+
+        <div className={styles.modal_footer}>
           <Button
             variant="primary"
             onClick={handleSaveChanges}
             disabled={isLoading}
+            className="primary__button-outline"
           >
             {isLoading ? "Guardando..." : "Guardar"}
           </Button>
-        </Modal.Footer>
+        </div>
       </Modal>
-      <Modal show={showImageModal} onHide={() => setShowImageModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Imagen de Perfil</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+
+      <Modal
+        closeModal={closeModal}
+        title={"Editar foto de perfil"}
+        show={showImageModal}
+        contentStyle={{
+          height: "calc(45% - 2rem)",
+          marginTop: "5rem",
+        }}
+      >
+        <div className={styles.modal_body}>
           <form>
             <div className="form-group">
               <label htmlFor="avatar">Seleccionar nueva imagen:</label>
@@ -413,25 +425,29 @@ function MyAccountPage({ userInfo }) {
               />
             </div>
           </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowImageModal(false)}>
-            Cerrar
-          </Button>
+        </div>
+        <div className={styles.modal_footer}>
           <Button
             variant="primary"
             onClick={handleSaveChanges}
             disabled={isLoading}
+            className="primary__button-outline "
           >
             {isLoading ? "Guardando..." : "Guardar"}
           </Button>
-        </Modal.Footer>
+        </div>
       </Modal>
-      <Modal show={showBannerModal} onHide={() => setShowBannerModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Banner</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+
+      <Modal
+        closeModal={closeModal}
+        title={"Editar portada"}
+        show={showBannerModal}
+        contentStyle={{
+          height: "calc(45% - 2rem)",
+          marginTop: "5rem",
+        }}
+      >
+        <div className={styles.modal_body}>
           <form>
             <div className="form-group">
               <label htmlFor="banner">Seleccionar nueva imagen:</label>
@@ -444,19 +460,17 @@ function MyAccountPage({ userInfo }) {
               />
             </div>
           </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowBannerModal(false)}>
-            Cerrar
-          </Button>
+        </div>
+        <div className={styles.modal_footer}>
           <Button
             variant="primary"
             onClick={handleSaveChanges}
             disabled={isLoading}
+            className="primary__button-outline"
           >
             {isLoading ? "Guardando..." : "Guardar"}
           </Button>
-        </Modal.Footer>
+        </div>
       </Modal>
       <ResponseModal
         show={showResponseModal}

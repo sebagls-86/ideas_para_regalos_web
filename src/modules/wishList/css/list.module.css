@@ -3,7 +3,6 @@
   padding-bottom: var(--fz-25);
   display: flex;
   border-radius: 15px;
-  
 }
 
 .container__image img {
@@ -15,50 +14,23 @@
   margin: 1rem auto;
   margin-top: 0;
 }
-.user__container {
-  /* width: 100%; */
-  display: flex;
-  justify-content: space-between;
-}
-.content__user {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  /* width: 300px; */
-  gap: 0px 0.75rem;
-}
 
-.user__username {
+.list_name {
   font-size: var(--fz-20);
   font-weight: 600;
   position: absolute;
-    left: 10%;
-    bottom: 5%;
-    color: white;
-    
+  left: 10%;
+  bottom: 5%;
+  color: white;
 }
 
-.user__username_product {
+.list_name_more {
   font-size: var(--fz-20);
   font-weight: 600;
-  position: relative;
-    left: 10%;
-    bottom: 5%;
-    color: black;
-    
+  color: black;
 }
 
-.user__tagname {
-  font-size: var(--fz-15);
-  font-weight: 600;
-}
-.user__tagname:hover {
-  color: var(--primary-dark);
-}
-.user__timepost {
-  font-size: var(--fz-9);
-  font-weight: 600;
-}
+
 
 .action_buttons {
   button:hover {
@@ -75,7 +47,7 @@
   padding: 10px;
 }
 .action_buttons:hover {
-  background-color: transparent;
+  background-color: var(--gray);
   border: 0.3px solid grey;
 }
 .action_buttons_container {
@@ -94,6 +66,8 @@
   position: absolute;
   right: 3%;
   top: 3%;
+  display: flex;
+  gap: 5px;
 }
 .list__title {
   font-size: var(--fz-17);
@@ -123,12 +97,13 @@
 }
 
 .product_container {
-    display: flex;
-    flex-wrap: wrap; /* Permite que las tarjetas se envuelvan cuando no haya suficiente espacio */
-    /*justify-content: space-between; *//* Distribuye las tarjetas horizontalmente con espacio entre ellas */
-    max-width: 100%; /* Establece el ancho máximo del contenedor al 100% del espacio disponible */
-    margin-bottom: 1rem;
-  }
+  display: flex;
+  flex-wrap: wrap; /* Permite que las tarjetas se envuelvan cuando no haya suficiente espacio */
+  /*justify-content: space-between; */ /* Distribuye las tarjetas horizontalmente con espacio entre ellas */
+  max-width: 100%; /* Establece el ancho máximo del contenedor al 100% del espacio disponible */
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
 
 .product_card {
   width: calc(
@@ -150,22 +125,22 @@
   border-top-right-radius: 8px; /* Redondear la esquina superior derecha de la imagen */
   border-bottom: 1px solid #ccc;
 }
-.product_image:hover{
+.product_image:hover {
   border-bottom: 1px solid red;
 }
 
 .product_name {
   text-align: center; /* Centra el texto dentro de la tarjeta */
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 
 .product_item {
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    margin: 10px; /* Ajusta la separación horizontal entre las tarjetas */
-  }
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  margin: 10px; /* Ajusta la separación horizontal entre las tarjetas */
+}
 
 .product_card:hover {
-  background-color: #FF000030;
+  background-color: #ff000030;
   color: red;
   border: 1px solid red;
 }
@@ -188,7 +163,7 @@
   align-items: center;
   z-index: 9999;
 }
-.modal__title{
+.modal__title {
   margin-bottom: 2rem;
 }
 
@@ -248,16 +223,16 @@
   width: 100%;
   padding: 25px 0px;
 }
-.search_bar{
+.search_bar {
   position: relative;
   width: 100%;
-    max-width: 300px;
+  max-width: 300px;
 }
 
 .search_bar input {
   width: calc(100% - 30px);
   height: 36px;
-  padding-left: 30px; 
+  padding-left: 30px;
   border-radius: 10px;
   border: 0.5px solid;
 }
@@ -269,27 +244,28 @@
   left: 5px;
   top: 50%;
   transform: translateY(-50%);
-  
 }
 
-.create_new_button {
+.cancel_edit_button, .cancel_edit_button:active {
   margin-right: 10px;
+  background-color: transparent !important;
+  border-color: var(--primary-dark) !important;
+  color: var(--primary-dark)!important;
 }
 .create_new_button,
-.create_new_button:hover {
-  background-color: var(--primary-dark);
+.create_new_button:hover, .create_new_button:active,  .save_edit_button{
+  background-color: var(--primary-dark) !important;
   border: none;
-
+  color: white !important;
 }
-.create_new_button svg{
+.create_new_button svg {
   fill: white;
   margin-right: 5px;
   width: 22px;
   height: 22px;
   position: relative !important;
-
 }
-.whole_list{
+.whole_list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
@@ -305,7 +281,6 @@
   padding-top: 85%;
 }
 
-
 .modal__header {
   border: none !important;
   text-align: center;
@@ -320,7 +295,6 @@
   left: 3%;
   top: 5%;
   cursor: pointer;
-
 }
 .modal__title {
   font-weight: 600;
@@ -338,7 +312,9 @@
 .modal__confirm,
 .modal__cancel,
 .modal__confirm:hover,
-.modal__cancel:hover, .modal__confirm:active, .modal__cancel:active  {
+.modal__cancel:hover,
+.modal__confirm:active,
+.modal__cancel:active {
   background-color: transparent !important;
   border: none;
   font-size: 20px;
@@ -362,23 +338,23 @@
 }
 
 .modal__confirm,
-.modal__confirm:hover{
+.modal__confirm:hover {
   color: green !important;
-   }
-   .go_back_button,
-   .go_back_button:hover {
-     background-image: url(/src/assets/go-back-icon.svg);
-     background-color: transparent !important;
-     border: none !important;
-   }
-   .edit_list_name_button{
-    fill: white;
-    position: absolute;
-    right: 0;
-   }
-   .test{
-    background-color: red;
-   }
+}
+.go_back_button,
+.go_back_button:hover {
+  background-image: url(/src/assets/go-back-icon.svg);
+  background-color: transparent !important;
+  border: none !important;
+}
+.edit_list_name_button {
+  fill: white;
+  position: absolute;
+  right: 0;
+}
+.test {
+  background-color: red;
+}
 
 .list_edit_icon,
 .list_delete_icon {
@@ -399,8 +375,6 @@
 .list_delete_icon:hover {
   background-image: url("/src/assets/buttons/delete-icon-hover.svg");
 }
-
-
 
 .meli_card {
   width: 200px; /* Establece un ancho fijo para cada tarjeta */
@@ -450,3 +424,7 @@
   }
 }
 
+.list_edit_buttons{
+  display: flex;
+  justify-content: space-between;
+}

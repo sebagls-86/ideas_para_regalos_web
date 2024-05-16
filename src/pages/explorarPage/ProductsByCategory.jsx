@@ -73,7 +73,7 @@ function ProductsByCategory() {
           {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
         </div>
         <div className="content">
-          <PageTitle title={categoryName} />
+          <PageTitle title={categoryName}/>
           <div className={styles.card_container}>
             {loading ? (
               <p>Loading...</p>
@@ -98,7 +98,7 @@ function ProductsByCategory() {
               <div className="container pt-2">
                 <EventSnipet />
                 <UserSuggestions />
-                <div className="mt-5 d-flex justify-content-center ">
+                <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
                     url="/nuevoRegalo"

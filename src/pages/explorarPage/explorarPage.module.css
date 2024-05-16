@@ -56,4 +56,10 @@
   @media (max-width: 768px) {
 
   }
-  
+  .card_container{
+    margin: 5rem auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding-left: 1.3rem;
+    gap: 2rem 1rem; 
+  }

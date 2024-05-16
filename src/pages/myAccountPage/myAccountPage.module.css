@@ -1,6 +1,8 @@
 .perfil_banner {
   width: 100%;
   cursor: pointer;
+  max-height: 250px;
+  object-fit: cover; 
 }
 
 .profile_picture {
@@ -58,8 +60,7 @@
 }
 
 .profile_info_container {
-  border-radius: 8px;
-  padding: 20px;
+  margin-left: 3%;
   }
 
 
@@ -70,4 +71,23 @@
     border: 5px solid white;
   }
 }
+
+/* MODAL STYLES */
+.modal_body{
+  margin-top: .5rem;
+}
+.modal_edit_profile {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.modal_edit_profile input{
+  height: 48px;
+}
+.modal_footer{
+  margin-top: 1.5rem;
+}
+
 

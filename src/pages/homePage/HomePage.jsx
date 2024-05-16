@@ -9,6 +9,7 @@ import ModalSurvey from "../../modules/modalSurvey/ModalSurvey";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
+import Search from "../../components/search/Search"; // Asegúrate de que esta ruta sea correcta
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
 
@@ -16,6 +17,7 @@ function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Agrega el estado para searchTerm
   const {
     isAuthenticated,
     isLoading,
@@ -64,8 +66,7 @@ function HomePage() {
       if (!response.ok) {
         throw new Error("Error al enviar el código al backend");
       }
-
-     } catch (error) {
+    } catch (error) {
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -239,6 +240,10 @@ function HomePage() {
     });
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   if (isLoading || loading) {
     return <div>Loading ...</div>;
   }
@@ -260,16 +265,18 @@ function HomePage() {
           <PageTitle title="Inicio" />
           <NuevoRegaloHome />
           <div className="mt-3 bordes-y">
-            <Post userInfo={userInfo?.data} />
+            <Post searchTerm={searchTerm} userInfo={userInfo?.data} /> 
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
             {(isAuthenticated || tokenExists) && (
               <>
+                <Search onSearch={handleSearch} /> 
                 <EventSnipet />
                 <UserSuggestions userInfo={userInfo?.data} />
-                <div className="mt-5 d-flex justify-content-center ">
+           
+                <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
                     url="/nuevoRegalo"

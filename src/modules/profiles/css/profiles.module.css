@@ -88,13 +88,15 @@
   fill: black;
 }
 
+.create_new_button {
+  margin-right: 10px;
+}
 .create_new_button,
 .create_new_button:hover {
   background-color: var(--primary-dark);
   border: none;
-
 }
-.create_new_button svg{
+.create_new_button svg {
   fill: white;
   margin-right: 5px;
   width: 22px;
@@ -163,10 +165,10 @@
   transition: background-color 0.3s;
 }
 
-.profile_interest_button:hover {
-  border-color: red;
-  background-color: transparent;
-  color: red;
+.profile_interest_button:hover, .profile_interest_button:active, .profile_interest_button:focus {
+  border-color: red !important;
+  background-color: transparent !important;
+  color: red !important;
 }
 
 .profile_interest_remove_icon {
@@ -210,13 +212,7 @@
   align-items: center;
 }
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra ligera */
-  max-width: 80%;
-}
+
 
 .modal h2 {
   margin-top: 0;
@@ -321,16 +317,23 @@
 
 .form__floating {
   font-size: var(--fz-14);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .form__floating input {
-  margin-top: 5px;
+  font-size: 17px;
+    color: #525558;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px;
+    border-radius: 5px;
+    border: 0.4px solid #000;
+    background: var(--white);
 }
 
-.input__label {
-  color: #525558;
-}
 
 .icon_style {
   cursor: pointer;
@@ -350,7 +353,7 @@
   width: min(100%, 600px);
   height: min(90%, 600px);
   margin-inline: auto;
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-bottom: 3rem;
   border-radius: 1rem;
 }
@@ -407,7 +410,6 @@
 .buttons__container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
     padding-bottom: 2.125rem;
 }
 
@@ -455,31 +457,13 @@ border: 0.5px solid var(--Neutral-0, #525558);
     color: var(--primary-dark);
   }
 
-  .interestButton {
-    margin-bottom: 10px;
-    margin-left: 10px;
-    background-color: white;
-    color: #007bff;
-    border: 1px solid #007bff;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .selectedInterest {
-    background-color: #007bff;
-    color: white;
-  }
-
   .scrollable_div {
     max-height: 300px; /* Establece la altura máxima que deseas para el div */
     overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura máxima */
   }
 
 @media only screen and (min-width: 768px) {
-    .buttons__container {
-        padding-top: 1.31rem;
-    }
+  
 
     .hr_container {
         padding-top: 1.81rem;
@@ -498,9 +482,6 @@ border: 0.5px solid var(--Neutral-0, #525558);
   .profiles__images img {
     width: 100%;
   }
-  .buttons-container {
-    padding-top: 1.31rem;
-}
 
 .registro-container {
     margin-top: 1.25rem;
@@ -538,15 +519,6 @@ border: 0.5px solid var(--Neutral-0, #525558);
 }
 
 
-.modal-content {
-  background-color: #fff;
-  width: min(100%, 600px);
-  height: min(90%, 600px);
-  margin-inline: auto;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  border-radius: 1rem;
-}
 .modal h2 {
   margin-top: 0;
 }
@@ -570,4 +542,35 @@ border: 0.5px solid var(--Neutral-0, #525558);
   margin-right: 5px;
 }
 
+.interest_modal{
+  text-align: center;
+}
+.modal_content{
+  max-height: 300px;
+  overflow-y: auto;
+}
+.interestButton{
+  margin-bottom: 10px;
+    background-color: white;
+    color: #000;
+    border: 1px solid #525558;
+    border-radius: 20px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+.selectedInterest {
+  background-color: white;
+  color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+
+.form__control{
+  position: relative;
+}
+.form__control .expandIcon{
+  background-color: pink;
+  position: absolute;
+  right: 0
+}
 

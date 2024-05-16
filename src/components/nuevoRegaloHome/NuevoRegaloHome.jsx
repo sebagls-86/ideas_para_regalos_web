@@ -51,7 +51,7 @@ function NuevoRegaloHome() {
               {/*<MyIcon name="image" />*/}
               <MyIcon name="list" />
             </div>
-            <Links title="Regalar" url="/nuevoRegalo" type={"primary"} />
+            <Links title="Regalar" url="/nuevoRegalo" />
           </div>
         </Link>
       </div>
