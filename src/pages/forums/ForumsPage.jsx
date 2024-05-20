@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import NavBar from "../../modules/navBar/NavBar";
@@ -13,6 +13,7 @@ import styles from "./forumsPage.module.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ResponseModal from "../../components/modal/ResponseModal";
+import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoClose } from "react-icons/io5";
 import { RiImageAddFill } from "react-icons/ri";
@@ -23,6 +24,7 @@ import CommentIcon from "../../assets/comment-icon.svg";
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
+
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -465,25 +467,15 @@ function ForumsPage() {
         confirmButtonText="Aceptar"
       />
       {showDeleteModal && (
-        <Modal show={showDeleteModal} onHide={cancelDeleteMessage}>
-          <Modal.Header closeButton>
-            <Modal.Title>Confirmar eliminación</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>¿Está seguro de que desea eliminar este mensaje?</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={cancelDeleteMessage}>
-              Cancelar
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => handleDeleteMessage(messageToDelete.message_id)}
-            >
-              Confirmar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <ConfirmDeleteModal
+          show={showDeleteModal}
+          onHide={cancelDeleteMessage}
+          title="¿Estás seguro?"
+          bodyContent={`Se eliminará tu comentario`}
+          onCancel={cancelDeleteMessage}
+          onConfirm={() => handleDeleteMessage(messageToDelete.message_id)}
+          confirmButtonText="Confirmar"
+        />
       )}
       {!user && !tokenExists}
       <NavBar />

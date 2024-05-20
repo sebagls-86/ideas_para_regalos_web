@@ -295,13 +295,13 @@ a:focus {
   }
 }
 .swiper-pagination-bullet-active {
-  background-color: red !important;
+  background-color: white !important;
 }
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
 .swiper-horizontal > .swiper-pagination-bullets,
 .swiper-pagination-bullets.swiper-pagination-horizontal {
-  bottom: 40px !important;
+  bottom: 20px !important;
 }
 .swiper-button-prev:after,
 .swiper-button-next:after {

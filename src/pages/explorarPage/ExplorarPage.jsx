@@ -1,6 +1,5 @@
 import React from "react";
 import Nav from "../../modules/nav/Nav";
-import { Col } from "react-bootstrap";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
 import SectionCategory from "../../modules/sectionCategory/SectionCategory";
@@ -14,6 +13,13 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from 'swiper/modules';
+import banner1 from "../../assets/banner-promo-1.png"
+import banner2 from "../../assets/banner-promo-2.png"
+import banner3 from "../../assets/banner-promo-3.png"
+
+import 'swiper/swiper-bundle.css';
 
 function ExplorarPage() {
   const { isAuthenticated } = useAuth0();
@@ -31,13 +37,46 @@ function ExplorarPage() {
         </div>
         <div className="content">
           <PageTitle title="Explorar" />
-          <Col className="d-flex justify-content-center">
-            <img
-              src={banner}
-              alt="banner"
-              className={styles.explorar__banner}
-            />
-          </Col>
+          <Swiper
+          
+           loop={true}
+           autoplay={{
+               delay: 3000,
+               disableOnInteraction: false
+           }}
+            pagination={{
+              dynamicBullets: true,
+            }}
+            modules={[Pagination, Autoplay]} 
+            className="mySwiper"
+          
+          >
+            <SwiperSlide>
+              {" "}
+              <img
+                src={banner1}
+                alt="banner"
+                className={styles.explorar__banner}
+              />
+            </SwiperSlide>
+            <SwiperSlide>  <img
+                src={banner2}
+                alt="banner"
+                className={styles.explorar__banner}
+              /></SwiperSlide>
+            <SwiperSlide>  <img
+                src={banner3}
+                alt="banner"
+                className={styles.explorar__banner}
+              /></SwiperSlide>
+            <SwiperSlide>  <img
+                src={banner}
+                alt="banner"
+                className={styles.explorar__banner}
+              /></SwiperSlide>
+          
+          </Swiper>
+
           <div className="mt-3">
             <SectionCategory title={"Categorías"} />
             <SectionEvents title={"Eventos"} />
