@@ -25,7 +25,6 @@ import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 
-
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
   const token = localStorage.getItem("token");
@@ -656,7 +655,7 @@ function ForumsPage() {
                           alt="avatar"
                           className={styles.profile_picture}
                         />
-                        <div>
+                        <div style={{ width: "100%" }}>
                           <p className={styles.name}>{message.name}</p>
                           <p className={styles.forum_username}>
                             @{message.user_name}
@@ -664,26 +663,29 @@ function ForumsPage() {
                           <p className={styles.forum_message}>
                             {message.message}
                           </p>
+                          
                           {message.image &&
                             Array.isArray(message.image) &&
                             message.image.length > 0 && (
                               <div className={styles.message_img_container}>
                                 {message.image.map((img, index) => (
                                   <div
-                                    className={styles.message_img_wrapper}
+                                    style={{ position: "relative" }}
                                     key={index}
                                     onClick={() => handleImageClick(img.image)}
                                   >
                                     <img
                                       className={styles.message_img}
                                       src={img.image}
-                                      alt={`Imagen ${index}`}
+                                      alt={`Imagen ${index + 1}`}
                                     />
                                   </div>
+                                  
                                 ))}
                               </div>
                             )}
-
+                            
+                         
                           <p className={styles.forum_date}>
                             {calculateTimeDifference(message.date)}
                           </p>
