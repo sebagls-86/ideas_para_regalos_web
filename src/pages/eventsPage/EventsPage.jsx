@@ -17,15 +17,16 @@ function EventsPage() {
   const [tokenExists, setTokenExists] = useState(false);
   const [scheduledEvents, setScheduledEvents] = useState([]);
   const { user, isAuthenticated } = useAuth0();
-  const userInfo = (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) || null;
+  const userInfo =
+    (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setTokenExists(token !== null && token !== undefined);
-  
+
     // Fetch upcoming events with robust error handling
     fetch(`${API_URL}/scheduledEvents/upcoming`)
       .then((response) => {
@@ -40,12 +41,12 @@ function EventsPage() {
           setScheduledEvents([]);
           return;
         }
-  
+
         const eventsWithImageURLs = data.data.map((event) => ({
           ...event,
           image: `${URL_IMAGES}${event.image}`,
         }));
-     
+
         setScheduledEvents(eventsWithImageURLs);
       })
       .catch((error) => {
@@ -53,19 +54,17 @@ function EventsPage() {
       });
   }, []);
 
-
   return (
     <>
       <NavBar />
       <div
         className={`contenedor ${!user && !tokenExists ? "full-width" : ""}`}
       >
-        {
-          (isAuthenticated && (
-            <div className="left__aside">
-              <Nav userInfo={userInfo} />
-            </div>
-          ))}
+        {isAuthenticated && (
+          <div className="left__aside">
+            <Nav userInfo={userInfo} />
+          </div>
+        )}
         <div className="content">
           {!user && !tokenExists && (
             <Col>
@@ -77,50 +76,71 @@ function EventsPage() {
             <div
               className={`${styles.singleColumn} ${styles.singleColumn_signed_in}`}
             >
-              {scheduledEvents.map((event) => (
-                <Link to={`/explorar/eventos/${event.event_type_id}`} key={event.scheduled_event_id}>
+              {scheduledEvents.map((event, index) => (
+                <Link
+                  to={`/explorar/eventos/${event.event_type_id}`}
+                  key={event.scheduled_event_id}
+                >
                   <div className={`${styles.row} ${styles.row_signed_in}`}>
-                    <div>
-                      <img
-                        src={event.image}
-                        alt={event.event_type_name}
-                        className={styles.eventImage}
-                      />
-                    </div>
-                    <div>
-                      <div>
-                        <h3>{event.event_type_name}</h3>
-                        <p>{event.date}</p>
-                      </div>
-                    </div>
+                    {index % 2 === 0 ? (
+                      <>
+                        <div>
+                          <img
+                            src={event.image}
+                            alt={event.event_type_name}
+                            className={styles.eventImage}
+                          />
+                        </div>
+                        <div>
+                        <div className={`${styles.event_info} ${styles.even_event_info}`}>
+                            <h3>{event.event_type_name}</h3>
+                            <p>{event.date}</p>
+                            
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={`${styles.event_info} ${styles.odd_event_info}`}>
+                          <h3>{event.event_type_name}</h3>
+                          <p>{event.date}</p>
+                        </div>
+                        <div>
+                          <img
+                            src={event.image}
+                            alt={event.event_type_name}
+                            className={styles.eventImage}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </Link>
               ))}
             </div>
           </>
         </div>
-        {
-          (isAuthenticated && (
-            <aside className="right__aside">
-              <div className="container pt-2">
-                {(isAuthenticated && <Search />)}
-                {!isAuthenticated && <AsideLogin />}
-                {(isAuthenticated) && (
-                  <>
-                    <EventSnipet />
-                    <UserSuggestions />
-                    <div className="mt-4 d-flex justify-content-center ">
-                      <Links
-                        title="Post nuevo regalo"
-                        url="/nuevoRegalo"
-                        type={"primary"}
-                      />
-                    </div>
-                  </>
-                )}
-              </div>
-            </aside>
-          ))}
+        {isAuthenticated && (
+          <aside className="right__aside">
+            <div className="container pt-2">
+              {isAuthenticated && <Search />}
+              {!isAuthenticated && <AsideLogin />}
+              {isAuthenticated && (
+                <>
+                  <EventSnipet />
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </aside>
+        )}
       </div>
     </>
   );
