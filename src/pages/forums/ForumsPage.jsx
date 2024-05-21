@@ -121,6 +121,11 @@ function ForumsPage() {
 
   const handleSendMessage = async () => {
     try {
+
+      if (message === '' & imageFiles.length === 0){
+        return
+      }
+
       const formData = new FormData();
       formData.append("message", message);
       formData.append("forum_id", forum_id);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Search from "../../components/search/Search";
 import styles from "./users.module.css";
+import { Link } from "react-router-dom";
 
 function Followers() {
   const [followers, setFollowers] = useState([]); // Estado para almacenar los seguidores
@@ -36,14 +37,18 @@ function Followers() {
       </div>
       {filteredFollowers.length > 0 ? (
         filteredFollowers.map((follower) => (
-          <div className={styles.container} key={follower.user_id}>
-            <UserLogoName
-              name={follower.name}
-              userName={follower.user_name}
-              logo={follower.avatar}
-              to={`/perfil/${follower.user_id}`}
-            />
-          </div>
+          <Link to={`/perfil/${follower.user_id}`}>
+            <div className={styles.container_wrapper}>
+              <div className={styles.container} key={follower.user_id}>
+                <UserLogoName
+                  name={follower.name}
+                  userName={follower.user_name}
+                  logo={follower.avatar}
+                  to={`/perfil/${follower.user_id}`}
+                />
+              </div>
+            </div>
+          </Link>
         ))
       ) : (
         <p className={styles.alert_message}>Todavía no hay seguidores</p>

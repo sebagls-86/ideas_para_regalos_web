@@ -48,26 +48,30 @@ function Forums() {
               key={forum.forum_id}
               className={styles.forumLink}
             >
-              <div className={styles.forum}>
-                <div className={styles.forum_user_info}>
-                  <div>
-                    <img
-                      src={forum.avatar}
-                      alt={"avatar"}
-                      width="54"
-                      height="54"
-                    />
+              <div  className={styles.forum_wrapper}>
+                <div className={styles.forum}>
+                  <div className={styles.forum_user_info}>
+                    <div>
+                      <img
+                        src={forum.avatar}
+                        alt={"avatar"}
+                        width="54"
+                        height="54"
+                      />
+                    </div>
+                    <div>
+                      <p className="user__name"> {forum.name}</p>
+                      <p className="user__tagname"> @{forum.user_name}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="user__name"> {forum.name}</p>
-                    <p className="user__tagname"> @{forum.user_name}</p>
-                  </div>
-                </div>
-                <div  className={styles.forum_text }>
-                  <p>{forum.title}</p>
-                  <p>{forum.description}</p>
+                  <div className={styles.forum_text}>
+                    <p>{forum.title}</p>
+                    <p>{forum.description}</p>
 
-                           <p className={styles.post_date}>{calculateTimeDifference(forum.created_at)}</p>
+                    <p className={styles.post_date}>
+                      {calculateTimeDifference(forum.created_at)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Link>

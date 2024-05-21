@@ -61,7 +61,7 @@ function UserSuggestions({ userInfo }) {
         ) : users.length === 0 ? (
           <p>No hay sugerencias por el momento</p>
         ) : (
-          users.map((user) => (
+          users.slice(0, 3).map((user) => (
             <div className={styles.content_element} key={user.id}>
               <div className={styles.user_info}>
                 <UserLogoName

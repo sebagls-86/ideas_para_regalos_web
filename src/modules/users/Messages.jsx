@@ -49,25 +49,29 @@ function Messages() {
               key={message.message_id}
               className={styles.messageLink}
             >
-              <div className={styles.message}>
-              <div className={styles.forum_user_info}>
-                <div>
-                <img
-                  src={message.avatar}
-                  alt={"avatar"}
-                  width="54"
-                  height="54"
-                />
-                </div>
-                <div>
-                <p className="user__name"> {message.name}</p>
-                <p className="user__tagname">@{message.user_name}</p>
-                </div>
-                </div>
-                <div  className={styles.forum_text }>
-                <p>{message.message}</p>
-                
-                <p className={styles.post_date}>{calculateTimeDifference(message.created_at)}</p>
+              <div className={styles.message_wrapper}>
+                <div className={styles.message}>
+                  <div className={styles.forum_user_info}>
+                    <div>
+                      <img
+                        src={message.avatar}
+                        alt={"avatar"}
+                        width="54"
+                        height="54"
+                      />
+                    </div>
+                    <div>
+                      <p className="user__name"> {message.name}</p>
+                      <p className="user__tagname">@{message.user_name}</p>
+                    </div>
+                  </div>
+                  <div className={styles.forum_text}>
+                    <p>{message.message}</p>
+
+                    <p className={styles.post_date}>
+                      {calculateTimeDifference(message.created_at)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Link>

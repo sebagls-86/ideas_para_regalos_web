@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Search from "../../components/search/Search";
 import styles from "./users.module.css";
+import { Link } from "react-router-dom";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -44,14 +45,18 @@ function Users() {
       </div>
       {filteredUsers.map((user) => {
         return (
-          <div className={styles.container} key={user.user_id}>
-            <UserLogoName
-              name={user.name}
-              userName={user.user_name}
-              logo={user.avatar}
-              to={`/perfil/${user.user_id}`}
-            />
-          </div>
+          <Link to={`/perfil/${user.user_id}`}>
+            <div className={styles.container_wrapper}>
+              <div className={styles.container} key={user.user_id}>
+                <UserLogoName
+                  name={user.name}
+                  userName={user.user_name}
+                  logo={user.avatar}
+                  to={`/perfil/${user.user_id}`}
+                />
+              </div>
+            </div>
+          </Link>
         );
       })}
     </div>

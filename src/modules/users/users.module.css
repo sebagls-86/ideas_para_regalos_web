@@ -3,13 +3,16 @@
   align-items: center;
   gap: 1rem;
   margin: auto;
-  padding: 0 5rem;
-  border-bottom: .5px solid #c7c7c7;
+  width: 85%;
+  margin: auto;
 }
-
-.container:hover{
+.container_wrapper{
+  border-bottom: 0.5px solid #c7c7c7;
+}
+.container_wrapper:hover {
   background-color: var(--gray);
   width: 100%;
+  margin: auto;
 }
 
 .time {
@@ -21,10 +24,6 @@
   font-size: var(--fz-17);
 }
 
-.messagesContainer {
-  margin-top: 20px;
-}
-
 /* Estilos para los mensajes individuales
 .message {
   background-color: #f9f9f9;
@@ -33,13 +32,15 @@
   padding: 10px;
   margin-bottom: 10px;
 } */
-
-.forum, .message{
+.forum_wrapper, .message_wrapper{
   border-bottom: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 1rem 5rem;
 }
-
+.forum,
+.message {
+  padding: 1rem 0;
+  width: 85%;
+  margin: auto;
+}
 
 /* Estilos para el mensaje cuando no hay foros disponibles */
 .forum-empty {
@@ -50,24 +51,36 @@
   display: flex;
   justify-content: center;
   margin: 1.5rem auto;
+  width: 85%;
+}
+.alert_message {
   padding: 0 5rem;
 }
-.alert_message{
-  padding: 0 5rem;
-}
-.forum img, .message img{
+.forum img,
+.message img {
   border-radius: 50%;
 }
-.forum_user_info{
+.forum_user_info {
   display: flex;
   gap: 1rem;
 }
-.forum_text{
+.forum_text {
   margin-left: 4.3rem;
 }
 
-.post_date{
+.post_date {
   font-size: var(--fz-12);
   opacity: 60%;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
+}
+
+@media only screen and (max-width: 1025px) {
+  .container,
+  .search_bar {
+    width: 87%;
+  }
+ 
+  .forum_user_info {
+    padding: 0;
+  }
 }

@@ -14,7 +14,7 @@
 
 .modal__content {
     background-color: #fff;
-    width: min(100% - 1rem, 720px);
+    width: min(100% - 1rem, 650px);
     /*height: min(100% - 2rem, 781px);*/
     height: min(100% - 2rem, 700px);
     margin-inline: auto;
