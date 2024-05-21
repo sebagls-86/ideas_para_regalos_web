@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionAgeRange.module.css";
 import { Link } from "react-router-dom";
 
-export default function SectionAgeRange() {
+export default function SectionAgeRange({ slidesPerView }) {
   const [ageRanges, setAgeRanges] = useState([]);
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
@@ -35,18 +35,10 @@ export default function SectionAgeRange() {
         <p>Loading...</p>
       ) : (
         <Swiper
-          slidesPerView={3}
+          slidesPerView={slidesPerView}
           spaceBetween={30}
           pagination={{
             clickable: true,
-          }}
-          breakpoints={{
-            768: {
-              slidesPerView: 3,
-            },
-            0: {
-              slidesPerView: 1,
-            },
           }}
           loop={true}
           autoplay={{ delay: 3000 }}

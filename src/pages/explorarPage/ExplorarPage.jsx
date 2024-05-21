@@ -18,6 +18,7 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import banner1 from "../../assets/banner-promo-1.png"
 import banner2 from "../../assets/banner-promo-2.png"
 import banner3 from "../../assets/banner-promo-3.png"
+import Search from "../../components/search/Search";
 
 import 'swiper/swiper-bundle.css';
 
@@ -31,12 +32,14 @@ function ExplorarPage() {
     <>
       {isAuthenticated}
       <NavBar />
-      <div className="contenedor">
-        <div className="left__aside">
-          {isAuthenticated && <Nav userInfo={userInfo} />}
-        </div>
+      <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
+        {isAuthenticated && (
+          <div className="left__aside">
+            <Nav userInfo={userInfo} />
+          </div>
+        )}
         <div className="content">
-          <PageTitle title="Explorar" />
+        {isAuthenticated && <PageTitle title="Explorar" />}
           <Swiper
           
            loop={true}
@@ -76,33 +79,36 @@ function ExplorarPage() {
               /></SwiperSlide>
           
           </Swiper>
-
+    
           <div className="mt-3">
-            <SectionCategory title={"Categorías"} />
-            <SectionEvents title={"Eventos"} />
-            <SectionAgeRange title={"Rango de Edad"} />
-            <SectionFeatured title={"Productos Destacados"} />
+            <SectionCategory title={"Categorías"}           slidesPerView={isAuthenticated ? 3 : 4}  />
+            <SectionEvents   title={"Eventos"}              slidesPerView={isAuthenticated ? 3 : 4}  />
+            <SectionAgeRange title={"Rango de Edad"}        slidesPerView={isAuthenticated ? 3 : 4}  />
+            <SectionFeatured title={"Productos Destacados"} slidesPerView={isAuthenticated ? 3 : 5} />
+
           </div>
         </div>
-        <aside className="right__aside">
-          <div className="container pt-2">
-            {isAuthenticated}
-            {!isAuthenticated && <AsideLogin />}
-            {isAuthenticated && (
-              <div>
-                <EventSnipet />
-                <UserSuggestions />
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </aside>
+       {isAuthenticated && (
+          <aside className="right__aside">
+            <div className="container pt-2">
+              {isAuthenticated && <Search />}
+              {!isAuthenticated && <AsideLogin />}
+              {isAuthenticated && (
+                <>
+                  <EventSnipet />
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </aside>
+        )}
       </div>
     </>
   );

@@ -3,10 +3,9 @@
   flex-direction: column;
 }
 
-.singleColumn_signed_in {
-  margin-top: 89.2px;
+.page_title{
+  margin-bottom: 89.2px !important;
 }
-
 
 .eventImage {
   width: 100%;
@@ -21,7 +20,14 @@
 
 .row > div {
   width: 50%;
+}
+
+.row_logged_in > div {
   height: 300px;
+}
+
+.row_logged_out > div {
+  height: 400px;
 }
 
 .event_info{
@@ -44,6 +50,11 @@
 }
 
 .odd_event_info {
+  background-color: var(--primary-dark);
+  color: #FFF6D7;
+}
+
+.even_event_info {
   color: var(--primary-dark);
   background-color:#FFF6D7;
 }  

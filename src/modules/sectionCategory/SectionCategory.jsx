@@ -4,7 +4,7 @@ import styles from "./SectionCategory.module.css";
 import { Link } from "react-router-dom";
 
 
-export default function SectionCategory() {
+export default function SectionCategory({ slidesPerView }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
@@ -38,18 +38,10 @@ export default function SectionCategory() {
         <p>Loading...</p>
       ) : (
         <Swiper
-          slidesPerView={3}
+          slidesPerView={ slidesPerView }
           spaceBetween={30}
           pagination={{
             clickable: true,
-          }}
-          breakpoints={{
-            768: {
-              slidesPerView: 3,
-            },
-            0: {
-              slidesPerView: 1,
-            },
           }}
           loop={true}
           autoplay={{ delay: 3000 }}

@@ -66,13 +66,12 @@ function EventsPage() {
           </div>
         )}
         <div className="content">
-          {!user && !tokenExists && (
-            <Col>
-              <LoginMobile />
-            </Col>
-          )}
           <>
-            <PageTitle title="Eventos" />
+            {isAuthenticated && (
+              <div className={styles.page_title}>
+                <PageTitle title="Eventos" />
+              </div>
+            )}
             <div
               className={`${styles.singleColumn} ${styles.singleColumn_signed_in}`}
             >
@@ -81,7 +80,13 @@ function EventsPage() {
                   to={`/explorar/eventos/${event.event_type_id}`}
                   key={event.scheduled_event_id}
                 >
-                  <div className={`${styles.row} ${styles.row_signed_in}`}>
+                  <div
+                    className={`${styles.row} ${
+                      isAuthenticated
+                        ? styles.row_logged_in
+                        : styles.row_logged_out
+                    }`}
+                  >
                     {index % 2 === 0 ? (
                       <>
                         <div>
@@ -92,16 +97,19 @@ function EventsPage() {
                           />
                         </div>
                         <div>
-                        <div className={`${styles.event_info} ${styles.even_event_info}`}>
+                          <div
+                            className={`${styles.event_info} ${styles.even_event_info}`}
+                          >
                             <h3>{event.event_type_name}</h3>
                             <p>{event.date}</p>
-                            
                           </div>
                         </div>
                       </>
                     ) : (
                       <>
-                        <div className={`${styles.event_info} ${styles.odd_event_info}`}>
+                        <div
+                          className={`${styles.event_info} ${styles.odd_event_info}`}
+                        >
                           <h3>{event.event_type_name}</h3>
                           <p>{event.date}</p>
                         </div>

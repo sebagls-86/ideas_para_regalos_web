@@ -13,7 +13,7 @@ import "swiper/css/autoplay";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
 
-export default function SectionFeatured() {
+export default function SectionFeatured({ slidesPerView }) {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
@@ -52,20 +52,12 @@ export default function SectionFeatured() {
           <p>Loading...</p>
         ) : (
           <Swiper
-            slidesPerView={3}
+            slidesPerView={slidesPerView}
             navigation={true}
             spaceBetween={10}
             modules={[Navigation]}
             autoplay={{ delay: 3000 }}
-            breakpoints={{
-              768: {
-                slidesPerView: 3,
-              },
-
-              0: {
-                slidesPerView: 1,
-              },
-            }}
+        
           >
             {featured.map((featured, index) => (
               <Link to="" key={index}>
