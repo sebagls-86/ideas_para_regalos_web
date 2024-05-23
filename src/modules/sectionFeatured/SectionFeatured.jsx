@@ -3,17 +3,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./sectionFeatured.module.css";
 
 import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
 
-export default function SectionFeatured({ slidesPerView }) {
+export default function SectionFeatured({ slidesPerView, breakpoints }) {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
@@ -48,20 +43,22 @@ export default function SectionFeatured({ slidesPerView }) {
     <>
       <div className={styles.productsContainer}>
         <h2 className={styles.title}>Productos destacados</h2>
-        {loading ? (
+      </div>
+      {loading ? (
           <p>Loading...</p>
         ) : (
           <Swiper
             slidesPerView={slidesPerView}
             navigation={true}
-            spaceBetween={10}
+            spaceBetween={50}
             modules={[Navigation]}
             autoplay={{ delay: 3000 }}
-        
+            breakpoints={breakpoints}
+         
           >
             {featured.map((featured, index) => (
               <Link to="" key={index}>
-                <SwiperSlide>
+                <SwiperSlide style={{marginLeft: "2rem"}}>
                   <ProductCard
                     image={`${URL_IMAGES}${featured.image_name}`}
                     name={featured.product_name}
@@ -73,7 +70,6 @@ export default function SectionFeatured({ slidesPerView }) {
             ))}
           </Swiper>
         )}
-      </div>
     </>
   );
 }

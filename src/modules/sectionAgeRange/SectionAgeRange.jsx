@@ -29,9 +29,11 @@ export default function SectionAgeRange({ slidesPerView }) {
   };
 
   return (
+    <>
     <div className={styles.categoryContainer}>
       <h2 className={styles.title}>Rango de edad</h2>
-      {loading ? (
+    </div>
+    {loading ? (
         <p>Loading...</p>
       ) : (
         <Swiper
@@ -44,7 +46,7 @@ export default function SectionAgeRange({ slidesPerView }) {
           autoplay={{ delay: 3000 }}
         >
           {ageRanges.map((ageRange, index) => (
-            <SwiperSlide key={index}>
+              <SwiperSlide key={index} style={{ marginLeft: "2rem" }}>
               <Link
                 to={`/explorar/rango-edad/${ageRange.age_range_id}`}
                 className={styles.categoryLink}
@@ -64,6 +66,6 @@ export default function SectionAgeRange({ slidesPerView }) {
           ))}
         </Swiper>
       )}
-    </div>
+    </>
   );
 }

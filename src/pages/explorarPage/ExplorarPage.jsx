@@ -14,13 +14,13 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from 'swiper/modules';
-import banner1 from "../../assets/banner-promo-1.png"
-import banner2 from "../../assets/banner-promo-2.png"
-import banner3 from "../../assets/banner-promo-3.png"
+import { Pagination, Autoplay } from "swiper/modules";
+import banner1 from "../../assets/banner-promo-1.png";
+import banner2 from "../../assets/banner-promo-2.png";
+import banner3 from "../../assets/banner-promo-3.png";
 import Search from "../../components/search/Search";
 
-import 'swiper/swiper-bundle.css';
+import "swiper/swiper-bundle.css";
 
 function ExplorarPage() {
   const { isAuthenticated } = useAuth0();
@@ -39,20 +39,18 @@ function ExplorarPage() {
           </div>
         )}
         <div className="content">
-        {isAuthenticated && <PageTitle title="Explorar" />}
+          {isAuthenticated && <PageTitle title="Explorar" />}
           <Swiper
-          
-           loop={true}
-           autoplay={{
-               delay: 3000,
-               disableOnInteraction: false
-           }}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
             pagination={{
               dynamicBullets: true,
             }}
-            modules={[Pagination, Autoplay]} 
+            modules={[Pagination, Autoplay]}
             className="mySwiper"
-          
           >
             <SwiperSlide>
               {" "}
@@ -62,33 +60,66 @@ function ExplorarPage() {
                 className={styles.explorar__banner}
               />
             </SwiperSlide>
-            <SwiperSlide>  <img
+            <SwiperSlide>
+              {" "}
+              <img
                 src={banner2}
                 alt="banner"
                 className={styles.explorar__banner}
-              /></SwiperSlide>
-            <SwiperSlide>  <img
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <img
                 src={banner3}
                 alt="banner"
                 className={styles.explorar__banner}
-              /></SwiperSlide>
-            <SwiperSlide>  <img
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <img
                 src={banner}
                 alt="banner"
                 className={styles.explorar__banner}
-              /></SwiperSlide>
-          
+              />
+            </SwiperSlide>
           </Swiper>
-    
-          <div className="mt-3">
-            <SectionCategory title={"Categorías"}           slidesPerView={isAuthenticated ? 3 : 4}  />
-            <SectionEvents   title={"Eventos"}              slidesPerView={isAuthenticated ? 3 : 4}  />
-            <SectionAgeRange title={"Rango de Edad"}        slidesPerView={isAuthenticated ? 3 : 4}  />
-            <SectionFeatured title={"Productos Destacados"} slidesPerView={isAuthenticated ? 3 : 5} />
 
+          <div className="mt-3">
+            <SectionCategory
+              title={"Categorías"}
+              slidesPerView={isAuthenticated ? 3 : 4}
+            />
+            <SectionEvents
+              title={"Eventos"}
+              slidesPerView={isAuthenticated ? 3 : 4}
+            />
+            <SectionAgeRange
+              title={"Rango de Edad"}
+              slidesPerView={isAuthenticated ? 3 : 4}
+            />
+            <SectionFeatured
+              title="Productos Destacados"
+              slidesPerView={isAuthenticated ? 3 : 5}
+              breakpoints={{
+                640: {
+                  slidesPerView: 3,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  slidesPerView: isAuthenticated ? 2 : 4,
+                  spaceBetween: 100,
+                },
+                1280: {
+                  slidesPerView: 5,
+                  spaceBetween: 10,
+                },
+              }}
+            />
           </div>
         </div>
-       {isAuthenticated && (
+        {isAuthenticated && (
           <aside className="right__aside">
             <div className="container pt-2">
               {isAuthenticated && <Search />}

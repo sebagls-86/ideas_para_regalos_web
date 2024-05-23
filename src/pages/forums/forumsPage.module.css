@@ -211,6 +211,7 @@
 .edit_post_button svg,
 .edit_message_button {
   fill: rgb(83, 100, 113);
+  cursor: pointer;
 }
 .edit_message_button {
   position: absolute;

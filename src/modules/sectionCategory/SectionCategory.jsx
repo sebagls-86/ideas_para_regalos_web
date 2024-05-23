@@ -32,9 +32,11 @@ export default function SectionCategory({ slidesPerView }) {
   };
 
   return (
+    <>
     <div className={styles.categoryContainer}>
       <h2 className={styles.title}>Categorías</h2>
-      {loading ? (
+    </div>
+    {loading ? (
         <p>Loading...</p>
       ) : (
         <Swiper
@@ -47,7 +49,7 @@ export default function SectionCategory({ slidesPerView }) {
           autoplay={{ delay: 3000 }}
         >
           {categories.map((category, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} style={{ marginLeft: "2rem" }}>
               <Link
                 to={`/explorar/categorias/${category.category_id}`}
                 className={styles.categoryLink}
@@ -67,6 +69,6 @@ export default function SectionCategory({ slidesPerView }) {
           ))}
         </Swiper>
       )}
-    </div>
+    </>
   );
 }
