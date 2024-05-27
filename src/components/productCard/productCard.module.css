@@ -6,7 +6,7 @@
 }
 
 .productCard {
-  /*width: 15.25rem !important;*/
+  width: 16.5rem !important;
   height: 23.75rem;
   border: 1px solid #000;
   border-radius: 10px;
@@ -39,6 +39,7 @@
   z-index: 1;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  object-fit: cover;
 }
 .saveButton {
   position: absolute;
@@ -173,4 +174,25 @@ ul li:last-child{
   width: 100%;
   bottom: 70px;
   padding: 0 1rem;
+}
+
+@media (max-width: 1024px) {
+  .productCard {
+    width: 14.5rem !important;
+    height: 21.75rem;
+   
+  }
+  .productCard h3 {
+    top: 30px;
+  }
+  .saved_alert{
+    font-size: 14px;
+  }
+  .saveButton, .saved_alert.show {
+    bottom: 55px;
+  }
+  .saved_alert.show {
+    height: 40px;
+  }
+  
 }

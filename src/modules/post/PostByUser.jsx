@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPostModal from "./EditPostModal";
+import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
 import { SlOptions } from "react-icons/sl";
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -18,6 +19,8 @@ function PostByUser() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [originalPost, setOriginalPost] = useState(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
@@ -107,6 +110,18 @@ function PostByUser() {
     setOriginalPost(null);
   };
 
+  const confirmDelete = (post) => {
+    setPostToDelete(post);
+    setShowConfirmDelete(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (postToDelete) {
+      handleDelete(postToDelete);
+      setShowConfirmDelete(false);
+    }
+  };
+
 
   return (
     <div>
@@ -117,6 +132,16 @@ function PostByUser() {
         setSelectedPost={setSelectedPost}
         originalPost={originalPost}
         handleCloseModal={handleCloseModal}
+      />
+
+<ConfirmDeleteModal
+        show={showConfirmDelete}
+        onHide={() => setShowConfirmDelete(false)}
+        title="¿Estás seguro?"
+        bodyContent="Se eliminará tu publicación"
+        onCancel={() => setShowConfirmDelete(false)}
+        onConfirm={handleConfirmDelete}
+        confirmButtonText="Eliminar"
       />
 
       {!postData || postData.length === 0 ? (
@@ -162,7 +187,7 @@ function PostByUser() {
                         </Button>
                         <Button
                           variant="link"
-                          onClick={() => handleDelete(post)}
+                          onClick={() => confirmDelete(post)}
                           className={styles.delete_post_btn}
                         >
                         <CgTrash/>Eliminar

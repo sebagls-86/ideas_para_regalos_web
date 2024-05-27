@@ -237,12 +237,13 @@ a:focus {
 @media (min-width: 600px) {
   .contenedor {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
     grid-template-rows: 1fr 3rem;
     grid-template-areas:
       "content"
       "menu";
   }
+  
 }
 
 @media only screen and (min-width: 768px) {
@@ -253,6 +254,7 @@ a:focus {
     grid-template-areas: "menu content content content";
     max-width: 1168px;
     padding: 0 1rem;
+ 
   }
 
   .content {
@@ -295,13 +297,13 @@ a:focus {
   }
 }
 .swiper-pagination-bullet-active {
-  background-color: red !important;
+  background-color: white !important;
 }
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
 .swiper-horizontal > .swiper-pagination-bullets,
 .swiper-pagination-bullets.swiper-pagination-horizontal {
-  bottom: 40px !important;
+  bottom: 20px !important;
 }
 .swiper-button-prev:after,
 .swiper-button-next:after {
@@ -347,3 +349,19 @@ a:focus {
 .user__tagname:hover {
   color: var(--primary-dark);
 }
+
+/*
+
+@media only screen and (max-width: 1025px) {
+  .contenedor {
+    grid-template-columns: 50px 1fr 200px;
+    grid-template-areas: "menu content right__aside";
+    max-width: 100%;
+    padding-right: 10px ;
+  }
+  .container{
+    padding: 0;
+  }
+}
+
+*/

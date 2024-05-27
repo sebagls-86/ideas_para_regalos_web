@@ -26,3 +26,8 @@
     font-weight: bold;
     margin: 10px;
   }
+  @media only screen and (max-width: 1025px) {
+    .custom__button {
+        display: none;
+    }
+  }

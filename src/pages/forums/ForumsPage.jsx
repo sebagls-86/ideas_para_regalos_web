@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
 import NavBar from "../../modules/navBar/NavBar";
@@ -13,6 +13,7 @@ import styles from "./forumsPage.module.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ResponseModal from "../../components/modal/ResponseModal";
+import ConfirmDeleteModal from "../../components/modal/ConfirmDeleteModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoClose } from "react-icons/io5";
 import { RiImageAddFill } from "react-icons/ri";
@@ -22,6 +23,7 @@ import { FaHeart } from "react-icons/fa6";
 import CommentIcon from "../../assets/comment-icon.svg";
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import { AiOutlineClose } from "react-icons/ai";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -49,6 +51,7 @@ function ForumsPage() {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   const userId =
     (localStorage.getItem("userInfo") && userInfo.data.user_id) || null;
 
@@ -118,6 +121,11 @@ function ForumsPage() {
 
   const handleSendMessage = async () => {
     try {
+
+      if (message === '' & imageFiles.length === 0){
+        return
+      }
+
       const formData = new FormData();
       formData.append("message", message);
       formData.append("forum_id", forum_id);
@@ -436,6 +444,19 @@ function ForumsPage() {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setShowModal(false);
+  };
+
   return (
     <>
       <ResponseModal
@@ -450,25 +471,15 @@ function ForumsPage() {
         confirmButtonText="Aceptar"
       />
       {showDeleteModal && (
-        <Modal show={showDeleteModal} onHide={cancelDeleteMessage}>
-          <Modal.Header closeButton>
-            <Modal.Title>Confirmar eliminación</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>¿Está seguro de que desea eliminar este mensaje?</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={cancelDeleteMessage}>
-              Cancelar
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => handleDeleteMessage(messageToDelete.message_id)}
-            >
-              Confirmar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <ConfirmDeleteModal
+          show={showDeleteModal}
+          onHide={cancelDeleteMessage}
+          title="¿Estás seguro?"
+          bodyContent={`Se eliminará tu comentario`}
+          onCancel={cancelDeleteMessage}
+          onConfirm={() => handleDeleteMessage(messageToDelete.message_id)}
+          confirmButtonText="Confirmar"
+        />
       )}
       {!user && !tokenExists}
       <NavBar />
@@ -649,7 +660,7 @@ function ForumsPage() {
                           alt="avatar"
                           className={styles.profile_picture}
                         />
-                        <div>
+                        <div style={{ width: "100%" }}>
                           <p className={styles.name}>{message.name}</p>
                           <p className={styles.forum_username}>
                             @{message.user_name}
@@ -657,24 +668,29 @@ function ForumsPage() {
                           <p className={styles.forum_message}>
                             {message.message}
                           </p>
+                          
                           {message.image &&
                             Array.isArray(message.image) &&
                             message.image.length > 0 && (
                               <div className={styles.message_img_container}>
                                 {message.image.map((img, index) => (
                                   <div
-                                    className={styles.message_img_wrapper}
+                                    style={{ position: "relative" }}
                                     key={index}
+                                    onClick={() => handleImageClick(img.image)}
                                   >
                                     <img
                                       className={styles.message_img}
                                       src={img.image}
-                                      alt={`Imagen ${index}`}
+                                      alt={`Imagen ${index + 1}`}
                                     />
                                   </div>
+                                  
                                 ))}
                               </div>
                             )}
+                            
+                         
                           <p className={styles.forum_date}>
                             {calculateTimeDifference(message.date)}
                           </p>
@@ -848,6 +864,22 @@ function ForumsPage() {
                 </ul>
               )}
             </>
+          )}
+          {/* Modal for expanding images */}
+          {showModal && (
+            <div className={styles.modal_overlay}>
+              <div>
+                <div className={styles.close_button} onClick={closeModal}>
+                  <AiOutlineClose />
+                </div>
+
+                <img
+                  src={selectedImage}
+                  alt="Expanded"
+                  className={styles.modal_expand_img}
+                />
+              </div>
+            </div>
           )}
         </div>
         <aside className="right__aside">

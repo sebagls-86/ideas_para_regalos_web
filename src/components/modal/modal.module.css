@@ -14,7 +14,7 @@
 
 .modal__content {
     background-color: #fff;
-    width: min(100% - 1rem, 720px);
+    width: min(100% - 1rem, 650px);
     /*height: min(100% - 2rem, 781px);*/
     height: min(100% - 2rem, 700px);
     margin-inline: auto;
@@ -58,7 +58,7 @@
   .modal__delete_body {
     font-size: 20px;
     text-align: center;
-    padding: 30px;
+    padding-bottom: 1.75rem;
   }
   .modal__delete_footer {
     justify-content: center !important;
@@ -68,22 +68,23 @@
 .modal__confirm,
 .modal__cancel,
 .modal__confirm:hover,
-.modal__cancel:hover {
-  background-color: transparent;
+.modal__cancel:hover, .modal__confirm:active,
+.modal__cancel:active {
+  background-color: transparent !important;
   border: none;
   font-size: 20px;
   padding: 15px 50px;
 }
 .modal__cancel,
 .modal__cancel:hover {
-  color: red;
+  color: red !important;
   border-right: 0.5px solid lightgray;
   border-radius: 0;
   height: 100%;
 }
 .modal__confirm,
 .modal__confirm:hover {
-  color: green;
+  color: green !important;
 }
 
 .modal__body {
@@ -103,4 +104,7 @@
   padding: 1rem 2rem;
   margin: 1rem auto;
 }
-
+.modal__delete_body h4{
+  font-weight: 700;
+  margin-bottom: .75rem;
+}

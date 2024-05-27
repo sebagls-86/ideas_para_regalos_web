@@ -37,6 +37,7 @@ function AsideLogin() {
             onClick={() => handleLogin()}
           />
          </div>
+         {/* 
         <div className="d-flex justify-content-center align-items-center gap-5 flex-column flex-xl-row mt-5">
           <Link to="/ayuda" className="fz-17">
             Ayuda
@@ -48,6 +49,7 @@ function AsideLogin() {
             Nosotros
           </Link>
         </div>
+         */}
       </>
     );
 }

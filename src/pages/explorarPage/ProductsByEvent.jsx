@@ -9,6 +9,7 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ProductsByEvent() {
   const [tokenExists, setTokenExists] = React.useState(false);
@@ -20,6 +21,7 @@ function ProductsByEvent() {
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
+  const { isAuthenticated } = useAuth0();
   
   useEffect(() => {
     const fetchProductsByEvent = async () => {
@@ -85,12 +87,11 @@ function ProductsByEvent() {
               )}
             </div>
           </div>
-        </div>
+    
         <aside className="right__aside">
           <div className="container pt-2">
-            {!userInfo && !tokenExists && <AsideLogin />}
-            {(userInfo || tokenExists) && (
-              <div>
+            {isAuthenticated || tokenExists ? (
+              <div className="container pt-2">
                 <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-4 d-flex justify-content-center ">
@@ -101,9 +102,12 @@ function ProductsByEvent() {
                   />
                 </div>
               </div>
+            ) : (
+              <AsideLogin />
             )}
           </div>
         </aside>
+        </div>
       
     </>
   );

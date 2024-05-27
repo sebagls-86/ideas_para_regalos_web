@@ -3,69 +3,58 @@
   flex-direction: column;
 }
 
-.singleColumn_signed_in {
-  margin-top: 89.2px;
-}
-
-.banner {
-  background-size: cover;
-  height: 100%;
-  width: 100%;
-}
-
-.events_list {
-  background-color: red; /* Esto es solo para propósitos de prueba, puedes cambiarlo */
-  border-radius: 15px;
-  padding: 1rem; /* Añade espacio alrededor de la lista de eventos */
-}
-
-.events_list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.events_list ul li {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.events_list ul li img {
-  width: 30px; /* Reducir el tamaño de las imágenes */
-  height: 30px; /* Reducir el tamaño de las imágenes */
-  border-radius: 50%;
-  margin-right: 10px;
+.page_title{
+  margin-bottom: 89.2px !important;
 }
 
 .eventImage {
   width: 100%;
-  max-width: 100px; 
-  height: auto;
-  border-radius: 10px;
+  height: 100%;
 }
 
 .row {
   display: flex;
-  flex-wrap: wrap; /* Permitir que las tarjetas se envuelvan en múltiples líneas */
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .row > div {
-  width: calc(50% - 20px); /* Calcula el ancho para 2 tarjetas por fila */
-  margin: 10px;
+  width: 50%;
 }
 
-@media only screen and (min-width: 768px) {
-  .row > div {
-    width: calc(33.33% - 20px); /* Calcula el ancho para 3 tarjetas por fila */
-  }
+.row_logged_in > div {
+  height: 300px;
 }
 
-@media only screen and (min-width: 1024px) {
-  .row > div {
-    width: calc(33.33% - 20px); /* Calcula el ancho para 3 tarjetas por fila */
-  }
+.row_logged_out > div {
+  height: 400px;
 }
+
+.event_info{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  
+}
+.event_info h3{
+  text-transform: uppercase; 
+  font-size: 40px;
+  font-weight: 800;
+}
+.even_event_info {
+  background-color: var(--primary-dark);
+  color: #FFF6D7;
+}
+
+.odd_event_info {
+  background-color: var(--primary-dark);
+  color: #FFF6D7;
+}
+
+.even_event_info {
+  color: var(--primary-dark);
+  background-color:#FFF6D7;
+}  
