@@ -22,7 +22,7 @@ function UsersPage() {
   return (
     <>
       {!user}
-      <NavBar />
+    
       <div className="contenedor">
      
         <div className="left__aside">{(isAuthenticated) && <Nav />}</div>

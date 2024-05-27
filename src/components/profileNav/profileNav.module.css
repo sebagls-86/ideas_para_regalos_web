@@ -14,7 +14,7 @@
     }
 
     .profileContentMobile{
-        display: inline-block;
+        display: block;
     }
     .profileContent{
         display: none;

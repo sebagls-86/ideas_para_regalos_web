@@ -31,7 +31,7 @@ function ExplorarPage() {
   return (
     <>
       {isAuthenticated}
-      <NavBar />
+      {!isAuthenticated && <NavBar />} 
       <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
         {isAuthenticated && (
           <div className="left__aside">
@@ -105,11 +105,11 @@ function ExplorarPage() {
               breakpoints={{
                 640: {
                   slidesPerView: 3,
-                  spaceBetween: 20,
+                  spaceBetween: 10,
                 },
                 1024: {
                   slidesPerView: isAuthenticated ? 2 : 4,
-                  spaceBetween: 100,
+                  spaceBetween: 30,
                 },
                 1280: {
                   slidesPerView: 5,

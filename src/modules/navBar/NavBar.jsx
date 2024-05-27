@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./navBar.module.css";
 import { Link } from "react-router-dom";
-import logoimg from "../../assets/logo_mascota_ipr.svg";
+import logoimg from "../../assets/buttons/logo.svg";
 import logotext from "../../assets/logo_letras_ipr.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -27,7 +27,7 @@ function NavBar() {
         <div className={styles.logo__container}>
           <Link to="/" >
           <img src={logoimg} alt="Logo ideas para regalos" />
-          <img src={logotext} alt="Logo ideas para regalos" />
+          {/*<img src={logotext} alt="Logo ideas para regalos" />*/}
           </Link>
         </div>
         <div className={styles.ul__container}>

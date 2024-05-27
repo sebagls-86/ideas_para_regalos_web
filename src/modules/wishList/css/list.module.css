@@ -428,3 +428,10 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media only screen and (max-width: 1024px) {
+  .create_new_container,
+  .edit_buttons, .whole_list {
+    max-width: 90%;
+  }
+}

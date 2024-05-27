@@ -56,7 +56,7 @@ function EventsPage() {
 
   return (
     <>
-      <NavBar />
+      {!isAuthenticated && <NavBar />} 
       <div
         className={`contenedor ${!user && !tokenExists ? "full-width" : ""}`}
       >

@@ -254,15 +254,15 @@ function HomePage() {
 
   return (
     <>
-      <NavBar />
-      <div className="contenedor">
+      {!isAuthenticated && !tokenExists && <NavBar />}
+      <div className={`contenedor ${!isAuthenticated ? "full-width-home" : ""}`}>
         <div className="left__aside">
           {(tokenExists || isAuthenticated) && (
             <Nav userInfo={userInfo?.data} />
           )}
         </div>
         <div className="content">
-          <PageTitle title="Inicio" />
+       <PageTitle title="Inicio" />
           <NuevoRegaloHome />
           <div className="mt-3 bordes-y">
             <Post searchTerm={searchTerm} userInfo={userInfo?.data} /> 
@@ -285,7 +285,7 @@ function HomePage() {
                 </div>
               </>
             )}
-            {!isAuthenticated && !tokenExists && <AsideLogin />}
+           {/* {!isAuthenticated && !tokenExists && <AsideLogin />} */}
           </div>
         </aside>
       </div>

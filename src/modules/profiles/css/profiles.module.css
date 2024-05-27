@@ -574,3 +574,8 @@ border: 0.5px solid var(--Neutral-0, #525558);
   right: 0
 }
 
+@media only screen and (max-width: 1024px) {
+  .create_new_container, .profiles__table{
+    max-width: 90%;
+  }
+}
