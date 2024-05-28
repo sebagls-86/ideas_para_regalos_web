@@ -4,12 +4,15 @@ import styles from "./nuevoRegaloHome.module.css";
 import MyIcon from "../myIcon/MyIcon";
 import { Link } from "react-router-dom";
 import Links from "../link/Links";
+import { useAuth0 } from "@auth0/auth0-react"; 
 
 function NuevoRegaloHome() {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const { isAuthenticated } = useAuth0(); 
+
   return (
     <>
-      <div className={styles.nuevoRegaloContainer}>
+      <div className={`${styles.nuevoRegaloContainer} ${!isAuthenticated ? styles.nuevoRegaloContainerLoggedOut : ''}`}>
         {" "}
         {userInfo && userInfo.data?.avatar ? (
           <div className={styles.avatarContainer}>

@@ -33,9 +33,10 @@ function NavBar() {
         <div className={styles.ul__container}>
           <ul className={styles.links__container}>
             <li className={styles.li_items}>
+              {/*
               <Link to="/eventos" className={styles.links}>
                 Eventos
-              </Link>
+              </Link>*/}
             </li>
             <li>
               <Link to="/explorar" className={styles.links}>
@@ -54,9 +55,10 @@ function NavBar() {
             </li>
              {!tokenExists && !isAuthenticated &&(
               <li>
+                   {/*
                 <Link onClick={() => loginWithRedirect({appState: {returnTo: "/"}})} className={styles.links}>
                   Iniciar sesión
-                </Link>
+                </Link>*/}
               </li>
             )}
 

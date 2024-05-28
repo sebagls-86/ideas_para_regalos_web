@@ -267,4 +267,6 @@ label {
   grid-column-gap: 10px;
 }
 
-
+.post__container_loggedout{
+  padding-left: 2rem;
+}

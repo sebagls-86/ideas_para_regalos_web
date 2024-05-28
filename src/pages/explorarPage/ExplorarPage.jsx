@@ -57,7 +57,10 @@ function ExplorarPage() {
               <img
                 src={banner1}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
+                
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -65,7 +68,9 @@ function ExplorarPage() {
               <img
                 src={banner2}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -73,7 +78,9 @@ function ExplorarPage() {
               <img
                 src={banner3}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -81,7 +88,9 @@ function ExplorarPage() {
               <img
                 src={banner}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
           </Swiper>

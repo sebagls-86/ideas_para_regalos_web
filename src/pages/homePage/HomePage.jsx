@@ -255,27 +255,42 @@ function HomePage() {
   return (
     <>
       {!isAuthenticated && !tokenExists && <NavBar />}
-      <div className={`contenedor ${!isAuthenticated ? "full-width-home" : ""}`}>
-        <div className="left__aside">
+      <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
+        <div
+          className={`left__aside ${
+            !isAuthenticated && !tokenExists ? "left_aside_loggedout" : ""
+          }`}
+        >
           {(tokenExists || isAuthenticated) && (
             <Nav userInfo={userInfo?.data} />
           )}
         </div>
-        <div className="content">
-       <PageTitle title="Inicio" />
-          <NuevoRegaloHome />
-          <div className="mt-3 bordes-y">
-            <Post searchTerm={searchTerm} userInfo={userInfo?.data} /> 
-          </div>
+        <div
+          className={`content ${
+            !isAuthenticated && !tokenExists ? "content_loggedout" : ""
+          }`}
+        >
+           {(tokenExists || isAuthenticated) && (
+             <PageTitle title="Inicio" />
+          )}
+            <NuevoRegaloHome />
+            <div className="mt-3 bordes-y">
+              <Post searchTerm={searchTerm} userInfo={userInfo?.data} />
+            </div>
+        
         </div>
-        <aside className="right__aside">
+        <aside
+          className={`right__aside ${
+            !isAuthenticated && !tokenExists ? "right_aside_loggedout" : ""
+          }`}
+        >
           <div className="container pt-2">
             {(isAuthenticated || tokenExists) && (
               <>
-                <Search onSearch={handleSearch} /> 
+                <Search onSearch={handleSearch} />
                 <EventSnipet />
                 <UserSuggestions userInfo={userInfo?.data} />
-           
+
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
@@ -285,7 +300,7 @@ function HomePage() {
                 </div>
               </>
             )}
-           {/* {!isAuthenticated && !tokenExists && <AsideLogin />} */}
+            {!isAuthenticated && !tokenExists && <AsideLogin />}
           </div>
         </aside>
       </div>

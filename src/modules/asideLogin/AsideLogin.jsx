@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { useAuth0 } from "@auth0/auth0-react";
+import EventSnipet from "../eventSnipet/EventSnipet";
 
 function AsideLogin() {
   const { user, loginWithRedirect } = useAuth0();
@@ -25,12 +26,13 @@ function AsideLogin() {
   if (!user)
     return (
       <>
-        <div className="d-flex flex-column gap-3 mt-3">
-          <Button
+        <div className="d-flex flex-column gap-3 aside-login">
+          <EventSnipet />
+          {/*<Button
             label="Registrarse"
             className="btn primary__button"
             onClick={() => handleRegister()}
-          />
+    />*/}
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
