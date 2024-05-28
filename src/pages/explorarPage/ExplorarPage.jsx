@@ -31,7 +31,7 @@ function ExplorarPage() {
   return (
     <>
       {isAuthenticated}
-      {!isAuthenticated && <NavBar />} 
+      {!isAuthenticated && <NavBar />}
       <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
         {isAuthenticated && (
           <div className="left__aside">
@@ -60,7 +60,6 @@ function ExplorarPage() {
                 className={`${styles.explorar__banner} ${
                   !isAuthenticated ? styles.loggedOutBanner : ""
                 }`}
-                
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -113,16 +112,33 @@ function ExplorarPage() {
               slidesPerView={isAuthenticated ? 3 : 5}
               breakpoints={{
                 640: {
-                  slidesPerView: 3,
-                  spaceBetween: 10,
+                  slidesPerView: isAuthenticated ? 2 : 3,
+                  spaceBetween: 100,
+                },
+                768: {
+                  slidesPerView: isAuthenticated ? 2 : 3,
+                  spaceBetween:  170,
+                },
+                820: {
+                  slidesPerView: 4,
+                  spaceBetween:  180,
                 },
                 1024: {
                   slidesPerView: isAuthenticated ? 2 : 4,
-                  spaceBetween: 30,
+                  spaceBetween: 90,
                 },
                 1280: {
-                  slidesPerView: 5,
+                  slidesPerView: isAuthenticated ? 3 : 5,
                   spaceBetween: 10,
+                },
+                1600: {
+                  slidesPerView: isAuthenticated ? 4 : 6,
+                  spaceBetween: 10,
+                },
+              }}
+              spaceBetween={{
+                768: {
+                  spaceBetween:  isAuthenticated ? 130 : 3,
                 },
               }}
             />

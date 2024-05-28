@@ -54,11 +54,12 @@ export default function SectionFeatured({ slidesPerView, breakpoints }) {
             modules={[Navigation]}
             autoplay={{ delay: 3000 }}
             breakpoints={breakpoints}
+            style={{marginBottom: "2rem"}}
          
           >
             {featured.map((featured, index) => (
               <Link to="" key={index}>
-                <SwiperSlide style={{marginLeft: "2rem"}}>
+                  <SwiperSlide style={{ marginLeft: index === 0 ? "2rem" : 0 }}>
                   <ProductCard
                     image={`${URL_IMAGES}${featured.image_name}`}
                     name={featured.product_name}
