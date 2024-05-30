@@ -12,6 +12,7 @@ import FaqIcon from "../../../src/assets/buttons/faq-icon.svg";
 import AboutUsIcon from "../../../src/assets/buttons/about-icon.svg";
 import Profile from "../../../src/assets/buttons/profile-icon.svg";
 import SignOutIcon from "../../../src/assets/buttons/signout-icon.svg";
+import crearPost from "../../assets/crear__post__nav.svg";
 
 function Nav({ userData }) {
   const navigate = useNavigate();
@@ -92,7 +93,9 @@ function Nav({ userData }) {
             cursor="pointer"
           />
         ) : (
-          <div className={styles.faux_logout} />
+          <Link to="/nuevoRegalo" className={styles.nav__publicar}>
+          <img src={crearPost} alt="Crear publicación" />
+        </Link>
         )}
       </div>
     </nav>
