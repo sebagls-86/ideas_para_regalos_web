@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import EventSnipet from "../eventSnipet/EventSnipet";
+import Search from "../../components/search/Search";
 
 function AsideLogin() {
   const { user, loginWithRedirect } = useAuth0();
@@ -10,15 +11,18 @@ function AsideLogin() {
   const handleLogin = async () => {
     try {
       await loginWithRedirect({ appState: { returnTo: "/" } });
-     } catch (error) {
+    } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
   };
 
   const handleRegister = async () => {
     try {
-      await loginWithRedirect({ appState: { returnTo: "/" }, authorizationParams:{screen_hint: "signup"} });
-     } catch (error) {
+      await loginWithRedirect({
+        appState: { returnTo: "/" },
+        authorizationParams: { screen_hint: "signup" },
+      });
+    } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
   };
@@ -28,18 +32,18 @@ function AsideLogin() {
       <>
         <div className="d-flex flex-column gap-3 aside-login">
           <EventSnipet />
-          {/*<Button
+          <Button
             label="Registrarse"
             className="btn primary__button"
             onClick={() => handleRegister()}
-    />*/}
+          />
           <Button
             label="Iniciar sesión"
             className="btn primary__button-outline"
             onClick={() => handleLogin()}
           />
-         </div>
-         {/* 
+        </div>
+        {/* 
         <div className="d-flex justify-content-center align-items-center gap-5 flex-column flex-xl-row mt-5">
           <Link to="/ayuda" className="fz-17">
             Ayuda

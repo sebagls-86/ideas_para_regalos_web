@@ -12,6 +12,7 @@ import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 import Search from "../../components/search/Search"; // Asegúrate de que esta ruta sea correcta
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
+import Button from "../../components/button/Button";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -21,9 +22,11 @@ function HomePage() {
   const {
     isAuthenticated,
     isLoading,
+    user,
     getAccessTokenWithPopup,
     getAccessTokenSilently,
     logout,
+    loginWithRedirect,
   } = useAuth0();
   const [loading, setLoading] = useState(null);
   const [pendingSurveysResponse, setPendingSurveysResponse] = useState(null);
@@ -252,32 +255,40 @@ function HomePage() {
     console.log("token", storedToken);
   }
 
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      await loginWithRedirect({
+        appState: { returnTo: "/" },
+        authorizationParams: { screen_hint: "signup" },
+      });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
   return (
     <>
-      {!isAuthenticated && !tokenExists && <NavBar />}
-      <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
-        <div
-          className={`left__aside ${
-            !isAuthenticated && !tokenExists ? "left_aside_loggedout" : ""
-          }`}
-        >
-          {(tokenExists || isAuthenticated) && (
-            <Nav userInfo={userInfo?.data} />
-          )}
-        </div>
-        <div
-          className={`content ${
-            !isAuthenticated && !tokenExists ? "content_loggedout" : ""
-          }`}
-        >
-           {(tokenExists || isAuthenticated) && (
-             <PageTitle title="Inicio" />
-          )}
-            <NuevoRegaloHome />
-            <div className="mt-3 bordes-y">
-              <Post searchTerm={searchTerm} userInfo={userInfo?.data} />
-            </div>
+     {/*  {!isAuthenticated && !tokenExists && <NavBar />}*/}
+      <div className="contenedor">
+        <div className="left__aside">
         
+            <Nav userInfo={userInfo?.data} />
+          
+        </div>
+        <div className="content">
+          {(tokenExists || isAuthenticated) && <PageTitle title="Inicio" />}
+          <NuevoRegaloHome />
+          <div className="mt-3 bordes-y">
+            <Post searchTerm={searchTerm} userInfo={userInfo?.data} />
+          </div>
         </div>
         <aside
           className={`right__aside ${
@@ -285,10 +296,10 @@ function HomePage() {
           }`}
         >
           <div className="container pt-2">
+            <Search onSearch={handleSearch} />
+            <EventSnipet />
             {(isAuthenticated || tokenExists) && (
               <>
-                <Search onSearch={handleSearch} />
-                <EventSnipet />
                 <UserSuggestions userInfo={userInfo?.data} />
 
                 <div className="mt-4 d-flex justify-content-center ">
@@ -300,7 +311,23 @@ function HomePage() {
                 </div>
               </>
             )}
-            {!isAuthenticated && !tokenExists && <AsideLogin />}
+            {!isAuthenticated && !tokenExists && (
+              <Button
+                label="Registrarse"
+                className="btn primary__button mt-3"
+                onClick={() => handleRegister()}
+              />
+            )}
+
+            {!isAuthenticated && !tokenExists && (
+              <Button
+                label="Iniciar sesión"
+                className="btn primary__button-outline mt-3"
+                onClick={() => handleLogin()}
+              />
+            )}
+
+           {/*  {!isAuthenticated && !tokenExists && <AsideLogin />}*/}
           </div>
         </aside>
       </div>

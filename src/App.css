@@ -324,17 +324,6 @@ a:focus {
   display: flex;
   padding: 0;
 }
-.left_aside_loggedout{
-display: none;
-}
-.right_aside_loggedout{
-  max-width: 25%;
-  padding-right: .5rem;
-}
-.content_loggedout{
- border-left: 0;
-}
-
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
