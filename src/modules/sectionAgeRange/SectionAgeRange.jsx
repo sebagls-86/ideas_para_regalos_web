@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionAgeRange.module.css";
 import { Link } from "react-router-dom";
+import { Pagination} from "swiper/modules";
 
 export default function SectionAgeRange({ slidesPerView }) {
   const [ageRanges, setAgeRanges] = useState([]);
@@ -38,12 +39,23 @@ export default function SectionAgeRange({ slidesPerView }) {
       ) : (
         <Swiper
           slidesPerView={slidesPerView}
-          spaceBetween={30}
-          pagination={{
-            clickable: true,
-          }}
+          spaceBetween={20}
           loop={true}
           autoplay={{ delay: 3000 }}
+          //modules={[Pagination]}
+          pagination={{
+            dynamicBullets: true,
+          }}
+          breakpoints={{
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            1280: {
+              slidesPerView: 4,
+              spaceBetween: 20,
+            },
+          }}
         >
           {ageRanges.map((ageRange, index) => (
               <SwiperSlide key={index} style={{ marginLeft: "2rem" }}>

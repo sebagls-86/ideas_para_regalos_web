@@ -276,12 +276,10 @@ function HomePage() {
 
   return (
     <>
-     {/*  {!isAuthenticated && !tokenExists && <NavBar />}*/}
+      {/*  {!isAuthenticated && !tokenExists && <NavBar />}*/}
       <div className="contenedor">
         <div className="left__aside">
-        
-            <Nav userInfo={userInfo?.data} />
-          
+          <Nav userInfo={userInfo?.data} />
         </div>
         <div className="content">
           {(tokenExists || isAuthenticated) && <PageTitle title="Inicio" />}
@@ -311,23 +309,7 @@ function HomePage() {
                 </div>
               </>
             )}
-            {!isAuthenticated && !tokenExists && (
-              <Button
-                label="Registrarse"
-                className="btn primary__button mt-3"
-                onClick={() => handleRegister()}
-              />
-            )}
-
-            {!isAuthenticated && !tokenExists && (
-              <Button
-                label="Iniciar sesión"
-                className="btn primary__button-outline mt-3"
-                onClick={() => handleLogin()}
-              />
-            )}
-
-           {/*  {!isAuthenticated && !tokenExists && <AsideLogin />}*/}
+            {!isAuthenticated && !tokenExists && <AsideLogin />}
           </div>
         </aside>
       </div>

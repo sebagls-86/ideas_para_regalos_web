@@ -1,70 +1,82 @@
-.explorar__banner{
-    width: 100%;
+.explorar__banner {
+  width: 100%;
 }
 .productCard h3 {
-    font-size: 1.313rem;
-    padding: 1.5rem;
-  }
-  .productCard {
-    width: calc(33.33% - 20px); /* Ancho de cada tarjeta, dejando un pequeño espacio entre ellas */
-    margin-right: 20px; /* Espacio entre las tarjetas */
-    margin-bottom: 20px; /* Espacio inferior entre las filas */
-    display: inline-block; /* Permite que las tarjetas floten horizontalmente */
-    vertical-align: top; /* Alineación superior de las tarjetas */
-  }
-  .productImage {
-    width: 15.1rem;
-    height: 15.375rem;
-    border-bottom: 0.3px solid #000;
-   
-  }
-  .saveButton {
-    position: absolute;
-    right: 15px;
-    bottom: 80px;
-    border-radius: 25px;
-    background: url(/src/assets/bookmark.svg) center no-repeat;
-    background-color: rgba(217, 217, 217, 0.5);
-    width: 30px;
-    height: 30px;
-    border: none;
-    
-  }
+  font-size: 1.313rem;
+  padding: 1.5rem;
+}
+.productCard {
+  width: calc(
+    33.33% - 20px
+  ); /* Ancho de cada tarjeta, dejando un pequeño espacio entre ellas */
+  margin-right: 20px; /* Espacio entre las tarjetas */
+  margin-bottom: 20px; /* Espacio inferior entre las filas */
+  display: inline-block; /* Permite que las tarjetas floten horizontalmente */
+  vertical-align: top; /* Alineación superior de las tarjetas */
+}
+.productImage {
+  width: 15.1rem;
+  height: 15.375rem;
+  border-bottom: 0.3px solid #000;
+}
+.saveButton {
+  position: absolute;
+  right: 15px;
+  bottom: 80px;
+  border-radius: 25px;
+  background: url(/src/assets/bookmark.svg) center no-repeat;
+  background-color: rgba(217, 217, 217, 0.5);
+  width: 30px;
+  height: 30px;
+  border: none;
+}
 
-  .product_name {
-    font-size: 1.125rem;
-    padding: 0.5rem;
-  }
-  .saveButton:hover{
-      background-color: rgba(217, 217, 217, 0.5);
-      background-image: url(/src/assets/bookmark-clicked.svg);
-  }
-  .saveButton.clicked {
-      background-image: url(/src/assets/bookmark-clicked.svg);
-    }
+.product_name {
+  font-size: 1.125rem;
+  padding: 0.5rem;
+}
+.saveButton:hover {
+  background-color: rgba(217, 217, 217, 0.5);
+  background-image: url(/src/assets/bookmark-clicked.svg);
+}
+.saveButton.clicked {
+  background-image: url(/src/assets/bookmark-clicked.svg);
+}
 
-    .closeButton {
-      cursor: pointer;
-    }
+.closeButton {
+  cursor: pointer;
+}
 
-.card_container{
+.card_container {
   display: flex;
   flex-direction: row;
-}   
-    
+}
+
+.card_container {
+  margin: 5rem auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 1rem;
+  padding: 0 2rem;
+}
+.card_container > div {
+  display: flex;
+  justify-content: center;
+}
+
+.loggedOutBanner {
+  max-height: 500px;
+  object-fit: cover;
+}    
   
-  @media (max-width: 768px) {
-
+@media (max-width: 1024px) {
+  .card_container {
+    gap: 1rem .7rem;
+    padding: 0 .7rem;
   }
-  .card_container{
-    margin: 5rem auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding-left: 1.3rem;
-    gap: 2rem 1rem; 
+}
+@media only screen and (max-width: 768px) {
+  .card_container {
+    padding: .5rem .78rem;
   }
-
-  .loggedOutBanner{
-    max-height: 500px;
-    object-fit: cover;
-  }
+}

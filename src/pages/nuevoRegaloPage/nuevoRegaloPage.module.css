@@ -1,9 +1,11 @@
 .content {
-  margin-top: 60px;
+  /*margin-top: 60px;*/
   padding: 40px;
   display: flex;
   gap: 2rem;
+  padding-bottom: 0;
 }
+
 .select_user_container {
   width: 100%;
 }
@@ -13,4 +15,13 @@
 
 .avatarContainer {
   border-radius: 50%;
+}
+.NuevoRegaloForm{
+ display: flex;
+ justify-content: center;
+}
+@media only screen and (max-width: 1024px) {
+  .content {
+    padding: 20px;
+  }
 }

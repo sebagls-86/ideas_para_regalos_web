@@ -303,8 +303,9 @@ function ModalCreateProfile({
       title={getTitleForStep()}
       show={show}
       contentStyle={{
-        height: "calc(95% - 2rem)",
+        height: "fit-content",
         marginTop: "2rem",
+        paddingBottom: "2rem",
       }}
     >
       <Col>

@@ -10,6 +10,7 @@ import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
 import { useAuth0 } from "@auth0/auth0-react";
+import Search from "../../components/search/Search";
 
 function ProductsByEvent() {
   const [tokenExists, setTokenExists] = React.useState(false);
@@ -18,11 +19,14 @@ function ProductsByEvent() {
   const [eventName, setEventName] = useState("");
   const [loading, setLoading] = useState(true);
   const userInfo = localStorage.getItem("userInfo");
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   const { isAuthenticated } = useAuth0();
-  
+
   useEffect(() => {
     const fetchProductsByEvent = async () => {
       try {
@@ -62,37 +66,39 @@ function ProductsByEvent() {
   return (
     <>
       {!userInfo}
-      <NavBar />
+      { /* <NavBar /> */}
       <div className="contenedor">
         <div className="left__aside">
-          {(userInfo || tokenExists) && <Nav user={userInfo?.displayName} />}
+          <Nav user={userInfo?.displayName} />
         </div>
         <div className="content">
-          <PageTitle title={eventName} />
+          <PageTitle title={eventName} showBackButton={true} />
           <div className={styles.card_container}>
-            
-              {loading ? (
-                <p>Loading...</p>
-              ) : (
-                <>
-                  {products.map((product, index) => (
-                    <ProductCard
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {products.map((product, index) => (
+                  <div>
+                  <ProductCard
                     image={`${URL_IMAGES}${product.image_name}`}
                     name={product.product_name}
                     userId={userId}
                     productId={product.product_catalog_id}
                   />
-                  ))}
-                </>
-              )}
-            </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
-    
+        </div>
+
         <aside className="right__aside">
           <div className="container pt-2">
+            <Search />
+            <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">
-                <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links
@@ -107,8 +113,7 @@ function ProductsByEvent() {
             )}
           </div>
         </aside>
-        </div>
-      
+      </div>
     </>
   );
 }

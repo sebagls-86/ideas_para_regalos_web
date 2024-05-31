@@ -12,7 +12,7 @@
   border-radius: 10px;
   position: relative;
   margin-top: 1rem;
-  margin-right: 20px;
+  /*margin-right: 20px;*/
   display: flex;
   flex-direction: row;
 }
@@ -162,8 +162,7 @@ ul li:last-child{
   align-items: center; 
   justify-content: center;
 }
-@media (max-width: 768px) {
-}
+
 .product_details {
   position: absolute;
   left: 0;
@@ -179,8 +178,8 @@ ul li:last-child{
 @media (max-width: 1024px) {
   .productCard {
     width: 14.5rem !important;
-    height: 21.75rem;
-   
+    height: 21.75rem;  
+    margin-top: 0;
   }
   .productCard h3 {
     top: 30px;
@@ -188,11 +187,26 @@ ul li:last-child{
   .saved_alert{
     font-size: 14px;
   }
-  .saveButton, .saved_alert.show {
-    bottom: 55px;
+  .saveButton{
+    bottom: 57px;
+  }
+   .saved_alert.show {
+    bottom: 53px;
   }
   .saved_alert.show {
     height: 40px;
   }
+  .productCard {
+    width: 12.3rem !important;
+    height: 18.75rem; 
+  }
+  .productImage {
+    max-height: 15.375rem;
+  }
+  .popover {
+    top: 6rem;
+    left: 88%;
+  }
+ 
   
 }

@@ -58,3 +58,12 @@
   color: var(--primary-dark);
   background-color:#FFF6D7;
 }  
+
+@media only screen and (max-width: 1024px) {
+  .row_logged_in > div {
+    height: 230px;
+  }
+  .event_info h3{
+    font-size: 30px;
+  }
+}

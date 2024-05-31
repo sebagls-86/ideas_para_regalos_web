@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionCategory.module.css";
 import { Link } from "react-router-dom";
+import { Pagination} from "swiper/modules";
 
 
 export default function SectionCategory({ slidesPerView }) {
@@ -41,12 +42,24 @@ export default function SectionCategory({ slidesPerView }) {
       ) : (
         <Swiper
           slidesPerView={ slidesPerView }
-          spaceBetween={30}
+          spaceBetween={20}
           pagination={{
-            clickable: true,
+            dynamicBullets: true,
+            clickable: true
           }}
           loop={true}
           autoplay={{ delay: 3000 }}
+          //modules={[Pagination]}
+          breakpoints={{
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            1280: {
+              slidesPerView: 4,
+              spaceBetween: 20,
+            },
+          }}
         >
           {categories.map((category, index) => (
             <SwiperSlide key={index} style={{ marginLeft: "2rem" }}>

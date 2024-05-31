@@ -270,3 +270,6 @@ label {
 .post__container_loggedout{
   padding-left: 2rem;
 }
+.notfound_msg{
+  margin: 1.5rem;
+}

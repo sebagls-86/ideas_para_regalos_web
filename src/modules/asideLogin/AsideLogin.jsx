@@ -31,10 +31,10 @@ function AsideLogin() {
     return (
       <>
         <div className="d-flex flex-column gap-3 aside-login">
-          <EventSnipet />
+
           <Button
             label="Registrarse"
-            className="btn primary__button"
+            className="btn primary__button mt-3"
             onClick={() => handleRegister()}
           />
           <Button

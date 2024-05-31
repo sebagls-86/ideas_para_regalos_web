@@ -19,27 +19,46 @@ import banner1 from "../../assets/banner-promo-1.png";
 import banner2 from "../../assets/banner-promo-2.png";
 import banner3 from "../../assets/banner-promo-3.png";
 import Search from "../../components/search/Search";
+import Button from "../../components/button/Button";
 
 import "swiper/swiper-bundle.css";
 
 function ExplorarPage() {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const userInfo =
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
 
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      await loginWithRedirect({
+        appState: { returnTo: "/" },
+        authorizationParams: { screen_hint: "signup" },
+      });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
   return (
     <>
       {isAuthenticated}
-      {!isAuthenticated && <NavBar />}
-      <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
-        {isAuthenticated && (
-          <div className="left__aside">
-            <Nav userInfo={userInfo} />
-          </div>
-        )}
+      {/*  {!isAuthenticated && <NavBar />}*/}
+      <div className="contenedor">
+        <div className="left__aside">
+          <Nav userInfo={userInfo} />
+        </div>
+
         <div className="content">
-          {isAuthenticated && <PageTitle title="Explorar" />}
+         <PageTitle title="Explorar" />
           <Swiper
             loop={true}
             autoplay={{
@@ -97,74 +116,59 @@ function ExplorarPage() {
           <div className="mt-3">
             <SectionCategory
               title={"Categorías"}
-              slidesPerView={isAuthenticated ? 3 : 4}
+              slidesPerView={4}
             />
             <SectionEvents
               title={"Eventos"}
-              slidesPerView={isAuthenticated ? 3 : 4}
+              slidesPerView={4}
             />
             <SectionAgeRange
               title={"Rango de Edad"}
-              slidesPerView={isAuthenticated ? 3 : 4}
+              slidesPerView={4}
             />
             <SectionFeatured
               title="Productos Destacados"
-              slidesPerView={isAuthenticated ? 3 : 5}
+              slidesPerView={3}
+              spaceBetween={10}
               breakpoints={{
-                640: {
-                  slidesPerView: isAuthenticated ? 2 : 3,
-                  spaceBetween: 100,
-                },
-                768: {
-                  slidesPerView: isAuthenticated ? 2 : 3,
-                  spaceBetween:  170,
-                },
-                820: {
+                1280: {
                   slidesPerView: 4,
-                  spaceBetween:  180,
+                  spaceBetween: 200,
                 },
                 1024: {
-                  slidesPerView: isAuthenticated ? 2 : 4,
-                  spaceBetween: 90,
+                  slidesPerView: 3,
+                  spaceBetween: 50,
                 },
-                1280: {
-                  slidesPerView: isAuthenticated ? 3 : 5,
-                  spaceBetween: 10,
-                },
-                1600: {
-                  slidesPerView: isAuthenticated ? 4 : 6,
-                  spaceBetween: 10,
-                },
-              }}
-              spaceBetween={{
                 768: {
-                  spaceBetween:  isAuthenticated ? 130 : 3,
+                  slidesPerView: 3,
+                  spaceBetween: 50,
                 },
               }}
+            
             />
           </div>
         </div>
-        {isAuthenticated && (
-          <aside className="right__aside">
-            <div className="container pt-2">
-              {isAuthenticated && <Search />}
-              {!isAuthenticated && <AsideLogin />}
-              {isAuthenticated && (
-                <>
-                  <EventSnipet />
-                  <UserSuggestions />
-                  <div className="mt-4 d-flex justify-content-center ">
-                    <Links
-                      title="Post nuevo regalo"
-                      url="/nuevoRegalo"
-                      type={"primary"}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          </aside>
-        )}
+
+        <aside className="right__aside">
+          <div className="container pt-2">
+            <Search />
+            {/*  {!isAuthenticated && <AsideLogin />}*/}
+            <EventSnipet />
+            {isAuthenticated && (
+              <>
+                <UserSuggestions />
+                <div className="mt-4 d-flex justify-content-center ">
+                  <Links
+                    title="Post nuevo regalo"
+                    url="/nuevoRegalo"
+                    type={"primary"}
+                  />
+                </div>
+              </>
+            )}
+            {!isAuthenticated && <AsideLogin />}
+          </div>
+        </aside>
       </div>
     </>
   );

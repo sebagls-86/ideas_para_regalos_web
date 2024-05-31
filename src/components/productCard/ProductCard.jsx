@@ -94,7 +94,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(false);
           setShowPopover(false);
-          setMessage("Se eliminó el producto");
+          setMessage("Se eliminó producto");
           setShowAlert(true);
           fetchData();
         } else {
@@ -119,7 +119,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(true);
           setShowPopover(false);
-          setMessage("Se agregó el producto a la lista");
+          setMessage("Se agregó producto");
           setShowAlert(true);
           fetchData();
         } else {
