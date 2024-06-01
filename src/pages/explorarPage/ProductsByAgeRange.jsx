@@ -10,6 +10,7 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./explorarPage.module.css";
+import Search from "../../components/search/Search";
 
 function ProductsByAgeRange() {
   const { ageRangeId } = useParams();
@@ -18,11 +19,17 @@ function ProductsByAgeRange() {
   const [loading, setLoading] = useState(true);
   const [tokenExists, setTokenExists] = useState(false);
   const { isAuthenticated } = useAuth0();
-  const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
-  const userInfo = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data) || null;
+  const userId =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
+  const userInfo =
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data) ||
+    null;
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-  
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
@@ -60,39 +67,55 @@ function ProductsByAgeRange() {
     }
   }, []);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
-      {isAuthenticated && <NavBar />}
+      {/*  {isAuthenticated && <NavBar />}*/}
       <div className="contenedor">
         <div className="left__aside">
-          {(isAuthenticated || tokenExists) && <Nav userInfo={userInfo} />}
+          <Nav userInfo={userInfo} />
         </div>
         <div className="content">
-          <PageTitle title={categoryName} />
+          <PageTitle title={categoryName} showBackButton={true} />
           <div className={styles.card_container}>
             {loading ? (
               <p>Loading...</p>
             ) : (
               <>
-                {products.map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    image={`${URL_IMAGES}${product.image_name}`}
-                    name={product.product_name}
-                    userId={userId}
-                    productId={product.product_catalog_id}
-                    />
-                ))}
+                {filteredProducts.length === 0 ? (
+                  <p>No se encontraron productos.</p>
+                ) : (
+                  <>
+                    {filteredProducts.map((product, index) => (
+                      <div>
+                        <ProductCard
+                          key={index}
+                          image={`${URL_IMAGES}${product.image_name}`}
+                          name={product.product_name}
+                          userId={userId}
+                          productId={product.product_catalog_id}
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
               </>
             )}
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
+            <Search onSearch={handleSearch} placeholder={"Buscar productos"} />
+            <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">
-                <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links

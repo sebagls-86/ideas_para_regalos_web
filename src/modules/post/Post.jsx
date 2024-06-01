@@ -123,10 +123,10 @@ function Post({ searchTerm }) {
   return (
     <div>
       {!filteredData || filteredData.length === 0 ? (
-        <p>No se encontraron publicaciones con los términos de búsqueda.</p>
+        <p className={styles.notfound_msg}>No se encontraron publicaciones con los términos de búsqueda.</p>
       ) : (
         filteredData.map((post) => (
-          <div className={styles.post__container} key={post.forum_id}>
+          <div className={`${styles.post__container} ${!isAuthenticated && !isLoggedIn ? styles.post__container_loggedout : ''}`} key={post.forum_id}>
             <div className={styles.container__image}>
               <img
                 src={post.avatar}

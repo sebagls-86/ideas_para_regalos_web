@@ -8,7 +8,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
 
-export default function SectionFeatured({ slidesPerView, breakpoints }) {
+export default function SectionFeatured({ slidesPerView, breakpoints, spaceBetween}) {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
@@ -43,22 +43,25 @@ export default function SectionFeatured({ slidesPerView, breakpoints }) {
     <>
       <div className={styles.productsContainer}>
         <h2 className={styles.title}>Productos destacados</h2>
-      </div>
+  
       {loading ? (
           <p>Loading...</p>
         ) : (
           <Swiper
             slidesPerView={slidesPerView}
             navigation={true}
-            spaceBetween={50}
+            spaceBetween={spaceBetween}
             modules={[Navigation]}
             autoplay={{ delay: 3000 }}
             breakpoints={breakpoints}
+            style={{marginBottom: "2rem"}}
+            loop={true}
          
           >
             {featured.map((featured, index) => (
               <Link to="" key={index}>
-                <SwiperSlide style={{marginLeft: "2rem"}}>
+                  <SwiperSlide //style={{ marginLeft: index === 0 ? "2rem" : 0 }}
+                  >
                   <ProductCard
                     image={`${URL_IMAGES}${featured.image_name}`}
                     name={featured.product_name}
@@ -70,6 +73,7 @@ export default function SectionFeatured({ slidesPerView, breakpoints }) {
             ))}
           </Swiper>
         )}
+            </div>
     </>
   );
 }

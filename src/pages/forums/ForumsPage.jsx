@@ -121,9 +121,8 @@ function ForumsPage() {
 
   const handleSendMessage = async () => {
     try {
-
-      if (message === '' & imageFiles.length === 0){
-        return
+      if ((message === "") & (imageFiles.length === 0)) {
+        return;
       }
 
       const formData = new FormData();
@@ -481,15 +480,15 @@ function ForumsPage() {
           confirmButtonText="Confirmar"
         />
       )}
-      {!user && !tokenExists}
-      <NavBar />
+      {/*  {!user && !tokenExists}
+      <NavBar />*/}
       <div className="contenedor">
         <div className="left__aside">
-          {isAuthenticated && <Nav userInfo={userInfo} />}
+          <Nav userInfo={userInfo} />
         </div>
         <div className="content">
           <div>
-            <PageTitle title="Foros" />
+            <PageTitle title="Post"showBackButton={true} />
           </div>
 
           {forumData && forumData.data && (
@@ -668,7 +667,7 @@ function ForumsPage() {
                           <p className={styles.forum_message}>
                             {message.message}
                           </p>
-                          
+
                           {message.image &&
                             Array.isArray(message.image) &&
                             message.image.length > 0 && (
@@ -685,12 +684,10 @@ function ForumsPage() {
                                       alt={`Imagen ${index + 1}`}
                                     />
                                   </div>
-                                  
                                 ))}
                               </div>
                             )}
-                            
-                         
+
                           <p className={styles.forum_date}>
                             {calculateTimeDifference(message.date)}
                           </p>
@@ -884,11 +881,11 @@ function ForumsPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(user || tokenExists) && <Search />}
-            {!user && !tokenExists && <AsideLogin />}
+            {/*   <Search /> */}
+            <EventSnipet />
+
             {(user || tokenExists) && (
               <div>
-                <EventSnipet />
                 <UserSuggestions />
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links
@@ -899,6 +896,7 @@ function ForumsPage() {
                 </div>
               </div>
             )}
+            {!user && !tokenExists && <AsideLogin />}
           </div>
         </aside>
         <EditPostModal

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav from "../../modules/nav/Nav";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
@@ -19,27 +19,51 @@ import banner1 from "../../assets/banner-promo-1.png";
 import banner2 from "../../assets/banner-promo-2.png";
 import banner3 from "../../assets/banner-promo-3.png";
 import Search from "../../components/search/Search";
+import Button from "../../components/button/Button";
 
 import "swiper/swiper-bundle.css";
 
 function ExplorarPage() {
-  const { isAuthenticated } = useAuth0();
+  const [searchTerm, setSearchTerm] = useState("");
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const userInfo =
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
 
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      await loginWithRedirect({
+        appState: { returnTo: "/" },
+        authorizationParams: { screen_hint: "signup" },
+      });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+
   return (
     <>
       {isAuthenticated}
-      <NavBar />
-      <div className={`contenedor ${!isAuthenticated ? "full-width" : ""}`}>
-        {isAuthenticated && (
-          <div className="left__aside">
-            <Nav userInfo={userInfo} />
-          </div>
-        )}
+      {/*  {!isAuthenticated && <NavBar />}*/}
+      <div className="contenedor">
+        <div className="left__aside">
+          <Nav userInfo={userInfo} />
+        </div>
+
         <div className="content">
-          {isAuthenticated && <PageTitle title="Explorar" />}
+         <PageTitle title="Explorar" />
           <Swiper
             loop={true}
             autoplay={{
@@ -57,7 +81,9 @@ function ExplorarPage() {
               <img
                 src={banner1}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -65,7 +91,9 @@ function ExplorarPage() {
               <img
                 src={banner2}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -73,7 +101,9 @@ function ExplorarPage() {
               <img
                 src={banner3}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
             <SwiperSlide>
@@ -81,7 +111,9 @@ function ExplorarPage() {
               <img
                 src={banner}
                 alt="banner"
-                className={styles.explorar__banner}
+                className={`${styles.explorar__banner} ${
+                  !isAuthenticated ? styles.loggedOutBanner : ""
+                }`}
               />
             </SwiperSlide>
           </Swiper>
@@ -89,57 +121,59 @@ function ExplorarPage() {
           <div className="mt-3">
             <SectionCategory
               title={"Categorías"}
-              slidesPerView={isAuthenticated ? 3 : 4}
+              slidesPerView={4}
             />
             <SectionEvents
               title={"Eventos"}
-              slidesPerView={isAuthenticated ? 3 : 4}
+              slidesPerView={4}
             />
             <SectionAgeRange
               title={"Rango de Edad"}
-              slidesPerView={isAuthenticated ? 3 : 4}
+              slidesPerView={4}
             />
             <SectionFeatured
               title="Productos Destacados"
-              slidesPerView={isAuthenticated ? 3 : 5}
+              slidesPerView={3}
+              spaceBetween={10}
               breakpoints={{
-                640: {
-                  slidesPerView: 3,
-                  spaceBetween: 20,
+                1280: {
+                  slidesPerView: 4,
+                  spaceBetween: 200,
                 },
                 1024: {
-                  slidesPerView: isAuthenticated ? 2 : 4,
-                  spaceBetween: 100,
+                  slidesPerView: 3,
+                  spaceBetween: 50,
                 },
-                1280: {
-                  slidesPerView: 5,
-                  spaceBetween: 10,
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 50,
                 },
               }}
+            
             />
           </div>
         </div>
-        {isAuthenticated && (
-          <aside className="right__aside">
-            <div className="container pt-2">
-              {isAuthenticated && <Search />}
-              {!isAuthenticated && <AsideLogin />}
-              {isAuthenticated && (
-                <>
-                  <EventSnipet />
-                  <UserSuggestions />
-                  <div className="mt-4 d-flex justify-content-center ">
-                    <Links
-                      title="Post nuevo regalo"
-                      url="/nuevoRegalo"
-                      type={"primary"}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          </aside>
-        )}
+
+        <aside className="right__aside">
+          <div className="container pt-2">
+            {/*  <Search />*/}
+            {/*  {!isAuthenticated && <AsideLogin />}*/}
+            <EventSnipet />
+            {isAuthenticated && (
+              <>
+                <UserSuggestions />
+                <div className="mt-4 d-flex justify-content-center ">
+                  <Links
+                    title="Post nuevo regalo"
+                    url="/nuevoRegalo"
+                    type={"primary"}
+                  />
+                </div>
+              </>
+            )}
+            {!isAuthenticated && <AsideLogin />}
+          </div>
+        </aside>
       </div>
     </>
   );

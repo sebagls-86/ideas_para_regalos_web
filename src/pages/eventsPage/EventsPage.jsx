@@ -56,37 +56,25 @@ function EventsPage() {
 
   return (
     <>
-      <NavBar />
-      <div
-        className={`contenedor ${!user && !tokenExists ? "full-width" : ""}`}
-      >
-        {isAuthenticated && (
-          <div className="left__aside">
-            <Nav userInfo={userInfo} />
-          </div>
-        )}
+      {/*{!isAuthenticated && <NavBar />} */}
+      <div className="contenedor">
+        <div className="left__aside">
+          <Nav userInfo={userInfo} />
+        </div>
+
         <div className="content">
           <>
-            {isAuthenticated && (
-              <div className={styles.page_title}>
-                <PageTitle title="Eventos" />
-              </div>
-            )}
-            <div
-              className={`${styles.singleColumn} ${styles.singleColumn_signed_in}`}
-            >
+            <div className={styles.page_title}>
+              <PageTitle title="Eventos" />
+            </div>
+
+            <div className={styles.singleColumn}>
               {scheduledEvents.map((event, index) => (
                 <Link
                   to={`/explorar/eventos/${event.event_type_id}`}
                   key={event.scheduled_event_id}
                 >
-                  <div
-                    className={`${styles.row} ${
-                      isAuthenticated
-                        ? styles.row_logged_in
-                        : styles.row_logged_out
-                    }`}
-                  >
+                  <div className={`${styles.row} ${styles.row_logged_in}`}>
                     {index % 2 === 0 ? (
                       <>
                         <div>
@@ -128,27 +116,26 @@ function EventsPage() {
             </div>
           </>
         </div>
-        {isAuthenticated && (
-          <aside className="right__aside">
-            <div className="container pt-2">
-              {isAuthenticated && <Search />}
-              {!isAuthenticated && <AsideLogin />}
-              {isAuthenticated && (
-                <>
-                  <EventSnipet />
-                  <UserSuggestions />
-                  <div className="mt-4 d-flex justify-content-center ">
-                    <Links
-                      title="Post nuevo regalo"
-                      url="/nuevoRegalo"
-                      type={"primary"}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          </aside>
-        )}
+
+        <aside className="right__aside">
+          <div className="container pt-2">
+          {/*  <Search /> */ }
+            <EventSnipet />
+            {!isAuthenticated && <AsideLogin />}
+            {isAuthenticated && (
+              <>
+                <UserSuggestions />
+                <div className="mt-4 d-flex justify-content-center ">
+                  <Links
+                    title="Post nuevo regalo"
+                    url="/nuevoRegalo"
+                    type={"primary"}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </aside>
       </div>
     </>
   );

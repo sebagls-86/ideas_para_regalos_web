@@ -8,11 +8,15 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useParams } from "react-router-dom";
 
-function ProfileNav({ userData}) {
+function ProfileNav({ userData }) {
   const { user_id } = useParams();
   const [reloadProfiles, setReloadProfiles] = useState(false);
   const user__id = parseInt(user_id);
-  const userId = userData?.user_id || (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
+  const userId =
+    userData?.user_id ||
+    (localStorage.getItem("userInfo") &&
+      JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
+    null;
 
   useEffect(() => {
     if (reloadProfiles) {
@@ -42,7 +46,7 @@ function ProfileNav({ userData}) {
             </Tab>
           ) : null}
           <Tab eventKey="likes" title="Me gusta">
-            <Likes/>
+            <Likes />
           </Tab>
         </Tabs>
       </div>
@@ -53,10 +57,10 @@ function ProfileNav({ userData}) {
           className={styles.profileNav}
         >
           <Tab eventKey="publicaciones" title="Publicaciones">
-            <div className="p-3"></div>
+            <PostByUser user_id={user__id} />
           </Tab>
           <Tab eventKey="wishlist" title="Lista">
-            <div className=""> hola</div>
+            <WishList user_id={user__id} />
           </Tab>
         </Tabs>
       </div>

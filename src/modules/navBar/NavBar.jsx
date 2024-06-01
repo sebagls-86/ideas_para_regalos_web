@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./navBar.module.css";
 import { Link } from "react-router-dom";
-import logoimg from "../../assets/logo_mascota_ipr.svg";
+import logoimg from "../../assets/buttons/logo.svg";
 import logotext from "../../assets/logo_letras_ipr.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -27,12 +27,13 @@ function NavBar() {
         <div className={styles.logo__container}>
           <Link to="/" >
           <img src={logoimg} alt="Logo ideas para regalos" />
-          <img src={logotext} alt="Logo ideas para regalos" />
+          {/*<img src={logotext} alt="Logo ideas para regalos" />*/}
           </Link>
         </div>
         <div className={styles.ul__container}>
           <ul className={styles.links__container}>
-            <li className={styles.li_items}>
+              {/*<li className={styles.li_items}>
+            
               <Link to="/eventos" className={styles.links}>
                 Eventos
               </Link>
@@ -41,12 +42,13 @@ function NavBar() {
               <Link to="/explorar" className={styles.links}>
                 Explorar
               </Link>
-            </li>
+            </li>*/}
             <li>
               <Link to="/preguntasFrecuentes" className={styles.links}>
                 FAQ
               </Link>
             </li>
+            
             <li>
               <Link to="/nosotros" className={styles.links}>
                 Nosotros
@@ -54,6 +56,7 @@ function NavBar() {
             </li>
              {!tokenExists && !isAuthenticated &&(
               <li>
+                   
                 <Link onClick={() => loginWithRedirect({appState: {returnTo: "/"}})} className={styles.links}>
                   Iniciar sesión
                 </Link>

@@ -235,6 +235,7 @@
   padding-left: 30px;
   border-radius: 10px;
   border: 0.5px solid;
+  outline: none;
 }
 
 .search_bar svg {
@@ -427,4 +428,11 @@
 .list_edit_buttons{
   display: flex;
   justify-content: space-between;
+}
+
+@media only screen and (max-width: 1024px) {
+  .create_new_container,
+  .edit_buttons, .whole_list {
+    max-width: 90%;
+  }
 }

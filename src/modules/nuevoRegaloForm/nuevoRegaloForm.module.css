@@ -173,8 +173,4 @@
     width: 18px;
   }
 }
-@media only screen and (max-width: 1200px) {
-  .formContainer {
-    padding: 0px 20px;
-  }
-}
+

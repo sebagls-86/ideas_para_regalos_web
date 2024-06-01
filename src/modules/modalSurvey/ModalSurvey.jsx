@@ -203,8 +203,9 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
       title={"Encuesta de regalo"}
       show={true}
       contentStyle={{
-        height: "calc(80% - 2rem)",
+        height: "fit-content",
         marginTop: "5rem",
+        paddingBottom: "5rem"
       }}
     >
       <div className={styles.modal_body}>

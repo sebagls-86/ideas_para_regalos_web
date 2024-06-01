@@ -12,6 +12,7 @@ import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 import Search from "../../components/search/Search"; // Asegúrate de que esta ruta sea correcta
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
+import Button from "../../components/button/Button";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -21,9 +22,11 @@ function HomePage() {
   const {
     isAuthenticated,
     isLoading,
+    user,
     getAccessTokenWithPopup,
     getAccessTokenSilently,
     logout,
+    loginWithRedirect,
   } = useAuth0();
   const [loading, setLoading] = useState(null);
   const [pendingSurveysResponse, setPendingSurveysResponse] = useState(null);
@@ -252,30 +255,51 @@ function HomePage() {
     console.log("token", storedToken);
   }
 
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      await loginWithRedirect({
+        appState: { returnTo: "/" },
+        authorizationParams: { screen_hint: "signup" },
+      });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
   return (
     <>
-      <NavBar />
+      {/*  {!isAuthenticated && !tokenExists && <NavBar />}*/}
       <div className="contenedor">
         <div className="left__aside">
-          {(tokenExists || isAuthenticated) && (
-            <Nav userInfo={userInfo?.data} />
-          )}
+          <Nav userInfo={userInfo?.data} />
         </div>
         <div className="content">
-          <PageTitle title="Inicio" />
+          {(tokenExists || isAuthenticated) && <PageTitle title="Inicio" />}
           <NuevoRegaloHome />
           <div className="mt-3 bordes-y">
-            <Post searchTerm={searchTerm} userInfo={userInfo?.data} /> 
+            <Post searchTerm={searchTerm} userInfo={userInfo?.data} />
           </div>
         </div>
-        <aside className="right__aside">
+        <aside
+          className={`right__aside ${
+            !isAuthenticated && !tokenExists ? "right_aside_loggedout" : ""
+          }`}
+        >
           <div className="container pt-2">
+            <Search onSearch={handleSearch} placeholder={"Buscar publicaciones"}/>
+            <EventSnipet />
             {(isAuthenticated || tokenExists) && (
               <>
-                <Search onSearch={handleSearch} /> 
-                <EventSnipet />
                 <UserSuggestions userInfo={userInfo?.data} />
-           
+
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links
                     title="Post nuevo regalo"
