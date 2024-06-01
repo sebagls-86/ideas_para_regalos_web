@@ -156,7 +156,7 @@ function ExplorarPage() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search />
+            {/*  <Search />*/}
             {/*  {!isAuthenticated && <AsideLogin />}*/}
             <EventSnipet />
             {isAuthenticated && (

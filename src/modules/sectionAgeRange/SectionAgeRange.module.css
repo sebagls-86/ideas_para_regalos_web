@@ -2,10 +2,36 @@
     margin-left: 2rem;
     margin-top: 1.875rem;
 }
+
 .title{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+.searchIcon{
+    width: 25px;
+    height: 25px;
+}
+.searchInput{
     font-weight: 700;
     font-size: var(--fz-25);
     margin-bottom: 0.875rem;
+    border: none;
+    margin-bottom: 0 !important;
+}
+.searchInput::placeholder{
+    color: #0B1215;
+}
+.searchInput:focus{
+    outline: none;
+}
+
+.searchInput:focus::placeholder {
+    color: lightgray; /* Or any lighter color you prefer */
+}
+.nomatch_msg{
+    margin: 2rem;
 }
 .categoryImage{
     width: 103%;
