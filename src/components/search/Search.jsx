@@ -3,7 +3,7 @@ import styles from "./css/search.module.css";
 import { Col } from "react-bootstrap";
 import { FiSearch } from "react-icons/fi";
 
-function Search({ onSearch }) {
+function Search({ onSearch, placeholder }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
@@ -20,7 +20,7 @@ function Search({ onSearch }) {
         <input
           className={styles.input}
           type="text"
-          placeholder="Buscar"
+          placeholder={placeholder}
           value={searchTerm}
           onChange={handleChange}
         />

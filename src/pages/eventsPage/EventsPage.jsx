@@ -119,7 +119,7 @@ function EventsPage() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search />
+          {/*  <Search /> */ }
             <EventSnipet />
             {!isAuthenticated && <AsideLogin />}
             {isAuthenticated && (

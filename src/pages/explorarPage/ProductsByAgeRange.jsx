@@ -75,39 +75,44 @@ function ProductsByAgeRange() {
     product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
   return (
     <>
       {/*  {isAuthenticated && <NavBar />}*/}
       <div className="contenedor">
         <div className="left__aside">
-        <Nav userInfo={userInfo} />
+          <Nav userInfo={userInfo} />
         </div>
         <div className="content">
-        <PageTitle title={categoryName} showBackButton={true} />
+          <PageTitle title={categoryName} showBackButton={true} />
           <div className={styles.card_container}>
             {loading ? (
               <p>Loading...</p>
             ) : (
               <>
-         {filteredProducts.map((product, index) => (
-                  <div>
-                  <ProductCard
-                    key={index}
-                    image={`${URL_IMAGES}${product.image_name}`}
-                    name={product.product_name}
-                    userId={userId}
-                    productId={product.product_catalog_id}
-                  />
-                  </div>
-                ))}
+                {filteredProducts.length === 0 ? (
+                  <p>No se encontraron productos.</p>
+                ) : (
+                  <>
+                    {filteredProducts.map((product, index) => (
+                      <div>
+                        <ProductCard
+                          key={index}
+                          image={`${URL_IMAGES}${product.image_name}`}
+                          name={product.product_name}
+                          userId={userId}
+                          productId={product.product_catalog_id}
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
               </>
             )}
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-          <Search onSearch={handleSearch} />
+            <Search onSearch={handleSearch} placeholder={"Buscar productos"} />
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">

@@ -89,6 +89,11 @@ function ProductsByCategory() {
               <p>Loading...</p>
             ) : (
               <>
+              {filteredProducts.length === 0 ? (
+                <p>No se encontraron productos.</p>
+              ) : (
+                
+              <>
                 {filteredProducts.map((product, index) => (
                   <div>
                     <ProductCard
@@ -97,16 +102,18 @@ function ProductsByCategory() {
                       name={product.product_name}
                       userId={userId}
                       productId={product.product_catalog_id}
-                    />
-                  </div>
-                ))}
+                      />
+                      </div>
+                    ))}
+                  </>
+                )}
               </>
             )}
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search onSearch={handleSearch} />
+            <Search onSearch={handleSearch}  placeholder={"Buscar productos"}/>
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">

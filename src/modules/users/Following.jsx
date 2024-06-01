@@ -35,7 +35,7 @@ function Following() {
   return (
     <div>
       <div className={styles.search_bar}>
-        <Search onSearch={handleSearch} />
+        <Search onSearch={handleSearch} placeholder={"Buscar usuarios"} />
       </div>
       {following.length > 0 ? (
         following

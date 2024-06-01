@@ -72,11 +72,10 @@ function ProductsByEvent() {
     product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
   return (
     <>
       {!userInfo}
-      { /* <NavBar /> */}
+      {/* <NavBar /> */}
       <div className="contenedor">
         <div className="left__aside">
           <Nav user={userInfo?.displayName} />
@@ -88,16 +87,22 @@ function ProductsByEvent() {
               <p>Loading...</p>
             ) : (
               <>
-                {filteredProducts.map((product, index) => (
-                  <div>
-                  <ProductCard
-                    image={`${URL_IMAGES}${product.image_name}`}
-                    name={product.product_name}
-                    userId={userId}
-                    productId={product.product_catalog_id}
-                  />
-                  </div>
-                ))}
+                {filteredProducts.length === 0 ? (
+                  <p>No se encontraron productos.</p>
+                ) : (
+                  <>
+                    {filteredProducts.map((product, index) => (
+                      <div>
+                        <ProductCard
+                          image={`${URL_IMAGES}${product.image_name}`}
+                          name={product.product_name}
+                          userId={userId}
+                          productId={product.product_catalog_id}
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
               </>
             )}
           </div>
@@ -105,7 +110,7 @@ function ProductsByEvent() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-          <Search onSearch={handleSearch} />
+            <Search onSearch={handleSearch}  placeholder={"Buscar productos"} />
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">

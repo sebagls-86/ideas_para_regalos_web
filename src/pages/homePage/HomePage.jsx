@@ -294,7 +294,7 @@ function HomePage() {
           }`}
         >
           <div className="container pt-2">
-            <Search onSearch={handleSearch} />
+            <Search onSearch={handleSearch} placeholder={"Buscar publicaciones"}/>
             <EventSnipet />
             {(isAuthenticated || tokenExists) && (
               <>
