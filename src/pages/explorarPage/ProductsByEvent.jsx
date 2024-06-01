@@ -26,6 +26,7 @@ function ProductsByEvent() {
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   const { isAuthenticated } = useAuth0();
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchProductsByEvent = async () => {
@@ -63,6 +64,15 @@ function ProductsByEvent() {
     }
   }, []);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+
   return (
     <>
       {!userInfo}
@@ -78,7 +88,7 @@ function ProductsByEvent() {
               <p>Loading...</p>
             ) : (
               <>
-                {products.map((product, index) => (
+                {filteredProducts.map((product, index) => (
                   <div>
                   <ProductCard
                     image={`${URL_IMAGES}${product.image_name}`}
@@ -95,7 +105,7 @@ function ProductsByEvent() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search />
+          <Search onSearch={handleSearch} />
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">

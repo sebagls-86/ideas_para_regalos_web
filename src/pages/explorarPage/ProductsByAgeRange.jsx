@@ -29,6 +29,7 @@ function ProductsByAgeRange() {
     null;
   const API_URL = process.env.REACT_APP_API_URL;
   const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
@@ -66,6 +67,15 @@ function ProductsByAgeRange() {
     }
   }, []);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+
   return (
     <>
       {/*  {isAuthenticated && <NavBar />}*/}
@@ -80,7 +90,7 @@ function ProductsByAgeRange() {
               <p>Loading...</p>
             ) : (
               <>
-                {products.map((product, index) => (
+         {filteredProducts.map((product, index) => (
                   <div>
                   <ProductCard
                     key={index}
@@ -97,7 +107,7 @@ function ProductsByAgeRange() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search />
+          <Search onSearch={handleSearch} />
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
               <div className="container pt-2">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav from "../../modules/nav/Nav";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
@@ -24,6 +24,7 @@ import Button from "../../components/button/Button";
 import "swiper/swiper-bundle.css";
 
 function ExplorarPage() {
+  const [searchTerm, setSearchTerm] = useState("");
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const userInfo =
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
@@ -47,6 +48,10 @@ function ExplorarPage() {
       console.error("Error al iniciar sesión:", error);
     }
   };
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
 
   return (
     <>
