@@ -663,23 +663,29 @@ function WishList() {
             </div>
 
             <div className="d-flex gap-2">
-              <Button
-                onClick={() => setShowCreateListModal(true)}
-                className={styles.create_new_button}
-              >
-                <AiOutlinePlus />
-                Nueva lista
-              </Button>
-              {!listData?.some((list) => list.list_name === "MercadoLibre") && (
-                <Button
-                  onClick={() => {
-                    window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
-                  }}
-                  className={styles.create_new_button}
-                >
-                  <AiOutlinePlus />
-                  Favoritos de Mercado Libre
-                </Button>
+              {tokenUserId === userId && (
+                <>
+                  <Button
+                    onClick={() => setShowCreateListModal(true)}
+                    className={styles.create_new_button}
+                  >
+                    <AiOutlinePlus />
+                    Nueva lista
+                  </Button>
+                  {!listData?.some(
+                    (list) => list.list_name === "MercadoLibre"
+                  ) && (
+                    <Button
+                      onClick={() => {
+                        window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
+                      }}
+                      className={styles.create_new_button}
+                    >
+                      <AiOutlinePlus />
+                      Favoritos de Mercado Libre
+                    </Button>
+                  )}
+                </>
               )}
             </div>
           </div>
