@@ -361,7 +361,7 @@ function WishList() {
         body: JSON.stringify({ list_name: editedListName }),
       });
       if (response.ok) {
-        setSuccessMessage("Lista eliminada correctamente");
+        setSuccessMessage("Lista editada correctamente");
         const updatedListData = listData.map((listItem) => {
           if (listItem.list_id === list.list_id) {
             return {
