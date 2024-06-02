@@ -297,35 +297,34 @@ function MyAccountPage({ userInfo }) {
                 <p>@{userData.user_name}</p>
                 <p>{userData.birth_date}</p>
               </div>
-              {userId !== user__id ? (
-                isUserFollowing() ? (
-                  <Button
-                    label="Seguir"
-                    className={styles.custom__button}
-                    onClick={handleFollow}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    {isHovered ? "Dejar de seguir" : "Siguiendo"}
-                  </Button>
-                ) : (
-                  <Button
-                    label="Seguir"
-                    className={styles.custom__button}
-                    onClick={handleFollow}
-                  >
-                    Seguir
-                  </Button>
-                )
-              ) : (
-                <Button
-                  label="Editar"
-                  className={styles.edit__button}
-                  onClick={handleEditClick}
-                >
-                  Editar
-                </Button>
-              )}
+              <div>
+  {userId === user__id ? (
+    <Button className={styles.edit__button} onClick={handleEditClick}>
+      Editar
+    </Button>
+  ) : (
+<Button
+  className={`${styles.custom__button} ${
+    isUserFollowing()
+      ? isHovered
+        ? styles.followingHovered
+        : styles.following
+      : styles.notFollowing
+  }`}
+  onClick={handleFollow}
+  onMouseEnter={handleMouseEnter}
+  onMouseLeave={handleMouseLeave}
+>
+  {isUserFollowing()
+    ? isHovered
+      ? "Dejar de seguir"
+      : "Siguiendo"
+    : "Seguir"}
+</Button>
+
+  )}
+</div>
+
             </div>
             <ProfileNav userInfo={userInfo}></ProfileNav>
           </div>
