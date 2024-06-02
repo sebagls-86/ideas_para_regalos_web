@@ -43,7 +43,7 @@ function ForumsLikes() {
     <div>
       <div className={styles.forumsContainer}>
         {forums === null || forums.length === 0 ? (
-          <p>No hay foros disponibles.</p>
+          <p className="m-4">Todavía no diste 'me gusta' a ninguna publicación.</p>
         ) : (
           forums.map((forum) => (
             <Link

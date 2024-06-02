@@ -85,6 +85,12 @@
 }
 .modal_edit_profile input{
   height: 48px;
+  border: 0.4px solid #000;
+}
+.modal_edit_profile input:focus{
+  outline: none !important;
+  border-color: inherit !important;
+  box-shadow: 0 !important;
 }
 .modal_footer{
   margin-top: 1.5rem;

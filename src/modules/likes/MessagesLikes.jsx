@@ -74,7 +74,7 @@ function MessagesLikes() {
             </Link>
           ))
         ) : (
-          <p>No hay mensajes disponibles.</p>
+          <p className="m-4">Todavía no diste 'me gusta' a ningún comentario.</p>
         )}
       </div>
     </div>

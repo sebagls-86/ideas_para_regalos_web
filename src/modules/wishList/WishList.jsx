@@ -43,7 +43,7 @@ function WishList() {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
   const [listColors, setListColors] = useState({});
-  const {logout} = useAuth0()
+  const { logout } = useAuth0();
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
@@ -75,7 +75,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-         }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -125,7 +125,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-         }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -241,7 +241,7 @@ function WishList() {
       const { list, productId } = productToRemove;
       const listId = list.list_id;
 
-          const response = await fetch(
+      const response = await fetch(
         `${API_URL}/lists/${listId}/list-products/${productId}`,
         {
           method: "DELETE",
@@ -275,8 +275,8 @@ function WishList() {
             "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
           );
           localStorage.removeItem("token");
-          localStorage.removeItem("userInfo")
-          logout()
+          localStorage.removeItem("userInfo");
+          logout();
           navigate("/");
           setShowResponseModal(true);
         } else if (!response.ok) {
@@ -406,17 +406,17 @@ function WishList() {
         body: JSON.stringify(dataToSend),
       });
       if (response.ok) {
-        setSuccessMessage("Lista creada correctamente")
+        setSuccessMessage("Lista creada correctamente");
         const data = await response.json();
         setListData([...listData, data.data]);
         setShowCreateListModal(false);
         setShowResponseModal(true);
       } else {
-        setErrorMessage("Error al crear lista")
-        setShowResponseModal(true);       
+        setErrorMessage("Error al crear lista");
+        setShowResponseModal(true);
       }
     } catch (error) {
-      setErrorMessage("Error al enviar solicitud de creación de la lista")
+      setErrorMessage("Error al enviar solicitud de creación de la lista");
       setShowResponseModal(true);
     }
   };
@@ -503,7 +503,7 @@ function WishList() {
                   className={styles.go_back_button}
                 ></Button>{" "}
               </div>
-              <p className={styles.list_name_more }>MercadoLibre</p>
+              <p className={styles.list_name_more}>MercadoLibre</p>
               {/* Renderizar los favoritos de MercadoLibre */}
               <div className={styles.meli_cards_container}>
                 {meliFavoritesData.map((favorite, index) => (
@@ -547,35 +547,35 @@ function WishList() {
                           onChange={handleInputChange}
                         />
                         <div>
-                        <Button
-                          className={styles.cancel_edit_button}
-                          onClick={() => {
-                            setEditMode(false);
-                            setEditedListName(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
-                              ).list_name
-                            );
-                          }}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          className={styles.save_edit_button}
-                          onClick={() =>
-                            handleSaveEditListName(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
+                          <Button
+                            className={styles.cancel_edit_button}
+                            onClick={() => {
+                              setEditMode(false);
+                              setEditedListName(
+                                listData.find(
+                                  (list) => list.list_id === selectedListId
+                                ).list_name
+                              );
+                            }}
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            className={styles.save_edit_button}
+                            onClick={() =>
+                              handleSaveEditListName(
+                                listData.find(
+                                  (list) => list.list_id === selectedListId
+                                )
                               )
-                            )
-                          }
-                        >
-                          Guardar
-                        </Button>
+                            }
+                          >
+                            Guardar
+                          </Button>
                         </div>
                       </div>
                     ) : (
-                      <p className={styles.list_name_more }>
+                      <p className={styles.list_name_more}>
                         {
                           listData.find(
                             (list) => list.list_id === selectedListId
@@ -642,46 +642,46 @@ function WishList() {
         <div>
           <div className={styles.create_new_container}>
             <div className={styles.search_bar}>
-              <form style={{ position: "relative" }}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ flex: 1 }}
+              <input
+                ref={inputRef}
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ flex: 1 }}
+              />
+              {!searchTerm ? (
+                <IoIosSearch
+                  className={styles.icon_style}
+                  onClick={handleSearchClick}
                 />
-                {!searchTerm ? (
-                  <IoIosSearch
-                    className={styles.icon_style}
-                    onClick={handleSearchClick}
-                  />
-                ) : (
-                  <IoMdClose
-                    className={styles.icon_style}
-                    onClick={handleClearClick}
-                  />
-                )}
-              </form>
+              ) : (
+                <IoMdClose
+                  className={styles.icon_style}
+                  onClick={handleClearClick}
+                />
+              )}
             </div>
 
-            <Button
-              onClick={() => setShowCreateListModal(true)}
-              className={styles.create_new_button}
-            >
-              <AiOutlinePlus />
-              Nueva lista
-            </Button>
-            {!listData?.some((list) => list.list_name === "MercadoLibre") && (
+            <div className="d-flex gap-2">
               <Button
-                onClick={() => {
-                  window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
-                }}
+                onClick={() => setShowCreateListModal(true)}
                 className={styles.create_new_button}
               >
                 <AiOutlinePlus />
-                Favoritos de MercadoLibre
+                Nueva lista
               </Button>
-            )}
+              {!listData?.some((list) => list.list_name === "MercadoLibre") && (
+                <Button
+                  onClick={() => {
+                    window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
+                  }}
+                  className={styles.create_new_button}
+                >
+                  <AiOutlinePlus />
+                  Favoritos de Mercado Libre
+                </Button>
+              )}
+            </div>
           </div>
           <div className={styles.whole_list}>
             {loading && <Spinner />}
@@ -700,9 +700,7 @@ function WishList() {
                   <div className={styles.list__content}>
                     <div>
                       <div>
-                        <p className={styles.list_name}>
-                          {list.list_name}
-                        </p>
+                        <p className={styles.list_name}>{list.list_name}</p>
                       </div>
                       {userId === tokenUserId && (
                         <div className={styles.more__actions}>

@@ -14,10 +14,10 @@ function Actividad() {
           id="uncontrolled-tab-example"
           className={styles.tabContainer}
         >
-          <Tab eventKey="foros" title="Foros">
+          <Tab eventKey="foros" title="Publicaciones">
            <Forums/>
           </Tab>
-          <Tab eventKey="mensajes" title="Mensajes">
+          <Tab eventKey="mensajes" title="Comentarios">
            <Messages/>
           </Tab>
         </Tabs>

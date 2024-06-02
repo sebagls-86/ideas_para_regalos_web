@@ -10,6 +10,9 @@
     border: 0.4px solid #000;
 
 }
+.input_modal:focus{
+  outline: none;
+}
 
 .buttons__container {
   display: flex;

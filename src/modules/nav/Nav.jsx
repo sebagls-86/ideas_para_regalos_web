@@ -39,19 +39,36 @@ function Nav({ userData }) {
         <NavLinks
           url="/explorar"
           icon={
-            <img src={ExploreIcon} alt="Explorar" className="fw-700 fs-3" />
+            <img
+              src={ExploreIcon}
+              alt="Explorar"
+              className="fw-700 fs-3"
+              title="Explorar"
+            />
           }
         />
 
         <NavLinks
           url="/eventos"
-          icon={<img src={EventIcon} alt="Eventos" className="fw-700 fs-3" />}
+          icon={
+            <img
+              src={EventIcon}
+              alt="Eventos"
+              className="fw-700 fs-3"
+              title="Eventos"
+            />
+          }
         />
         {isAuthenticated && (
           <NavLinks
             url="/users"
             icon={
-              <img src={ActivityIcon} alt="Actividad" className="fw-700 fs-3" />
+              <img
+                src={ActivityIcon}
+                alt="Actividad"
+                className="fw-700 fs-3"
+                title="Actividad"
+              />
             }
           />
         )}
@@ -60,22 +77,35 @@ function Nav({ userData }) {
           icon={
             <img
               src={FaqIcon}
-              alt="Preguntas Frecuentes"
+              alt="Preguntas frecuentes"
               className="fw-700 fs-3"
+              title="Preguntas frecuentes"
             />
           }
         />
         <NavLinks
           url="/nosotros"
           icon={
-            <img src={AboutUsIcon} alt="Nosotros" className="fw-700 fs-3" />
+            <img
+              src={AboutUsIcon}
+              alt="Nosotros"
+              className="fw-700 fs-3"
+              title="Nosotros"
+            />
           }
         />
 
         {isAuthenticated && (
           <NavLinks
             url={`/perfil/${user_id}`}
-            icon={<img src={Profile} alt="Perfil" className="fw-700 fs-3" />}
+            icon={
+              <img
+                src={Profile}
+                alt="Mi perfil"
+                className="fw-700 fs-3"
+                title="Mi perfil"
+              />
+            }
           />
         )}
       </ul>
@@ -91,11 +121,16 @@ function Nav({ userData }) {
             }}
             className="fw-700 fs-3"
             cursor="pointer"
+            title="Cerrar sesión"
           />
         ) : (
           <Link to="/nuevoRegalo" className={styles.nav__publicar}>
-          <img src={crearPost} alt="Crear publicación" />
-        </Link>
+            <img
+              src={crearPost}
+              alt="Crear publicación"
+              title="Crear publicación"
+            />
+          </Link>
         )}
       </div>
     </nav>

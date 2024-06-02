@@ -90,6 +90,9 @@
   resize: none;
   height: 3rem;
 }
+.text_area:focus{
+  outline-color:lightgray;
+}
 
 .send_button,
 .send_button:hover {
@@ -103,6 +106,12 @@
   /* position: absolute;*/
   right: 0;
   /*transform: translate(-50%, 0%);*/
+}
+.send_button_disabled {
+  background-color: white !important;
+  color: #6c757d !important;
+  border: 1px solid #333333 !important;
+  cursor: not-allowed;
 }
 
 .attach_img_btn,

@@ -4,3 +4,6 @@
     padding-inline: 10px;
 
 }
+.content:is(:hover, :active, :focus){
+    background-color: #d9d9d9;
+}

@@ -1,22 +1,21 @@
-.profileNav{
-    justify-content: space-evenly;
-    font-size: var(--fz-17);
+.profileNav {
+  justify-content: space-evenly;
+  font-size: var(--fz-17);
 }
-.profileContentMobile{
-    display: none;
+.profileContentMobile {
+  display: none;
 }
-
 
 @media only screen and (max-width: 768px) {
-    .profileNav{
-      
-        width: 100vw;
-    }
-
-    .profileContentMobile{
-        display: block;
-    }
-    .profileContent{
-        display: none;
-    }
+  .profileContentMobile {
+    display: block;
+  }
+  .profileContent {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .profileNav {
+    font-size: inherit;
+  }
 }

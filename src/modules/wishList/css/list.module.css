@@ -10,7 +10,7 @@
 }
 .list__content {
   width: 100%;
-  max-width: 70%;
+  max-width: 75%;
   margin: 1rem auto;
   margin-top: 0;
 }
@@ -210,10 +210,13 @@
 .edit_buttons {
   display: flex;
   justify-content: space-between;
-  max-width: 70%;
+  max-width: 75%;
   margin: 0 auto;
   width: 100%;
   padding: 25px 0px;
+}
+.create_new_container{
+  align-items: center;
 }
 
 .back_button {
@@ -271,7 +274,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   width: 100%;
-  max-width: 70%;
+  max-width: 75%;
   margin: 0 auto;
 }
 .list__container {
@@ -432,7 +435,12 @@
 
 @media only screen and (max-width: 1024px) {
   .create_new_container,
-  .edit_buttons, .whole_list {
+  .edit_buttons, .whole_list, .list__content  {
     max-width: 90%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .search_bar{
+    max-width: 250px;
   }
 }

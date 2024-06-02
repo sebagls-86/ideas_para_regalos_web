@@ -352,8 +352,9 @@ function MyAccountPage({ userInfo }) {
         title={"Editar mi perfil"}
         show={showModal}
         contentStyle={{
-          height: "calc(80% - 2rem)",
+          height: "fit-content",
           marginTop: "5rem",
+          paddingBottom: "5rem",
         }}
       >
         <form>

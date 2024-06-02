@@ -62,6 +62,11 @@ function ProfileNav({ userData }) {
           <Tab eventKey="wishlist" title="Lista">
             <WishList user_id={user__id} />
           </Tab>
+          {userId === user__id ? (
+            <Tab eventKey="profiles" title="Perfiles">
+              <Profiles reload={reloadProfiles} />
+            </Tab>
+          ) : null}
         </Tabs>
       </div>
     </>
