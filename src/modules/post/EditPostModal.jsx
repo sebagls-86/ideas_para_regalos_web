@@ -451,8 +451,7 @@ function EditPostModal({
                         )}
                         {!otherEventName && (
                           <span
-                            className="text-primary"
-                            style={{ cursor: "pointer" }}
+                            style={{ cursor: "pointer" , color: "green"}}
 
                             onClick={() =>
                               setOtherEventName(originalPost.event_name)
