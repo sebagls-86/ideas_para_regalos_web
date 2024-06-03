@@ -520,22 +520,24 @@ function WishList() {
             </div>
           ) : (
             <div>
-              <div className={styles.edit_buttons}>
-                <Button
-                  onClick={() => setSelectedListId(null)}
-                  className={styles.go_back_button}
-                ></Button>{" "}
-                <Button
-                  className={styles.create_new_button}
-                  onClick={() =>
-                    handleEditListName(
-                      listData.find((list) => list.list_id === selectedListId)
-                    )
-                  }
-                >
-                  Editar
-                </Button>
-              </div>
+            {tokenUserId === userId && (
+  <div className={styles.edit_buttons}>
+    <Button
+      onClick={() => setSelectedListId(null)}
+      className={styles.go_back_button}
+    ></Button>
+    <Button
+      className={styles.create_new_button}
+      onClick={() =>
+        handleEditListName(
+          listData.find((list) => list.list_id === selectedListId)
+        )
+      }
+    >
+      Editar
+    </Button>
+  </div>
+)}
               <div className={styles.list__content}>
                 <div>
                   <div>
@@ -628,12 +630,14 @@ function WishList() {
                     <p>No hay productos todavía</p>
                   )}
                 </div>
-                <Button
-                  className={styles.create_new_button}
-                  onClick={() => navigate("/explorar")}
-                >
-                  Agregar
-                </Button>
+                {tokenUserId === userId && (
+  <Button
+    className={styles.create_new_button}
+    onClick={() => navigate("/explorar")}
+  >
+    Agregar
+  </Button>
+)}
               </div>
             </div>
           )}

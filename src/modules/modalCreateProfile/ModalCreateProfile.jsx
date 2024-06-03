@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../components/modal/Modal";
 import styles from "./modalCreateProfile.module.css";
 import { Col } from "react-bootstrap";
-import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 import SelectButton from "../../components/selectButton/SelectButton";
 import { fetchAvailableInterests, fetchAgeRanges, fetchRelationships } from "../api/api";
@@ -122,7 +121,7 @@ function ModalCreateProfile({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const filteredValue = value.replace(/[^a-zA-Z]/g, '');
+    const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
     
     setForm({
       ...form,
@@ -158,7 +157,6 @@ function ModalCreateProfile({
       selectedRelationship: "",
     });
 
-    console.log(form)
     setSelectedAgeOption(null);
     setSelectedRelationshipOption(null);
     onHide();

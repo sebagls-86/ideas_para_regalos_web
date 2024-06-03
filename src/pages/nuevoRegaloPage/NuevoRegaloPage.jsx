@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../../modules/nav/Nav";
 import { Col } from "react-bootstrap";
-import Search from "../../components/search/Search";
 import styles from "./nuevoRegaloPage.module.css";
 import LoginMobile from "../../modules/loginMobile/LoginMobile";
-import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
-import Links from "../../components/link/Links";
-import PageTitle from "../../components/pageTitle/PageTitle";
 import SelectButton from "../../components/selectButton/SelectButton";
 import NuevoRegaloForm from "../../modules/nuevoRegaloForm/NuevoRegaloForm";
 import ModalCreateProfile from "../../modules/modalCreateProfile/ModalCreateProfile";
@@ -300,21 +296,11 @@ function NuevoRegaloPage() {
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {/*{(isAuthenticated) && <Search />} */}
             {!isAuthenticated && <AsideLogin />}{" "}
             {isAuthenticated && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />
-                {/* 
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-                */}
               </div>
             )}
           </div>
