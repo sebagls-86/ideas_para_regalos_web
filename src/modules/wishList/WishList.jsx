@@ -520,24 +520,24 @@ function WishList() {
             </div>
           ) : (
             <div>
-            {tokenUserId === userId && (
-  <div className={styles.edit_buttons}>
-    <Button
-      onClick={() => setSelectedListId(null)}
-      className={styles.go_back_button}
-    ></Button>
-    <Button
-      className={styles.create_new_button}
-      onClick={() =>
-        handleEditListName(
-          listData.find((list) => list.list_id === selectedListId)
-        )
-      }
-    >
-      Editar
-    </Button>
-  </div>
-)}
+              {tokenUserId === userId && (
+                <div className={styles.edit_buttons}>
+                  <Button
+                    onClick={() => setSelectedListId(null)}
+                    className={styles.go_back_button}
+                  ></Button>
+                  <Button
+                    className={styles.create_new_button}
+                    onClick={() =>
+                      handleEditListName(
+                        listData.find((list) => list.list_id === selectedListId)
+                      )
+                    }
+                  >
+                    Editar
+                  </Button>
+                </div>
+              )}
               <div className={styles.list__content}>
                 <div>
                   <div>
@@ -577,13 +577,23 @@ function WishList() {
                         </div>
                       </div>
                     ) : (
-                      <p className={styles.list_name_more}>
-                        {
-                          listData.find(
-                            (list) => list.list_id === selectedListId
-                          ).list_name
-                        }
-                      </p>
+                      <>
+                      <div className="d-flex align-items-center gap-3 mt-3">
+                        {tokenUserId !== userId && (
+                          <Button
+                            onClick={() => setSelectedListId(null)}
+                            className={styles.go_back_button}
+                          />
+                        )}
+                        <p className={styles.list_name_more}>
+                          {
+                            listData.find(
+                              (list) => list.list_id === selectedListId
+                            ).list_name
+                          }
+                        </p>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
@@ -627,17 +637,17 @@ function WishList() {
                         );
                       })
                   ) : (
-                    <p>No hay productos todavía</p>
+                    <p>Todavía no hay productos.</p>
                   )}
                 </div>
                 {tokenUserId === userId && (
-  <Button
-    className={styles.create_new_button}
-    onClick={() => navigate("/explorar")}
-  >
-    Agregar
-  </Button>
-)}
+                  <Button
+                    className={styles.create_new_button}
+                    onClick={() => navigate("/explorar")}
+                  >
+                    Agregar
+                  </Button>
+                )}
               </div>
             </div>
           )}
