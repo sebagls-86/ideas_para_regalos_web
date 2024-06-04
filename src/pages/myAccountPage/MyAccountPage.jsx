@@ -11,7 +11,6 @@ import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
-import { AiOutlineClose } from "react-icons/ai";
 import Modal from "../../components/modal/Modal";
 
 function MyAccountPage({ userInfo }) {
@@ -35,6 +34,18 @@ function MyAccountPage({ userInfo }) {
     (localStorage.getItem("userInfo") &&
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
+
+    const [savedUserId, setSavedUserId] = useState(null);
+
+  useEffect(() => {
+    if (user__id !== userId) {
+      setSavedUserId(user__id);
+      //window.location.reload();
+    }
+  }, [user__id]);
+
+  console.log("user__id", user__id);
+  console.log("savedUserId", savedUserId);
 
   const [followingUsers, setFollowingUsers] = useState([]);
   const API_URL = process.env.REACT_APP_API_URL;
@@ -67,7 +78,6 @@ function MyAccountPage({ userInfo }) {
           return;
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
         navigate("/error");
       }
     };
@@ -101,6 +111,7 @@ function MyAccountPage({ userInfo }) {
 
     fetchFollowingUsers();
   }, [user__id, token, navigate, userId]);
+
 
   const isUserFollowing = () => {
     return followingUsers.some((user) => user.user_id === user__id);
@@ -248,9 +259,6 @@ function MyAccountPage({ userInfo }) {
     return <Spinner animation="border" />;
   }
 
-  console.log(userData.avatar);
-  console.log(userInfo);
-
   const closeModal = () => {
     setShowImageModal(false);
     setShowModal(false);
@@ -298,33 +306,34 @@ function MyAccountPage({ userInfo }) {
                 <p>{userData.birth_date}</p>
               </div>
               <div>
-  {userId === user__id ? (
-    <Button className={styles.edit__button} onClick={handleEditClick}>
-      Editar
-    </Button>
-  ) : (
-<Button
-  className={`${styles.custom__button} ${
-    isUserFollowing()
-      ? isHovered
-        ? styles.followingHovered
-        : styles.following
-      : styles.notFollowing
-  }`}
-  onClick={handleFollow}
-  onMouseEnter={handleMouseEnter}
-  onMouseLeave={handleMouseLeave}
->
-  {isUserFollowing()
-    ? isHovered
-      ? "Dejar de seguir"
-      : "Siguiendo"
-    : "Seguir"}
-</Button>
-
-  )}
-</div>
-
+                {userId === user__id ? (
+                  <Button
+                    className={styles.edit__button}
+                    onClick={handleEditClick}
+                  >
+                    Editar
+                  </Button>
+                ) : (
+                  <Button
+                    className={`${styles.custom__button} ${
+                      isUserFollowing()
+                        ? isHovered
+                          ? styles.followingHovered
+                          : styles.following
+                        : styles.notFollowing
+                    }`}
+                    onClick={handleFollow}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {isUserFollowing()
+                      ? isHovered
+                        ? "Dejar de seguir"
+                        : "Siguiendo"
+                      : "Seguir"}
+                  </Button>
+                )}
+              </div>
             </div>
             <ProfileNav userInfo={userInfo}></ProfileNav>
           </div>
