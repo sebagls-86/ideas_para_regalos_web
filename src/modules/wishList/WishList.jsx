@@ -603,7 +603,11 @@ function WishList() {
                             {productInfo && (
                               <div
                                 key={index}
-                                className={styles.product_card}
+                                className={
+                                  tokenUserId === userId
+                                    ? `${styles.own_product_card}`
+                                    : `${styles.product_card}`
+                                }
                                 onClick={() =>
                                   handleRemoveProduct(
                                     listData.find(
@@ -616,7 +620,11 @@ function WishList() {
                                 <img
                                   src={`${URL_IMAGES}${productInfo.images}`}
                                   alt={productInfo.name}
-                                  className={styles.product_image}
+                                  className={
+                                    tokenUserId === userId
+                                      ? `${styles.own_product_image}`
+                                      : `${styles.product_image}`
+                                  }
                                 />
                                 <p className={styles.product_name}>
                                   {productInfo.name}

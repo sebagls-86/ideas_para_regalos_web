@@ -106,7 +106,7 @@
   margin-top: 1rem;
 }
 
-.product_card {
+.product_card, .own_product_card, .product_card:hover{
   width: calc(
     25% - 10px
   ); /* Ajusta el ancho de cada tarjeta al 25% del contenedor con un margen derecho */
@@ -118,7 +118,7 @@
   border-radius: 8px; /* Redondear las esquinas de la tarjeta */
 }
 
-.product_image {
+.product_image, .own_product_image, .own_product_image:hover {
   width: 100%; /* La imagen ocupa todo el ancho disponible */
   height: 75%; /* La imagen ocupa el 75% de la altura de la tarjeta */
   object-fit: cover; /* Ajustar la imagen para que cubra todo el espacio disponible */
@@ -126,7 +126,7 @@
   border-top-right-radius: 8px; /* Redondear la esquina superior derecha de la imagen */
   border-bottom: 1px solid #ccc;
 }
-.product_image:hover {
+.own_product_image:hover {
   border-bottom: 1px solid red;
 }
 
@@ -140,10 +140,16 @@
   margin: 10px; /* Ajusta la separación horizontal entre las tarjetas */
 }
 
-.product_card:hover {
+.own_product_card:hover {
   background-color: #ff000030;
   color: red;
   border: 1px solid red;
+}
+
+
+/* Estilos adicionales para cuando el tokenUserId es igual al userId */
+.own_product_card:hover {
+  background-color: pink;
 }
 
 .product_content {
