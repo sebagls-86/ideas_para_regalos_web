@@ -600,37 +600,37 @@ function WishList() {
                         );
                         return (
                           <div key={index} className={styles.product_item}>
-                            {productInfo && (
-                              <div
-                                key={index}
-                                className={
-                                  tokenUserId === userId
-                                    ? `${styles.own_product_card}`
-                                    : `${styles.product_card}`
-                                }
-                                onClick={() =>
-                                  handleRemoveProduct(
-                                    listData.find(
-                                      (list) => list.list_id === selectedListId
-                                    ),
-                                    product
-                                  )
-                                }
-                              >
-                                <img
-                                  src={`${URL_IMAGES}${productInfo.images}`}
-                                  alt={productInfo.name}
-                                  className={
-                                    tokenUserId === userId
-                                      ? `${styles.own_product_image}`
-                                      : `${styles.product_image}`
-                                  }
-                                />
-                                <p className={styles.product_name}>
-                                  {productInfo.name}
-                                </p>
-                              </div>
-                            )}
+                          {productInfo && (
+  <div
+    key={index}
+    className={
+      tokenUserId === userId
+        ? `${styles.own_product_card}`
+        : `${styles.product_card}`
+    }
+    onClick={
+      tokenUserId === userId
+        ? () =>
+            handleRemoveProduct(
+              listData.find((list) => list.list_id === selectedListId),
+              product
+            )
+        : null
+    }
+  >
+    <img
+      src={`${URL_IMAGES}${productInfo.images}`}
+      alt={productInfo.name}
+      className={
+        tokenUserId === userId
+          ? `${styles.own_product_image}`
+          : `${styles.product_image}`
+      }
+    />
+    <p className={styles.product_name}>{productInfo.name}</p>
+  </div>
+)}
+
                           </div>
                         );
                       })

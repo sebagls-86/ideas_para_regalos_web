@@ -119,7 +119,7 @@ export default function ProductCard({ image, name, userId, productId }) {
         if (response.ok) {
           setIsSaved(true);
           setShowPopover(false);
-          setMessage("Se agregó producto");
+          setMessage("Producto agregado");
           setShowAlert(true);
           fetchData();
         } else {
