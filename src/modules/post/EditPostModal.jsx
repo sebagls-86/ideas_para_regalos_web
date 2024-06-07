@@ -282,9 +282,10 @@ function EditPostModal({
   };
 
   useEffect(() => {
-    const isOriginalEventNamePresent = eventTypes.some(
+    const isOriginalEventNamePresent = Array.isArray(eventTypes) && eventTypes.some(
       (type) => type.name === originalPost?.event_name
     );
+  
 
     setOtherEventName(
       isOriginalEventNamePresent ? "" : originalPost?.event_name
@@ -412,7 +413,7 @@ function EditPostModal({
                     >
                       {isLoading ? (
                         <option value="">Cargando...</option>
-                      ) : (
+                      ) : Array.isArray(eventTypes) && eventTypes.length > 0 ? (
                         eventTypes.map((eventType) => (
                           <option
                             key={eventType.event_type_id}
@@ -425,22 +426,24 @@ function EditPostModal({
                             {eventType.name}
                           </option>
                         ))
+                      ) : (
+                        []
                       )}
                     </select>
                     <div className={styles.selectIcon}>
                       <img src={expandDown} alt="Expand Icon" />
                     </div>
                   </div>
-                  </div>
-                    <div className={styles.otherEventType}>
+                </div>
+                <div className={styles.otherEventType}>
                   {selectedPost &&
                     (selectedPost.data?.event_name === "Otro" ||
                       !eventTypes.some(
                         (eventType) =>
                           eventType.name === selectedPost.data?.event_name
                       )) && (
-                        <div>
-                              {otherEventName && (
+                      <div>
+                        {otherEventName && (
                           <span
                             className="text-danger"
                             style={{ cursor: "pointer" }}
@@ -451,8 +454,7 @@ function EditPostModal({
                         )}
                         {!otherEventName && (
                           <span
-                            style={{ cursor: "pointer" , color: "green"}}
-
+                            style={{ cursor: "pointer", color: "green" }}
                             onClick={() =>
                               setOtherEventName(originalPost.event_name)
                             }
@@ -460,21 +462,20 @@ function EditPostModal({
                             Restaurar
                           </span>
                         )}
-                      <div className={`${styles.form__floating} form-floating`}>
-                       
-                        <input
-                          type="text"
-                          className={`${styles.form__control} form-control`}
-                          value={otherEventName || ""}
-                          onChange={(e) => setOtherEventName(e.target.value)}
-                          style={{marginTop: ".3rem"}}
-                        />
-                     
-                      </div>
+                        <div
+                          className={`${styles.form__floating} form-floating`}
+                        >
+                          <input
+                            type="text"
+                            className={`${styles.form__control} form-control`}
+                            value={otherEventName || ""}
+                            onChange={(e) => setOtherEventName(e.target.value)}
+                            style={{ marginTop: ".3rem" }}
+                          />
+                        </div>
                       </div>
                     )}
                 </div>
-                
               </div>
 
               <div>

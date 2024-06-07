@@ -246,10 +246,13 @@ function ModalCreateProfile({
            <SelectButton
               label="Relación"
               isOpen={isRelationshipDropdownOpen}
-              options={(relationships || []).map((relationship) => ({
-                label: relationship.relationship_name,
-                value: relationship.relationship_id,
-              }))}
+              options={(Array.isArray(relationships) && relationships.length > 0) ? 
+  relationships.map((relationship) => ({
+    label: relationship.relationship_name,
+    value: relationship.relationship_id,
+  })) :
+  []
+}
               handleOptionSelect={(option) =>
                 handleOptionSelect(option, "selectedRelationship")
               }

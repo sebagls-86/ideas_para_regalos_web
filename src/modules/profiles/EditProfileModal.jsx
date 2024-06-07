@@ -15,12 +15,10 @@ function EditProfileModal({
   handleSaveChanges,
 }) {
   const [isGuardarDisabled, setIsGuardarDisabled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedAgeRange, setSelectedAgeRange] = useState("");
   const [selectedRelationship, setSelectedRelationship] = useState("");
-  const [isOpenAgeRange, setIsOpenAgeRange] = useState(false); // Estado para controlar la visibilidad del selector de rango de edad
+  const [isOpenAgeRange, setIsOpenAgeRange] = useState(false);
   const [isOpenRelationship, setIsOpenRelationship] = useState(false);
-
 
   useEffect(() => {
     if (selectedProfile) {
@@ -35,7 +33,7 @@ function EditProfileModal({
     }
   }, [selectedProfile]);
 
-  const handleAgeRangeSelect= (option) => {
+  const handleAgeRangeSelect = (option) => {
     console.log("Option selected:", option);
     setSelectedAgeRange(option);
     setIsOpenAgeRange(false);
@@ -50,11 +48,10 @@ function EditProfileModal({
   const toggleAgeRangeDropdown = () => {
     setIsOpenAgeRange(!isOpenAgeRange);
   };
-  
+
   const toggleRelationshipDropdown = () => {
     setIsOpenRelationship(!isOpenRelationship);
   };
-
 
   return (
     <Modal
@@ -65,8 +62,7 @@ function EditProfileModal({
     >
       <Col>
         <div className={styles.buttons__container}>
-
-        <label>Nombre</label>
+          <label>Nombre</label>
           <div className={`${styles.form__floating} `}>
             <input
               type="text"
@@ -97,68 +93,37 @@ function EditProfileModal({
           </div>
           <label className={styles.input__label}>Rango de edad</label>
           <div className={`${styles.form__floating} form-floating`}>
-      
-             {/* 
-            <select
-              className={`${styles.form__control} form-control`}
-              value={selectedProfile?.age_range || ""}
-              onChange={(e) =>
-                setSelectedProfile({
-                  ...selectedProfile,
-                  age_range: e.target.value,
-                })
-              }
-            >
-              {ageRanges.map((ageRange) => (
-                <option key={ageRange.age_range_id} value={ageRange.name}>
-                  {ageRange.name}
-                </option>
-              ))}
-            </select> */}
             <SelectButton
               label={selectedProfile?.age_range || ""}
               isOpen={isOpenAgeRange}
               toggleDropdown={toggleAgeRangeDropdown}
-              options={ageRanges.map((ageRange) => ({
-                value: ageRange.age_range_id,
-                label: ageRange.name,
-              }))}
+              options={
+                Array.isArray(ageRanges) && ageRanges.length > 0
+                  ? ageRanges.map((ageRange) => ({
+                      value: ageRange.age_range_id,
+                      label: ageRange.name,
+                    }))
+                  : []
+              }
               handleOptionSelect={handleAgeRangeSelect}
               selectedOption={selectedAgeRange}
             />
-         
           </div>
 
           <label>Relación</label>
           <div className={`${styles.form__floating} form-floating`}>
-           
-            {/* <select
-                className={`${styles.form__control} form-control`}
-                value={selectedProfile?.relationship || ""}
-                onChange={(e) =>
-                  setSelectedProfile({
-                    ...selectedProfile,
-                    relationship: e.target.value,
-                  })
-                }
-              >
-                {relationships.map((relationship) => (
-                  <option
-                    key={relationship.relationship_id}
-                    value={relationship.relationship_name}
-                  >
-                    {relationship.relationship_name}
-                  </option>
-                ))}
-              </select> */}
             <SelectButton
               label={selectedProfile?.relationship || ""}
               isOpen={isOpenRelationship}
               toggleDropdown={toggleRelationshipDropdown}
-              options={relationships.map((relationship) => ({
-                value: relationship.relationship_id,
-                label: relationship.relationship_name,
-              }))}
+              options={
+                Array.isArray(relationships) && relationships.length > 0
+                  ? relationships.map((relationship) => ({
+                      value: relationship.relationship_id,
+                      label: relationship.relationship_name,
+                    }))
+                  : []
+              }
               handleOptionSelect={handleRelationshipSelect}
               selectedOption={selectedRelationship}
             />
