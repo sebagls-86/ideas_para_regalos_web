@@ -224,7 +224,6 @@ function HomePage() {
       const pendingSurveysResponse = await pendingSurveys.json();
       setPendingSurveysResponse(pendingSurveysResponse);
     } catch (error) {
-      setLoading(true);
       throw error;
     }
   };
