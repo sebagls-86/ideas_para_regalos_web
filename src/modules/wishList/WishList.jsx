@@ -463,7 +463,7 @@ function WishList() {
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
         title="¿Estás seguro?"
-        bodyContent={`Se eliminará "${productToRemove?.productName}" de su lista`}
+        bodyContent={`Se eliminará "${productToRemove?.productName}" de tu lista`}
         onCancel={() => setShowConfirmationModal(false)}
         onConfirm={handleConfirmDeleteProduct}
         confirmButtonText="Confirmar"
@@ -635,7 +635,7 @@ function WishList() {
                         );
                       })
                   ) : (
-                    <p>No hay productos todavía</p>
+                    <p>Todavía no hay productos</p>
                   )}
                 </div>
                 {tokenUserId === userId && (
