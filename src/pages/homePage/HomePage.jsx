@@ -194,11 +194,11 @@ function HomePage() {
   const verifyPendingSurveys = async (token) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
+  
       if (!userInfo || !userInfo.data || !userInfo.data.user_id) {
         throw new Error("User info not found in localStorage");
       }
-
+  
       const pendingSurveys = await fetch(
         `${API_URL}/forums-survey/pending/${userInfo.data.user_id}`,
         {
@@ -209,7 +209,7 @@ function HomePage() {
           },
         }
       );
-
+  
       if (!pendingSurveys.ok) {
         const errorMessage = await pendingSurveys.text();
         if (errorMessage.includes("Failed to validate JWT")) {
@@ -217,14 +217,14 @@ function HomePage() {
           localStorage.removeItem("userInfo");
           logout();
         } else {
-          throw new Error("Failed to get pending surveys");
+          console.error("Failed to get pending surveys:", errorMessage);
         }
+      } else {
+        const pendingSurveysResponse = await pendingSurveys.json();
+        setPendingSurveysResponse(pendingSurveysResponse);
       }
-
-      const pendingSurveysResponse = await pendingSurveys.json();
-      setPendingSurveysResponse(pendingSurveysResponse);
     } catch (error) {
-      throw error;
+      console.error("Error verifying pending surveys:", error);
     }
   };
 

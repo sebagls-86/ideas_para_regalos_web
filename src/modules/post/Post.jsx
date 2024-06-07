@@ -33,11 +33,14 @@ function Post({ searchTerm }) {
         }
         const data = await response.json();
 
-        if (response.ok && data.data === null) {
-          setLoading(false);
+        if (response.ok) {
+          if (Array.isArray(data.data)) {
+            const processedData = data.data.map((post) => ({ ...post }));
+            setPostData(processedData);
+          } else if (data.data === "No results found") {
+            setPostData([]);
+          }
         }
-        const processedData = data.data.map((post) => ({ ...post }));
-        setPostData(processedData);
         setLoading(false);
 
         if (response.status === 400) {
@@ -122,8 +125,8 @@ function Post({ searchTerm }) {
 
   return (
     <div>
-      {!filteredData || filteredData.length === 0 ? (
-        <p className={styles.notfound_msg}>No se encontraron publicaciones con los términos de búsqueda.</p>
+      {!filteredData || filteredData == null || filteredData?.length === 0 ? (
+        <p className={styles.notfound_msg}>No se encontraron publicaciones.</p>
       ) : (
         filteredData.map((post) => (
           <div className={`${styles.post__container} ${!isAuthenticated && !isLoggedIn ? styles.post__container_loggedout : ''}`} key={post.forum_id}>
@@ -201,7 +204,7 @@ function Post({ searchTerm }) {
                 <div className={styles.actions__content}>
                   <img src={CommentIcon} alt="Comment Icon" />
                   <span className={styles.post_tags}>
-                    {post.messages ? post.messages.length : 0}
+                  {post.messages !== null ? (post.messages.length) : (0)}
                   </span>
                 </div>
               </div>

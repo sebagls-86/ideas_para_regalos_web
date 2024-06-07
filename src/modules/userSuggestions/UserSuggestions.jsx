@@ -18,16 +18,21 @@ function UserSuggestions({ userInfo }) {
       let url = `${API_URL}/relations/suggestions/${userId}`;
       const response = await fetch(url);
       const responseData = await response.json();
-      if (responseData && responseData.data && responseData.data.length > 0) {
-        const usersWithFixedAvatarURL = responseData.data.map((user) => ({
-          ...user,
-        }));
-        setUsers(usersWithFixedAvatarURL);
+  
+      if (responseData && responseData.data) {
+        if (Array.isArray(responseData.data) && responseData.data.length > 0) {
+          const usersWithFixedAvatarURL = responseData.data.map((user) => ({
+            ...user,
+          }));
+          setUsers(usersWithFixedAvatarURL);
+        } else {
+          setUsers([]);
+        }
       } else {
-        setUsers([]);
+        console.error("Invalid response data format:", responseData);
       }
     };
-
+  
     fetchData();
   }, [userInfo]);
 
