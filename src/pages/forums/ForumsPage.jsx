@@ -52,6 +52,8 @@ function ForumsPage() {
   const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
+  const isDisabled = message.trim() === "" && imageFiles.length === 0;
+
   const userId =
     (localStorage.getItem("userInfo") && userInfo.data.user_id) || null;
 
@@ -636,8 +638,9 @@ function ForumsPage() {
                           </Button>
 
                           <Button
-                            className={styles.send_button}
+                             className={`${styles.send_button} ${isDisabled ? styles.send_button_disabled : ''}`}
                             onClick={handleSendMessage}
+                            disabled={isDisabled}
                           >
                             Enviar
                           </Button>

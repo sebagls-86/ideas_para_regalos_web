@@ -107,7 +107,7 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
         return;
       }
 
-      const productCatalogId = parseInt(selectedProduct);
+      const productCatalogId = parseInt(selectedProduct.value);
 
       const requestBody = {
         product_catalog_id: productCatalogId,

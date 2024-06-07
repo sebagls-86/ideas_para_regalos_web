@@ -31,10 +31,10 @@
 }
 
 .custom__button, .edit__button {
-  border: none;
+  border: 1px solid var(--primary-dark);
   border-radius: 30px;
-  background-color: var(--primary-dark);
-  color: white;
+  background-color: white;
+  color: var(--primary-dark) !important;
   padding: 10px 20px;
   cursor: pointer;
   font-weight: bold;
@@ -43,9 +43,9 @@
 }
 
 .custom__button:hover{
-  background-color: #FF000030;
-  color: red;
-  border: 1px solid #FF000050;
+  background-color: var(--primary-dark) !important;
+  color: white !important;
+  border: 1px solid var(--primary-dark);
 }
 .edit__button{
   width: auto;
@@ -53,11 +53,17 @@
   border: 1px solid var(--primary-dark);
   color: var(--primary-dark);
 }
-.edit__button:hover{
+.edit__button:hover, .following{
   background-color: var(--primary-dark);
   border: 1px solid var(--primary-dark);
-  color: white;
+  color: white !important;
 }
+.followingHovered:hover{
+  border: 1px solid #FF000050 !important;
+  color: red !important;
+  background-color: #FF000030 !important;
+}
+
 
 .profile_info_container {
   margin-left: 3%;
@@ -85,6 +91,12 @@
 }
 .modal_edit_profile input{
   height: 48px;
+  border: 0.4px solid #000;
+}
+.modal_edit_profile input:focus{
+  outline: none !important;
+  border-color: inherit !important;
+  box-shadow: 0 !important;
 }
 .modal_footer{
   margin-top: 1.5rem;

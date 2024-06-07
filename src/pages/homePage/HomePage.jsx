@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import Nav from "../../modules/nav/Nav";
 import Post from "../../modules/post/Post";
-import NavBar from "../../modules/navBar/NavBar";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import ModalSurvey from "../../modules/modalSurvey/ModalSurvey";
@@ -12,7 +11,6 @@ import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
 import Search from "../../components/search/Search"; // Asegúrate de que esta ruta sea correcta
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
-import Button from "../../components/button/Button";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -22,11 +20,9 @@ function HomePage() {
   const {
     isAuthenticated,
     isLoading,
-    user,
     getAccessTokenWithPopup,
     getAccessTokenSilently,
     logout,
-    loginWithRedirect,
   } = useAuth0();
   const [loading, setLoading] = useState(null);
   const [pendingSurveysResponse, setPendingSurveysResponse] = useState(null);
@@ -39,8 +35,7 @@ function HomePage() {
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
   const API_URL = process.env.REACT_APP_API_URL;
-  const FRONT_URL = process.env.REACT_APP_FRONT_URL;
-
+  
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       const urlParams = new URLSearchParams(window.location.search);
@@ -229,6 +224,7 @@ function HomePage() {
       const pendingSurveysResponse = await pendingSurveys.json();
       setPendingSurveysResponse(pendingSurveysResponse);
     } catch (error) {
+      setLoading(true);
       throw error;
     }
   };
@@ -254,25 +250,6 @@ function HomePage() {
   if (process.env.NODE_ENV === "development") {
     console.log("token", storedToken);
   }
-
-  const handleLogin = async () => {
-    try {
-      await loginWithRedirect({ appState: { returnTo: "/" } });
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
-  };
-
-  const handleRegister = async () => {
-    try {
-      await loginWithRedirect({
-        appState: { returnTo: "/" },
-        authorizationParams: { screen_hint: "signup" },
-      });
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
-  };
 
   return (
     <>

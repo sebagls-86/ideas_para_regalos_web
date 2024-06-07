@@ -14,10 +14,10 @@ function Likes() {
           id="uncontrolled-tab-example"
           className={styles.notificacionNav}
         >
-          <Tab eventKey="foros" title="Foros">
+          <Tab eventKey="foros" title="Publicaciones">
            <ForumsLikes/>
           </Tab>
-          <Tab eventKey="mensajes" title="Mensajes">
+          <Tab eventKey="mensajes" title="Comentarios">
            <MessagesLikes/>
           </Tab>
         </Tabs>

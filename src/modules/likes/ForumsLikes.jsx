@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styles from "./css/likes.module.css";
 
 function ForumsLikes() {
   const [forums, setForums] = useState([]);
-  const userId =
+  const { user_id } = useParams();
+  const userId = parseInt(user_id);
+  const tokenUserId =
     (localStorage.getItem("userInfo") &&
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
@@ -43,7 +45,15 @@ function ForumsLikes() {
     <div>
       <div className={styles.forumsContainer}>
         {forums === null || forums.length === 0 ? (
-          <p>No hay foros disponibles.</p>
+          tokenUserId === userId ? (
+            <p className="m-4">
+              Todavía no diste 'me gusta' a ninguna publicación.
+            </p>
+          ) : (
+            <p className="m-4">
+              Este usuario todavía no le dio 'me gusta' a ninguna publicación.
+            </p>
+          )
         ) : (
           forums.map((forum) => (
             <Link
@@ -69,7 +79,9 @@ function ForumsLikes() {
                   <p>{forum.title}</p>
                   <p>{forum.description}</p>
 
-                  <p className={styles.post_date}>{calculateTimeDifference(forum.created_at)}</p>
+                  <p className={styles.post_date}>
+                    {calculateTimeDifference(forum.created_at)}
+                  </p>
                 </div>
               </div>
             </Link>

@@ -43,7 +43,7 @@ function WishList() {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
   const [listColors, setListColors] = useState({});
-  const {logout} = useAuth0()
+  const { logout } = useAuth0();
   const { user_id } = useParams();
   const userId = parseInt(user_id);
   const navigate = useNavigate();
@@ -75,7 +75,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-         }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -125,7 +125,7 @@ function WishList() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-         }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -241,7 +241,7 @@ function WishList() {
       const { list, productId } = productToRemove;
       const listId = list.list_id;
 
-          const response = await fetch(
+      const response = await fetch(
         `${API_URL}/lists/${listId}/list-products/${productId}`,
         {
           method: "DELETE",
@@ -275,8 +275,8 @@ function WishList() {
             "Su sesión ha expirado. Por favor, inicie sesión nuevamente"
           );
           localStorage.removeItem("token");
-          localStorage.removeItem("userInfo")
-          logout()
+          localStorage.removeItem("userInfo");
+          logout();
           navigate("/");
           setShowResponseModal(true);
         } else if (!response.ok) {
@@ -406,17 +406,17 @@ function WishList() {
         body: JSON.stringify(dataToSend),
       });
       if (response.ok) {
-        setSuccessMessage("Lista creada correctamente")
+        setSuccessMessage("Lista creada correctamente");
         const data = await response.json();
         setListData([...listData, data.data]);
         setShowCreateListModal(false);
         setShowResponseModal(true);
       } else {
-        setErrorMessage("Error al crear lista")
-        setShowResponseModal(true);       
+        setErrorMessage("Error al crear lista");
+        setShowResponseModal(true);
       }
     } catch (error) {
-      setErrorMessage("Error al enviar solicitud de creación de la lista")
+      setErrorMessage("Error al enviar solicitud de creación de la lista");
       setShowResponseModal(true);
     }
   };
@@ -463,7 +463,7 @@ function WishList() {
         show={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
         title="¿Estás seguro?"
-        bodyContent={`Se eliminará "${productToRemove?.productName}" de su lista`}
+        bodyContent={`Se eliminará "${productToRemove?.productName}" de tu lista`}
         onCancel={() => setShowConfirmationModal(false)}
         onConfirm={handleConfirmDeleteProduct}
         confirmButtonText="Confirmar"
@@ -503,7 +503,7 @@ function WishList() {
                   className={styles.go_back_button}
                 ></Button>{" "}
               </div>
-              <p className={styles.list_name_more }>MercadoLibre</p>
+              <p className={styles.list_name_more}>MercadoLibre</p>
               {/* Renderizar los favoritos de MercadoLibre */}
               <div className={styles.meli_cards_container}>
                 {meliFavoritesData.map((favorite, index) => (
@@ -525,6 +525,8 @@ function WishList() {
                   onClick={() => setSelectedListId(null)}
                   className={styles.go_back_button}
                 ></Button>{" "}
+                 {tokenUserId === userId && (
+                <>
                 <Button
                   className={styles.create_new_button}
                   onClick={() =>
@@ -535,6 +537,8 @@ function WishList() {
                 >
                   Editar
                 </Button>
+                </>
+              )}
               </div>
               <div className={styles.list__content}>
                 <div>
@@ -547,49 +551,47 @@ function WishList() {
                           onChange={handleInputChange}
                         />
                         <div>
-                        <Button
-                          className={styles.cancel_edit_button}
-                          onClick={() => {
-                            setEditMode(false);
-                            setEditedListName(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
-                              ).list_name
-                            );
-                          }}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          className={styles.save_edit_button}
-                          onClick={() =>
-                            handleSaveEditListName(
-                              listData.find(
-                                (list) => list.list_id === selectedListId
+                          <Button
+                            className={styles.cancel_edit_button}
+                            onClick={() => {
+                              setEditMode(false);
+                              setEditedListName(
+                                listData.find(
+                                  (list) => list.list_id === selectedListId
+                                ).list_name
+                              );
+                            }}
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            className={styles.save_edit_button}
+                            onClick={() =>
+                              handleSaveEditListName(
+                                listData.find(
+                                  (list) => list.list_id === selectedListId
+                                )
                               )
-                            )
-                          }
-                        >
-                          Guardar
-                        </Button>
+                            }
+                          >
+                            Guardar
+                          </Button>
                         </div>
                       </div>
                     ) : (
-                      <p className={styles.list_name_more }>
-                        {
-                          listData.find(
-                            (list) => list.list_id === selectedListId
-                          ).list_name
-                        }
+                      <p className={styles.list_name_more}>
+                        {listData.find(
+                          (list) => list.list_id === selectedListId
+                        )?.list_name || window.location.reload()}
                       </p>
                     )}
                   </div>
                 </div>
                 <div className={styles.product_container}>
                   {listData.find((list) => list.list_id === selectedListId)
-                    .products !== null &&
+                    ?.products !== null &&
                   listData.find((list) => list.list_id === selectedListId)
-                    .products.length > 0 ? (
+                    ?.products.length > 0 ? (
                     listData
                       .find((list) => list.list_id === selectedListId)
                       .products.map((product, index) => {
@@ -598,42 +600,54 @@ function WishList() {
                         );
                         return (
                           <div key={index} className={styles.product_item}>
-                            {productInfo && (
-                              <div
-                                key={index}
-                                className={styles.product_card}
-                                onClick={() =>
-                                  handleRemoveProduct(
-                                    listData.find(
-                                      (list) => list.list_id === selectedListId
-                                    ),
-                                    product
-                                  )
-                                }
-                              >
-                                <img
-                                  src={`${URL_IMAGES}${productInfo.images}`}
-                                  alt={productInfo.name}
-                                  className={styles.product_image}
-                                />
-                                <p className={styles.product_name}>
-                                  {productInfo.name}
-                                </p>
-                              </div>
-                            )}
+                          {productInfo && (
+  <div
+    key={index}
+    className={
+      tokenUserId === userId
+        ? `${styles.own_product_card}`
+        : `${styles.product_card}`
+    }
+    onClick={
+      tokenUserId === userId
+        ? () =>
+            handleRemoveProduct(
+              listData.find((list) => list.list_id === selectedListId),
+              product
+            )
+        : null
+    }
+  >
+    <img
+      src={`${URL_IMAGES}${productInfo.images}`}
+      alt={productInfo.name}
+      className={
+        tokenUserId === userId
+          ? `${styles.own_product_image}`
+          : `${styles.product_image}`
+      }
+    />
+    <p className={styles.product_name}>{productInfo.name}</p>
+  </div>
+)}
+
                           </div>
                         );
                       })
                   ) : (
-                    <p>No hay productos todavía</p>
+                    <p>Todavía no hay productos</p>
                   )}
                 </div>
+                {tokenUserId === userId && (
+                <>
                 <Button
                   className={styles.create_new_button}
                   onClick={() => navigate("/explorar")}
                 >
                   Agregar
                 </Button>
+                </>
+              )}
               </div>
             </div>
           )}
@@ -664,23 +678,29 @@ function WishList() {
               </form>
             </div>
 
-            <Button
-              onClick={() => setShowCreateListModal(true)}
-              className={styles.create_new_button}
-            >
-              <AiOutlinePlus />
-              Nueva lista
-            </Button>
-            {!listData?.some((list) => list.list_name === "MercadoLibre") && (
-              <Button
-                onClick={() => {
-                  window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
-                }}
-                className={styles.create_new_button}
-              >
-                <AiOutlinePlus />
-                Favoritos de MercadoLibre
-              </Button>
+            {tokenUserId === userId && (
+              <>
+                <Button
+                  onClick={() => setShowCreateListModal(true)}
+                  className={styles.create_new_button}
+                >
+                  <AiOutlinePlus />
+                  Nueva lista
+                </Button>
+                {!listData?.some(
+                  (list) => list.list_name === "MercadoLibre"
+                ) && (
+                  <Button
+                    onClick={() => {
+                      window.location.href = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${config.meli_client_id}&redirect_uri=${config.meli_redirect_uri}`;
+                    }}
+                    className={styles.create_new_button}
+                  >
+                    <AiOutlinePlus />
+                    Favoritos de Mercado Libre
+                  </Button>
+                )}
+              </>
             )}
           </div>
           <div className={styles.whole_list}>
@@ -700,9 +720,7 @@ function WishList() {
                   <div className={styles.list__content}>
                     <div>
                       <div>
-                        <p className={styles.list_name}>
-                          {list.list_name}
-                        </p>
+                        <p className={styles.list_name}>{list.list_name}</p>
                       </div>
                       {userId === tokenUserId && (
                         <div className={styles.more__actions}>

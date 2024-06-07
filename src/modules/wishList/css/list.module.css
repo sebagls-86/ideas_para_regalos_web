@@ -10,7 +10,7 @@
 }
 .list__content {
   width: 100%;
-  max-width: 70%;
+  max-width: 75%;
   margin: 1rem auto;
   margin-top: 0;
 }
@@ -28,6 +28,7 @@
   font-size: var(--fz-20);
   font-weight: 600;
   color: black;
+  display: flex;
 }
 
 
@@ -105,7 +106,7 @@
   margin-top: 1rem;
 }
 
-.product_card {
+.product_card, .own_product_card, .product_card:hover{
   width: calc(
     25% - 10px
   ); /* Ajusta el ancho de cada tarjeta al 25% del contenedor con un margen derecho */
@@ -116,8 +117,11 @@
   border: 1px solid #ccc; /* Añadir un borde a la tarjeta */
   border-radius: 8px; /* Redondear las esquinas de la tarjeta */
 }
+.product_image, .product_card{
+  cursor: auto;
+}
 
-.product_image {
+.product_image, .own_product_image, .own_product_image:hover {
   width: 100%; /* La imagen ocupa todo el ancho disponible */
   height: 75%; /* La imagen ocupa el 75% de la altura de la tarjeta */
   object-fit: cover; /* Ajustar la imagen para que cubra todo el espacio disponible */
@@ -125,7 +129,7 @@
   border-top-right-radius: 8px; /* Redondear la esquina superior derecha de la imagen */
   border-bottom: 1px solid #ccc;
 }
-.product_image:hover {
+.own_product_image:hover {
   border-bottom: 1px solid red;
 }
 
@@ -139,10 +143,16 @@
   margin: 10px; /* Ajusta la separación horizontal entre las tarjetas */
 }
 
-.product_card:hover {
+.own_product_card:hover {
   background-color: #ff000030;
   color: red;
   border: 1px solid red;
+}
+
+
+/* Estilos adicionales para cuando el tokenUserId es igual al userId */
+.own_product_card:hover {
+  background-color: pink;
 }
 
 .product_content {
@@ -210,10 +220,16 @@
 .edit_buttons {
   display: flex;
   justify-content: space-between;
-  max-width: 70%;
+  max-width: 75%;
   margin: 0 auto;
   width: 100%;
   padding: 25px 0px;
+}
+.edit_buttons {
+  padding-bottom: 0;
+}
+.create_new_container{
+  align-items: center;
 }
 
 .back_button {
@@ -271,7 +287,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   width: 100%;
-  max-width: 70%;
+  max-width: 75%;
   margin: 0 auto;
 }
 .list__container {
@@ -280,6 +296,7 @@
   max-width: 400px;
   height: 0;
   padding-top: 85%;
+  cursor: pointer;
 }
 
 .modal__header {
@@ -432,7 +449,12 @@
 
 @media only screen and (max-width: 1024px) {
   .create_new_container,
-  .edit_buttons, .whole_list {
+  .edit_buttons, .whole_list, .list__content  {
     max-width: 90%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .search_bar{
+    max-width: 250px;
   }
 }

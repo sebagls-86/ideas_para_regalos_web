@@ -5,7 +5,7 @@ import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 
 function ModalSuggestions({ closeModal, suggestions, onCancel, createForum }) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleCancel = async () => {
     closeModal();
@@ -26,30 +26,41 @@ function ModalSuggestions({ closeModal, suggestions, onCancel, createForum }) {
     <>
       <Modal
         closeModal={closeModalHandler}
-        title="Tenemos estas opciones para ofrecerte"
+        title="¡Tenemos justo lo que buscás!"
         show={true}
         contentStyle={{
-          height: "calc(80% - 2rem)",
-          maxHeight: "781px",
-          marginTop: "10px",
+          height: "fit-content",
+          paddingBottom: "4rem",
+          marginTop: "5rem",
         }}
+        colStyle={{ xs: 12, sm: 12, md: 12 }}
       >
+        <p className="mb-3 text-center">
+          ¿Te gustan estos productos? <br /> Creemos que son perfectos para tu
+          ocasión especial
+        </p>
         <div className={styles.suggestionsContainer}>
           {suggestions.map((suggestion, index) => (
             <div key={index} className={styles.suggestion}>
-              <h3 className={styles.suggestions}>{suggestion.product_name}</h3>
+              <img
+                src={suggestion.image}
+                alt=""
+                className={styles.productImage}
+              />
+
+              <p className={styles.suggestions}>{suggestion.product_name}</p>
             </div>
           ))}
         </div>
         <div className={styles.buttonsContainer}>
           <Button
-            label="Me gustan. No quiero crear un foro."
+            label="Me gustan, omitir crear foro"
             className="btn primary__button-outline"
             onClick={handleCancel}
           />
 
           <Button
-            label="Crear foro para tener más opciones."
+            label="Crear foro para tener más opciones"
             className="btn primary__button-outline"
             onClick={handleCreate}
           />

@@ -145,7 +145,7 @@ function PostByUser() {
       />
 
       {!postData || postData.length === 0 ? (
-        <p>Todavía no hay publicaciones</p>
+        <p className="m-4">Todavía no hay publicaciones</p>
       ) : (
         postData.map((post) => (
           <div key={post.forum_id} className={styles.post__container}>

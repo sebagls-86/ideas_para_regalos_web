@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Nav from "../../modules/nav/Nav";
 import banner from "../../assets/bannerExplorar.png";
 import styles from "./explorarPage.module.css";
 import SectionCategory from "../../modules/sectionCategory/SectionCategory";
 import SectionAgeRange from "../../modules/sectionAgeRange/SectionAgeRange";
 import SectionEvents from "../../modules/sectionEvents/SectionEvents";
-import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import SectionFeatured from "../../modules/sectionFeatured/SectionFeatured";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
@@ -18,45 +17,20 @@ import { Pagination, Autoplay } from "swiper/modules";
 import banner1 from "../../assets/banner-promo-1.png";
 import banner2 from "../../assets/banner-promo-2.png";
 import banner3 from "../../assets/banner-promo-3.png";
-import Search from "../../components/search/Search";
-import Button from "../../components/button/Button";
 
 import "swiper/swiper-bundle.css";
 
 function ExplorarPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const userInfo =
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
 
-  const handleLogin = async () => {
-    try {
-      await loginWithRedirect({ appState: { returnTo: "/" } });
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
-  };
-
-  const handleRegister = async () => {
-    try {
-      await loginWithRedirect({
-        appState: { returnTo: "/" },
-        authorizationParams: { screen_hint: "signup" },
-      });
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
-  };
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-  };
 
 
   return (
     <>
       {isAuthenticated}
-      {/*  {!isAuthenticated && <NavBar />}*/}
       <div className="contenedor">
         <div className="left__aside">
           <Nav userInfo={userInfo} />
@@ -156,9 +130,7 @@ function ExplorarPage() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-            {/*  <Search />*/}
-            {/*  {!isAuthenticated && <AsideLogin />}*/}
-            <EventSnipet />
+           <EventSnipet />
             {isAuthenticated && (
               <>
                 <UserSuggestions />
