@@ -175,7 +175,7 @@ function WishList() {
   };
 
   const handleDeleteList = (list) => {
-    if (list.list_name === "favorites" || list.list_name === "MercadoLibre") {
+    if (list.list_name === "Favoritos" || list.list_name === "MercadoLibre") {
       setErrorMessage("No se puede eliminar esta lista");
       setShowResponseModal(true);
     } else {
@@ -186,7 +186,7 @@ function WishList() {
 
   const handleDelete = async (listId, listName) => {
     try {
-      if (listName === "favorites" || listName === "MercadoLibre") {
+      if (listName === "Favoritos" || listName === "MercadoLibre") {
         setErrorMessage("No se puede eliminar esta lista");
         setShowResponseModal(true);
         return;
