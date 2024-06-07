@@ -117,6 +117,9 @@
   border: 1px solid #ccc; /* Añadir un borde a la tarjeta */
   border-radius: 8px; /* Redondear las esquinas de la tarjeta */
 }
+.product_image, .product_card{
+  cursor: auto;
+}
 
 .product_image, .own_product_image, .own_product_image:hover {
   width: 100%; /* La imagen ocupa todo el ancho disponible */
