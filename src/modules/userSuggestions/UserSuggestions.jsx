@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./userSuggestions.module.css";
 import UserLogoName from "../../components/userLogoName/UserLogoName";
 import Button from "../../components/button/Button";
+import { Link } from "react-router-dom";
 
 function UserSuggestions({ userInfo }) {
   const [users, setUsers] = useState(null);
@@ -18,7 +19,7 @@ function UserSuggestions({ userInfo }) {
       let url = `${API_URL}/relations/suggestions/${userId}`;
       const response = await fetch(url);
       const responseData = await response.json();
-  
+
       if (responseData && responseData.data) {
         if (Array.isArray(responseData.data) && responseData.data.length > 0) {
           const usersWithFixedAvatarURL = responseData.data.map((user) => ({
@@ -32,7 +33,7 @@ function UserSuggestions({ userInfo }) {
         console.error("Invalid response data format:", responseData);
       }
     };
-  
+
     fetchData();
   }, [userInfo]);
 
@@ -87,6 +88,11 @@ function UserSuggestions({ userInfo }) {
             </div>
           ))
         )}
+        <div className="mt-2">
+          <Link to="/users" className={styles.show_more}>
+            Mostrar más
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import Followers from "../../modules/users/Followers";
 import Following from "../../modules/users/Following";
 import Actividad from "../../modules/users/Actividad";
 import { useAuth0 } from "@auth0/auth0-react";
+import Footer from "../../modules/footer/Footer";
 
 function UsersPage() {
   const { isAuthenticated } = useAuth0();
@@ -22,39 +23,37 @@ function UsersPage() {
   return (
     <>
       {!user}
-    
+
       <div className="contenedor">
-     
-        <div className="left__aside">{(isAuthenticated) && <Nav />}</div>
+        <div className="left__aside">{isAuthenticated && <Nav />}</div>
         <div className="content">
-        <PageTitle title="Usuarios" />
-          <div  style={{marginTop: "5rem"}}>
+          <PageTitle title="Usuarios" />
+          <div style={{ marginTop: "5rem" }}>
             <Tabs
               defaultActiveKey="todos"
               id="uncontrolled-tab-example"
               className={styles.notificacionNav}
             >
               <Tab eventKey="todos" title="Todos">
-                <Users/>
+                <Users />
               </Tab>
               <Tab eventKey="seguidores" title="Seguidores">
-              <Followers/>
+                <Followers />
               </Tab>
               <Tab eventKey="siguiendo" title="Siguiendo">
-                <Following/>
+                <Following />
               </Tab>
               <Tab eventKey="actividad" title="Actividad">
-                <Actividad/>
+                <Actividad />
               </Tab>
             </Tabs>
-            
           </div>
         </div>
         <aside className="right__aside">
           <div className="container pt-2">
-            {(isAuthenticated)}
-            {(!isAuthenticated) && <AsideLogin />}
-            {(isAuthenticated) && (
+            {isAuthenticated}
+            {!isAuthenticated && <AsideLogin />}
+            {isAuthenticated && (
               <div>
                 <EventSnipet />
                 <UserSuggestions />
@@ -67,6 +66,7 @@ function UsersPage() {
                 </div>
               </div>
             )}
+            <Footer />
           </div>
         </aside>
       </div>

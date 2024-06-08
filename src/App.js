@@ -17,6 +17,9 @@ import FaqPage from './pages/faqPage/FaqPage';
 import AboutUsPage from './pages/aboutUsPage/AboutUsPage';
 import EventsPage from './pages/eventsPage/EventsPage';
 import ProductsByAgeRange from './pages/explorarPage/ProductsByAgeRange';
+import TermsPage from "./pages/termsPage/TermsPage";
+import PolicyPage from './pages/policyPage/PoliciyPage';
+
 
 function App() {
   return (
@@ -35,6 +38,8 @@ function App() {
         <Route path="/preguntasFrecuentes" element={<FaqPage />} />
         <Route path="/nosotros" element={<AboutUsPage />} />
         <Route path="/eventos" element={<EventsPage />} />
+        <Route path="/terminos" element={<TermsPage />} />
+        <Route path="/privacidad-politica" element={<PolicyPage />} />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="*" element={<NotFoundPage />} />
 

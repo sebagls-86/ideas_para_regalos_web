@@ -12,6 +12,7 @@ import Links from "../../components/link/Links";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import Modal from "../../components/modal/Modal";
+import Footer from "../../modules/footer/Footer";
 
 function MyAccountPage({ userInfo }) {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function MyAccountPage({ userInfo }) {
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
 
-    const [savedUserId, setSavedUserId] = useState(null);
+  const [savedUserId, setSavedUserId] = useState(null);
 
   useEffect(() => {
     if (user__id !== userId) {
@@ -111,7 +112,6 @@ function MyAccountPage({ userInfo }) {
 
     fetchFollowingUsers();
   }, [user__id, token, navigate, userId]);
-
 
   const isUserFollowing = () => {
     return followingUsers.some((user) => user.user_id === user__id);
@@ -349,6 +349,7 @@ function MyAccountPage({ userInfo }) {
                     type={"primary"}
                   />
                 </div>
+                <Footer />
               </div>
             </div>
           </aside>

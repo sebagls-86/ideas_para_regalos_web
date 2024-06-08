@@ -17,6 +17,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 import banner1 from "../../assets/banner-promo-1.png";
 import banner2 from "../../assets/banner-promo-2.png";
 import banner3 from "../../assets/banner-promo-3.png";
+import Footer from "../../modules/footer/Footer";
 
 import "swiper/swiper-bundle.css";
 
@@ -25,8 +26,6 @@ function ExplorarPage() {
   const userInfo =
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
-
-
 
   return (
     <>
@@ -37,7 +36,7 @@ function ExplorarPage() {
         </div>
 
         <div className="content">
-         <PageTitle title="Explorar" />
+          <PageTitle title="Explorar" />
           <Swiper
             loop={true}
             autoplay={{
@@ -93,18 +92,9 @@ function ExplorarPage() {
           </Swiper>
 
           <div className="mt-3">
-            <SectionCategory
-              title={"Categorías"}
-              slidesPerView={4}
-            />
-            <SectionEvents
-              title={"Eventos"}
-              slidesPerView={4}
-            />
-            <SectionAgeRange
-              title={"Rango de Edad"}
-              slidesPerView={4}
-            />
+            <SectionCategory title={"Categorías"} slidesPerView={4} />
+            <SectionEvents title={"Eventos"} slidesPerView={4} />
+            <SectionAgeRange title={"Rango de Edad"} slidesPerView={4} />
             <SectionFeatured
               title="Productos Destacados"
               slidesPerView={3}
@@ -123,14 +113,13 @@ function ExplorarPage() {
                   spaceBetween: 50,
                 },
               }}
-            
             />
           </div>
         </div>
 
         <aside className="right__aside">
           <div className="container pt-2">
-           <EventSnipet />
+            <EventSnipet />
             {isAuthenticated && (
               <>
                 <UserSuggestions />
@@ -144,6 +133,7 @@ function ExplorarPage() {
               </>
             )}
             {!isAuthenticated && <AsideLogin />}
+            <Footer />
           </div>
         </aside>
       </div>
