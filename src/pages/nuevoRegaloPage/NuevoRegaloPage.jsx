@@ -12,6 +12,7 @@ import ModalCreateProfile from "../../modules/modalCreateProfile/ModalCreateProf
 import { useNavigate, useLocation } from "react-router-dom";
 import ResponseModal from "../../components/modal/ResponseModal";
 import { useAuth0 } from "@auth0/auth0-react";
+import Footer from "../../modules/footer/Footer";
 
 function NuevoRegaloPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -303,6 +304,7 @@ function NuevoRegaloPage() {
                 <UserSuggestions />
               </div>
             )}
+            <Footer />
           </div>
         </aside>
       </div>

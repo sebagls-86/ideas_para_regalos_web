@@ -1,0 +1,23 @@
+.container{
+    width: 80%;
+    margin: auto;
+}
+.page_title{
+    font-weight: 800;
+    margin-top: 3rem;
+}
+.sub_title{
+    font-weight: 800;
+    line-height: 1.5;
+    color: #39393b;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+.date_info{
+    margin: 1rem 0;
+    font-size: 16px;
+    opacity: 50%;
+}
+.titulo_{
+    margin-bottom: 1rem;
+}

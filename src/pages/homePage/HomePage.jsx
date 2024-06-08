@@ -8,9 +8,10 @@ import ModalSurvey from "../../modules/modalSurvey/ModalSurvey";
 import Links from "../../components/link/Links";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import NuevoRegaloHome from "../../components/nuevoRegaloHome/NuevoRegaloHome";
-import Search from "../../components/search/Search"; // Asegúrate de que esta ruta sea correcta
+import Search from "../../components/search/Search";
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
+import Footer from "../../modules/footer/Footer";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -35,7 +36,7 @@ function HomePage() {
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
   const API_URL = process.env.REACT_APP_API_URL;
-  
+
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       const urlParams = new URLSearchParams(window.location.search);
@@ -194,11 +195,11 @@ function HomePage() {
   const verifyPendingSurveys = async (token) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  
+
       if (!userInfo || !userInfo.data || !userInfo.data.user_id) {
         throw new Error("User info not found in localStorage");
       }
-  
+
       const pendingSurveys = await fetch(
         `${API_URL}/forums-survey/pending/${userInfo.data.user_id}`,
         {
@@ -209,7 +210,7 @@ function HomePage() {
           },
         }
       );
-  
+
       if (!pendingSurveys.ok) {
         const errorMessage = await pendingSurveys.text();
         if (errorMessage.includes("Failed to validate JWT")) {
@@ -270,7 +271,10 @@ function HomePage() {
           }`}
         >
           <div className="container pt-2">
-            <Search onSearch={handleSearch} placeholder={"Buscar publicaciones"}/>
+            <Search
+              onSearch={handleSearch}
+              placeholder={"Buscar publicaciones"}
+            />
             <EventSnipet />
             {(isAuthenticated || tokenExists) && (
               <>
@@ -286,6 +290,7 @@ function HomePage() {
               </>
             )}
             {!isAuthenticated && !tokenExists && <AsideLogin />}
+            <Footer />
           </div>
         </aside>
       </div>

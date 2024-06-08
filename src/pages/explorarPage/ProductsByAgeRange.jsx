@@ -11,6 +11,7 @@ import ProductCard from "../../components/productCard/ProductCard";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./explorarPage.module.css";
 import Search from "../../components/search/Search";
+import Footer from "../../modules/footer/Footer";
 
 function ProductsByAgeRange() {
   const { ageRangeId } = useParams();
@@ -115,7 +116,7 @@ function ProductsByAgeRange() {
             <Search onSearch={handleSearch} placeholder={"Buscar productos"} />
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
-              <div className="container pt-2">
+              <>
                 <UserSuggestions />
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links
@@ -124,10 +125,11 @@ function ProductsByAgeRange() {
                     type={"primary"}
                   />
                 </div>
-              </div>
+              </>
             ) : (
               <AsideLogin />
             )}
+            <Footer />
           </div>
         </aside>
       </div>

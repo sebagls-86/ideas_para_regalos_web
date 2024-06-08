@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import styles from "./eventsPage.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import Footer from "../../modules/footer/Footer";
 
 function EventsPage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -119,7 +120,7 @@ function EventsPage() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-          {/*  <Search /> */ }
+            {/*  <Search /> */}
             <EventSnipet />
             {!isAuthenticated && <AsideLogin />}
             {isAuthenticated && (
@@ -134,6 +135,7 @@ function EventsPage() {
                 </div>
               </>
             )}
+            <Footer />
           </div>
         </aside>
       </div>

@@ -11,6 +11,7 @@ import PageTitle from "../../components/pageTitle/PageTitle";
 import ProductCard from "../../components/productCard/ProductCard";
 import { useAuth0 } from "@auth0/auth0-react";
 import Search from "../../components/search/Search";
+import Footer from "../../modules/footer/Footer";
 
 function ProductsByEvent() {
   const [tokenExists, setTokenExists] = React.useState(false);
@@ -110,10 +111,10 @@ function ProductsByEvent() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-            <Search onSearch={handleSearch}  placeholder={"Buscar productos"} />
+            <Search onSearch={handleSearch} placeholder={"Buscar productos"} />
             <EventSnipet />
             {isAuthenticated || tokenExists ? (
-              <div className="container pt-2">
+              <>
                 <UserSuggestions />
                 <div className="mt-4 d-flex justify-content-center ">
                   <Links
@@ -122,10 +123,11 @@ function ProductsByEvent() {
                     type={"primary"}
                   />
                 </div>
-              </div>
+              </>
             ) : (
               <AsideLogin />
             )}
+            <Footer />
           </div>
         </aside>
       </div>
