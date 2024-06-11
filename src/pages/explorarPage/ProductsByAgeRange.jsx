@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import NavBar from "../../modules/navBar/NavBar";
 import Nav from "../../modules/nav/Nav";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
@@ -29,7 +28,6 @@ function ProductsByAgeRange() {
       JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -98,7 +96,7 @@ function ProductsByAgeRange() {
                       <div>
                         <ProductCard
                           key={index}
-                          image={`${URL_IMAGES}${product.image_name}`}
+                          image={`${product.image_name}`}
                           name={product.product_name}
                           userId={userId}
                           productId={product.product_catalog_id}

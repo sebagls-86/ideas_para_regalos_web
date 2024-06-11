@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionAgeRange.module.css";
 import { Link } from "react-router-dom";
-import { Pagination } from "swiper/modules";
 import { FiSearch } from "react-icons/fi";
 
 export default function SectionAgeRange({ slidesPerView }) {
@@ -10,7 +9,6 @@ export default function SectionAgeRange({ slidesPerView }) {
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
   useEffect(() => {
     fetchCategories();
@@ -90,7 +88,7 @@ export default function SectionAgeRange({ slidesPerView }) {
                   >
                     {ageRange.image ? (
                       <img
-                        src={`${URL_IMAGES}${ageRange.image}`}
+                        src={`${ageRange.image}`}
                         alt="banner"
                         className={styles.categoryImage}
                       />

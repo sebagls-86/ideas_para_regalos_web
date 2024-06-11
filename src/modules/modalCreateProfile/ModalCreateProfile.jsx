@@ -4,7 +4,11 @@ import styles from "./modalCreateProfile.module.css";
 import { Col } from "react-bootstrap";
 import Button from "../../components/button/Button";
 import SelectButton from "../../components/selectButton/SelectButton";
-import { fetchAvailableInterests, fetchAgeRanges, fetchRelationships } from "../api/api";
+import {
+  fetchAvailableInterests,
+  fetchAgeRanges,
+  fetchRelationships,
+} from "../api/api";
 
 function ModalCreateProfile({
   show,
@@ -34,79 +38,78 @@ function ModalCreateProfile({
     useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
 
-    useEffect(() => {
-      const fetchAvailableInterests = async () => {
-        try {
-          const response = await fetch(`${API_URL}/interests`);
-          if (response.ok) {
-            const data = await response.json();
-            setInterests(data.data);
-            setAvailableInterests(data.data);
-          }
-        } catch (error) {
-          console.error("Error fetching available interests:", error);
+  useEffect(() => {
+    const fetchAvailableInterests = async () => {
+      try {
+        const response = await fetch(`${API_URL}/interests`);
+        if (response.ok) {
+          const data = await response.json();
+          setInterests(data.data);
+          setAvailableInterests(data.data);
         }
-      };
-  
-      fetchAvailableInterests();
-    }, []);
+      } catch (error) {
+        console.error("Error fetching available interests:", error);
+      }
+    };
 
-    const  handleToggleInterest = (interest) => {
-        const isInterestSelected = selectedInterests.some(
-          (selectedInterest) =>
-            selectedInterest.interest_id === interest.interest_id
-        );
-    
-        if (isInterestSelected) {
-          const updatedInterests = selectedInterests.filter(
-            (selectedInterest) =>
-              selectedInterest.interest_id !== interest.interest_id
-          );
-          setSelectedInterests(updatedInterests);
-        } else {
-          setSelectedInterests([...selectedInterests, interest]);
-        }
-      };
-    
+    fetchAvailableInterests();
+  }, []);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const ageRanges = await fetchAgeRanges();
-          setAgeRanges(ageRanges);
-        } catch (error) {
-          console.error("Error fetching age ranges:", error);
-        }
-      };
-    
-      fetchData();
-    }, []);
+  const handleToggleInterest = (interest) => {
+    const isInterestSelected = selectedInterests.some(
+      (selectedInterest) =>
+        selectedInterest.interest_id === interest.interest_id
+    );
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const relationships = await fetchRelationships();
-          setRelationships(relationships);
-        } catch (error) {
-          console.error("Error fetching age ranges:", error);
-        }
-      };
-  
-      fetchData();
-    }, []);
-  
-    useEffect(() => {
-      const fetchInterests = async () => {
-        try {
-          const interests = await fetchAvailableInterests();
-          setInterests(interests);
-        } catch (error) {
-          console.error("Error fetching available interests:", error);
-        }
-      };
-  
-      fetchInterests();
-    }, []);
+    if (isInterestSelected) {
+      const updatedInterests = selectedInterests.filter(
+        (selectedInterest) =>
+          selectedInterest.interest_id !== interest.interest_id
+      );
+      setSelectedInterests(updatedInterests);
+    } else {
+      setSelectedInterests([...selectedInterests, interest]);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ageRanges = await fetchAgeRanges();
+        setAgeRanges(ageRanges);
+      } catch (error) {
+        console.error("Error fetching age ranges:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const relationships = await fetchRelationships();
+        setRelationships(relationships);
+      } catch (error) {
+        console.error("Error fetching age ranges:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchInterests = async () => {
+      try {
+        const interests = await fetchAvailableInterests();
+        setInterests(interests);
+      } catch (error) {
+        console.error("Error fetching available interests:", error);
+      }
+    };
+
+    fetchInterests();
+  }, []);
 
   useEffect(() => {
     setIsGuardarDisabled(
@@ -121,11 +124,11 @@ function ModalCreateProfile({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
-    
+    const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
+
     setForm({
       ...form,
-      [name]: filteredValue
+      [name]: filteredValue,
     });
   };
 
@@ -190,7 +193,7 @@ function ModalCreateProfile({
     setCurrentStep(1);
     setIsAgeDropdownOpen(false);
     setIsRelationshipDropdownOpen(false);
-    setSelectedInterests([])
+    setSelectedInterests([]);
   };
 
   const getTitleForStep = () => {
@@ -209,7 +212,12 @@ function ModalCreateProfile({
       case 1:
         return (
           <>
-          <div><p>Por favor, completá los datos de tu persona para que otros puedan ofrecer la mejor recomendación posible.</p></div>
+            <div>
+              <p>
+                Por favor, completá los datos de tu persona para que otros
+                puedan ofrecer la mejor recomendación posible.
+              </p>
+            </div>
             <input
               type="text"
               name="name"
@@ -230,7 +238,7 @@ function ModalCreateProfile({
               onChange={handleChange}
               className={styles.input_modal}
             />
-              <SelectButton
+            <SelectButton
               label="Edad"
               isOpen={isAgeDropdownOpen}
               options={(ageRanges || []).map((ageRange) => ({
@@ -243,16 +251,17 @@ function ModalCreateProfile({
               selectedOption={selectedAgeOption}
               toggleDropdown={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
             />
-           <SelectButton
+            <SelectButton
               label="Relación"
               isOpen={isRelationshipDropdownOpen}
-              options={(Array.isArray(relationships) && relationships.length > 0) ? 
-  relationships.map((relationship) => ({
-    label: relationship.relationship_name,
-    value: relationship.relationship_id,
-  })) :
-  []
-}
+              options={
+                Array.isArray(relationships) && relationships.length > 0
+                  ? relationships.map((relationship) => ({
+                      label: relationship.relationship_name,
+                      value: relationship.relationship_id,
+                    }))
+                  : []
+              }
               handleOptionSelect={(option) =>
                 handleOptionSelect(option, "selectedRelationship")
               }

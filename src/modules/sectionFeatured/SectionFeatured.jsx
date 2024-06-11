@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./sectionFeatured.module.css";
-
 import "swiper/css";
-
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/productCard/ProductCard";
 
@@ -13,8 +11,7 @@ export default function SectionFeatured({ slidesPerView, breakpoints, spaceBetwe
   const [loading, setLoading] = useState(true);
   const userId = (localStorage.getItem("userInfo") && JSON.parse(localStorage.getItem("userInfo")).data.user_id) || null;
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-  
+ 
 
   useEffect(() => {
     fetchEvents();
@@ -63,7 +60,7 @@ export default function SectionFeatured({ slidesPerView, breakpoints, spaceBetwe
                   <SwiperSlide //style={{ marginLeft: index === 0 ? "2rem" : 0 }}
                   >
                   <ProductCard
-                    image={`${URL_IMAGES}${featured.image_name}`}
+                    image={`${featured.image_name}`}
                     name={featured.product_name}
                     userId={userId}
                     productId={featured.product_catalog_id}

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
-import { Col } from "react-bootstrap";
-import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
-import NavBar from "../../modules/navBar/NavBar";
-import LoginMobile from "../../modules/loginMobile/LoginMobile";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
 import Links from "../../components/link/Links";
@@ -17,18 +13,16 @@ import Footer from "../../modules/footer/Footer";
 function EventsPage() {
   const [tokenExists, setTokenExists] = useState(false);
   const [scheduledEvents, setScheduledEvents] = useState([]);
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const userInfo =
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     setTokenExists(token !== null && token !== undefined);
 
-    // Fetch upcoming events with robust error handling
     fetch(`${API_URL}/scheduledEvents/upcoming`)
       .then((response) => {
         if (!response.ok) {
@@ -45,7 +39,7 @@ function EventsPage() {
 
         const eventsWithImageURLs = data.data.map((event) => ({
           ...event,
-          image: `${URL_IMAGES}${event.image}`,
+          image: `${event.image}`,
         }));
 
         setScheduledEvents(eventsWithImageURLs);
@@ -57,7 +51,6 @@ function EventsPage() {
 
   return (
     <>
-      {/*{!isAuthenticated && <NavBar />} */}
       <div className="contenedor">
         <div className="left__aside">
           <Nav userInfo={userInfo} />
@@ -120,7 +113,6 @@ function EventsPage() {
 
         <aside className="right__aside">
           <div className="container pt-2">
-            {/*  <Search /> */}
             <EventSnipet />
             {!isAuthenticated && <AsideLogin />}
             {isAuthenticated && (

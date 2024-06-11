@@ -54,8 +54,7 @@ function WishList() {
     null;
 
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -619,7 +618,7 @@ function WishList() {
     }
   >
     <img
-      src={`${URL_IMAGES}${productInfo.images}`}
+      src={`${productInfo.images}`}
       alt={productInfo.name}
       className={
         tokenUserId === userId

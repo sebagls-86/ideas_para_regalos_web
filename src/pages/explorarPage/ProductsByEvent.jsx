@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Nav from "../../modules/nav/Nav";
 import { useParams } from "react-router-dom";
 import styles from "./explorarPage.module.css";
-import NavBar from "../../modules/navBar/NavBar";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
@@ -25,7 +24,6 @@ function ProductsByEvent() {
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
   const { isAuthenticated } = useAuth0();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -95,7 +93,7 @@ function ProductsByEvent() {
                     {filteredProducts.map((product, index) => (
                       <div>
                         <ProductCard
-                          image={`${URL_IMAGES}${product.image_name}`}
+                          image={`${product.image_name}`}
                           name={product.product_name}
                           userId={userId}
                           productId={product.product_catalog_id}

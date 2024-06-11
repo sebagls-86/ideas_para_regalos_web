@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionEvents.module.css";
 import { Link } from "react-router-dom";
-import { Pagination } from "swiper/modules";
 import { FiSearch } from "react-icons/fi";
 
 export default function SectionEvents({ slidesPerView }) {
@@ -10,7 +9,6 @@ export default function SectionEvents({ slidesPerView }) {
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
 
   useEffect(() => {
     fetchEvents();
@@ -88,7 +86,7 @@ export default function SectionEvents({ slidesPerView }) {
                 <SwiperSlide key={index} style={{ marginLeft: "2rem" }}>
                   <Link to={`/explorar/eventos/${event.event_type_id}`}>
                     <img
-                      src={`${URL_IMAGES}${event.image}`}
+                      src={`${event.image}`}
                       alt="banner"
                       className={styles.eventImage}
                     />

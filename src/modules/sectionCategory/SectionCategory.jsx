@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./SectionCategory.module.css";
 import { Link } from "react-router-dom";
-import { Pagination } from "swiper/modules";
 import { FiSearch } from "react-icons/fi";
 
 export default function SectionCategory({ slidesPerView }) {
@@ -10,8 +9,7 @@ export default function SectionCategory({ slidesPerView }) {
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
-  const URL_IMAGES = process.env.REACT_APP_URL_IMAGES;
-
+  
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -91,7 +89,7 @@ export default function SectionCategory({ slidesPerView }) {
               >
                 {category.image ? (
                   <img
-                    src={`${URL_IMAGES}${category.image}`}
+                    src={`${category.image}`}
                     alt="banner"
                     className={styles.categoryImage}
                   />
