@@ -1,21 +1,22 @@
 .container{
-    width: 80%;
+    width: 65%;
     margin: auto;
 }
 .page_title{
     font-weight: 800;
     margin-top: 3rem;
+    font-size:50px;
 }
 .sub_title{
     font-weight: 800;
     line-height: 1.5;
     color: #39393b;
-    margin-top: 3rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 .date_info{
     margin: 1rem 0;
-    font-size: 16px;
+    font-size: 14px;
     opacity: 50%;
 }
 .description{
@@ -23,4 +24,19 @@
     padding: 1.5rem;
     border-radius: 10px;
     margin: 2rem 0;
+    width: fit-content;
+    line-height: 1.5;
+    font-size: var(--fz-17);
+}
+.titulo_{
+    font-weight: bold;
+    font-size: var(--fz-25);
+    margin-top: 2rem;
+}
+.link, .link:hover, .link:active{
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+p{
+    font-size: 17px;
 }
