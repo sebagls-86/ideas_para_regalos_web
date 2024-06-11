@@ -4,6 +4,9 @@ import styles from "./termsPage.module.css";
 import { Link } from "react-router-dom";
 
 function TermsPage() {
+  const email = "contacto.ideaspararegalos@gmail.com";
+  const subject = encodeURIComponent("Consulta");
+  const body = encodeURIComponent("¡Hola Ideas para Regalos! Me gustaría saber más sobre ...");
   return (
     <>
       <NavBar />
@@ -50,7 +53,7 @@ function TermsPage() {
         <div className={styles.titulo_}>4. Privacidad</div>
         <p className="mb-2">
           El uso de su información personal está regulado por nuestra
-          <Link to="" className={styles.link}>
+          <Link to="/privacidad-politica" className={styles.link}>
             Política de Privacidad
           </Link>
           . Esta política describe cómo recopilamos, utilizamos y protegemos sus
@@ -116,7 +119,10 @@ function TermsPage() {
           Si tiene alguna pregunta sobre estos Términos de Uso, por favor
           contáctenos en: Ideas para Regalos
           <br />
-          Correo electrónico: ideaspararegalos@gmail.com
+          Correo electrónico: 
+          <a className={styles.mail} href={`mailto:${email}?subject=${subject}&body=${body}`}>
+            ideaspararegalos@gmail.com
+          </a>
         </p>
         <p className="mb-4">
           Si no estás de acuerdo con estos términos, por favor, no utilices
