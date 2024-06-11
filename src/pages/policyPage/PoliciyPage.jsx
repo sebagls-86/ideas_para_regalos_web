@@ -3,6 +3,9 @@ import NavBar from "../../modules/navBar/NavBar";
 import styles from "./policyPage.module.css";
 
 function PolicyPage() {
+  const email = "contacto.ideaspararegalos@gmail.com";
+  const subject = encodeURIComponent("Consulta");
+  const body = encodeURIComponent("¡Hola Ideas para Regalos! Me gustaría saber más sobre ...");
   return (
     <>
       <NavBar />
@@ -124,7 +127,10 @@ function PolicyPage() {
         <p className="mb-2">
           Si tiene alguna pregunta sobre nuestras políticas de privacidad o
           desea ejercer alguno de sus derechos, por favor contáctenos en: Ideas
-          para Regalos Correo electrónico: ideaspararegalos@gmail.com
+          para Regalos Correo electrónico:
+          <a  className={styles.mail} href={`mailto:${email}?subject=${subject}&body=${body}`}>
+            ideaspararegalos@gmail.com
+          </a>
         </p>
 
         <p className="mb-4">

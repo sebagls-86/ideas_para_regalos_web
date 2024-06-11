@@ -20,12 +20,18 @@
   font-weight: bolder;
 }
 .col_content > p {
-  margin-bottom: 5rem;
-
+  margin-bottom: 3rem;
   white-space: wrap;
 }
 @media screen and (max-width: 600px) {
-  .col_content > p  {
+  .col_content > p {
     white-space: normal;
   }
+}
+.mail,
+.mail:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+  margin-left: 0.3rem;
+  margin-bottom: 5rem;
 }

@@ -8,7 +8,12 @@ import { Col } from "react-bootstrap";
 function AboutUsPage() {
   const [tokenExists, setTokenExists] = useState(false);
   const { isAuthenticated } = useAuth0();
-  
+  const email = "contacto.ideaspararegalos@gmail.com";
+  const subject = encodeURIComponent("Consulta");
+  const body = encodeURIComponent(
+    "¡Hola Ideas para Regalos! Me gustaría saber más sobre ..."
+  );
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null && token !== undefined) {
@@ -33,6 +38,14 @@ function AboutUsPage() {
           Desde ideas clásicas hasta las más originales, estamos para ayudarte a
           encontrar el <br /> regalo perfecto para cualquier ocasión.
         </p>
+        <div className="mb-5">
+          <a
+            className={styles.mail}
+            href={`mailto:${email}?subject=${subject}&body=${body}`}
+          >
+            ideaspararegalos@gmail.com
+          </a>
+        </div>
       </Col>
     </>
   );

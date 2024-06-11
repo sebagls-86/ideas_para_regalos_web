@@ -40,3 +40,8 @@
 p{
     font-size: 17px;
 }
+.mail, .mail:hover{
+    color: var(--primary-dark);
+    text-decoration: underline;
+    margin-left: .3rem;
+}
