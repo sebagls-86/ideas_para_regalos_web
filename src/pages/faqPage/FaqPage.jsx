@@ -29,11 +29,13 @@ function FaqPage() {
               </h4>
               <div className={styles.divider}></div>
               <p>
-                En el foro, puedes armar el perfil del agasajado completando un
-                formulario con su información personal, como gustos, intereses,
-                edad, entre otros. Esto nos ayudará a proporcionarte
-                recomendaciones más personalizadas y precisas según las
-                preferencias del destinatario del regalo.
+                Puedes crear un foro para que otras personas te brinden
+                sugerencias. Primero, necesitás crear un perfil del agasajado
+                completando un formulario con su información personal, como
+                gustos, intereses, edad, entre otros datos. Esto nos ayudará a
+                ofrecerte recomendaciones más personalizadas y precisas según
+                las preferencias del destinatario del regalo, además de
+                permitirte recibir recomendaciones de otros usuarios.
               </p>
             </div>
             <div>
@@ -43,7 +45,7 @@ function FaqPage() {
               </h4>
               <div className={styles.divider}></div>
               <p>
-                En nuestra plataforma, puedes participar activamente en la
+                En nuestra plataforma, podés participar activamente en la
                 comunidad comentando en publicaciones y compartiendo fotos
                 relacionadas con ideas de regalos. Esta interacción te permite
                 recibir retroalimentación instantánea de otros usuarios y
@@ -63,16 +65,16 @@ function FaqPage() {
                 Sí, en nuestra plataforma ofrecemos una función muy útil que te
                 permite guardar las ideas de regalos que te interesen para
                 consultarlas más tarde. Esta función te permite crear y
-                gestionar listas personalizadas de productos, donde puedes
+                gestionar listas personalizadas de productos, donde podés
                 almacenar tus ideas de regalos favoritas de una manera
                 organizada y fácil de acceder.
                 <br /> Una vez que encuentres un producto que te guste,
-                simplemente selecciona la opción de "Guardar en lista" y elige
-                la lista en la que deseas agregarlo. Además, tienes la libertad
+                simplemente seleccioná la opción de "Guardar en lista" y elegí
+                la lista en la que deseas agregarlo. Además, tenés la libertad
                 de personalizar el nombre de tus listas para reflejar el tema o
                 la ocasión específica, como "Regalos de cumpleaños para mamá" o
-                "Ideas de regalos para Navidad". Posteriormente, puedes acceder
-                a tus listas guardadas en cualquier momento para revisarlas,
+                "Ideas de regalos para Navidad". Posteriormente, podés acceder a
+                tus listas guardadas en cualquier momento para revisarlas,
                 comparar opciones y tomar decisiones informadas sobre tus
                 compras de regalos
               </p>
@@ -89,7 +91,7 @@ function FaqPage() {
                 agasajado de manera precisa y detallada. Cuanta más información
                 proporciones sobre los gustos, intereses y preferencias del
                 destinatario del regalo, mejores serán las recomendaciones que
-                recibas. Además, asegúrate de proporcionar comentarios claros y
+                recibas. Además, asegurate de proporcionar comentarios claros y
                 constructivos sobre las recomendaciones que recibas para ayudar
                 a mejorar la calidad de las sugerencias en la plataforma.
               </p>

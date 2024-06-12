@@ -12,6 +12,8 @@ import Search from "../../components/search/Search";
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
 import Footer from "../../modules/footer/Footer";
+import banner1 from "../../assets/banner-promo-1.png";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -260,8 +262,17 @@ function HomePage() {
         </div>
         <div className="content">
           {(tokenExists || isAuthenticated) && <PageTitle title="Inicio" />}
-          <NuevoRegaloHome />
-          <div className="mt-3 bordes-y">
+
+          {(!tokenExists || !isAuthenticated) && (
+            <img src={banner1} alt="banner" className="home_banner" />
+          )}
+
+          {(tokenExists || isAuthenticated) && (
+            <div className="mb-3">
+              <NuevoRegaloHome />{" "}
+            </div>
+          )}
+          <div className=" bordes-y">
             <Post searchTerm={searchTerm} userInfo={userInfo?.data} />
           </div>
         </div>
