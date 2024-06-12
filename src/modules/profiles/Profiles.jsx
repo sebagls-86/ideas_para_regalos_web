@@ -553,7 +553,7 @@ function Profiles() {
   };
 
   const handleGiftClick = (profile) => {
-    window.location.href = `http://localhost:3000/nuevoRegalo?profileId=${profile.profile_id}`;
+    window.location.href = process.env.REACT_APP_FRONT_URL+`nuevoRegalo?profileId=${profile.profile_id}`;
   };
 
   return (
