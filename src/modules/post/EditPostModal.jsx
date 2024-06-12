@@ -42,6 +42,7 @@ function EditPostModal({
 
   console.log(originalPost);
   console.log("selected post", selectedPost);
+  console.log(selectedProfileId);
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -63,7 +64,7 @@ function EditPostModal({
     };
 
     fetchEventTypes();
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     if (selectedPost && selectedPost.data.event_name) {
@@ -75,6 +76,7 @@ function EditPostModal({
   }, [selectedPost, eventTypes]);
 
   useEffect(() => {
+    console.log("fetch profiles");
     const fetchProfiles = async () => {
       try {
         if (!selectedPost) return;
@@ -120,7 +122,7 @@ function EditPostModal({
     };
 
     fetchProfiles();
-  }, [selectedPost, token, navigate]);
+  }, [show]);
 
   useEffect(() => {
     if (originalPost && originalPost.event_date) {
@@ -171,17 +173,17 @@ function EditPostModal({
 
       if (
         selectedEventType &&
-        selectedPost.data.event_name !== selectedPost.event
+        selectedPost.data.event_name !== selectedPost.event_name
       ) {
         setSelectedPost({
           ...selectedPost,
           event_type_id: selectedEventType.event_type_id,
         });
-        updatedFields.event_type_id = selectedPost.event_type_id;
-        updatedFields.name = otherEventName || selectedPost.data.event;
+        updatedFields.event_type_id = selectedPost.data.event_type_id;
+        updatedFields.name = otherEventName || selectedPost.data.event_name;
       }
 
-      if (originalPost.event_name !== otherEventName) {
+      if (originalPost.event_name !== otherEventName && otherEventName !== "") {
         updatedFields.name = otherEventName;
       }
 
@@ -208,7 +210,6 @@ function EditPostModal({
         }
       }
 
-      // Realizar el llamado a events solo si hay cambios en el tipo de evento o la fecha del evento
       if (
         Object.keys(updatedFields).length > 0 &&
         (updatedFields.event_type_id ||
@@ -234,7 +235,6 @@ function EditPostModal({
         }
       }
 
-      // Realizar el llamado a forums si hay cambios en el perfil, el título, la descripción o la fecha de finalización
       if (
         Object.keys(updatedFields).length > 0 &&
         (updatedFields.title ||
@@ -282,11 +282,9 @@ function EditPostModal({
   };
 
   useEffect(() => {
-    const isOriginalEventNamePresent = Array.isArray(eventTypes) && eventTypes.some(
-      (type) => type.name === originalPost?.event_name
-    );
-  
-
+    const isOriginalEventNamePresent =
+      Array.isArray(eventTypes) &&
+      eventTypes.some((type) => type.name === originalPost?.event_name);
     setOtherEventName(
       isOriginalEventNamePresent ? "" : originalPost?.event_name
     );
@@ -414,18 +412,24 @@ function EditPostModal({
                       {isLoading ? (
                         <option value="">Cargando...</option>
                       ) : Array.isArray(eventTypes) && eventTypes.length > 0 ? (
-                        eventTypes.map((eventType) => (
-                          <option
-                            key={eventType.event_type_id}
-                            value={eventType.event_type_id}
-                            selected={
+                        <>
+                          {eventTypes.map((eventType) => {
+                            const isSelected =
                               selectedPost &&
-                              selectedPost.data.event_name === eventType.name
-                            }
-                          >
-                            {eventType.name}
-                          </option>
-                        ))
+                              selectedPost.data.event_name === eventType.name;
+                            return (
+                              <option
+                                key={eventType.event_type_id}
+                                value={eventType.event_type_id}
+                                selected={
+                                  isSelected || eventType.name === "Otro"
+                                }
+                              >
+                                {eventType.name}
+                              </option>
+                            );
+                          })}
+                        </>
                       ) : (
                         []
                       )}
@@ -455,9 +459,15 @@ function EditPostModal({
                         {!otherEventName && (
                           <span
                             style={{ cursor: "pointer", color: "green" }}
-                            onClick={() =>
-                              setOtherEventName(originalPost.event_name)
-                            }
+                            onClick={() => {
+                              if (
+                                selectedPost &&
+                                selectedPost.data &&
+                                selectedPost.data.event_name
+                              ) {
+                                setOtherEventName(selectedPost.data.event_name);
+                              }
+                            }}
                           >
                             Restaurar
                           </span>
