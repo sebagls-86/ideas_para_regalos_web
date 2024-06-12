@@ -125,7 +125,7 @@ function HomePage() {
                 logout();
               }
             }
-          }, 5000);
+          }, 10000);
 
           try {
             await verifyUser(newAccessToken);

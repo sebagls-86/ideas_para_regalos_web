@@ -54,7 +54,7 @@ function WishList() {
     null;
 
   const API_URL = process.env.REACT_APP_API_URL;
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -345,6 +345,11 @@ function WishList() {
   };
 
   const handleEditListName = (list) => {
+    if (list.list_name === "Favoritos" || list.list_name === "MercadoLibre") {
+      setErrorMessage("No se puede editar el nombre de esta lista");
+      setShowResponseModal(true);
+      return;
+    }
     setEditMode(true);
     setEditedListName(list.list_name);
   };
@@ -360,7 +365,7 @@ function WishList() {
         body: JSON.stringify({ list_name: editedListName }),
       });
       if (response.ok) {
-        setSuccessMessage("Lista eliminada correctamente");
+        setSuccessMessage("Lista modificada correctamente");
         const updatedListData = listData.map((listItem) => {
           if (listItem.list_id === list.list_id) {
             return {
@@ -438,6 +443,8 @@ function WishList() {
       inputRef.current.focus();
     }
   };
+
+  console.log(listData);
 
   return (
     <div>
@@ -524,20 +531,27 @@ function WishList() {
                   onClick={() => setSelectedListId(null)}
                   className={styles.go_back_button}
                 ></Button>{" "}
-                 {tokenUserId === userId && (
-                <>
-                <Button
-                  className={styles.create_new_button}
-                  onClick={() =>
-                    handleEditListName(
+                {userId === tokenUserId && (
+                  <>
+                    {listData.find((list) => list.list_id === selectedListId)
+                      ?.list_name !== "Favoritos" &&
                       listData.find((list) => list.list_id === selectedListId)
-                    )
-                  }
-                >
-                  Editar
-                </Button>
-                </>
-              )}
+                        ?.list_name !== "MercadoLibre" && (
+                        <Button
+                          className={styles.create_new_button}
+                          onClick={() =>
+                            handleEditListName(
+                              listData.find(
+                                (list) => list.list_id === selectedListId
+                              )
+                            )
+                          }
+                        >
+                          Editar
+                        </Button>
+                      )}
+                  </>
+                )}
               </div>
               <div className={styles.list__content}>
                 <div>
@@ -599,37 +613,41 @@ function WishList() {
                         );
                         return (
                           <div key={index} className={styles.product_item}>
-                          {productInfo && (
-  <div
-    key={index}
-    className={
-      tokenUserId === userId
-        ? `${styles.own_product_card}`
-        : `${styles.product_card}`
-    }
-    onClick={
-      tokenUserId === userId
-        ? () =>
-            handleRemoveProduct(
-              listData.find((list) => list.list_id === selectedListId),
-              product
-            )
-        : null
-    }
-  >
-    <img
-      src={`${productInfo.images}`}
-      alt={productInfo.name}
-      className={
-        tokenUserId === userId
-          ? `${styles.own_product_image}`
-          : `${styles.product_image}`
-      }
-    />
-    <p className={styles.product_name}>{productInfo.name}</p>
-  </div>
-)}
-
+                            {productInfo && (
+                              <div
+                                key={index}
+                                className={
+                                  tokenUserId === userId
+                                    ? `${styles.own_product_card}`
+                                    : `${styles.product_card}`
+                                }
+                                onClick={
+                                  tokenUserId === userId
+                                    ? () =>
+                                        handleRemoveProduct(
+                                          listData.find(
+                                            (list) =>
+                                              list.list_id === selectedListId
+                                          ),
+                                          product
+                                        )
+                                    : null
+                                }
+                              >
+                                <img
+                                  src={`${productInfo.images}`}
+                                  alt={productInfo.name}
+                                  className={
+                                    tokenUserId === userId
+                                      ? `${styles.own_product_image}`
+                                      : `${styles.product_image}`
+                                  }
+                                />
+                                <p className={styles.product_name}>
+                                  {productInfo.name}
+                                </p>
+                              </div>
+                            )}
                           </div>
                         );
                       })
@@ -638,15 +656,15 @@ function WishList() {
                   )}
                 </div>
                 {tokenUserId === userId && (
-                <>
-                <Button
-                  className={styles.create_new_button}
-                  onClick={() => navigate("/explorar")}
-                >
-                  Agregar
-                </Button>
-                </>
-              )}
+                  <>
+                    <Button
+                      className={styles.create_new_button}
+                      onClick={() => navigate("/explorar")}
+                    >
+                      Agregar
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -721,25 +739,27 @@ function WishList() {
                       <div>
                         <p className={styles.list_name}>{list.list_name}</p>
                       </div>
-                      {userId === tokenUserId && (
-                        <div className={styles.more__actions}>
-                          <Button
-                            className={styles.action_buttons}
-                            onClick={() => handleEdit(list)}
-                          >
-                            <div className={styles.list_edit_icon} />
-                          </Button>
-                          <Button
-                            className={styles.action_buttons}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteList(list);
-                            }}
-                          >
-                            <div className={styles.list_delete_icon} />
-                          </Button>
-                        </div>
-                      )}
+                      {userId === tokenUserId &&
+                        list.list_name !== "Favoritos" &&
+                        list.list_name !== "MercadoLibre" && (
+                          <div className={styles.more__actions}>
+                            <Button
+                              className={styles.action_buttons}
+                              onClick={() => handleEdit(list)}
+                            >
+                              <div className={styles.list_edit_icon} />
+                            </Button>
+                            <Button
+                              className={styles.action_buttons}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteList(list);
+                              }}
+                            >
+                              <div className={styles.list_delete_icon} />
+                            </Button>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
