@@ -250,7 +250,7 @@ label {
     width: 22px;
 }
 .event_date_form{
-  display: flex;
+ /*display: flex;*/
   width: 100%;
   justify-content: space-between;
 }

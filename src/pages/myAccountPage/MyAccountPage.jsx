@@ -338,7 +338,7 @@ function MyAccountPage({ userInfo }) {
             <ProfileNav userInfo={userInfo}></ProfileNav>
           </div>
           <aside className="right__aside">
-            <div className="container pt-2">
+            <div className="container pt-2 d-flex flex-column justify-content-between h-100">
               <div>
                 <EventSnipet />
                 <UserSuggestions />
@@ -349,6 +349,8 @@ function MyAccountPage({ userInfo }) {
                     type={"primary"}
                   />
                 </div>
+              </div>
+              <div>
                 <Footer />
               </div>
             </div>

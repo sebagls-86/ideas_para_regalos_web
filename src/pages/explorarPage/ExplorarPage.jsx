@@ -118,22 +118,27 @@ function ExplorarPage() {
         </div>
 
         <aside className="right__aside">
-          <div className="container pt-2">
-            <EventSnipet />
-            {isAuthenticated && (
-              <>
-                <UserSuggestions />
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-              </>
-            )}
-            {!isAuthenticated && <AsideLogin />}
-            <Footer />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              <EventSnipet />
+              {isAuthenticated && (
+                <>
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              )}
+
+              {!isAuthenticated && <AsideLogin />}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>

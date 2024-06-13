@@ -12,6 +12,8 @@ import Search from "../../components/search/Search";
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
 import Footer from "../../modules/footer/Footer";
+import banner1 from "../../assets/banner-promo-1.png";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -260,8 +262,17 @@ function HomePage() {
         </div>
         <div className="content">
           {(tokenExists || isAuthenticated) && <PageTitle title="Inicio" />}
-          <NuevoRegaloHome />
-          <div className="mt-3 bordes-y">
+
+          {(!tokenExists || !isAuthenticated) && (
+            <img src={banner1} alt="banner" className="home_banner" />
+          )}
+
+          {(tokenExists || isAuthenticated) && (
+            <div className="mb-3">
+              <NuevoRegaloHome />{" "}
+            </div>
+          )}
+          <div className=" bordes-y">
             <Post searchTerm={searchTerm} userInfo={userInfo?.data} />
           </div>
         </div>
@@ -270,27 +281,31 @@ function HomePage() {
             !isAuthenticated && !tokenExists ? "right_aside_loggedout" : ""
           }`}
         >
-          <div className="container pt-2">
-            <Search
-              onSearch={handleSearch}
-              placeholder={"Buscar publicaciones"}
-            />
-            <EventSnipet />
-            {(isAuthenticated || tokenExists) && (
-              <>
-                <UserSuggestions userInfo={userInfo?.data} />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              <Search
+                onSearch={handleSearch}
+                placeholder={"Buscar publicaciones"}
+              />
+              <EventSnipet />
+              {(isAuthenticated || tokenExists) && (
+                <>
+                  <UserSuggestions userInfo={userInfo?.data} />
 
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-              </>
-            )}
-            {!isAuthenticated && !tokenExists && <AsideLogin />}
-            <Footer />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              )}
+              {!isAuthenticated && !tokenExists && <AsideLogin />}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>

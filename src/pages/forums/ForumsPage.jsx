@@ -24,6 +24,7 @@ import CommentIcon from "../../assets/comment-icon.svg";
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
+import Footer from "../../modules/footer/Footer";
 
 function ForumsPage() {
   const { user, isAuthenticated } = useAuth0();
@@ -482,15 +483,13 @@ function ForumsPage() {
           confirmButtonText="Confirmar"
         />
       )}
-      {/*  {!user && !tokenExists}
-      <NavBar />*/}
       <div className="contenedor">
         <div className="left__aside">
           <Nav userInfo={userInfo} />
         </div>
         <div className="content">
           <div>
-            <PageTitle title="Post"showBackButton={true} />
+            <PageTitle title="Post" showBackButton={true} />
           </div>
 
           {forumData && forumData.data && (
@@ -526,9 +525,6 @@ function ForumsPage() {
                     {forumData.data.profile.interests.map((interest) => (
                       <li key={interest.interest_id}>{interest.interest}</li>
                     ))}
-                    <li>
-                      {forumData.data.event_date} - {forumData.data.event_date}
-                    </li>
                   </ul>
 
                   <p className={styles.forum_description}>
@@ -638,7 +634,9 @@ function ForumsPage() {
                           </Button>
 
                           <Button
-                             className={`${styles.send_button} ${isDisabled ? styles.send_button_disabled : ''}`}
+                            className={`${styles.send_button} ${
+                              isDisabled ? styles.send_button_disabled : ""
+                            }`}
                             onClick={handleSendMessage}
                             disabled={isDisabled}
                           >
@@ -883,23 +881,28 @@ function ForumsPage() {
           )}
         </div>
         <aside className="right__aside">
-          <div className="container pt-2">
-            {/*   <Search /> */}
-            <EventSnipet />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              {/*   <Search /> */}
+              <EventSnipet />
 
-            {(user || tokenExists) && (
-              <div>
-                <UserSuggestions />
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
+              {(user || tokenExists) && (
+                <div>
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
-            {!user && !tokenExists && <AsideLogin />}
+              )}
+              {!user && !tokenExists && <AsideLogin />}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
         <EditPostModal

@@ -110,24 +110,31 @@ function ProductsByCategory() {
           </div>
         </div>
         <aside className="right__aside">
-          <div className="container pt-2">
-            <Search onSearch={handleSearch} placeholder={"Buscar productos"} />
-            <EventSnipet />
-            {isAuthenticated || tokenExists ? (
-              <>
-                <UserSuggestions />
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-              </>
-            ) : (
-              <AsideLogin />
-            )}
-            <Footer />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              <Search
+                onSearch={handleSearch}
+                placeholder={"Buscar productos"}
+              />
+              <EventSnipet />
+              {isAuthenticated || tokenExists ? (
+                <>
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              ) : (
+                <AsideLogin />
+              )}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>

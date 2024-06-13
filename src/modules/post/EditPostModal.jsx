@@ -308,8 +308,12 @@ function EditPostModal({
       <Modal
         show={show}
         closeModal={onHide}
-        title="Editar Foro"
-        contentStyle={{ marginTop: "1.5rem" }}
+        title="Editar Post"
+        contentStyle={{
+          height: "fit-content",
+          marginTop: "1.5rem",
+          paddingBottom: "2.5rem"
+        }}
       >
         <Col>
           <div className={styles.buttons__container}>
@@ -354,6 +358,7 @@ function EditPostModal({
                 </div>
               </div>
               <div className={styles.event_date_form}>
+                {/* 
                 <div>
                   <label>Fecha del Evento:</label>
                   <div>
@@ -375,8 +380,9 @@ function EditPostModal({
                     )}
                   </div>
                 </div>
+                */}
                 <div>
-                  <label>Fecha de Finalización:</label>
+                  <label>Fecha límite:</label>
                   {originalPost?.end_date !== "0" && (
                     <div>
                       <input

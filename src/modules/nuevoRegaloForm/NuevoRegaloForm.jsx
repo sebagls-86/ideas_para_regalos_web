@@ -267,53 +267,6 @@ function NuevoRegaloForm({ selectedProfile }) {
             </Form>
           </Tab>
           <Tab
-            eventKey="calendario"
-            title={
-              <span className={styles.span}>
-                <MyIcon name="calendar" /> Fecha
-              </span>
-            }
-          >
-            <div className={styles.date_container}>
-              <p>¿Cuándo es el evento?</p>
-              <Calendar
-                value={selectedDate}
-                onChange={handleDateChange}
-                className={styles.calendar}
-              />
-            </div>
-          </Tab>
-          <Tab
-            eventKey="endDate"
-            title={
-              <span className={styles.span}>
-                <MyIcon name="calendar" /> Finalización
-              </span>
-            }
-            className="form-tab"
-          >
-            <div className={styles.date_container}>
-              <p style={{ marginBottom: "0rem" }}>
-                ¿Hasta cuándo recibís sugerencias?
-              </p>
-              <p>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  checked={!showCalendar}
-                />
-                Dejar el foro siempre abierto
-              </p>
-              {showCalendar && (
-                <Calendar
-                  value={selectedEndDate}
-                  onChange={handleEndDateChange}
-                  className={styles.calendar}
-                />
-              )}
-            </div>
-          </Tab>
-          <Tab
             eventKey="evento"
             title={
               <span className={styles.span}>
@@ -357,6 +310,56 @@ function NuevoRegaloForm({ selectedProfile }) {
               )}
             </div>
           </Tab>
+          {/* 
+          <Tab
+            eventKey="calendario"
+            title={
+              <span className={styles.span}>
+                <MyIcon name="calendar" /> Fecha
+              </span>
+            }
+          >
+            <div className={styles.date_container}>
+              <p>¿Cuándo es el evento?</p>
+              <Calendar
+                value={selectedDate}
+                onChange={handleDateChange}
+                className={styles.calendar}
+              />
+            </div>
+          </Tab>
+          */}
+          <Tab
+            eventKey="endDate"
+            title={
+              <span className={styles.span}>
+                <MyIcon name="calendar" /> Fecha límite
+              </span>
+            }
+            className="form-tab"
+          >
+            <div className={styles.date_container}>
+              <p style={{ marginBottom: "0rem" }}>
+                ¿Hasta cuándo recibís sugerencias?
+              </p>
+              <p>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  checked={!showCalendar}
+                />
+                Dejar post siempre abierto
+              </p>
+              {showCalendar && (
+                <Calendar
+                  value={selectedEndDate}
+                  onChange={handleEndDateChange}
+                  className={styles.calendar}
+                />
+              )}
+            </div>
+          </Tab>
+         
         </Tabs>
         <>
           {token && (
