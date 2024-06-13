@@ -333,7 +333,7 @@ function NuevoRegaloForm({ selectedProfile }) {
             eventKey="endDate"
             title={
               <span className={styles.span}>
-                <MyIcon name="calendar" /> Límite
+                <MyIcon name="calendar" /> Fecha límite
               </span>
             }
             className="form-tab"

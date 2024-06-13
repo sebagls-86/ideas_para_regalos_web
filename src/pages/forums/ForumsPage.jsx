@@ -483,8 +483,6 @@ function ForumsPage() {
           confirmButtonText="Confirmar"
         />
       )}
-      {/*  {!user && !tokenExists}
-      <NavBar />*/}
       <div className="contenedor">
         <div className="left__aside">
           <Nav userInfo={userInfo} />
@@ -527,9 +525,6 @@ function ForumsPage() {
                     {forumData.data.profile.interests.map((interest) => (
                       <li key={interest.interest_id}>{interest.interest}</li>
                     ))}
-                    <li>
-                      {forumData.data.event_date} - {forumData.data.event_date}
-                    </li>
                   </ul>
 
                   <p className={styles.forum_description}>
