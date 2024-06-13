@@ -296,15 +296,19 @@ function NuevoRegaloPage() {
           </div>
         </div>
         <aside className="right__aside">
-          <div className="container pt-2">
-            {!isAuthenticated && <AsideLogin />}{" "}
-            {isAuthenticated && (
-              <div>
-                <EventSnipet />
-                <UserSuggestions />
-              </div>
-            )}
-            <Footer />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              {!isAuthenticated && <AsideLogin />}{" "}
+              {isAuthenticated && (
+                <div>
+                  <EventSnipet />
+                  <UserSuggestions />
+                </div>
+              )}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>

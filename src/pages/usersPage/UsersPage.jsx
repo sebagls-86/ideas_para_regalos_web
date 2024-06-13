@@ -50,23 +50,27 @@ function UsersPage() {
           </div>
         </div>
         <aside className="right__aside">
-          <div className="container pt-2">
-            {isAuthenticated}
-            {!isAuthenticated && <AsideLogin />}
-            {isAuthenticated && (
-              <div>
-                <EventSnipet />
-                <UserSuggestions />
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              {isAuthenticated}
+              {!isAuthenticated && <AsideLogin />}
+              {isAuthenticated && (
+                <div>
+                  <EventSnipet />
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
-            <Footer />
+              )}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>

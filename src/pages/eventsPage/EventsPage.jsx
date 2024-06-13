@@ -18,7 +18,7 @@ function EventsPage() {
     (isAuthenticated && JSON.parse(localStorage.getItem("userInfo")).data) ||
     null;
   const API_URL = process.env.REACT_APP_API_URL;
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setTokenExists(token !== null && token !== undefined);
@@ -112,22 +112,27 @@ function EventsPage() {
         </div>
 
         <aside className="right__aside">
-          <div className="container pt-2">
-            <EventSnipet />
-            {!isAuthenticated && <AsideLogin />}
-            {isAuthenticated && (
-              <>
-                <UserSuggestions />
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-              </>
-            )}
-            <Footer />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              <EventSnipet />
+              {!isAuthenticated && <AsideLogin />}
+              {isAuthenticated && (
+                <>
+                  <UserSuggestions />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>

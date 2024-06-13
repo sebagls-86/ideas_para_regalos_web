@@ -281,27 +281,31 @@ function HomePage() {
             !isAuthenticated && !tokenExists ? "right_aside_loggedout" : ""
           }`}
         >
-          <div className="container pt-2">
-            <Search
-              onSearch={handleSearch}
-              placeholder={"Buscar publicaciones"}
-            />
-            <EventSnipet />
-            {(isAuthenticated || tokenExists) && (
-              <>
-                <UserSuggestions userInfo={userInfo?.data} />
+          <div className="container pt-2 d-flex flex-column justify-content-between h-100">
+            <div>
+              <Search
+                onSearch={handleSearch}
+                placeholder={"Buscar publicaciones"}
+              />
+              <EventSnipet />
+              {(isAuthenticated || tokenExists) && (
+                <>
+                  <UserSuggestions userInfo={userInfo?.data} />
 
-                <div className="mt-4 d-flex justify-content-center ">
-                  <Links
-                    title="Post nuevo regalo"
-                    url="/nuevoRegalo"
-                    type={"primary"}
-                  />
-                </div>
-              </>
-            )}
-            {!isAuthenticated && !tokenExists && <AsideLogin />}
-            <Footer />
+                  <div className="mt-4 d-flex justify-content-center ">
+                    <Links
+                      title="Post nuevo regalo"
+                      url="/nuevoRegalo"
+                      type={"primary"}
+                    />
+                  </div>
+                </>
+              )}
+              {!isAuthenticated && !tokenExists && <AsideLogin />}
+            </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </aside>
       </div>
