@@ -25,7 +25,7 @@ function NuevoRegaloPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [showInput] = useState(false);
   const token = localStorage.getItem("token");
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
   const navigate = useNavigate();
   const location = useLocation();
   const userId =
@@ -34,6 +34,10 @@ function NuevoRegaloPage() {
     null;
   const API_URL = process.env.REACT_APP_API_URL;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -71,7 +75,14 @@ function NuevoRegaloPage() {
           },
         });
 
-        if (!response.ok) {
+       
+        if (response.status === 401) {
+          setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
+          setShowResponseModal(true);
+          await sleep(3000);
+          logout();
+          return;
+        } else  if (!response.ok) {
           throw new Error("Network response was not ok");
         }
 

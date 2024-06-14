@@ -5,7 +5,6 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Button from "../../components/button/Button";
 import MyIcon from "../../components/myIcon/MyIcon";
-import SelectButton from "../../components/selectButton/SelectButton";
 import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
 import { fetchEventTypes, fetchGiftsRateSuggestions } from "../api/api";
@@ -14,6 +13,7 @@ import Modal from "../../components/modal/Modal";
 import ModalSuggestions from "./ModalSuggestions";
 import ResponseModal from "../../components/modal/ResponseModal";
 import SearchDropdown from "../../components/selectButton/SearchDropdown";
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 function NuevoRegaloForm({ selectedProfile }) {
@@ -34,8 +34,13 @@ function NuevoRegaloForm({ selectedProfile }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectToProfile, setRedirectToProfile] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const { logout } = useAuth0();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
 
   const userId =
     (localStorage.getItem("userInfo") &&
@@ -121,6 +126,14 @@ function NuevoRegaloForm({ selectedProfile }) {
           throw new Error("Error al crear el evento");
         }
 
+        if (eventResponse.status === 401 && eventResponse.message === "Token is expired.") {
+          setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
+          setShowResponseModal(true);
+          await sleep(3000);
+          logout();
+          return;
+        }
+
         const eventData = await eventResponse.json();
         const eventId = eventData.data.event_id;
 
@@ -168,10 +181,6 @@ function NuevoRegaloForm({ selectedProfile }) {
         "Por favor, seleccione un evento y un perfil antes de enviar el formulario."
       );
     }
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
   };
 
   const handleEndDateChange = (date) => {
