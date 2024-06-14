@@ -12,8 +12,8 @@ import Search from "../../components/search/Search";
 import { useAuth0 } from "@auth0/auth0-react";
 import config from "../../auth_config.json";
 import Footer from "../../modules/footer/Footer";
-import banner1 from "../../assets/banner-promo-1.png";
-import { Swiper, SwiperSlide } from "swiper/react";
+import banner1 from "../../assets/home-banner.png";
+import Button from "../../components/button/Button";
 
 function HomePage() {
   const [tokenExists, setTokenExists] = useState(false);
@@ -26,7 +26,9 @@ function HomePage() {
     getAccessTokenWithPopup,
     getAccessTokenSilently,
     logout,
+    loginWithRedirect
   } = useAuth0();
+
   const [loading, setLoading] = useState(null);
   const [pendingSurveysResponse, setPendingSurveysResponse] = useState(null);
   const audience = config.audience;
@@ -253,6 +255,14 @@ function HomePage() {
     console.log("token", storedToken);
   }
 
+  const handleLogin = async () => {
+    try {
+      await loginWithRedirect({ appState: { returnTo: "/" } });
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
   return (
     <>
       {/*  {!isAuthenticated && !tokenExists && <NavBar />}*/}
@@ -264,7 +274,16 @@ function HomePage() {
           {(tokenExists || isAuthenticated) && <PageTitle title="Inicio" />}
 
           {(!tokenExists || !isAuthenticated) && (
+            <>
+            <div style={{position: "relative"}}>
             <img src={banner1} alt="banner" className="home_banner" />
+            <Button
+            label="Empezar ahora"
+            className="btn primary__button-outline join-btn"
+            onClick={() => handleLogin()}
+          />
+          </div>
+            </>
           )}
 
           {(tokenExists || isAuthenticated) && (
