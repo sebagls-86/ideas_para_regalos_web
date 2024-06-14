@@ -29,20 +29,24 @@ function MyAccountPage({ userInfo }) {
   const [isHovered, setIsHovered] = useState(false);
   const { user_id } = useParams();
   const user__id = parseInt(user_id);
-  const { isAuthenticated, isLoading } = useAuth0();
+  const [isLoading, setIsLoading] = useState(true);
+  const { isAuthenticated, logout } = useAuth0();
   const token = localStorage.getItem("token");
   const userId =
     (localStorage.getItem("userInfo") &&
       JSON.parse(localStorage.getItem("userInfo")).data.user_id) ||
     null;
 
+    const sleep = (ms) => {
+      return new Promise(resolve => setTimeout(resolve, ms));
+  };
+
   const [savedUserId, setSavedUserId] = useState(null);
 
   useEffect(() => {
     if (user__id !== userId) {
       setSavedUserId(user__id);
-      //window.location.reload();
-    }
+     }
   }, [user__id]);
 
   console.log("user__id", user__id);
@@ -78,6 +82,15 @@ function MyAccountPage({ userInfo }) {
         if (response.status === 400) {
           return;
         }
+
+        if (response.status === 401 && data.message === "Token is expired.") {
+          setIsLoading(false);
+          setErrorMessage("Error al guardar los cambios");
+          setShowResponseModal(true);
+          await sleep(3000);
+          logout();
+          return;
+        }
       } catch (error) {
         navigate("/error");
       }
@@ -85,7 +98,6 @@ function MyAccountPage({ userInfo }) {
 
     fetchData();
 
-    // Fetch following users
     const fetchFollowingUsers = async () => {
       try {
         const response = await fetch(

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AsideLogin from "../../modules/asideLogin/AsideLogin";
 import { Button } from "react-bootstrap";
-import Search from "../../components/search/Search";
 import Nav from "../../modules/nav/Nav";
-import NavBar from "../../modules/navBar/NavBar";
 import EventSnipet from "../../modules/eventSnipet/EventSnipet";
 import EditPostModal from "../../modules/post/EditPostModal";
 import UserSuggestions from "../../modules/userSuggestions/UserSuggestions";
@@ -27,7 +25,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import Footer from "../../modules/footer/Footer";
 
 function ForumsPage() {
-  const { user, isAuthenticated } = useAuth0();
+  const { user } = useAuth0();
   const token = localStorage.getItem("token");
   const tokenExists = token !== null && token !== undefined;
   const [message, setMessage] = useState("");
@@ -629,7 +627,6 @@ function ForumsPage() {
                             className={styles.attach_img_btn}
                             onClick={addImage}
                           >
-                            {/*Agregar Imagen*/}
                             <RiImageAddFill />
                           </Button>
 
@@ -788,7 +785,7 @@ function ForumsPage() {
                                   />
                                   <Button
                                     className={styles.remove_img_btn}
-                                    onClick={() => handleDeleteImage(index)} // Función para eliminar la imagen asociada
+                                    onClick={() => handleDeleteImage(index)}
                                   >
                                     <IoClose />
                                   </Button>
@@ -863,7 +860,6 @@ function ForumsPage() {
               )}
             </>
           )}
-          {/* Modal for expanding images */}
           {showModal && (
             <div className={styles.modal_overlay}>
               <div>
@@ -883,9 +879,7 @@ function ForumsPage() {
         <aside className="right__aside">
           <div className="container pt-2 d-flex flex-column justify-content-between h-100">
             <div>
-              {/*   <Search /> */}
               <EventSnipet />
-
               {(user || tokenExists) && (
                 <div>
                   <UserSuggestions />

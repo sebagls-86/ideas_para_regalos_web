@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./productCard.module.css";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function ProductCard({ image, name, userId, productId }) {
   const [isSaved, setIsSaved] = useState(false);
@@ -11,9 +12,14 @@ export default function ProductCard({ image, name, userId, productId }) {
   const [message, setMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [clickedInside, setClickedInside] = useState(false);
+  const { logout } = useAuth0();
   const popoverRef = useRef(null);
   const API_URL = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
+
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
 
   function getRandomPastelColor() {
     const hue = Math.floor(Math.random() * 360);
@@ -97,6 +103,11 @@ export default function ProductCard({ image, name, userId, productId }) {
           setMessage("Producto eliminado");
           setShowAlert(true);
           fetchData();
+        } else if (response.status === 401 && response.message === "Token is expired.") {
+          setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
+          setShowResponseModal(true);
+          await sleep(3000);
+          logout();
         } else {
           setErrorMessage(
             "Hubo un problema con tu solicitud. Por favor, inténtalo de nuevo más tarde."
@@ -122,6 +133,11 @@ export default function ProductCard({ image, name, userId, productId }) {
           setMessage("Producto agregado");
           setShowAlert(true);
           fetchData();
+        } else if (response.status === 401) {
+          setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
+          setShowResponseModal(true);
+          await sleep(3000);
+          logout();
         } else {
           setErrorMessage(
             "Hubo un problema con tu solicitud. Por favor, inténtalo de nuevo más tarde."

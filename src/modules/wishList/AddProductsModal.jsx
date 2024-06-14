@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import ResponseModal from "../../components/modal/ResponseModal";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function AddProductsModal({
   show,
@@ -16,8 +17,13 @@ function AddProductsModal({
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { logout } = useAuth0();
   const token = localStorage.getItem("token");
   const API_URL = process.env.REACT_APP_API_URL;
+
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
 
   const handleSaveProductsToList = async () => {
     try {
@@ -35,6 +41,14 @@ function AddProductsModal({
         },
         body: JSON.stringify(requestBody),
       });
+
+      if (response.status === 401 && response.message === "Token is expired.") {
+        setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
+        setShowResponseModal(true);
+        await sleep(3000);
+        logout();
+        return;
+      }
   
       if (!response.ok) {
         setErrorMessage("Error al guardar productos");
