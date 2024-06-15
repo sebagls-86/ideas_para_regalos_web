@@ -49,9 +49,6 @@ function MyAccountPage({ userInfo }) {
      }
   }, [user__id]);
 
-  console.log("user__id", user__id);
-  console.log("savedUserId", savedUserId);
-
   const [followingUsers, setFollowingUsers] = useState([]);
   const API_URL = process.env.REACT_APP_API_URL;
 

@@ -56,7 +56,6 @@ function ModalCreateList({ show, onHide, handleSaveNewList }) {
         <div className={styles.modal__body}>
           <h2 className={styles.modal__title}>Nueva lista</h2>
           <Col>
-          {console.log("form list name", form.list_name)}
             <Input
             key={forceUpdate}
               type="text"

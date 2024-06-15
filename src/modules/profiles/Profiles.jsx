@@ -334,7 +334,6 @@ function Profiles() {
   const handleConfirmRemoveInterest = async () => {
     try {
       const { profile, interest } = interestToRemove;
-      console.log(profile);
       const interestId = interest.interest_id;
 
       if (profile.interests.length === 1) {

@@ -9,7 +9,7 @@ import { SlOptions } from "react-icons/sl";
 import { CgTrash } from "react-icons/cg";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
-import  CommentIcon  from "../../assets/comment-icon.svg"
+import CommentIcon from "../../assets/comment-icon.svg";
 
 function PostByUser() {
   const [postData, setPostData] = useState(null);
@@ -31,9 +31,6 @@ function PostByUser() {
     null;
   const API_URL = process.env.REACT_APP_API_URL;
 
-  console.log(userId)
-  console.log(tokenUserId)
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,7 +49,7 @@ function PostByUser() {
         if (response.status === 400) {
           navigate("/");
           setLoading(false);
-         }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -65,7 +62,6 @@ function PostByUser() {
   }
 
   const handleButtonClick = (postId) => {
-
     setSelectedPostId(postId);
     setShowDeleteOption(!showDeleteOption);
   };
@@ -122,7 +118,6 @@ function PostByUser() {
     }
   };
 
-
   return (
     <div>
       <EditPostModal
@@ -134,7 +129,7 @@ function PostByUser() {
         handleCloseModal={handleCloseModal}
       />
 
-<ConfirmDeleteModal
+      <ConfirmDeleteModal
         show={showConfirmDelete}
         onHide={() => setShowConfirmDelete(false)}
         title="¿Estás seguro?"
@@ -172,26 +167,33 @@ function PostByUser() {
                   >
                     @{post.user_name}
                   </Link>
-                 
                 </div>
                 {userId === tokenUserId && (
                   <div className={styles.more__actions}>
-                  <Button variant="link" onClick={() => handleButtonClick(post.forum_id)}>
+                    <Button
+                      variant="link"
+                      onClick={() => handleButtonClick(post.forum_id)}
+                    >
                       <SlOptions />
                     </Button>
-                    {showDeleteOption && selectedPostId === post.forum_id && ( 
+                    {showDeleteOption && selectedPostId === post.forum_id && (
                       <>
-                      <div className={styles.post__actions_options}>
-                        <Button variant="link" onClick={() => handleEdit(post)}>
-                        <MdOutlineModeEditOutline />Editar
-                        </Button>
-                        <Button
-                          variant="link"
-                          onClick={() => confirmDelete(post)}
-                          className={styles.delete_post_btn}
-                        >
-                        <CgTrash/>Eliminar
-                        </Button>
+                        <div className={styles.post__actions_options}>
+                          <Button
+                            variant="link"
+                            onClick={() => handleEdit(post)}
+                          >
+                            <MdOutlineModeEditOutline />
+                            Editar
+                          </Button>
+                          <Button
+                            variant="link"
+                            onClick={() => confirmDelete(post)}
+                            className={styles.delete_post_btn}
+                          >
+                            <CgTrash />
+                            Eliminar
+                          </Button>
                         </div>
                       </>
                     )}
@@ -203,31 +205,25 @@ function PostByUser() {
                 className={styles.post__title}
               >
                 <p>{post.title}</p>
-                {/*
-                <div className={styles.content__tags}>
-                  {post.event && (
-                    <span className={styles.post_tags}>{post.event}</span>
-                  )}
-                </div>*/}
                 <div>
                   <p className={styles.post__text}>{post.description}</p>
                 </div>
               </Link>
               <div className={styles.post__actions}>
                 <div>
-                <div className={styles.actions__content}>
-                  <FaRegHeart fill="#536571"/>
-                  <span className={styles.post_tags}>{post.likes}</span>
-                </div>
+                  <div className={styles.actions__content}>
+                    <FaRegHeart fill="#536571" />
+                    <span className={styles.post_tags}>{post.likes}</span>
+                  </div>
                 </div>
 
                 <div>
-                <div className={styles.actions__content}>
-                <img src={CommentIcon} alt="Comment Icon" />
-                  <span className={styles.post_tags}>
-                    {post.messages ? post.messages.length : 0}
-                  </span>
-                </div>
+                  <div className={styles.actions__content}>
+                    <img src={CommentIcon} alt="Comment Icon" />
+                    <span className={styles.post_tags}>
+                      {post.messages ? post.messages.length : 0}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -34,13 +34,11 @@ function EditProfileModal({
   }, [selectedProfile]);
 
   const handleAgeRangeSelect = (option) => {
-    console.log("Option selected:", option);
     setSelectedAgeRange(option);
     setIsOpenAgeRange(false);
   };
 
   const handleRelationshipSelect = (option) => {
-    console.log("Option selected:", option);
     setSelectedRelationship(option);
     setIsOpenRelationship(false);
   };

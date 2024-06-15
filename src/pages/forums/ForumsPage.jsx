@@ -724,7 +724,6 @@ function ForumsPage() {
                           </div>
                         </div>
                       </div>
-                      {console.log("message", message)}
                       {forumData.data.status === 1 &&
                         message.user_id === userId && (
                           <div className={styles.edit_message_container}>

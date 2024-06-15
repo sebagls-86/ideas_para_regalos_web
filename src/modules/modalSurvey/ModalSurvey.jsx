@@ -160,14 +160,10 @@ const ModalRegister = ({ closeModal, forumInfo }) => {
   };
 
   const handleOptionSelect = (option) => {
-    console.log("Option selected:", option);
     setSelectedProduct(option);
     setIsOpen(false);
   };
 
-  // const selectedOption = productsCatalog.find(
-  //   (product) => product.product_catalog_id === selectedProduct
-  // );
 
   const style = {
     color: "#FFEBA5",

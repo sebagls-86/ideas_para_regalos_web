@@ -152,7 +152,6 @@ function ModalCreateProfile({
   };
 
   const handleClose = () => {
-    console.log("Cerrando el modal");
     setForm({
       name: "",
       lastName: "",

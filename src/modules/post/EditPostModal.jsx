@@ -25,7 +25,6 @@ function EditPostModal({
   const [selectedEventType, setSelectedEventType] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showEndCalendar, setShowEndCalendar] = useState(false);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -39,10 +38,6 @@ function EditPostModal({
   const API_URL = process.env.REACT_APP_API_URL;
 
   const token = localStorage.getItem("token");
-
-  console.log(originalPost);
-  console.log("selected post", selectedPost);
-  console.log(selectedProfileId);
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -76,7 +71,6 @@ function EditPostModal({
   }, [selectedPost, eventTypes]);
 
   useEffect(() => {
-    console.log("fetch profiles");
     const fetchProfiles = async () => {
       try {
         if (!selectedPost) return;
@@ -273,10 +267,6 @@ function EditPostModal({
     setSelectedProfileId(parseInt(e.target.value));
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
   const handleEndDateChange = (date) => {
     setSelectedEndDate(date);
   };
@@ -312,7 +302,7 @@ function EditPostModal({
         contentStyle={{
           height: "fit-content",
           marginTop: "1.5rem",
-          paddingBottom: "2.5rem"
+          paddingBottom: "2.5rem",
         }}
       >
         <Col>
@@ -358,29 +348,6 @@ function EditPostModal({
                 </div>
               </div>
               <div className={styles.event_date_form}>
-                {/* 
-                <div>
-                  <label>Fecha del Evento:</label>
-                  <div>
-                    <input
-                      type="text"
-                      className={`${styles.form__control} ${styles.event_date_input} form-control`}
-                      value={
-                        selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""
-                      }
-                      onClick={() => setShowCalendar(true)}
-                    />
-                    {showCalendar && (
-                      <Calendar
-                        onChange={handleDateChange}
-                        value={selectedDate}
-                        onClickDay={() => setShowCalendar(false)}
-                        className={styles.event_date_calendar}
-                      />
-                    )}
-                  </div>
-                </div>
-                */}
                 <div>
                   <label>Fecha límite:</label>
                   {originalPost?.end_date !== "0" && (

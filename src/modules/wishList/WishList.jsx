@@ -444,8 +444,6 @@ function WishList() {
     }
   };
 
-  console.log(listData);
-
   return (
     <div>
       <AddProductsModal

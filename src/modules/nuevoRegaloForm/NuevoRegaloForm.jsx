@@ -303,9 +303,6 @@ function NuevoRegaloForm({ selectedProfile }) {
                 handleOptionSelect={handleOptionSelect}
                 className={styles.event_select}
               />
-             
-
-              {console.log(selectedOption)}
               {selectedOption?.label === "Otro" && (
                 <div>
                   <input
@@ -319,25 +316,6 @@ function NuevoRegaloForm({ selectedProfile }) {
               )}
             </div>
           </Tab>
-          {/* 
-          <Tab
-            eventKey="calendario"
-            title={
-              <span className={styles.span}>
-                <MyIcon name="calendar" /> Fecha
-              </span>
-            }
-          >
-            <div className={styles.date_container}>
-              <p>¿Cuándo es el evento?</p>
-              <Calendar
-                value={selectedDate}
-                onChange={handleDateChange}
-                className={styles.calendar}
-              />
-            </div>
-          </Tab>
-          */}
           <Tab
             eventKey="endDate"
             title={

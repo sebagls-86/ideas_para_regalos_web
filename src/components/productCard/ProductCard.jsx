@@ -28,8 +28,7 @@ export default function ProductCard({ image, name, userId, productId }) {
   }
 
   useEffect(() => {
-    console.log("showAlert changed:", showAlert);
-  }, [showAlert]);
+    }, [showAlert]);
 
   useEffect(() => {
     const fetchDataAndSetClickOutside = async () => {
@@ -249,8 +248,7 @@ export default function ProductCard({ image, name, userId, productId }) {
                   })}
               </ul>
             </div>
-            {console.log("showAlert value:", showAlert)}
-          </div>
+           </div>
         )}
       </div>
     </>
