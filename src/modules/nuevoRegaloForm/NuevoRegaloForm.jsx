@@ -20,7 +20,6 @@ function NuevoRegaloForm({ selectedProfile }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [eventTypes, setEventTypes] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -82,11 +81,7 @@ function NuevoRegaloForm({ selectedProfile }) {
   };
 
   const createForum = async () => {
-    const day = selectedDate.getDate().toString().padStart(2, "0");
-    const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = selectedDate.getFullYear();
-    const formattedDate = `${day}/${month}/${year}`;
-
+    
     let endFormattedDate = null;
 
     if (selectedEndDate) {
@@ -107,7 +102,6 @@ function NuevoRegaloForm({ selectedProfile }) {
         event_type_id: selectedOption.value,
         user_id: userId,
         name: eventName,
-        date: formattedDate,
       };
 
       try {
@@ -202,7 +196,6 @@ function NuevoRegaloForm({ selectedProfile }) {
 
   const isDisabled =
     !selectedProfile ||
-    !selectedDate ||
     titulo.trim() === "" ||
     descripcion.trim() === "" ||
     !selectedOption ||
