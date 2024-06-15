@@ -78,16 +78,18 @@ function MyAccountPage({ userInfo }) {
 
         if (response.status === 400) {
           return;
-        }
-
-        if (response.status === 401 && data.message === "Token is expired.") {
+        } else if (response.status === 401 && data.message === "Token is expired.") {
           setIsLoading(false);
-          setErrorMessage("Error al guardar los cambios");
+          localStorage.removeItem("token");
+          localStorage.removeItem("userInfo");
+          setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
           setShowResponseModal(true);
           await sleep(3000);
           logout();
           return;
         }
+
+        setIsLoading(false);
       } catch (error) {
         navigate("/error");
       }
