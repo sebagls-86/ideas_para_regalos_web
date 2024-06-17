@@ -171,10 +171,10 @@
   border: 1px solid #ccc;
   border-radius: 20px;
   padding: 0 10px;
+  color: gray;
 }
 
 .forum_message {
-  font-size: 14px;
   margin-bottom: 5px;
 }
 
@@ -186,12 +186,13 @@
   position: relative;
 }
 .forum_username,
-.forum_date {
-  font-size: 12px;
+.forum_date, .forum_date > p{
+  font-size: 12px !important;
   margin-bottom: 5px;
 }
 .forum_date {
   opacity: 60%;
+ 
 }
 
 
