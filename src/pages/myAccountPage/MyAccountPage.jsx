@@ -85,6 +85,8 @@ function MyAccountPage({ userInfo }) {
           setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
           setShowResponseModal(true);
           await sleep(3000);
+          localStorage.removeItem("token");
+          localStorage.removeItem("userInfo");
           logout();
           return;
         }

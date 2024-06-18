@@ -106,6 +106,8 @@ export default function ProductCard({ image, name, userId, productId }) {
           setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
           setShowResponseModal(true);
           await sleep(3000);
+          localStorage.removeItem("token");
+          localStorage.removeItem("userInfo");
           logout();
         } else {
           setErrorMessage(
@@ -136,6 +138,8 @@ export default function ProductCard({ image, name, userId, productId }) {
           setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
           setShowResponseModal(true);
           await sleep(3000);
+          localStorage.removeItem("token");
+          localStorage.removeItem("userInfo");
           logout();
         } else {
           setErrorMessage(
