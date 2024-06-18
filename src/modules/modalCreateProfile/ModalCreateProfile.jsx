@@ -133,7 +133,11 @@ function ModalCreateProfile({
   };
 
   const handleNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+    if (currentStep === 1 && selectedAgeOption?.value === 1) {
+      handleCreateProfile();
+    } else {
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handleOptionSelect = (option, type) => {
@@ -142,7 +146,7 @@ function ModalCreateProfile({
       [type]: option.value,
     }));
 
-    if (type === "selectedAgeRange") {
+      if (type === "selectedAgeRange") {
       setSelectedAgeOption(option);
       setIsAgeDropdownOpen(false);
     } else if (type === "selectedRelationship") {
@@ -172,11 +176,11 @@ function ModalCreateProfile({
     const newProfile = {
       name: form.name,
       last_name: form.lastName,
-      age_range_id: parseInt(form.selectedAgeRange, 10),
-      relationship_id: parseInt(form.selectedRelationship, 10),
-      selectedInterests: Object.values(selectedInterests).map(
-        (interest) => interest.interest_id
-      ),
+      age_range_id: parseInt(selectedAgeOption?.value, 10),
+      relationship_id: parseInt(selectedRelationshipOption?.value, 10),
+      selectedInterests: selectedAgeOption?.value === 1
+        ? [21]
+        : selectedInterests.map((interest) => interest.interest_id),
     };
     handleSaveNewProfile(newProfile);
     setForm({
@@ -275,7 +279,7 @@ function ModalCreateProfile({
         return (
           <>
             <p className={styles.interest_description}>
-              Elegí 4 o más tópicos de su interés para poder buscar mejores
+              Elegí 3 o más tópicos de su interés para poder buscar mejores
               recomendaciones.
             </p>
             <div className={styles.scrollable_div}>
@@ -296,7 +300,7 @@ function ModalCreateProfile({
             <Button
               label="Finalizar"
               className="btn primary__button"
-              disabled={selectedInterests.length < 4}
+              disabled={selectedInterests.length < 3}
               onClick={handleCreateProfile}
             />
           </>

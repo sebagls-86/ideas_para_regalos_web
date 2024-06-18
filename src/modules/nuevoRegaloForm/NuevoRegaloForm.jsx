@@ -66,8 +66,9 @@ function NuevoRegaloForm({ selectedProfile }) {
       const interests = selectedProfile.interests.map(
         (interest) => interest.interest
       );
+      const eventType = selectedOption.value;
 
-      const suggestions = await fetchGiftsRateSuggestions(ageRange, interests);
+      const suggestions = await fetchGiftsRateSuggestions(ageRange, eventType, interests);
 
       if (suggestions && suggestions.length > 0) {
         setGiftsRateSuggestions(suggestions);

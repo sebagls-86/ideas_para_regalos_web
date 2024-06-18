@@ -70,7 +70,7 @@ export async function fetchAgeRanges() {
     }
   }
 
-  export async function fetchGiftsRateSuggestions(ageRangeId, interests) {
+  export async function fetchGiftsRateSuggestions(ageRangeId,eventTypeId, interests) {
     try {
       const response = await fetch(`${API_URL}/giftsRates/suggestions`, {
         method: "POST",
@@ -79,6 +79,7 @@ export async function fetchAgeRanges() {
         },
         body: JSON.stringify({
           age_range: ageRangeId,
+          event_type_id: eventTypeId,
           interests: interests,
         }),
       });
