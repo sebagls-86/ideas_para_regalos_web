@@ -31,7 +31,7 @@ function ModalSuggestions({ closeModal, suggestions, onCancel, createForum }) {
         contentStyle={{
           height: "fit-content",
           paddingBottom: "4rem",
-          marginTop: "5rem",
+          marginTop: "3rem",
         }}
         colStyle={{ xs: 12, sm: 12, md: 12 }}
       >
