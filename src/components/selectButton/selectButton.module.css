@@ -21,8 +21,8 @@
   width: 100%;
   background: var(--white);
   z-index: 999;
-  /*max-width: 360px;*/
-  position: absolute;
+  max-width: 360px;
+  position: absolute; 
   top: 100%;
   left: 0;
   list-style: none;
@@ -31,8 +31,23 @@
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-height: 200px;
-  overflow-y: auto; 
   text-align: left !important;
+  overflow-y: scroll; 
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.optionsList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.optionsList::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+.optionsList::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .linkOption{
@@ -63,3 +78,4 @@
 .userOption, .textOption{
     padding: 13px 18px;
 }
+

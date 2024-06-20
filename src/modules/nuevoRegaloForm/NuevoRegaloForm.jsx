@@ -14,6 +14,7 @@ import ModalSuggestions from "./ModalSuggestions";
 import ResponseModal from "../../components/modal/ResponseModal";
 import SearchDropdown from "../../components/selectButton/SearchDropdown";
 import { useAuth0 } from "@auth0/auth0-react";
+import SelectButton from "../../components/selectButton/SelectButton";
 
 
 function NuevoRegaloForm({ selectedProfile }) {
@@ -297,7 +298,7 @@ function NuevoRegaloForm({ selectedProfile }) {
                 options={filteredOptions}
                 selectedOption={selectedOption}
                 handleOptionSelect={handleOptionSelect}
-                className={styles.event_select}
+                maxWidth="360px"
               />
               {selectedOption?.label === "Otro" && (
                 <div>

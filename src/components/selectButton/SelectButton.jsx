@@ -11,7 +11,6 @@ function SelectButton({
   handleOptionSelect,
   selectedOption,
   maxWidth,
-  optionWidth 
 }) {
   return (
     <div className={styles.selectButtonContainer}>
@@ -32,15 +31,13 @@ function SelectButton({
         <ul className={styles.optionsList} style={{ maxWidth: maxWidth }}>
           {options.map((option) => (
             <li
-              className={styles.OptionItem}
+              className={styles.optionItem}
               key={option.value}
               onClick={() => {
                 handleOptionSelect(option);
                 toggleDropdown();
               }}
-          
             >
-              {/* Conditional rendering based on option type */}
               {renderOption(option)}
             </li>
           ))}

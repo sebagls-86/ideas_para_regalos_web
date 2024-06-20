@@ -33,22 +33,28 @@ function SearchDropdown({
       fontSize: "17px",
       "&:hover": {
         border: "0.4px solid #000",
-      }
+      },
     }),
     dropdownIndicator: (provided, state) => ({
       ...provided,
-      color: state.isFocused ? "var(--focused-icon-color)" : "var(--default-icon-color)",
+      color: state.isFocused
+        ? "var(--focused-icon-color)"
+        : "var(--default-icon-color)",
       "&:hover": {
-        color: "var(--hovered-icon-color)"
-      }
+        color: "var(--hovered-icon-color)",
+      },
     }),
     indicatorSeparator: (provided, state) => ({
       ...provided,
-      display: "none"
+      display: "none",
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? "var(--gray)" : state.isFocused ? "var(--gray)" : "#fff",
+      backgroundColor: state.isSelected
+        ? "var(--gray)"
+        : state.isFocused
+        ? "var(--gray)"
+        : "#fff",
       color: state.isSelected ? "#333" : "#000",
       padding: "13px 18px",
       ":active": {
@@ -60,9 +66,30 @@ function SearchDropdown({
         color: "var(--focus-text-color)",
       },
     }),
+    menu: (provided, state) => ({
+      ...provided,
+      zIndex: 9999, // Asegura que el menú aparezca encima de otros elementos si es necesario
+      width: "100%", // Ajusta el ancho del menú desplegable al 100% del contenedor
+      marginTop: "0", // Ajusta el margen superior para alinear correctamente con el input
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)", // Agrega una sombra suave para destacar el menú
+      border: "1px solid #ccc", // Agrega un borde para definir los límites del menú
+      borderRadius: "4px",
+      scrollbarColor: "#888 #f1f1f1",
+      "&::-webkit-scrollbar": {
+        width: "8px",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "#888",
+        borderRadius: "10px",
+        "&:hover": {
+          backgroundColor: "#555",
+        },
+      },
+    }),
   };
-  
-  
+
+  console.log(customStyles);
+
   return (
     <Select
       className={styles.search_dropdown} // Apply your custom styles here
@@ -71,8 +98,8 @@ function SearchDropdown({
       onChange={handleOptionSelect}
       options={options}
       placeholder={label}
-      isSearchable 
-      autoFocus 
+      isSearchable
+      autoFocus
       components={{ DropdownIndicator }}
       styles={customStyles}
     />
