@@ -57,63 +57,63 @@ function NuevoRegaloPage() {
     }
   }, [location.search, profilesData]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!isAuthenticated) {
-          handleLogin();
-          return;
-        }
-
-        let url = `${API_URL}/profiles/user/${userId}`;
-
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-       
-        if (response.status === 401) {
-          setErrorMessage("Su sesión expiró. Por favor, vuelva a iniciar sesión.");
-          setShowResponseModal(true);
-          await sleep(3000);
-          localStorage.removeItem("token");
-          localStorage.removeItem("userInfo");
-          logout();
-          return;
-        } else  if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-
-        if (response.ok) {
-          if (Array.isArray(data.data) && data.data.length > 0) {
-            const processedData = data.data.map((profile) => ({
-              ...profile,
-              editing: false,
-            }));
-            setProfilesData(processedData);
-          } else if (typeof data.data === "object" && data.data !== null) {
-            setProfilesData([{ ...data.data, editing: false }]);
-            setSelectedProfile({ ...data.data, editing: false });
-          } else {
-            setProfilesData([]);
-          }
-        }
-
-        if (response.status === 400) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const fetchProfilesData = async () => {
+    try {
+      if (!isAuthenticated) {
+        handleLogin();
+        return;
       }
-    };
-    fetchData();
-  }, [userId, navigate, token, isAuthenticated]);
+
+      let url = `${API_URL}/profiles/user/${userId}`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        setErrorMessage(
+          "Su sesión expiró. Por favor, vuelva a iniciar sesión."
+        );
+        setShowResponseModal(true);
+        await sleep(3000);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userInfo");
+        logout();
+        return;
+      } else if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          const processedData = data.data.map((profile) => ({
+            ...profile,
+            editing: false,
+          }));
+          setProfilesData(processedData);
+        } else if (typeof data.data === "object" && data.data !== null) {
+          setProfilesData([{ ...data.data, editing: false }]);
+          setSelectedProfile({ ...data.data, editing: false });
+        } else {
+          setProfilesData([]);
+        }
+      }
+
+      if (response.status === 400) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  console.log(profilesData)
 
   const handleLogin = async () => {
     try {
@@ -214,16 +214,17 @@ function NuevoRegaloPage() {
       setShowNewProfileModal(false);
       setSuccessMessage("Nuevo perfil guardado con éxito");
       setShowResponseModal(true);
-      setProfilesData((prevProfilesData) => [
-        ...prevProfilesData,
-        { ...newProfile, profile_id },
-      ]);
+      fetchProfilesData();
     } catch (error) {
       setShowNewProfileModal(false);
       setErrorMessage("Algo falló. Intenta nuevamente más tarde");
       setShowResponseModal(true);
     }
   };
+
+  useEffect(() => {
+    fetchProfilesData();
+  }, [userId, navigate, token, isAuthenticated]);
 
   return (
     <>

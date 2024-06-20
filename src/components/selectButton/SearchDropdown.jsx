@@ -88,8 +88,6 @@ function SearchDropdown({
     }),
   };
 
-  console.log(customStyles);
-
   return (
     <Select
       className={styles.search_dropdown} // Apply your custom styles here
