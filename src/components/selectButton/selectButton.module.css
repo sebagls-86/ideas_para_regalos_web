@@ -21,7 +21,7 @@
   width: 100%;
   background: var(--white);
   z-index: 999;
-  max-width: 360px;
+  /*max-width: 360px;*/
   position: absolute; 
   top: 100%;
   left: 0;
