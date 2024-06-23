@@ -73,6 +73,7 @@
   .card_container {
     gap: 1rem .7rem;
     padding: 0 .7rem;
+    margin-top: 5.5rem;
   }
 }
 @media only screen and (max-width: 768px) {

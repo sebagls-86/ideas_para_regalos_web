@@ -182,7 +182,8 @@ ul li:last-child{
     margin-top: 0;
   }
   .productCard h3 {
-    top: 30px;
+    top: 25px;
+    font-size: 18px;
   }
   .saved_alert{
     font-size: 14px;
@@ -197,8 +198,8 @@ ul li:last-child{
     height: 40px;
   }
   .productCard {
-    width: 12.3rem !important;
-    height: 18.75rem; 
+    width: 12.5rem !important;
+    height: 19rem; 
   }
   .productImage {
     max-height: 15.375rem;
