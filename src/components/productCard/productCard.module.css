@@ -187,7 +187,9 @@ ul li:last-child{
   }
   .saved_alert{
     font-size: 14px;
+    padding: 7px .5rem;
   }
+ 
   .saveButton{
     bottom: 63px;
   }
