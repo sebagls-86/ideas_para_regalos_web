@@ -189,10 +189,10 @@ ul li:last-child{
     font-size: 14px;
   }
   .saveButton{
-    bottom: 57px;
+    bottom: 63px;
   }
    .saved_alert.show {
-    bottom: 53px;
+    bottom: 59px;
   }
   .saved_alert.show {
     height: 40px;
