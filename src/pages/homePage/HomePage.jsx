@@ -69,6 +69,7 @@ function HomePage() {
       if (!response.ok) {
         throw new Error("Error al enviar el código al backend");
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error:", error);
     } finally {
