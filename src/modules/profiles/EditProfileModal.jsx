@@ -34,12 +34,20 @@ function EditProfileModal({
   }, [selectedProfile]);
 
   const handleAgeRangeSelect = (option) => {
-    setSelectedAgeRange(option);
+    setSelectedProfile({
+      ...selectedProfile,
+      age_range: option.label,
+      age_range_id: option.value
+    });
     setIsOpenAgeRange(false);
   };
 
   const handleRelationshipSelect = (option) => {
-    setSelectedRelationship(option);
+    setSelectedProfile({
+      ...selectedProfile,
+      relationship: option.label,
+      relationship_id: option.value
+    });
     setIsOpenRelationship(false);
   };
 
