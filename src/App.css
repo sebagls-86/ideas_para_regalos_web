@@ -295,6 +295,9 @@ a:focus {
   .nav-link {
     padding: 0;
   }
+  .contenedor{
+    padding: 0;
+   }
 }
 .swiper-pagination-bullet-active {
   background-color: white !important;
