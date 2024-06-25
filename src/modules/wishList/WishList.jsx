@@ -507,6 +507,7 @@ function WishList() {
                   className={styles.go_back_button}
                 ></Button>{" "}
               </div>
+              <div className={styles.list__content}>
               <p className={styles.list_name_more}>MercadoLibre</p>
               {/* Renderizar los favoritos de MercadoLibre */}
               <div className={styles.meli_cards_container}>
@@ -520,6 +521,7 @@ function WishList() {
                     <p className={styles.product_name}>{favorite.name}</p>
                   </div>
                 ))}
+              </div>
               </div>
             </div>
           ) : (
